@@ -17,11 +17,11 @@ Bossa requires the following software to run:
  + Prevayler >=2.00.001
    URL: http://www.prevayler.org/
 
- + BSF =cvs20030213
+ + BSF >=cvs20031009
    Notes: We need a unreleased version of BSF, get it from our download page.
    URL: http://jakarta.apache.org/bsf/
 
- + Rhino >=1.5R2 <=1.5R3
+ + Rhino >=1.5R4.1
    URL: http://www.mozilla.org/rhino/
 
 For convenience, we provide an archive with the binaries marked with a +
