@@ -105,8 +105,11 @@ public class BossaFactory {
         newBossa.setNotificationBus(new NotificationBus());
         if (!this.transientBossa && (this.stateDir != null)) {
             try {
-                Prevayler prevayler =
-                    PrevaylerFactory.createPrevayler(newBossa, this.stateDir);
+                PrevaylerFactory factory = new PrevaylerFactory();
+                factory.configurePrevalentSystem(newBossa);
+                factory.configurePrevalenceBase(this.stateDir);
+                factory.configureTransactionFiltering(false);
+                Prevayler prevayler = factory.create();
                 newBossa = (Bossa) prevayler.prevalentSystem();
                 newBossa.setPrevayler(prevayler);
                 return newBossa;
