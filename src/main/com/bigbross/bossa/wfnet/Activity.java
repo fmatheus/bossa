@@ -111,7 +111,7 @@ public class Activity implements Serializable {
 
     /**
      * Closes and finishes this activity. Call this method when the
-     * activity is successfuly completed. <p>
+     * activity is successfully completed. <p>
      * 
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
@@ -129,10 +129,17 @@ public class Activity implements Serializable {
 
     /**
      * Closes and finishes an activity. Call this method when the
-     * activity is successfuly completed. An attribute mapping should be
-     * passed when this method is called. The attributes provided will
-     * overwrite current set attributes and the value of these attributes
-     * will be used when evaluating edge expressions. <p>
+     * activity is successfully completed. <p>
+     * 
+     * An attribute mapping should be passed when this method is called.
+     * This is a (<code>String</code>, <code>Object</code>) mapping of
+     * variables names (as used in edge weight expressions) and Java objects.
+     * The Java objects should be understandable by the underlying BSF
+     * engine being used (for JavaScript, <code>Boolean</code>,
+     * <code>Integer</code> and <code>String</code> are known to work).
+     * The attributes provided will overwrite current set attributes and
+     * the value of these attributes will be used when evaluating edge
+     * weights. <p>
      * 
      * @param attributes the attributes mapping.
      * @return <code>true</code> if the activity is succesfully opened,

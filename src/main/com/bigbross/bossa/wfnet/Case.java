@@ -80,7 +80,11 @@ public class Case implements Serializable {
      * @param state the initial token count as a map (<code>String</code>, 
      *              <code>Integer</code>), indexed by the place id.
      *              This state map must have a token count for every place.
-     * @param attributes the initial attributes.
+     * @param attributes the initial attributes as a map (<code>String</code>,
+     *                   <code>Object</code>) of variables names (as used in
+     *                   edge weight expressions) and Java objects. The Java
+     *                   objects should be understandable by the underlying
+     *                   BSF engine being used.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
@@ -105,7 +109,7 @@ public class Case implements Serializable {
 
         this.attributes = new HashMap();
 	this.bsf = new BSFManager();
-        /* An SetAttributeException can be thrown here. */
+        /* A SetAttributeException can be thrown here. */
         declare(attributes);
 
         Collection ts = caseType.getTransitions();
@@ -249,7 +253,9 @@ public class Case implements Serializable {
     /**
      * Returns the current attributes of this case. <p>
      * 
-     * @return the attributes as an unmodifiable map.
+     * @return the attributes as an unmodifiable map (<code>String</code>,
+     *         <code>Object</code>) of variables names (as used in
+     *         edge weight expressions) and Java objects.
      */
     public Map getAttributes() {
         return Collections.unmodifiableMap(attributes);
@@ -330,7 +336,9 @@ public class Case implements Serializable {
      * Declares an attribute to be used at expression evaluation. <p>
      *
      * @param id the attribute identifier.
-     * @param value an <code>Object</code> with the attribute value.
+     * @param value a Java object with the attribute value. This object
+     *              should be understandable by the underlying
+     *              BSF engine being used.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
@@ -347,7 +355,11 @@ public class Case implements Serializable {
     /**
      * Declares all the attributes to be used at expression evaluation. <p>
      *
-     * @param attributes a <code>Map</code> of attributes to be declared.
+     * @param attributes the attributes to be declared as a map
+     *                   (<code>String</code>, <code>Object</code>) of
+     *                   variables names (as used in edge weight expressions)
+     *                   and Java objects. The Java objects should be
+     *                   understandable by the underlying BSF engine being used.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
@@ -509,15 +521,20 @@ public class Case implements Serializable {
 
     /**
      * Closes and finishes an activity. Call this method when the
-     * activity is successfuly completed. <p>
+     * activity is successfully completed. <p>
      * 
      * Closes the <code>Case</code> when the last activity is closed, that is,
      * no work items to open nor open activities remain. <p>
      *
-     * An attribute mapping can be passed when this method is called.
+     * An attribute mapping should be passed when this method is called.
+     * This is a (<code>String</code>, <code>Object</code>) mapping of
+     * variables names (as used in edge weight expressions) and Java objects.
+     * The Java objects should be understandable by the underlying BSF
+     * engine being used (for JavaScript, <code>Boolean</code>,
+     * <code>Integer</code> and <code>String</code> are known to work).
      * The attributes provided will overwrite current set attributes and
      * the value of these attributes will be used when evaluating edge
-     * expressions. If you do not want to set any new attribute, use
+     * weights. If you do not want to set any new attribute, use
      * <code>null</code> as the attribute mapping. <p>
      * 
      * This method will not persist the result of its activation and should
