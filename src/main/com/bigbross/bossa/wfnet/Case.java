@@ -173,7 +173,7 @@ public class Case implements Serializable {
      * @return the activity, <code>null</code> if there is no activity
      *         with this id.
      */
-    public Activity getActivity(int id) {
+    Activity getActivity(int id) {
         return (Activity) activities.get(new Integer(id));
     }
 
