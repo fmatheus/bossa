@@ -54,12 +54,12 @@ public class BossaTestUtil {
         Place G = caseType.registerPlace("G", marking[6]);
         Place H = caseType.registerPlace("H", marking[7]);
     
-        Transition a = caseType.registerTransition("a", "requesters");
-        Transition b = caseType.registerTransition("b", "sales-$a");
-        Transition c = caseType.registerTransition("c", "directors");
-        Transition d = caseType.registerTransition("d", "sales");
-        Transition e = caseType.registerTransition("e", "sales");
-        Transition f = caseType.registerTransition("f", "$a");
+        Transition a = caseType.registerTransition("a", "requesters", -1);
+        Transition b = caseType.registerTransition("b", "sales-$a", -1);
+        Transition c = caseType.registerTransition("c", "directors", -1);
+        Transition d = caseType.registerTransition("d", "sales", -1);
+        Transition e = caseType.registerTransition("e", "sales", -1);
+        Transition f = caseType.registerTransition("f", "$a", -1);
     
         a.input(A,  "1");
         a.output(B, "1");

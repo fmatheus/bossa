@@ -145,7 +145,7 @@ public class CaseTest extends TestCase {
         CaseType caseType = new CaseType("selfloop");
         Place A = caseType.registerPlace("A", 1);
         Place B = caseType.registerPlace("B");
-        Transition a = caseType.registerTransition("a", "joedoe");
+        Transition a = caseType.registerTransition("a", "boss", -1);
         a.input(A,  "1");
         a.output(B, "1");
         a.output(A, "1");
@@ -154,6 +154,10 @@ public class CaseTest extends TestCase {
         
         assertTrue(WFNetUtil.fire(caze, "a", null));
         assertTrue(sameState(new int[] {1,1}, caze.getMarking()));
+    }
+
+    public void testZeroTimeout() {
+        //FIXME
     }
 
     public void testAutomaticCreation() throws Exception {
@@ -186,9 +190,9 @@ public class CaseTest extends TestCase {
     public void testCanPerformWorkItem() throws BossaException {
         CaseType caseType = new CaseType("canPerform");
         Place A = caseType.registerPlace("A", 1);
-        Transition a = caseType.registerTransition("a", "bosses");
-        Transition b = caseType.registerTransition("b", "");
-        Transition c = caseType.registerTransition("c", null);
+        Transition a = caseType.registerTransition("a", "bosses", -1);
+        Transition b = caseType.registerTransition("b", "", -1);
+        Transition c = caseType.registerTransition("c", null, -1);
         a.input(A,  "1");
         b.input(A,  "1");
         c.input(A,  "1");

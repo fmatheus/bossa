@@ -44,6 +44,8 @@ public class Transition implements Serializable {
 
     private Expression resource;
     
+    private long timeout;
+
     private ArrayList inputs;
     
     private ArrayList outputs;
@@ -55,13 +57,16 @@ public class Transition implements Serializable {
      * @param id the id of this transition.
      * @param resource the expression to select the resource responsible by
      *                 this transition.
+     * @param timeout the number of milliseconds this transition will wait
+     *                before it fires automatically.
      */
-    Transition(CaseType caseType, String id, String resource) {
+    Transition(CaseType caseType, String id, String resource, long timeout) {
 	this.caseType = caseType;
 	this.id = id;
 	this.resource = resource == null ?
                             null :
                             caseType.getResourceRegistry().compile(resource);
+        this.timeout = timeout;
         this.inputs = new ArrayList();
         this.outputs = new ArrayList();
     }
@@ -82,6 +87,15 @@ public class Transition implements Serializable {
      */
     Expression getResource() {
         return resource;
+    }
+
+    /**
+     * Returns the timeout of this transition. <p>
+     * 
+     * @return the timeout of this transition.
+     */
+    long getTimeout() {
+        return timeout;
     }
 
     /**

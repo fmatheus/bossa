@@ -59,15 +59,20 @@ public class CaseTypeTest extends TestCase {
 
     public void testTransition() throws BossaException {
         CaseType caseType = new CaseType("transitions");
-        caseType.registerTransition("a", "bosses");
-        caseType.registerTransition("b", "");
-        caseType.registerTransition("c", null);
+        caseType.registerTransition("a", "bosses", -1);
+        caseType.registerTransition("b", "", 0);
+        caseType.registerTransition("c", null, 1);
         caseType.buildTemplate(null);
         
-        assertEquals("bosses",
-                     caseType.getTransition("a").getResource().toString());
-        assertNull(caseType.getTransition("b").getResource());
-        assertNull(caseType.getTransition("c").getResource());
+        Transition t = caseType.getTransition("a");
+        assertEquals("bosses", t.getResource().toString());
+        assertEquals(-1, t.getTimeout());
+        t = caseType.getTransition("b");
+        assertNull(t.getResource());
+        assertEquals(0, t.getTimeout());
+        t = caseType.getTransition("c");
+        assertNull(t.getResource());
+        assertEquals(1, t.getTimeout());
     }
 
     public void testEdge() throws Exception {
@@ -103,7 +108,7 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = new CaseType("missing");
         Place A = caseType.registerPlace("A", 1);
         Place B = caseType.registerPlace("B");
-        Transition a = caseType.registerTransition("a", "joedoe");
+        Transition a = caseType.registerTransition("a", "boss", -1);
         a.input(A,  "1");
         a.output(B, "FOO");
     

@@ -124,17 +124,26 @@ public class CaseType implements Serializable {
 
     /**
      * Creates a transition with the specified id in this case type. <p>
+     * 
+     * If the resource expression is <code>null</code> or an empty string,
+     * every resource can perform work items associated with this
+     * transition. <p>
+     * 
+     * If the timeout is negative, the transition will never fire
+     * automatically. If it is zero, this transition will fire
+     * immediately. <p>
      *
      * @param id the transition id.
      * @param resource the expression to select the resource responsible by
-     *        this transition. <code>null</code> or a empty string means
-     *        every resource can perform work itens associated with this
-     *        transition.
+     *        this transition.
+     * @param timeout the number of milliseconds this transition will wait
+     *                before it fires automatically. 
      * @return the created transition.
      * @see com.bigbross.bossa.resource.Expression
      */
-    public Transition registerTransition(String id, String resource) {
-        Transition trans = new Transition(this, id, resource);
+    public Transition registerTransition(String id, String resource,
+                                         long timeout) {
+        Transition trans = new Transition(this, id, resource, timeout);
         transitions.put(id, trans);
         return trans;
     }
