@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Edge {
+public class Edge implements Serializable {
     
     /**
      * The condition expression of this edge.
