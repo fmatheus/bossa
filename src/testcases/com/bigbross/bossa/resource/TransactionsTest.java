@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -52,7 +52,7 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testRemoveResource() {
-        Resource resource = resourceManager.createResourceImpl("joe");
+        Resource resource = resourceManager.createResourceImpl("joe", false);
         assertNotNull(resource);
         
         RemoveResource transaction = new RemoveResource(resource);
@@ -62,8 +62,8 @@ public class TransactionsTest extends TestCase {
     }
     
     public void testIncludeInResource() throws Exception {
-        Resource group = resourceManager.createResourceImpl("trumps");
-        Resource element = resourceManager.createResourceImpl("joe");
+        Resource group = resourceManager.createResourceImpl("trumps", false);
+        Resource element = resourceManager.createResourceImpl("joe", false);
 
         IncludeInResource transaction = new IncludeInResource(group, element);        
         assertTrue(((Boolean) transaction.execute(resourceManager)).
@@ -79,7 +79,7 @@ public class TransactionsTest extends TestCase {
         
         Resource group = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
-        Resource element = myResourceManager.createResourceImpl("joe");
+        Resource element = myResourceManager.createResourceImpl("joe", false);
 
         IncludeInResource transaction = new IncludeInResource(group, element);        
         assertTrue(((Boolean) transaction.execute(myResourceManager)).
@@ -88,11 +88,11 @@ public class TransactionsTest extends TestCase {
     }
     
     public void testExcludeInResource() throws Exception {
-        Resource group1 = resourceManager.createResourceImpl("trumps");
-        Resource group2 = resourceManager.createResourceImpl("good");
-        Resource element = resourceManager.createResourceImpl("joe");
-        group1.includeImpl(group2);
-        group2.includeImpl(element);
+        Resource group1 = resourceManager.createResourceImpl("trumps", false);
+        Resource group2 = resourceManager.createResourceImpl("good", false);
+        Resource element = resourceManager.createResourceImpl("joe", false);
+        group1.includeImpl(group2, false);
+        group2.includeImpl(element, false);
         assertTrue(group1.contains(element));
         
         ExcludeInResource transaction = new ExcludeInResource(group1, element);        
@@ -109,10 +109,10 @@ public class TransactionsTest extends TestCase {
         
         Resource group1 = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
-        Resource group2 = myResourceManager.createResourceImpl("good");
-        Resource element = myResourceManager.createResourceImpl("joe");
-        group1.includeImpl(group2);
-        group2.includeImpl(element);
+        Resource group2 = myResourceManager.createResourceImpl("good", false);
+        Resource element = myResourceManager.createResourceImpl("joe", false);
+        group1.includeImpl(group2, false);
+        group2.includeImpl(element, false);
         assertTrue(group1.contains(element));
         
         ExcludeInResource transaction = new ExcludeInResource(group1, element);        
@@ -122,9 +122,9 @@ public class TransactionsTest extends TestCase {
     }
     
     public void testRemoveFromResource() throws Exception {
-        Resource group = resourceManager.createResourceImpl("trumps");
-        Resource element = resourceManager.createResourceImpl("joe");
-        group.includeImpl(element);
+        Resource group = resourceManager.createResourceImpl("trumps", false);
+        Resource element = resourceManager.createResourceImpl("joe", false);
+        group.includeImpl(element, false);
         assertTrue(group.contains(element));
 
         RemoveFromResource transaction = new RemoveFromResource(group, element);        
@@ -140,8 +140,8 @@ public class TransactionsTest extends TestCase {
         
         Resource group = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
-        Resource element = myResourceManager.createResourceImpl("joe");
-        group.includeImpl(element);
+        Resource element = myResourceManager.createResourceImpl("joe", false);
+        group.includeImpl(element, false);
         assertTrue(group.contains(element));
 
         RemoveFromResource transaction = new RemoveFromResource(group, element);        

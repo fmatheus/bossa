@@ -150,20 +150,23 @@ public class Resource implements Container, Serializable {
      * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be included.
+     * @param notify if this operation should be notified.
      * @return <code>false</code> if resource includes this resource,
      *         <code>true</code> otherwise.
      */
-    public boolean includeImpl(Resource resource) {
+    public boolean includeImpl(Resource resource, boolean notify) {
         if (resource.depends(this)) {
             return false;
         }
         excludes.remove(resource);
         includes.add(resource);
-        ResourceEvents queue = new ResourceEvents();
-        queue.newTwoResourcesEvent(getBossa(),
-                                   ResourceEvents.ID_INCLUDE_IN_RESOURCE,
-                                   resource, this);
-        queue.notifyAll(getBossa());
+        if (notify) {
+            ResourceEvents queue = new ResourceEvents();
+            queue.newTwoResourcesEvent(getBossa(),
+                                       ResourceEvents.ID_INCLUDE_IN_RESOURCE,
+                                       resource, this);
+            queue.notifyAll(getBossa());
+        }
         return true;
     }
 
@@ -193,20 +196,23 @@ public class Resource implements Container, Serializable {
      * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be excluded.
+     * @param notify if this operation should be notified.
      * @return <code>false</code> if resource excludes this resource,
      *         <code>true</code> otherwise.
      */
-    public boolean excludeImpl(Resource resource) {
+    public boolean excludeImpl(Resource resource, boolean notify) {
         if (resource.depends(this)) {
             return false;
         }
         includes.remove(resource);
         excludes.add(resource);
-        ResourceEvents queue = new ResourceEvents();
-        queue.newTwoResourcesEvent(getBossa(),
-                                   ResourceEvents.ID_EXCLUDE_IN_RESOURCE,
-                                   resource, this);
-        queue.notifyAll(getBossa());
+        if (notify) {
+            ResourceEvents queue = new ResourceEvents();
+            queue.newTwoResourcesEvent(getBossa(),
+                                       ResourceEvents.ID_EXCLUDE_IN_RESOURCE,
+                                       resource, this);
+            queue.notifyAll(getBossa());
+        }
         return true;
     }
 
@@ -233,11 +239,12 @@ public class Resource implements Container, Serializable {
      * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be removed.
+     * @param notify if this operation should be notified.
      */
-    public void removeImpl(Resource resource) {
+    public void removeImpl(Resource resource, boolean notify) {
         boolean inc = includes.remove(resource);
         boolean exc = excludes.remove(resource);
-        if (inc || exc) {
+        if ((inc || exc) && notify) {
             ResourceEvents queue = new ResourceEvents();
             queue.newTwoResourcesEvent(getBossa(),
                                        ResourceEvents.ID_REMOVE_FROM_RESOURCE,

@@ -162,7 +162,7 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        Event event = (Event) events.get(events.size() - 3);
+        Event event = (Event) events.get(events.size() - 2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(Integer.toString(act.getId()),
@@ -192,7 +192,7 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
-        event = (Event) events.get(events.size() - 7);
+        event = (Event) events.get(events.size() - 4);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_WORK_ITEM_INACTIVE, event.getId());
         assertEquals(wi.getId(),

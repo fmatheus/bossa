@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -51,6 +51,6 @@ class RemoveResource extends ResourceTransaction {
      */
     protected Object execute(ResourceManager resourceManager) {
         Resource resource = resourceManager.getResource(id);
-        return new Boolean(resourceManager.removeResourceImpl(resource));
+        return new Boolean(resourceManager.removeResourceImpl(resource, true));
     }
 }

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -38,18 +38,18 @@ public class ExpressionTest extends TestCase {
 
     protected void setUp() {
         registry = new ResourceRegistry("null");
-        A = registry.createResourceImpl("A");
-        B = registry.createResourceImpl("B");
-        C = registry.createResourceImpl("C");
-        a = registry.createResourceImpl("a");
-        b = registry.createResourceImpl("b");
-        c = registry.createResourceImpl("c");
-        x = registry.createResourceImpl("x");
-        A.includeImpl(a);
-        A.includeImpl(x);
-        B.includeImpl(b);
-        B.includeImpl(x);
-        C.includeImpl(c);
+        A = registry.createResourceImpl("A", false);
+        B = registry.createResourceImpl("B", false);
+        C = registry.createResourceImpl("C", false);
+        a = registry.createResourceImpl("a", false);
+        b = registry.createResourceImpl("b", false);
+        c = registry.createResourceImpl("c", false);
+        x = registry.createResourceImpl("x", false);
+        A.includeImpl(a, false);
+        A.includeImpl(x, false);
+        B.includeImpl(b, false);
+        B.includeImpl(x, false);
+        C.includeImpl(c, false);
     }
 
     public void testReference() {
@@ -57,8 +57,8 @@ public class ExpressionTest extends TestCase {
         assertTrue(resource.contains(C));
 
         ResourceRegistry context = new ResourceRegistry("null");
-        Resource newC = context.createResourceImpl("C");
-        newC.includeImpl(x);
+        Resource newC = context.createResourceImpl("C", false);
+        newC.includeImpl(x, false);
 
         assertTrue(resource.contains(c));
         assertTrue(resource.contains(context, c));
@@ -79,8 +79,8 @@ public class ExpressionTest extends TestCase {
         assertTrue(resource.contains(C));
 
         ResourceRegistry context = new ResourceRegistry("null");
-        Resource newC = context.createResourceImpl("C");
-        newC.includeImpl(x);
+        Resource newC = context.createResourceImpl("C", false);
+        newC.includeImpl(x, false);
 
         assertFalse(resource.contains(context, C));
         assertTrue(resource.contains(context, newC));

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -50,6 +50,6 @@ class CreateResource extends ResourceTransaction {
      * @see ResourceTransaction#execute(ResourceManager)
      */
     protected Object execute(ResourceManager resourceManager) {
-        return resourceManager.createResourceImpl(id);
+        return resourceManager.createResourceImpl(id, true);
     }
 }

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -39,33 +39,33 @@ public class ResourceRegistryTest extends TestCase {
     }
 
     public void testAddResource() {
-        assertNotNull(resourceRegistry.createResourceImpl("r1"));
-        assertNull(resourceRegistry.createResourceImpl("r1"));
+        assertNotNull(resourceRegistry.createResourceImpl("r1", false));
+        assertNull(resourceRegistry.createResourceImpl("r1", false));
     }
     
     public void testGetResource() {
         assertNull(resourceRegistry.getResource("r1"));
-        Resource r = resourceRegistry.createResourceImpl("r1");
+        Resource r = resourceRegistry.createResourceImpl("r1", false);
         assertSame(r, resourceRegistry.getResource("r1"));
     }
     
     public void testNullResourceId() {
-        assertNull(resourceRegistry.createResourceImpl(null));
+        assertNull(resourceRegistry.createResourceImpl(null, false));
         assertNull(resourceRegistry.getResource(null));
     }
 
     public void testRemoveResource() {
-        Resource r = resourceRegistry.createResourceImpl("r1");
-        assertTrue(resourceRegistry.removeResourceImpl(r));
-        assertNotNull(resourceRegistry.createResourceImpl("r1"));
+        Resource r = resourceRegistry.createResourceImpl("r1", false);
+        assertTrue(resourceRegistry.removeResourceImpl(r, false));
+        assertNotNull(resourceRegistry.createResourceImpl("r1", false));
     }
 
     public void testNestedRemoveResource() {
-        Resource r1 = resourceRegistry.createResourceImpl("r1");
-        Resource r2 = resourceRegistry.createResourceImpl("r2");
-        r1.includeImpl(r2);
+        Resource r1 = resourceRegistry.createResourceImpl("r1", false);
+        Resource r2 = resourceRegistry.createResourceImpl("r2", false);
+        r1.includeImpl(r2, false);
         
-        assertTrue(resourceRegistry.removeResourceImpl(r2));
+        assertTrue(resourceRegistry.removeResourceImpl(r2, false));
         assertFalse(r1.contains(r2));
     }
     
@@ -90,11 +90,11 @@ public class ResourceRegistryTest extends TestCase {
     public void testRemoveResourceInSubContext() {
         ResourceRegistry subContext = new ResourceRegistry("test");
         assertTrue(resourceRegistry.registerSubContext(subContext));
-        Resource r1 = resourceRegistry.createResourceImpl("r1");
-        Resource r2 = subContext.createResourceImpl("r2");
-        r2.includeImpl(r1);
+        Resource r1 = resourceRegistry.createResourceImpl("r1", false);
+        Resource r2 = subContext.createResourceImpl("r2", false);
+        r2.includeImpl(r1, false);
 
-        assertTrue(resourceRegistry.removeResourceImpl(r1));
+        assertTrue(resourceRegistry.removeResourceImpl(r1, false));
         assertFalse(r2.contains(r1));
     }
     

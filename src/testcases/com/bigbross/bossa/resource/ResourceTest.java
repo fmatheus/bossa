@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -47,77 +47,77 @@ public class ResourceTest extends TestCase {
     }
 
     public void testInclude() {
-        assertTrue(r0.includeImpl(r1));
+        assertTrue(r0.includeImpl(r1, false));
         assertFalse(r0.contains(r2));
 
-        assertTrue(r1.includeImpl(r2));
+        assertTrue(r1.includeImpl(r2, false));
         assertTrue(r0.contains(r2));
     }
 
     public void testIncludeCircle() {
-        assertFalse(r0.includeImpl(r0));
+        assertFalse(r0.includeImpl(r0, false));
 
-        assertTrue(r0.includeImpl(r1));
-        assertTrue(r1.includeImpl(r2));
+        assertTrue(r0.includeImpl(r1, false));
+        assertTrue(r1.includeImpl(r2, false));
 
-        assertFalse(r2.includeImpl(r1));
-        assertFalse(r2.includeImpl(r0));
+        assertFalse(r2.includeImpl(r1, false));
+        assertFalse(r2.includeImpl(r0, false));
     }
 
     public void testExclude() {
-        assertTrue(r0.includeImpl(r1));
-        assertTrue(r1.includeImpl(r2));
+        assertTrue(r0.includeImpl(r1, false));
+        assertTrue(r1.includeImpl(r2, false));
         assertTrue(r0.contains(r2));
 
-        assertTrue(r0.excludeImpl(r2));
+        assertTrue(r0.excludeImpl(r2, false));
         assertFalse(r0.contains(r2));
     }
 
     public void testExcludeCircle() {
-        assertFalse(r0.excludeImpl(r0));
+        assertFalse(r0.excludeImpl(r0, false));
 
-        assertTrue(r0.excludeImpl(r1));
-        assertTrue(r1.excludeImpl(r2));
+        assertTrue(r0.excludeImpl(r1, false));
+        assertTrue(r1.excludeImpl(r2, false));
 
-        assertFalse(r1.excludeImpl(r0));
-        assertFalse(r2.excludeImpl(r0));
+        assertFalse(r1.excludeImpl(r0, false));
+        assertFalse(r2.excludeImpl(r0, false));
 
         assertFalse(r0.contains(r2));
         assertFalse(r2.contains(r0));
     }
 
     public void testDoubleCircle() {
-        assertTrue(r0.includeImpl(r1));
-        assertTrue(r0.excludeImpl(r2));
+        assertTrue(r0.includeImpl(r1, false));
+        assertTrue(r0.excludeImpl(r2, false));
         
-        assertFalse(r2.includeImpl(r0));
+        assertFalse(r2.includeImpl(r0, false));
         
         assertTrue(r0.contains(r1));
     }
 
     public void testRemove() {
-        assertTrue(r0.includeImpl(r1));
-        assertTrue(r1.includeImpl(r2));
+        assertTrue(r0.includeImpl(r1, false));
+        assertTrue(r1.includeImpl(r2, false));
         assertTrue(r0.contains(r2));
 
-        assertTrue(r0.excludeImpl(r2));
+        assertTrue(r0.excludeImpl(r2, false));
         assertFalse(r0.contains(r2));
 
-        r0.removeImpl(r2);
+        r0.removeImpl(r2, false);
         assertTrue(r0.contains(r2));
 
-        r0.removeImpl(r1);
+        r0.removeImpl(r1, false);
         assertFalse(r0.contains(r2));
     }
 
     public void testLists() {
-        assertTrue(r0.includeImpl(r1));
-        assertTrue(r0.includeImpl(r2));
+        assertTrue(r0.includeImpl(r1, false));
+        assertTrue(r0.includeImpl(r2, false));
         Set includes = r0.getIncludes();
         assertEquals(2, includes.size());
 
-        assertTrue(r0.excludeImpl(r1));
-        assertTrue(r0.excludeImpl(r2));
+        assertTrue(r0.excludeImpl(r1, false));
+        assertTrue(r0.excludeImpl(r2, false));
         includes = r0.getIncludes();
         Set excludes = r0.getExcludes();
         assertEquals(0, includes.size());

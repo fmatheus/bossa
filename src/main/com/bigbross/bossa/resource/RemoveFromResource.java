@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -49,7 +49,7 @@ class RemoveFromResource extends ResourceHandlerTransaction {
      * @see ResourceHandlerTransaction#execute(Resource, Resource)
      */
     protected Object execute(Resource host, Resource resource) {
-        host.removeImpl(resource);
+        host.removeImpl(resource, true);
         return null;
     }
 }

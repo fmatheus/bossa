@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -219,7 +219,7 @@ class Reference extends Expression {
     Reference(ResourceRegistry registry, String resource) {
         this.group = registry.getResource(resource);
         if (group == null) {
-            this.group = registry.createResourceImpl(resource);
+            this.group = registry.createResourceImpl(resource, false);
         }
     }
 

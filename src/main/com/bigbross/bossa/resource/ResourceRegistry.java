@@ -230,18 +230,21 @@ public class ResourceRegistry implements Serializable {
      * inside an appropriate transaction. <p>
      * 
      * @param id the id of the resource to be created.
+     * @param notify if this operation should be notified.
      * @return the created <code>Resource</code> object,
      *         <code>null</code> if there is already a resource with this id.
      */    
-    public Resource createResourceImpl(String id) {
+    public Resource createResourceImpl(String id, boolean notify) {
         if ((id != null) && !resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
             resources.put(id, resource);
-            ResourceEvents queue = new ResourceEvents();
-            queue.newSingleResourceEvent(getBossa(),
-                                         ResourceEvents.ID_CREATE_RESOURCE,
-                                         resource);
-            queue.notifyAll(getBossa());
+            if (notify) {
+                ResourceEvents queue = new ResourceEvents();
+                queue.newSingleResourceEvent(getBossa(),
+                                             ResourceEvents.ID_CREATE_RESOURCE,
+                                             resource);
+                queue.notifyAll(getBossa());
+            }
             return resource;
         } else {
             return null;
@@ -270,17 +273,20 @@ public class ResourceRegistry implements Serializable {
      * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be removed.
+     * @param notify if this operation should be notified.
      * @return <code>true</code> if the resource was removed,
      *         <code>false</code> if the resource was not found.
      */
-    public boolean removeResourceImpl(Resource resource) {
+    public boolean removeResourceImpl(Resource resource, boolean notify) {
         if (resources.remove(resource.getId()) != null) {
-            clearReferences(resource);
-            ResourceEvents queue = new ResourceEvents();
-            queue.newSingleResourceEvent(getBossa(),
-                                         ResourceEvents.ID_REMOVE_RESOURCE,
-                                         resource);
-            queue.notifyAll(getBossa());
+            clearReferences(resource, notify);
+            if (notify) {
+                ResourceEvents queue = new ResourceEvents();
+                queue.newSingleResourceEvent(getBossa(),
+                                             ResourceEvents.ID_REMOVE_RESOURCE,
+                                             resource);
+                queue.notifyAll(getBossa());
+            }
             return true;
         } else {
             return false;
@@ -292,15 +298,16 @@ public class ResourceRegistry implements Serializable {
      * this registry. <p>
      * 
      * @param resource the resource to be removed.
+     * @param notify if removals triggered by this operation should be notified.
      */
-    private void clearReferences(Resource resource) {
+    private void clearReferences(Resource resource, boolean notify) {
         Iterator i = resources.values().iterator();
         while (i.hasNext()) {
-            ((Resource) i.next()).removeImpl(resource);
+            ((Resource) i.next()).removeImpl(resource, notify);
         }
         i = contexts.values().iterator();
         while (i.hasNext()) {
-            ((ResourceRegistry) i.next()).clearReferences(resource);
+            ((ResourceRegistry) i.next()).clearReferences(resource, notify);
         }
     }
 
