@@ -25,6 +25,9 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.bigbross.bossa.resource.Expression;
 
@@ -42,12 +45,18 @@ public class Transition implements Serializable {
     private String id;
 
     private Expression resource;
+    
+    private ArrayList inputs;
+    
+    private ArrayList outputs;
 
     /**
      * Creates a new transition. <p>
      * 
+     * FIXME: Remove index?
+     * 
      * @param caseType the case type this transition is contained.
-     * @param index the index of this transition in the transition map.
+     * @param index the index of this transition.
      * @param id the id of this transition.
      * @param resource the expression to select the resource responsible by
      *                 this transition.
@@ -57,6 +66,8 @@ public class Transition implements Serializable {
 	this.index = index;
 	this.id = id;
 	this.resource = caseType.getResourceRegistry().compile(resource);
+        this.inputs = new ArrayList();
+        this.outputs = new ArrayList();
     }
 
     /**
@@ -81,6 +92,8 @@ public class Transition implements Serializable {
      * Returns the index of this transition. The index indicates the line
      * that represents this transition in the transition map. <p>
      * 
+     * FIXME: Remove?
+     * 
      * @return the index of this transition.
      */
     int getIndex() {
@@ -88,66 +101,46 @@ public class Transition implements Serializable {
     }
 
     /**
-     * Returns the edge that connects this transition to a place. The edge can
-     * be an input, output or inactive edge (if there is no edge connecting
-     * this transition to the place). <p>
+     * Returns all the input edges of this transition. <p>
      * 
-     * @param p the place.
-     * @return the edge connecting this transition to <code>p</code>.
+     * @return a list of all the input edges of this transition.
      */
-    Edge getEdge(Place p) {
-	return caseType.getEdge(this, p);
+    List getInputEdges() {
+	return Collections.unmodifiableList(inputs);
     }
 
     /**
-     * Returns all the edges incident (input, output and inactive) to this
-     * transition. <p>
+     * Returns all the output edges of this transition. <p>
      * 
-     * @return an array of all edges incident to this transition.
+     * @return a list of all the output edges of this transition.
      */
-    Edge[] getEdges() {
-	return caseType.getEdges(this);
+    List getOutputEdges() {
+        return Collections.unmodifiableList(outputs);
     }
 
     /**
-     * Creates an input edge connecting a place <code>p</code> to this
-     * transition. An input edge ties the firing of this transition to the
-     * availability of <code>expression</code> tokens in the place
-     * <code>p</code>.
+     * Creates an input edge connecting a place to this transition.
+     * An input edge ties the firing of this transition to the
+     * availability in the place of a number of tokens given by an integer
+     * weight expression. <p>
      * 
      * @param p the place.
-     * @param expression the condition expression.
+     * @param expression the weight expression.
      */
     public void input(Place p, String expression) {
-	caseType.setEdge(index, p.index, Edge.newInput(expression));
+	inputs.add(Edge.newInput(p, expression));
     }
 
     /**
-     * Creates an output edge connecting this transition to a place
-     * <code>p</code>. An output edge produces, after the firing of this
-     * transition, <code>expression</code> tokens in the place
-     * <code>p</code>.
+     * Creates an output edge connecting this transition to a place.
+     * An output edge produces in the place, after the firing of this
+     * transition, a number of tokens given by an integer
+     * weight expression. <p>
      * 
      * @param p the place.
-     * @param expression the condition expression.
+     * @param expression the weight expression.
      */
     public void output(Place p, String expression) {
-	caseType.setEdge(index, p.index, Edge.newOutput(expression));
-    }
-
-    public String toString() {
-
-	StringBuffer string = new StringBuffer();
-	Place[] p = caseType.getPlaces();
-
-	string.append(this.id);
-	string.append("\t");
-	for (int j = 0; j < p.length; ++j) {
-	    string.append(getEdge(p[j]));
-	    string.append("\t");
-	}
-	string.append(this.resource);
-
-	return string.toString();
+        outputs.add(Edge.newOutput(p, expression));
     }
 }

@@ -26,7 +26,8 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,8 +50,6 @@ public class CaseType implements Serializable {
     private Map transitions;
 
     private Map places;
-
-    private Edge[][] edges;
 
     private ResourceRegistry resources;
 
@@ -87,41 +86,10 @@ public class CaseType implements Serializable {
     }
     
     /**
-     * Returns the <code>Place</code> of this case type with the specified
-     * id. <p>
+     * Creates a place with the specified id in this case type. <p>
      *
-     * @param id the <code>Place</code> id.
-     * @return the <code>Place</code>, 
-     *         or <code>null</code> if there is no such a place.
-     */
-    public Place getPlace(String id) {
-	return (Place) places.get(id);
-    }
-
-    /**
-     * Returns all places of this case type. <p>
-     * 
-     * @return a list of all places of this case type.
-     */
-    public Place[] getPlaces() {
-
-	Place[] array = new Place[places.size()];
-        Iterator it = places.values().iterator();
-
-	while (it.hasNext()) {
-	    Place curr = (Place) it.next();
-	    array[curr.index] = curr;
-	}
-
-	return array;
-    }
-
-    /**
-     * Creates a <code>Place</code> with the specified id in this case
-     * type. <p>
-     *
-     * @param id the <code>Place</code> id.
-     * @return the created <code>Place</code>.
+     * @param id the place id.
+     * @return the created place.
      */
     public Place registerPlace(String id) {
 	Place place = new Place(places.size(), id);
@@ -130,11 +98,37 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Returns the <code>Transition</code> of this case type with the
-     * specified id. <p>
+     * Returns the place of this case type that has the specified id. <p>
      *
-     * @param id the <code>Transition</code> id.
-     * @return the <code>Transition</code>,
+     * @param id the place id.
+     * @return the place, 
+     *         or <code>null</code> if there is no such a place.
+     */
+    public Place getPlace(String id) {
+        return (Place) places.get(id);
+    }
+
+    /**
+     * Creates a transition with the specified id in this case type. <p>
+     *
+     * @param id the transition id.
+     * @param resource the expression to select the resource responsible by
+     *        this transition.
+     * @return the created transition.
+     * @see com.bigbross.bossa.resource.Expression
+     */
+    public Transition registerTransition(String id, String resource) {
+        Transition trans = new Transition(this, transitions.size(),
+                                          id, resource);
+        transitions.put(id, trans);
+        return trans;
+    }
+
+    /**
+     * Returns the transition of this case type that has the specified id. <p>
+     *
+     * @param id the transition id.
+     * @return the transition,
      *         or <code>null</code> if there is no such transition.
      */
     public Transition getTransition(String id) {
@@ -143,6 +137,17 @@ public class CaseType implements Serializable {
 
     /**
      * Returns all transitions of this case type. <p>
+     * 
+     * @return a collection of all transitions of this case type.
+     */
+    Collection getAllTransitions() {
+        return Collections.unmodifiableCollection(transitions.values());
+    }
+
+    /**
+     * Returns all transitions of this case type. <p>
+     * 
+     * FIXME: (Hard) Do we really need this method?
      * 
      * @return a list of all transitions of this case type.
      */
@@ -157,82 +162,6 @@ public class CaseType implements Serializable {
 	}
 
 	return array;
-    }
-
-    /**
-     * Creates a <code>Transition</code> with the specified id in this case
-     * type. <p>
-     *
-     * @param id the <code>Transition</code> id.
-     * @param resource the expression to select the resource responsible by
-     *        this <code>Transition</code>.
-     * @return the created <code>Transition</code>.
-     * @see com.bigbross.bossa.resource.Expression
-     */
-    public Transition registerTransition(String id, String resource) {
-	Transition trans = new Transition(this, transitions.size(), id, resource);
-	transitions.put(id, trans);
-	return trans;
-    }
-
-    /**
-     * Returns all the edges incident (input, output and incative) to a
-     * transition. <p>
-     * 
-     * @param t the transition.
-     * @return an array of all edges incident to a transition.
-     */
-    Edge[] getEdges(Transition t) {
-	return edges[t.getIndex()];
-    }
-
-    /**
-     * Returns the edge that connects the transition with index <code>t</code>
-     * to the place with index <code>p</code>. The edge can be an input,
-     * output or inactive edge (if there is no edge connecting them). <p>
-     * 
-     * @param t the transition index.
-     * @param p the place index.
-     * @return the edge connecting them.
-     */
-    Edge getEdge(int t, int p) {
-	return edges[t][p];
-    }
-
-    /**
-     * Returns the edge that connects a transition to a place. The edge can
-     * be an input, output or inactive edge (if there is no edge connecting
-     * them). <p>
-     * 
-     * @param t the transition.
-     * @param p the place.
-     * @return the edge connecting them.
-     */
-    Edge getEdge(Transition t, Place p) {
-	return getEdge(t.getIndex(), p.index);
-    }
-
-    /**
-     * Sets the edge that connects the transition with index <code>t</code>
-     * to the place with index <code>p</code>. <p>
-     * 
-     * @param t the transition index.
-     * @param p the place index.
-     * @param edge the edge connecting them.
-     */
-    void setEdge(int t, int p, Edge edge) {
-	edges[t][p] = edge;
-    }
-
-    /**
-     * Sets the edge that connects a transition to a place. <p>
-     * 
-     * @param t the transition.
-     * @param p the place.
-     * @param edge the edge connecting them.
-     */
-    void setEdge(Transition t, Place p, Edge edge) {
-	setEdge(t.getIndex(), p.index, edge);
     }
 
     /**
@@ -302,15 +231,10 @@ public class CaseType implements Serializable {
     /**
      * Builds the transition map. Call this method after you have created
      * all places and transitions and before you start creating edges. <p>
+     * 
+     * FIXME: Remove!!!!!!!
      */
     public void buildMap() {
-	if (edges == null) {
-	    Edge edge = new Edge();
-	    edges = new Edge[transitions.size()][places.size()];
-	    for (int i = 0; i < edges.length; ++i) {
-		Arrays.fill(edges[i], edge);
-	    }
-	}
     }
 
     /**
@@ -330,20 +254,15 @@ public class CaseType implements Serializable {
             template = new Case(this, marking, attributes);
         }
 
-        for (int i = 0; i < edges.length; ++i) {
-            for (int j = 0; j < edges[i].length; ++j) {
-                edges[i][j].weight(template);
+        for (Iterator i = getAllTransitions().iterator(); i.hasNext(); ) {
+            Transition t = (Transition) i.next();
+            ArrayList edges = new ArrayList();
+            edges.addAll(t.getInputEdges());
+            edges.addAll(t.getOutputEdges());
+            for (Iterator j = edges.iterator(); j.hasNext(); ) {
+                ((Edge) j.next()).weight(template);
             }
         }
-    }
-
-    /**
-     * Returns the case type manager this case type is registered into. <p>
-     * 
-     * @return the case type manager this case type is registered into.
-     */
-    CaseTypeManager getCaseTypeManager() {
-        return caseTypeManager;
     }
 
     /**
@@ -354,6 +273,15 @@ public class CaseType implements Serializable {
      */
     void setCaseTypeManager(CaseTypeManager caseTypeManager) {
         this.caseTypeManager = caseTypeManager;
+    }
+
+    /**
+     * Returns the case type manager this case type is registered into. <p>
+     * 
+     * @return the case type manager this case type is registered into.
+     */
+    CaseTypeManager getCaseTypeManager() {
+        return caseTypeManager;
     }
 
     /**
@@ -439,25 +367,5 @@ public class CaseType implements Serializable {
             acts.addAll(((Case) i.next()).getActivities());
         }
         return acts;
-    }
-
-    public String toString() {
-	StringBuffer string = new StringBuffer();
-	Place[] p = getPlaces();
-	Transition[] t = getTransitions();
-
-	string.append("\t");
-	for (int i = 0; i < p.length; ++i) {
-	    string.append(p[i].id);
-	    string.append("\t");
-	}
-	string.append("\n");
-
-	for (int i = 0; i < t.length; ++i) {
-	    string.append(t[i].toString());
- 	    string.append("\n");
-	}
-
-	return string.toString();
     }
 }

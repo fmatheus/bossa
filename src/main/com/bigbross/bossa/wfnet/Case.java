@@ -377,11 +377,12 @@ public class Case implements Serializable {
      *            occurs.
      */
     boolean isFireable(Transition t) throws EvaluationException {
-	for(int i = 0; i < marking.length; ++i) {
-	    if (marking[i] < caseType.getEdge(t.getIndex(), i).input(this)) {
-		return false;
-	    }
-	}
+        for (Iterator i = t.getInputEdges().iterator(); i.hasNext(); ) {
+            Edge e = (Edge) i.next();
+            if (marking[e.getPlace().index] < e.input(this)) {
+                return false;
+            }
+        }
 	return true;
     }
 
@@ -414,10 +415,11 @@ public class Case implements Serializable {
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
-	Edge[] edges = wi.getTransition().getEdges();
-        for(int i = 0; i < marking.length; ++i) {
+        List edges = wi.getTransition().getInputEdges();
+        for (Iterator i = edges.iterator(); i.hasNext(); ) {
+            Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[i] -= edges[i].input(this);
+            this.marking[e.getPlace().index] -= e.input(this);
         }
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
@@ -473,11 +475,12 @@ public class Case implements Serializable {
 
         declare(newAttributes);
 
-	Edge[] edges = activity.getTransition().getEdges();
-	for(int i = 0; i < marking.length; ++i) {
+        List edges = activity.getTransition().getOutputEdges();
+        for (Iterator i = edges.iterator(); i.hasNext(); ) {
+            Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-	    this.marking[i] += edges[i].output(this);
-	}
+            this.marking[e.getPlace().index] += e.output(this);
+        }
         /* An EvaluationException can be inconsistently thrown here. */
 	int actives = activate();
         activities.remove(new Integer(activity.getId()));
@@ -513,11 +516,12 @@ public class Case implements Serializable {
 	    return false;
 	}
 
-	Edge[] edges = activity.getTransition().getEdges();
-	for(int i = 0; i < marking.length; ++i) {
+        List edges = activity.getTransition().getInputEdges();
+        for (Iterator i = edges.iterator(); i.hasNext(); ) {
+            Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-	    this.marking[i] += edges[i].input(this);
-	}
+            this.marking[e.getPlace().index] += e.input(this);
+        }
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();
 

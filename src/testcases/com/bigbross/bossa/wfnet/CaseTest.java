@@ -53,6 +53,7 @@ public class CaseTest extends TestCase {
         return true;
     } 
 
+    // FIXME: Duplicate?
     private boolean fire(Case caze, String workItemId, Map attributes) 
         throws Exception {
         Activity act = caze.open(caze.getWorkItem(workItemId), jdoe);
@@ -146,7 +147,23 @@ public class CaseTest extends TestCase {
 
         int[] actual = caze.getMarking();
 
-        assertTrue(CaseTest.sameState(expected, actual));
+        assertTrue(sameState(expected, actual));
+    }
+
+    public void testSelfLoop() throws Exception {
+        CaseType caseType = new CaseType("selfloop");
+        Place A = caseType.registerPlace("A");
+        Place B = caseType.registerPlace("B");
+        Transition a = caseType.registerTransition("a", "joedoe");
+        caseType.buildMap();
+        a.input(A,  "1");
+        a.output(B, "1");
+        a.output(A, "1");
+        caseType.buildTemplate(new int[] {1,0}, null);
+        Case caze = caseType.openCase();
+        
+        assertTrue(fire(caze, "a", null));
+        assertTrue(sameState(new int[] {1,1}, caze.getMarking()));
     }
 
     public void testAutomaticCreation() throws Exception {
@@ -211,13 +228,13 @@ public class CaseTest extends TestCase {
 	caze.declare("DIR", new Boolean(false));
 	caze.declare("AVL", new Integer(3));
 
-	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
-	Edge e2 = Edge.newInput("AVL * SOK && DIR");
+	Edge e1 = Edge.newOutput(null, "AVL * SOK || DIR");
+	Edge e2 = Edge.newInput(null, "AVL * SOK && DIR");
 
         assertEquals(3, e1.eval(caze));
 	assertEquals(0, e2.eval(caze));
         
-        e1 = Edge.newInput("AVL * XXX && DIR");
+        e1 = Edge.newInput(null, "AVL * XXX && DIR");
         try {
             e1.eval(caze);
             fail("Undetected undeclared attribute.");
@@ -228,8 +245,8 @@ public class CaseTest extends TestCase {
     public void testEdgeOrientation() throws Exception {
         Case caze = WFNetUtil.createCase();
 
-        Edge output = Edge.newOutput("1");
-        Edge input = Edge.newInput("2");
+        Edge output = Edge.newOutput(null, "1");
+        Edge input = Edge.newInput(null, "2");
 
         assertEquals(1, output.output(caze));
         assertEquals(2, input.input(caze));

@@ -28,6 +28,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceRegistry;
@@ -51,19 +52,14 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Transition a = caseType.getTransition("a");
         Transition b = caseType.getTransition("b");
-        Place A = caseType.getPlace("A");
-        Place B = caseType.getPlace("B");
-        Place C = caseType.getPlace("C");
-        Place D = caseType.getPlace("D");
-        Place E = caseType.getPlace("E");
 
-        assertEquals("-1", a.getEdge(A).toString());
-	assertEquals( "1", a.getEdge(B).toString());
+        assertEquals("-1", a.getInputEdges().get(0).toString());
+	assertEquals( "1", a.getOutputEdges().get(0).toString());
 
-        assertEquals("-1", b.getEdge(B).toString());
-	assertEquals("!SOK", b.getEdge(C).toString());
-        assertEquals( "SOK && DIR", b.getEdge(D).toString());
-        assertEquals( "SOK && !DIR", b.getEdge(E).toString());
+        assertEquals("-1", b.getInputEdges().get(0).toString());
+	assertEquals("!SOK", b.getOutputEdges().get(0).toString());
+        assertEquals( "SOK && DIR", b.getOutputEdges().get(1).toString());
+        assertEquals( "SOK && !DIR", b.getOutputEdges().get(2).toString());
     }
 
     public void testTemplate() throws Exception {
@@ -77,6 +73,22 @@ public class CaseTypeTest extends TestCase {
         assertEquals(1, template.getWorkItems().size());
         assertEquals("a", 
                      ((WorkItem) template.getWorkItems().get(0)).getId());
+    }
+
+    public void testMissingInitialValues() {
+        CaseType caseType = new CaseType("missing");
+        Place A = caseType.registerPlace("A");
+        Place B = caseType.registerPlace("B");
+        Transition a = caseType.registerTransition("a", "joedoe");
+        caseType.buildMap();
+        a.input(A,  "1");
+        a.output(B, "FOO");
+    
+        try {
+            caseType.buildTemplate(new int[] {1,0}, null);
+            fail("Undetected undeclared attribute.");
+        } catch (BossaException e) {
+        }
     }
 
     public void testOpenCase() throws Exception {
