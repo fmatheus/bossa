@@ -29,14 +29,14 @@ import com.bigbross.bossa.BossaException;
 /**
  * This exception is thrown if the underlying expression evaluation system
  * has problems setting an attribute. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class SetAttributeException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException()</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException()
      */
     public SetAttributeException() {
@@ -45,7 +45,7 @@ public class SetAttributeException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(String)
      */
     public SetAttributeException(String message) {
@@ -54,8 +54,8 @@ public class SetAttributeException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String, Throwable)</code>.
-     * 
-     * @see com.bigbross.bossa.BossaException#BossaException(String, 
+     *
+     * @see com.bigbross.bossa.BossaException#BossaException(String,
      *                                                       Throwable)
      */
     public SetAttributeException(String message, Throwable cause) {
@@ -64,7 +64,7 @@ public class SetAttributeException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(Throwable)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(Throwable)
      */
     public SetAttributeException(Throwable cause) {

@@ -33,7 +33,7 @@ public class WFNetCoverage extends TestCase {
     public void check(CaseType caseType) {
 
         assertEquals("wfnet-coverage", caseType.getId());
-        
+
         assertEquals(6, caseType.getPlaces().size());
         Place p1 = caseType.getPlace("place1");
         assertNotNull(p1);
@@ -53,7 +53,7 @@ public class WFNetCoverage extends TestCase {
         Place p5 = caseType.getPlace("place5");
         assertNotNull(p5);
         assertEquals(0, p5.getInitialMarking());
-        
+
         assertEquals(5, caseType.getTransitions().size());
         Transition t1 = caseType.getTransition("workitem1");
         assertNotNull(t1);
@@ -75,7 +75,7 @@ public class WFNetCoverage extends TestCase {
         assertNotNull(t4);
         assertEquals("workers", t4.getResource().toString());
         assertEquals(-1, t4.getTimeout());
-        
+
         assertEquals(1, t1.getInputEdges().size());
         assertEquals("-1", t1.getInputEdges().get(0).toString());
         assertEquals(2, t1.getOutputEdges().size());
@@ -98,7 +98,7 @@ public class WFNetCoverage extends TestCase {
         assertEquals("-1", t4.getInputEdges().get(0).toString());
         assertEquals(1, t4.getOutputEdges().size());
         assertEquals( "1", t4.getOutputEdges().get(0).toString());
-        
+
         Map attributes = caseType.getCase(0).getAttributes();
         assertEquals(2, attributes.size());
         assertEquals(new Integer(0), attributes.get("optional"));

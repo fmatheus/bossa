@@ -31,11 +31,11 @@ import java.util.Date;
  * This interface represents a time source used by the Bossa engine.
  * A suitable implementation of this interface allows Bossa to behave
  * deterministically with respect to time as an external agent. <p>
- * 
+ *
  * If an instance of Bossa is persistent, it will use its own internal
  * implementation of this interface in a way that is consistent with the
  * underlaying prevalent mechanism. <p>
- * 
+ *
  * If an instance of Bossa is transient, the client can provide an
  * implementation of this interface that is consistent with the persistence
  * mechanism employed, if any. If there is no need for the Bossa engine to
@@ -48,7 +48,7 @@ public interface TimeSource extends Serializable {
 
     /**
      * Returns the current time. <p>
-     * 
+     *
      * @return the current time.
      */
     Date getTime();

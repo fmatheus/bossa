@@ -43,16 +43,16 @@ public class Transition implements Serializable {
     private String id;
 
     private Expression resource;
-    
+
     private long timeout;
 
     private ArrayList inputs;
-    
+
     private ArrayList outputs;
 
     /**
      * Creates a new transition. <p>
-     * 
+     *
      * @param caseType the case type this transition is contained.
      * @param id the id of this transition.
      * @param resource the expression to select the resource responsible by
@@ -73,7 +73,7 @@ public class Transition implements Serializable {
 
     /**
      * Returns the id of this transition. <p>
-     * 
+     *
      * @return the id of this transition.
      */
     public String getId() {
@@ -82,7 +82,7 @@ public class Transition implements Serializable {
 
     /**
      * Returns the resource of this transition. <p>
-     * 
+     *
      * @return the resource of this transition.
      */
     Expression getResource() {
@@ -91,7 +91,7 @@ public class Transition implements Serializable {
 
     /**
      * Returns the timeout of this transition. <p>
-     * 
+     *
      * @return the timeout of this transition.
      */
     long getTimeout() {
@@ -100,7 +100,7 @@ public class Transition implements Serializable {
 
     /**
      * Returns all the input edges of this transition. <p>
-     * 
+     *
      * @return a list of all the input edges of this transition.
      */
     List getInputEdges() {
@@ -109,7 +109,7 @@ public class Transition implements Serializable {
 
     /**
      * Returns all the output edges of this transition. <p>
-     * 
+     *
      * @return a list of all the output edges of this transition.
      */
     List getOutputEdges() {
@@ -121,7 +121,7 @@ public class Transition implements Serializable {
      * An input edge ties the firing of this transition to the
      * availability in the place of a number of tokens given by an integer
      * weight expression. <p>
-     * 
+     *
      * @param p the place.
      * @param expression the weight expression.
      */
@@ -134,7 +134,7 @@ public class Transition implements Serializable {
      * An output edge produces in the place, after the firing of this
      * transition, a number of tokens given by an integer
      * weight expression. <p>
-     * 
+     *
      * @param p the place.
      * @param expression the weight expression.
      */

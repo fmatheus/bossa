@@ -65,7 +65,7 @@ public class CaseTypeTest extends TestCase {
         caseType.registerTransition("b", "", 0);
         caseType.registerTransition("c", null, 1);
         caseType.buildTemplate(null);
-        
+
         Transition t = caseType.getTransition("a");
         assertEquals("bosses", t.getResource().toString());
         assertEquals(-1, t.getTimeout());
@@ -103,7 +103,7 @@ public class CaseTypeTest extends TestCase {
         expected.put("A", new Integer(1));
         CaseTest.sameState(expected, template.getState());
         assertEquals(1, template.getWorkItems().size());
-        assertEquals("a", 
+        assertEquals("a",
                      ((WorkItem) template.getWorkItems().get(0)).getId());
     }
 
@@ -114,7 +114,7 @@ public class CaseTypeTest extends TestCase {
         Transition a = caseType.registerTransition("a", "boss");
         a.input(A,  "1");
         a.output(B, "FOO");
-    
+
         try {
             caseType.buildTemplate(null);
             fail("Undetected undeclared attribute.");
@@ -158,19 +158,19 @@ public class CaseTypeTest extends TestCase {
         assertTrue(WFNetUtil.fire(caze, "e", null));
         assertNull(caseType.getCase(1));
     }
-    
+
     public void testGetCase() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Case caze = null;
         caze = caseType.openCaseImpl(null);
         assertSame(caze, caseType.getCase(caze.getId()));
-    }        
+    }
 
     public void testGetAllCases() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         caseType.openCaseImpl(null);
         caseType.openCaseImpl(null);
-        
+
         List l = caseType.getCases();
         assertEquals(2, l.size());
         int id = ((Case) l.get(0)).getId();
@@ -178,14 +178,14 @@ public class CaseTypeTest extends TestCase {
         id = ((Case) l.get(1)).getId();
         assertTrue(id == 1 || id == 2);
     }
-    
+
     public void testGetWorkItems() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Case c1 = null;
         Case c2 = null;
         c1 = caseType.openCaseImpl(null);
         c2 = caseType.openCaseImpl(null);
-        
+
         List wi = caseType.getWorkItems();
         assertEquals(2, wi.size());
         WorkItem wi1 = (WorkItem) wi.get(0);
@@ -219,14 +219,14 @@ public class CaseTypeTest extends TestCase {
         assertEquals("a", a1.getWorkItemId());
         assertEquals("a", a2.getWorkItemId());
     }
-    
+
     public void testResourceRegistryManagement() throws Exception {
         Case caze = WFNetUtil.createCase(new int[] {0,0,0,0,1,0,0,0});
         ResourceRegistry caseTypeRegistry =
             caze.getCaseType().getResourceRegistry();
         ResourceRegistry testRegistry =
             new ResourceRegistry(Integer.toString(caze.getId()));
-        
+
         assertFalse(caseTypeRegistry.registerSubContext(testRegistry));
         assertTrue(WFNetUtil.fire(caze, "d", null));
         assertTrue(WFNetUtil.fire(caze, "e", null));

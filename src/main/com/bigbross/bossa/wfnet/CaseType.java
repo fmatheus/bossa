@@ -44,7 +44,7 @@ import com.bigbross.bossa.resource.ResourceRegistry;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class CaseType implements Serializable {
-    
+
     private String id;
 
     private Map transitions;
@@ -58,12 +58,12 @@ public class CaseType implements Serializable {
     private Case template;
 
     private int caseSequence;
-    
+
     private CaseTypeManager caseTypeManager;
 
     /**
      * Creates a new case type, without any places or transitions. <p>
-     * 
+     *
      * @param id the id of the new case type.
      */
     public CaseType(String id) {
@@ -78,13 +78,13 @@ public class CaseType implements Serializable {
 
     /**
      * Returns the id of this case type. <p>
-     * 
+     *
      * @return the id of this case type.
      */
     public String getId() {
         return id;
     }
-    
+
     /**
      * Creates a place with the specified id and initial marking in this
      * case type. <p>
@@ -115,7 +115,7 @@ public class CaseType implements Serializable {
      * Returns the place of this case type that has the specified id. <p>
      *
      * @param id the place id.
-     * @return the place, 
+     * @return the place,
      *         or <code>null</code> if there is no such a place.
      */
     public Place getPlace(String id) {
@@ -124,7 +124,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns all places of this case type. <p>
-     * 
+     *
      * @return a collection of all places of this case type.
      */
     Collection getPlaces() {
@@ -134,11 +134,11 @@ public class CaseType implements Serializable {
     /**
      * Creates a transition with the specified id, resource expression and
      * timeout in this case type. <p>
-     * 
+     *
      * The resource expression defines which resources can perform work
      * items associated with this transition. If it is <code>null</code> or
      * an empty string, every resource can do it. <p>
-     * 
+     *
      * The timeout sets a number of milliseconds this transition will wait
      * before it fires automatically. If the timeout is negative, the
      * transition will never fire automatically. If it is zero, this
@@ -151,7 +151,7 @@ public class CaseType implements Serializable {
      * @param resource the expression to select the resource responsible by
      *        this transition.
      * @param timeout the number of milliseconds this transition will wait
-     *                before it fires automatically. 
+     *                before it fires automatically.
      * @return the created transition.
      * @see com.bigbross.bossa.resource.Expression
      */
@@ -192,7 +192,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns all transitions of this case type. <p>
-     * 
+     *
      * @return a collection of all transitions of this case type.
      */
     Collection getTransitions() {
@@ -202,7 +202,7 @@ public class CaseType implements Serializable {
     /**
      * Returns the resource registry with the local resources of this
      * case type. <p>
-     * 
+     *
      * @return the resource registry with the local resources of this
      * case type.
      */
@@ -214,7 +214,7 @@ public class CaseType implements Serializable {
      * Returns all resource groups of this case type. Use these resources to
      * associate (by includes and excludes) system resources with case type
      * resources. <p>
-     * 
+     *
      * @return a list of all resource groups of this case type.
      */
     public List getResources() {
@@ -224,7 +224,7 @@ public class CaseType implements Serializable {
     /**
      * Returns the next case id for this case type. The case id is a
      * positive integer. <p>
-     * 
+     *
      * @return the next case id.
      */
     int nextCaseId() {
@@ -233,10 +233,10 @@ public class CaseType implements Serializable {
 
     /**
      * Creates a new case using the state of the case type template. <p>
-     * 
+     *
      * This method bypasses the usual case opening process and should be used
      * with caution to override the normal way a case is created. <p>
-     * 
+     *
      * @return the newly created case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
@@ -247,14 +247,14 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a new case using the provided state as the initial token count. 
+     * Creates a new case using the provided state as the initial token count.
      * If the state is <code>null</code>, the state of the case type
      * template is used instead. <p>
-     * 
+     *
      * This method bypasses the usual case opening process and should be used
      * with caution to override the normal way a case is created. <p>
-     * 
-     * @param state the initial token count as a map (<code>String</code>, 
+     *
+     * @param state the initial token count as a map (<code>String</code>,
      *              <code>Integer</code>), indexed by the place id.
      *              This state map must have a token count for every place.
      * @return the newly created case.
@@ -267,14 +267,14 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a new case using the provided state as the initial token count. 
+     * Creates a new case using the provided state as the initial token count.
      * If the state is <code>null</code>, the state of the case type
      * template is used instead. <p>
-     * 
+     *
      * This method will not persist the result of its activation and should
      * be used only internally as a part of a persistent transaction. <p>
-     * 
-     * @param state the initial token count as a map (<code>String</code>, 
+     *
+     * @param state the initial token count as a map (<code>String</code>,
      *              <code>Integer</code>), indexed by the place id.
      *              This state map must have a token count for every place.
      * @return the newly created case.
@@ -312,24 +312,24 @@ public class CaseType implements Serializable {
             return false;
         }
     }
-    
+
     /**
      * Builds the template case that will spawn all other cases. Call this
      * method after you have finished building the case type. <p>
-     * 
+     *
      * @param attributes the attributes of the template case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
-     */ 
+     */
     public void buildTemplate(Map attributes)
         throws BossaException {
 
         if (template != null) {
             return;
         }
-        
+
         Map state = new HashMap(places.size());
         for (Iterator i = places.values().iterator(); i.hasNext(); ) {
             Place p = (Place) i.next();
@@ -350,7 +350,7 @@ public class CaseType implements Serializable {
 
     /**
      * Sets the case type manager this case type is registered into. <p>
-     * 
+     *
      * @param caseTypeManager the case type manager this case type is
      *        registered into.
      */
@@ -360,7 +360,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns the case type manager this case type is registered into. <p>
-     * 
+     *
      * @return the case type manager this case type is registered into.
      */
     CaseTypeManager getCaseTypeManager() {
@@ -369,7 +369,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns the bossa engine this case type is part, if any. <p>
-     * 
+     *
      * @return the bossa engine this case type is part, <code>null</code> if
      *         not part of a bossa engine.
      */
@@ -383,7 +383,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns a case by its id. <p>
-     * 
+     *
      * @param id the case id.
      * @return the case with the provided id, <code>null</code> if
      *         this case does not exist.
@@ -398,7 +398,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns all cases of this case type. <p>
-     * 
+     *
      * @return a list of all active cases.
      */
     public List getCases() {
@@ -409,7 +409,7 @@ public class CaseType implements Serializable {
 
     /**
      * Returns the list of all work items of the cases of this case type. <p>
-     * 
+     *
      * @return the list of work itens of this case type.
      */
     public List getWorkItems() {
@@ -420,10 +420,10 @@ public class CaseType implements Serializable {
      * Returns the list of all work items of the cases of this case type.
      * If desired, the initial work item(s) can be returned. Opening an
      * initial work item will create a new case. <p>
-     * 
+     *
      * @param getInitial set to <code>true</code> to get the initial work
      *                   items and to <code>false</code> to only get the
-     *                   standard work items. 
+     *                   standard work items.
      * @return the list of work itens of this case type.
      */
     public List getWorkItems(boolean getInitial) {
@@ -431,7 +431,7 @@ public class CaseType implements Serializable {
         if (getInitial) {
             items.addAll(template.getWorkItems());
         }
-        Iterator i = cases.values().iterator();   
+        Iterator i = cases.values().iterator();
         while (i.hasNext()) {
             items.addAll(((Case) i.next()).getWorkItems());
         }
@@ -440,12 +440,12 @@ public class CaseType implements Serializable {
 
     /**
      * Returns the list of all activities of the cases of this case type. <p>
-     * 
+     *
      * @return the list of activities of this case type.
      */
     public List getActivities() {
         ArrayList acts = new ArrayList();
-        Iterator i = cases.values().iterator();   
+        Iterator i = cases.values().iterator();
         while (i.hasNext()) {
             acts.addAll(((Case) i.next()).getActivities());
         }

@@ -37,7 +37,7 @@ public abstract class Edge implements Serializable {
     protected static final Integer INACTIVE = new Integer(0);
 
     protected Object expression = INACTIVE;
-    
+
     private Place place;
 
     /**
@@ -61,7 +61,7 @@ public abstract class Edge implements Serializable {
      * Returns the place this edge is connected to. For an input edge the
      * connected place will be a source place, and for an output edge it
      * will be a sink place. <p>
-     * 
+     *
      * @return the place this edge is connected to.
      */
     Place getPlace() {
@@ -107,7 +107,7 @@ public abstract class Edge implements Serializable {
     /**
      * Evaluates an integer expression representing the edge weight
      * using the case attributes. <p>
-     * 
+     *
      * @param caze the case that contains the attributes.
      * @return The value of the expression, a positive integer.
      * @exception EvaluationException if an expression evaluation error
@@ -153,7 +153,7 @@ public abstract class Edge implements Serializable {
     }
 
     /**
-     * Creates a new output edge, with the transition postcondition           
+     * Creates a new output edge, with the transition postcondition
      * weight expression and sink place. <p>
      *
      * @param place the connected place.

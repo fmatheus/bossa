@@ -28,7 +28,7 @@ package com.bigbross.bossa.wfnet;
 /**
  * This class implements the remove case type operation of
  * <code>CaseTypeManager</code> through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see CaseTypeManager#removeCaseType(String)
  * @see CaseTypeManager#removeCaseTypeImpl(String)
@@ -36,19 +36,19 @@ package com.bigbross.bossa.wfnet;
 class RemoveCaseType extends WFNetTransaction {
 
     private String caseTypeId;
-    
+
     /**
      * Creates a new remove case type operation. <p>
-     * 
+     *
      * @param id the id of the case type to be removed.
-     */    
+     */
     RemoveCaseType(String id) {
         this.caseTypeId = id;
     }
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @see WFNetTransaction#execute(CaseTypeManager)
      */
     protected Object execute(CaseTypeManager caseTypeManager) {

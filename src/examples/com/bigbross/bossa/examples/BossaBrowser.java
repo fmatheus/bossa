@@ -91,17 +91,17 @@ public class BossaBrowser {
         }
         return r;
     }
-    
+
     private void printHistory(List l) {
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, 
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                                                        DateFormat.SHORT);
         System.out.println(" Date     Time  T Id {Attributes}");
         System.out.println("-------------------------------------");
         for (int i = 0; i < l.size(); i++) {
             Event e = (Event) l.get(i);
-            System.out.println(" " + df.format(e.getTime()) + " " + 
-                               e.getType() + " " + 
-                               e.getId() + " " + 
+            System.out.println(" " + df.format(e.getTime()) + " " +
+                               e.getType() + " " +
+                               e.getId() + " " +
                                e.getAttributes());
         }
     }

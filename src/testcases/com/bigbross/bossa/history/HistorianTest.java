@@ -38,10 +38,10 @@ public class HistorianTest extends TestCase {
 
     private Historian historian;
     private Event e0, e1, e2, e3;
-    public static final long t1 = 1069364322000L; 
-    public static final long t2 = 1069365822000L; 
-    public static final long t3 = 1069366362000L; 
-    public static final long t4 = 1069367322000L; 
+    public static final long t1 = 1069364322000L;
+    public static final long t2 = 1069365822000L;
+    public static final long t3 = 1069366362000L;
+    public static final long t4 = 1069367322000L;
 
     public HistorianTest(String name) {
 	super(name);
@@ -83,7 +83,7 @@ public class HistorianTest extends TestCase {
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         List events = historian.getHistory();
         assertEquals(4, events.size());
         assertSame(e0, events.get(0));
@@ -91,13 +91,13 @@ public class HistorianTest extends TestCase {
         assertSame(e2, events.get(2));
         assertSame(e3, events.get(3));
     }
-    
+
     public void testOutOfOrderEvents() {
         historian.newEvent(e0);
         historian.newEvent(e2);
         historian.newEvent(e3);
         historian.newEvent(e1);
-        
+
         List events = historian.getHistory();
         assertEquals(4, events.size());
         assertSame(e0, events.get(0));
@@ -105,13 +105,13 @@ public class HistorianTest extends TestCase {
         assertSame(e2, events.get(2));
         assertSame(e3, events.get(3));
     }
-    
+
     public void testOpenRange() {
         historian.newEvent(e0);
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         Date start = new Date();
         start.setTime(t3);
 
@@ -120,13 +120,13 @@ public class HistorianTest extends TestCase {
         assertSame(e2, events.get(0));
         assertSame(e3, events.get(1));
     }
-    
+
     public void testClosedRange() {
         historian.newEvent(e0);
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         Date start = new Date();
         start.setTime(t2);
         Date end = new Date();
@@ -136,21 +136,21 @@ public class HistorianTest extends TestCase {
         assertEquals(2, events.size());
         assertSame(e1, events.get(0));
         assertSame(e2, events.get(1));
-        
+
         assertEquals(0, historian.getHistory(end, start).size());
     }
-    
+
     public void testCaseTypeHistory() {
         historian.newEvent(e0);
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         List events = historian.getCaseTypeHistory("casetype1");
         assertEquals(2, events.size());
         assertSame(e0, events.get(0));
         assertSame(e3, events.get(1));
-        
+
         assertEquals(0, historian.getCaseTypeHistory("foo").size());
     }
 
@@ -159,11 +159,11 @@ public class HistorianTest extends TestCase {
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         List events = historian.getCaseHistory("casetype1", 2);
         assertEquals(1, events.size());
         assertSame(e3, events.get(0));
-        
+
         assertEquals(0, historian.getCaseHistory("casetype1", 4).size());
     }
 
@@ -172,21 +172,21 @@ public class HistorianTest extends TestCase {
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         List events = historian.getResourceHistory("resource1");
         assertEquals(2, events.size());
         assertSame(e0, events.get(0));
         assertSame(e2, events.get(1));
-        
+
         assertEquals(0, historian.getCaseTypeHistory("bar").size());
     }
-    
+
     public void testPurgeHistory() {
         historian.newEvent(e0);
         historian.newEvent(e1);
         historian.newEvent(e2);
         historian.newEvent(e3);
-        
+
         Date end = new Date();
         end.setTime(t3);
 
@@ -195,7 +195,7 @@ public class HistorianTest extends TestCase {
         assertEquals(2, events.size());
         assertSame(e2, events.get(0));
         assertSame(e3, events.get(1));
-        
+
         end.setTime(0);
         historian.purgeHistoryImpl(end);
         events = historian.getHistory();

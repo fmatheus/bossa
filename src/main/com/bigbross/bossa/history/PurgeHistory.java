@@ -37,12 +37,12 @@ import java.util.Date;
 class PurgeHistory extends HistorianTransaction {
 
     private Date end;
-    
+
     /**
      * Creates a new purge history operation. <p>
-     * 
+     *
      * @param end the end date.
-     */    
+     */
     PurgeHistory(Date end) {
         this.end = end;
     }

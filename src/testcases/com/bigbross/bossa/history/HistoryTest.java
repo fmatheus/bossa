@@ -62,7 +62,7 @@ public class HistoryTest extends TestCase {
         wi.open(sally).close();
         wi = (WorkItem) workManager.getWorkItems(frank).get(0);
         wi.open(frank).close();
-        
+
         List events = historian.getHistory();
         assertEquals(29, events.size());
     }
@@ -79,7 +79,7 @@ public class HistoryTest extends TestCase {
 
         WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
         wi.open(frank).close();
-        
+
         List events = historian.getHistory();
         assertEquals(0, events.size());
     }

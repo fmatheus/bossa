@@ -52,7 +52,7 @@ public class BadListener extends TestListener {
         /* This should not disturb the bus. */
         throw new RuntimeException("Muahahaha!");
     }
-    
+
     public long wrongTime() {
         return wrongTime;
     }

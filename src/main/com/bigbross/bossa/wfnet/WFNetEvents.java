@@ -43,28 +43,28 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of a case type registration. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      */
     public static final String ID_REGISTER_CASE_TYPE = "register_case_type";
 
     /**
      * Constant to indicate the event of a case type removal. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      */
     public static final String ID_REMOVE_CASE_TYPE = "remove_case_type";
 
     /**
      * Constant to indicate the event of opening a case. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_CASE_ID and
      * ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      */
@@ -72,10 +72,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of closing a case. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_CASE_ID and
      * ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      */
@@ -83,10 +83,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of tokens being added to a place. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_PLACE_ID,
      * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_PLACE_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
@@ -95,10 +95,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of tokens being removed from a place. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_PLACE_ID,
      * ATTRIB_TOKEN_NUMBER_ID, ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_PLACE_ID
      * @see WFNetEvents#ATTRIB_TOKEN_NUMBER_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
@@ -109,10 +109,10 @@ public class WFNetEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a specific number of tokens being
      * put in a place. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_PLACE_ID,
      * ATTRIB_TOKEN_NUMBER_ID, ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_PLACE_ID
      * @see WFNetEvents#ATTRIB_TOKEN_NUMBER_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
@@ -122,10 +122,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the activation of an inactive work item. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
      * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_WORK_ITEM_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
@@ -134,10 +134,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the deactivation of an active work item. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
      * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_WORK_ITEM_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
@@ -146,10 +146,10 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of opening a work item. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
      * ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID and ATTRIB_RESOURCE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_WORK_ITEM_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
@@ -159,11 +159,11 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of closing an activity. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_ACTIVITY_ID,
      * ATTRIB_ACTIVITY_WI_ID, ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID and
      * ATTRIB_RESOURCE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_ACTIVITY_ID
      * @see WFNetEvents#ATTRIB_ACTIVITY_WI_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
@@ -174,11 +174,11 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of canceling an activity. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_ACTIVITY_ID,
      * ATTRIB_ACTIVITY_WI_ID, ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID and
      * ATTRIB_RESOURCE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_ACTIVITY_ID
      * @see WFNetEvents#ATTRIB_ACTIVITY_WI_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
@@ -190,10 +190,10 @@ public class WFNetEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a manual state change in a
      * case. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_CASE_ID and
      * ATTRIB_CASE_TYPE_ID <p>
-     * 
+     *
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      */
@@ -242,7 +242,7 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Creates a case type related event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param caseType the case type involved.
@@ -259,7 +259,7 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Creates a case related event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param caze the case involved.
@@ -276,7 +276,7 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Creates a place related event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param caze the case involved.
@@ -299,7 +299,7 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Creates a work item related event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param wi the work item involved.
@@ -314,7 +314,7 @@ public class WFNetEvents extends NotificationQueue {
             attrib.put(ATTRIB_CASE_TYPE_ID, wi.getCaseType().getId());
             if (resource != null) {
                 attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
-            } 
+            }
             addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
                                bossa.getTimeSource().getTime()));
         }
@@ -322,7 +322,7 @@ public class WFNetEvents extends NotificationQueue {
 
     /**
      * Creates an activity related event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param act the activity involved.

@@ -28,7 +28,7 @@ package com.bigbross.bossa.wfnet;
 /**
  * This class implements the register case type operation of
  * <code>CaseTypeManager</code> through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see CaseTypeManager#registerCaseType(CaseType)
  * @see CaseTypeManager#registerCaseTypeImpl(CaseType)
@@ -36,19 +36,19 @@ package com.bigbross.bossa.wfnet;
 class RegisterCaseType extends WFNetTransaction {
 
     private CaseType caseType;
-    
+
     /**
      * Creates a new register case type operation. <p>
-     * 
+     *
      * @param caseType the case type to be registered.
-     */    
+     */
     RegisterCaseType(CaseType caseType) {
         this.caseType = caseType;
     }
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @see WFNetTransaction#execute(CaseTypeManager)
      */
     protected Object execute(CaseTypeManager caseTypeManager) {

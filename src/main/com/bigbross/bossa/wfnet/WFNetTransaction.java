@@ -32,7 +32,7 @@ import com.bigbross.bossa.BossaTransaction;
 /**
  * This class represents all transactions applied to the WFNet persistent
  * objects. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 abstract class WFNetTransaction extends BossaTransaction {
@@ -46,7 +46,7 @@ abstract class WFNetTransaction extends BossaTransaction {
 
     /**
      * Executes a transaction in a case type manager. <p>
-     * 
+     *
      * @param caseTypeManager the case type manager.
      * @return the value returned by the transaction.
      * @exception BossaException if the transaction throws an exception.

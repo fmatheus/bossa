@@ -42,16 +42,16 @@ import com.bigbross.bossa.BossaException;
 public class ResourceRegistry implements Serializable {
 
     private String id;
-    
+
     private ResourceRegistry superContext;
 
     private Map resources;
-    
+
     private Map contexts;
 
     /**
      * Creates a new empty resource registry. <p>
-     * 
+     *
      * @param id the id of this registry.
      */
     public ResourceRegistry(String id) {
@@ -63,7 +63,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns the id of this registry. <p>
-     * 
+     *
      * @return the id of this registry.
      */
     public String getId() {
@@ -72,7 +72,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Sets a context as the super context of this registry. <p>
-     * 
+     *
      * @param context the super context.
      */
     public void setSuperContext(ResourceRegistry context) {
@@ -81,7 +81,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns the super context of this registry. <p>
-     * 
+     *
      * @return the super context of this registry.
      */
     public ResourceRegistry getSuperContext() {
@@ -90,7 +90,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns the top level resource registry, the resource manager. <p>
-     * 
+     *
      * @return the resource manager, <code>null</code> if the root registry
      *         is not a resource manager.
      */
@@ -104,7 +104,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns the bossa engine this resource registry is part, if any. <p>
-     * 
+     *
      * @return the bossa engine this resource registry is part,
      *         <code>null</code> if not part of a bossa engine.
      */
@@ -119,7 +119,7 @@ public class ResourceRegistry implements Serializable {
     /**
      * Returns the global id of this registry. This is the id that allows
      * the retrieval of this registry from the resource manager. <p>
-     * 
+     *
      * @return the resource manager.
      */
     String getGlobalId() {
@@ -134,7 +134,7 @@ public class ResourceRegistry implements Serializable {
      * Registers this resource registry in the resource manager, if it
      * exists. If this registry contains sub contexts, they will be
      * registered also. <p>
-     * 
+     *
      * @return <code>true</code> if there is a resource manager and this
      *         registry was succesfully registered or if there is no
      *         resource manager,
@@ -162,7 +162,7 @@ public class ResourceRegistry implements Serializable {
      * Unregisters this resource registry in the resource manager, if it
      * exists. If this registry contains sub contexts, they will be
      * unregistered also. <p>
-     * 
+     *
      * @return <code>true</code> if there is a resource manager and this
      *         registry was succesfully unregistered or if there is no
      *         resource manager,
@@ -199,7 +199,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns all registered resources. <p>
-     * 
+     *
      * @return a list of all resources registered.
      */
     public List getResources() {
@@ -210,13 +210,13 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Creates a new resource in this registry. <p>
-     * 
+     *
      * @param id the id of the resource to be created.
      * @return the created <code>Resource</code> object,
      *         <code>null</code> if there is already a resource with this id.
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
-     */    
+     */
     public Resource createResource(String id) throws BossaException {
         ResourceTransaction createTransaction = new CreateResource(id);
         return (Resource) getBossa().execute(createTransaction);
@@ -224,16 +224,16 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Creates a new resource in this registry. <p>
-     * 
+     *
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param id the id of the resource to be created.
      * @param notify if this operation should be notified.
      * @return the created <code>Resource</code> object,
      *         <code>null</code> if there is already a resource with this id.
-     */    
+     */
     public Resource createResourceImpl(String id, boolean notify) {
         if ((id != null) && !resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
@@ -267,11 +267,11 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Removes a resource from this registry. <p>
-     * 
+     *
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param resource the resource to be removed.
      * @param notify if this operation should be notified.
      * @return <code>true</code> if the resource was removed,
@@ -296,7 +296,7 @@ public class ResourceRegistry implements Serializable {
     /**
      * Removes any direct reference to a resource from all resources in
      * this registry. <p>
-     * 
+     *
      * @param resource the resource to be removed.
      * @param notify if removals triggered by this operation should be notified.
      */
@@ -316,11 +316,11 @@ public class ResourceRegistry implements Serializable {
      * registry. All entries in the sub context are expected to possibly
      * depend on the entries of this registry, and are notified of resource
      * removals. <p>
-     * 
+     *
      * Also, if this registry tree is rooted at a resource manager, the
      * registry tree being registered is put in the global registry index.
      * <p>
-     * 
+     *
      * @param context the sub context.
      * @return <code>true</code> if the sub context was added,
      *         <code>false</code> if the sub context was already present.
@@ -340,7 +340,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Returns the registered sub context with the given id. <p>
-     * 
+     *
      * @param id the sub context id.
      * @return the sub context,
      *         <code>null</code> if the sub context was not found.
@@ -348,15 +348,15 @@ public class ResourceRegistry implements Serializable {
     ResourceRegistry getSubContext(String id) {
         return (ResourceRegistry) contexts.get(id);
     }
-    
+
     /**
      * Remove the provided registry from the list of registered sub contexts
      * of this registry. <p>
-     * 
+     *
      * Also, if this registry tree is rooted at a resource manager, the
      * registry tree being removed is removed from the global registry index.
      * <p>
-     * 
+     *
      * @param context the sub context.
      * @return <code>true</code> if the sub context was removed,
      *         <code>false</code> if the sub context was not found.
@@ -376,7 +376,7 @@ public class ResourceRegistry implements Serializable {
 
     /**
      * Compiles a resource expression. <p>
-     * 
+     *
      * It uses this <code>ResourceManager</code> to link the resources in
      * the expression.
      *

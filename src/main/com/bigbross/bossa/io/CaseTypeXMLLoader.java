@@ -43,19 +43,19 @@ import com.bigbross.bossa.wfnet.Transition;
 
 /**
  * This class loads an external XML case type definition. <p>
- * 
+ *
  * The XML representation of a case type is a PNML file, as created
  * by the PNK using the WFNet net type. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class CaseTypeXMLLoader {
-    
+
     private Document document;
 
     /**
      * Creates a new loader for the provided PNML file. <p>
-     * 
+     *
      * @param file the PNML file to open.
      * @exception DataTransferException if an error happens reading or parsing
      *                                  the PNML file.
@@ -70,10 +70,10 @@ public class CaseTypeXMLLoader {
             throw new DataTransferException("Error parsing XML.", e);
         }
     }
-    
+
     /**
      * Creates the case type from the PNML file loaded. <p>
-     * 
+     *
      * @return the case type created.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
@@ -86,7 +86,7 @@ public class CaseTypeXMLLoader {
 
     /**
      * Fills an empty case type with rules from the PNML file loaded. <p>
-     * 
+     *
      * If no case type is passed as parameter a new one is created using
      * the case type id defined into PNML file. Otherwise it is ignored
      * since it should be already defined.
@@ -107,20 +107,20 @@ public class CaseTypeXMLLoader {
             String caseTypeId = wfnet.getChild("id").getChildText("value");
             caseType = new CaseType(caseTypeId);
         }
-        
+
         Iterator i = wfnet.getChildren("place").iterator();
         while (i.hasNext()) {
             Element place = (Element) i.next();
             String pnmlId = place.getAttributeValue("id");
             String id = place.getChild("id").getChildText("value");
-            String initialMarking = 
+            String initialMarking =
                 place.getChild("initialMarking").getChildText("value");
             initialMarking = "".equals(initialMarking) ? "0" : initialMarking;
-            
-            places.put(pnmlId, 
+
+            places.put(pnmlId,
                 caseType.registerPlace(id, Integer.parseInt(initialMarking)));
         }
-        
+
         i = wfnet.getChildren("transition").iterator();
         while (i.hasNext()) {
             Element transition = (Element) i.next();
@@ -131,11 +131,11 @@ public class CaseTypeXMLLoader {
             String timeout =
                 transition.getChild("timeout").getChildText("value");
             timeout = "".equals(timeout) ? "-1" : timeout;
-            
+
             transitions.put(pnmlId, caseType.registerTransition(id,
                 resource, Long.parseLong(timeout)));
         }
-        
+
         i = wfnet.getChildren("arc").iterator();
         while (i.hasNext()) {
             Element arc = (Element) i.next();
@@ -151,20 +151,20 @@ public class CaseTypeXMLLoader {
                 t.output((Place) places.get(target), weight);
             }
         }
-        
+
         Map attributes = parseAttributes(
             wfnet.getChild("initialAttributes").getChildText("value"));
-        
+
         caseType.buildTemplate(attributes);
-        
+
         return caseType;
     }
 
     /**
      * Parses the initial attributes from the text present in the PNML
      * file. <p>
-     * 
-     * @param attributesText the text encoding the initial attributes. 
+     *
+     * @param attributesText the text encoding the initial attributes.
      * @return a map with the initial attributes.
      */
     private Map parseAttributes(String attributesText) {

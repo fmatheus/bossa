@@ -32,9 +32,9 @@ import com.bigbross.bossa.resource.Resource;
 
 /**
  * This class represents a transition of a specific case instance. <p>
- * 
+ *
  * We use a somewhat non standard definition of a work item: instead of
- * a <emph>fireable</emph> transition a work item is a <emph>likely 
+ * a <emph>fireable</emph> transition a work item is a <emph>likely
  * fireable</emph> transition. All methods of this class account for this
  * and it is possible to discover in advance if a work item is actually
  * fireable without opening it. <p>
@@ -51,11 +51,11 @@ public class WorkItem implements Serializable {
 
     /**
      * Creates a new work item. <p>
-     * 
+     *
      * @param caze the case.
      * @param transition the transition.
      * @param fireable the work item fireable status.
-     */ 
+     */
     WorkItem(Case caze, Transition transition, boolean fireable) {
 	this.caze = caze;
 	this.transition = transition;
@@ -64,7 +64,7 @@ public class WorkItem implements Serializable {
 
     /**
      * Returns the case type of this work item. <p>
-     * 
+     *
      * @return the case type of this work item.
      */
     public CaseType getCaseType() {
@@ -73,7 +73,7 @@ public class WorkItem implements Serializable {
 
     /**
      * Returns the case of this work item. <p>
-     * 
+     *
      * @return the case of this work item.
      */
     public Case getCase() {
@@ -82,7 +82,7 @@ public class WorkItem implements Serializable {
 
     /**
      * Returns the transition this work item represents. <p>
-     * 
+     *
      * @return the transition this work item represents.
      */
     Transition getTransition() {
@@ -92,7 +92,7 @@ public class WorkItem implements Serializable {
     /**
      * Returns the id of this work item. It is the same id of the
      * transition this work item represents. <p>
-     * 
+     *
      * @return the id of this work item.
      */
     public String getId() {
@@ -101,7 +101,7 @@ public class WorkItem implements Serializable {
 
     /**
      * Indicates if this work item is fireable. <p>
-     * 
+     *
      * @return <code>true</code> if the work item is fireable;
      *         <code>false</code> otherwise.
      */
@@ -111,21 +111,21 @@ public class WorkItem implements Serializable {
 
     /**
      * Indicates if this work item can be open by the provided resource. <p>
-     * 
+     *
      * @param resource the resource.
      * @return <code>true</code> if the resource can open this work item;
      *         <code>false</code> otherwise.
      */
     public boolean canBePerformedBy(Resource resource) {
         Expression e = getTransition().getResource();
-        return e == null ? 
+        return e == null ?
                 true :
                 e.contains(caze.getResourceRegistry(), resource);
     }
 
     /**
      * Updates the firing status of this work item. <p>
-     * 
+     *
      * @return <code>true</code> if the work item is fireable,
      *         <code>false</code> otherwise.
      * @exception EvaluationException if an expression evaluation error
@@ -139,7 +139,7 @@ public class WorkItem implements Serializable {
      * Opens this work item. A open work item is represented by
      * an activity and is locked to the resource who opened it. The actual
      * completion of the work item in handled by the created activity. <p>
-     * 
+     *
      * @param resource the resource that is opening the work item.
      * @return the activity created by the opening of this work item,
      *         <code>null</code> if the work item could not be opened.

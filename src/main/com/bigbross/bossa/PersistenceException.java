@@ -27,14 +27,14 @@ package com.bigbross.bossa;
 /**
  * This exception is thrown if an error occours when making an
  * update persistent. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class PersistenceException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException()</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException()
      */
     public PersistenceException() {
@@ -43,7 +43,7 @@ public class PersistenceException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(String)
      */
     public PersistenceException(String message) {
@@ -52,8 +52,8 @@ public class PersistenceException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String, Throwable)</code>.
-     * 
-     * @see com.bigbross.bossa.BossaException#BossaException(String, 
+     *
+     * @see com.bigbross.bossa.BossaException#BossaException(String,
      *                                                       Throwable)
      */
     public PersistenceException(String message, Throwable cause) {
@@ -62,7 +62,7 @@ public class PersistenceException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(Throwable)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(Throwable)
      */
     public PersistenceException(Throwable cause) {

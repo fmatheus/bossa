@@ -63,7 +63,7 @@ public class TimeSourceTest extends TestCase {
         d2.setTime(1069365967000L);
         assertEquals(d1, source.getTime());
     }
-    
+
     public void testExternalTimeSource() throws Exception {
         BossaFactory factory = new BossaFactory();
         factory.setTransientBossa(true);
@@ -71,7 +71,7 @@ public class TimeSourceTest extends TestCase {
         Bossa bossa = factory.createBossa();
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         Historian historian = bossa.getHistorian();
-        
+
         source.setTime(d1);
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("foo"));
         assertEquals(d1, ((Event) historian.getHistory().get(0)).getTime());

@@ -42,7 +42,7 @@ public class PersistentBossaTest extends TestCase {
         assertTrue(IOUtil.removeTestDir());
         assertTrue(IOUtil.createTestDir());
     }
-    
+
     protected void tearDown() {
         assertTrue(IOUtil.removeTestDir());
     }
@@ -51,22 +51,22 @@ public class PersistentBossaTest extends TestCase {
         BossaFactory factory = new BossaFactory();
         factory.setStateDir(IOUtil.testDirName());
         Bossa bossa = factory.createBossa();
-        BossaTestUtil.setupTestBossa(bossa);        
+        BossaTestUtil.setupTestBossa(bossa);
 
         Resource r = bossa.getResourceManager().getResource("frank");
         WorkItem wi = (WorkItem)
             bossa.getWorkManager().getWorkItems(r, true).get(0);
         wi.open(r).close();
-        
+
         bossa = null; r = null; wi = null;
         bossa = factory.createBossa();
-        
+
         assertEquals(1, bossa.getCaseTypeManager().getCaseTypes().size());
         assertEquals(3, bossa.getResourceManager().getResources().size());
         assertEquals(1,
             bossa.getCaseTypeManager().getCaseType("test").getCases().size());
         assertEquals(1, bossa.getCaseTypeManager().getWorkItems().size());
-        
+
         r = bossa.getResourceManager().getResource("sally");
         wi = (WorkItem) bossa.getWorkManager().getWorkItems(r).get(0);
         wi.open(r).close();

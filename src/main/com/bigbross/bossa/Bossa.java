@@ -36,7 +36,7 @@ import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.work.WorkManager;
 
 /**
- * This class represents a workflow engine in the Bossa workflow library. 
+ * This class represents a workflow engine in the Bossa workflow library.
  * Use an instance of this class, created by the factory class
  * <code>BossaFactory</code>, to access all elements of the Bossa API. <p>
  *
@@ -48,13 +48,13 @@ public class Bossa implements Serializable {
     private CaseTypeManager caseTypeManager;
 
     private ResourceManager resourceManager;
-    
+
     private WorkManager workManager;
-    
+
     private Historian historian;
 
     private NotificationBus notificationBus;
-    
+
     private TimeSource timeSource;
 
     private transient Prevayler prevayler;
@@ -74,25 +74,25 @@ public class Bossa implements Serializable {
 
     /**
      * Associates a notification bus with this engine instance. <p>
-     * 
+     *
      * @param notificationBus the notification bus.
-     */ 
+     */
     void setNotificationBus(NotificationBus notificationBus) {
         this.notificationBus = notificationBus;
     }
 
     /**
      * Associates a time source with this engine instance. <p>
-     * 
+     *
      * @param timeSource the time source.
-     */ 
+     */
     void setTimeSource(TimeSource timeSource) {
         this.timeSource = timeSource;
     }
-    
+
     /**
      * Associates a prevayler with this engine instance. <p>
-     * 
+     *
      * @param prevayler the prevayler.
      */
     void setPrevayler(Prevayler prevayler) {
@@ -101,7 +101,7 @@ public class Bossa implements Serializable {
 
     /**
      * Executes a transaction using the current prevayler. <p>
-     * 
+     *
      * @param transaction the transaction to be executed.
      * @return the value returned by the transaction.
      * @exception BossaException if the transaction throws an exception.
@@ -130,7 +130,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the case type manager of this engine. <p>
-     * 
+     *
      * @return the case type manager of this engine.
      */
     public CaseTypeManager getCaseTypeManager() {
@@ -139,7 +139,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the resource manager of this engine. <p>
-     * 
+     *
      * @return the resource manager of this engine.
      */
     public ResourceManager getResourceManager() {
@@ -148,7 +148,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the work manager of this engine. <p>
-     * 
+     *
      * @return the work manager of this engine.
      */
     public WorkManager getWorkManager() {
@@ -157,7 +157,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the historian of this engine. <p>
-     * 
+     *
      * @return the historian of this engine.
      */
     public Historian getHistorian() {
@@ -166,7 +166,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the time source of this engine. <p>
-     * 
+     *
      * @return the time source of this engine.
      */
     public TimeSource getTimeSource() {
@@ -175,7 +175,7 @@ public class Bossa implements Serializable {
 
     /**
      * Returns the notification bus of this engine. <p>
-     * 
+     *
      * @return the notification bus of this engine.
      */
     public NotificationBus getNotificationBus() {

@@ -31,7 +31,7 @@ import com.bigbross.bossa.BossaException;
 /**
  * This class implements the open case operation of <code>CaseType</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see CaseType#openCase()
  * @see CaseType#openCase(Map)
@@ -43,9 +43,9 @@ class OpenCase extends WFNetTransaction {
 
     /**
      * Creates a new open case operation. <p>
-     * 
+     *
      * @param state an optional token count map.
-     */    
+     */
     OpenCase(String caseTypeId, Map state) {
         this.caseTypeId = caseTypeId;
         this.state = state;
@@ -53,7 +53,7 @@ class OpenCase extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @see WFNetTransaction#execute(CaseTypeManager)

@@ -42,13 +42,13 @@ public class ResourceRegistryTest extends TestCase {
         assertNotNull(resourceRegistry.createResourceImpl("r1", false));
         assertNull(resourceRegistry.createResourceImpl("r1", false));
     }
-    
+
     public void testGetResource() {
         assertNull(resourceRegistry.getResource("r1"));
         Resource r = resourceRegistry.createResourceImpl("r1", false);
         assertSame(r, resourceRegistry.getResource("r1"));
     }
-    
+
     public void testNullResourceId() {
         assertNull(resourceRegistry.createResourceImpl(null, false));
         assertNull(resourceRegistry.getResource(null));
@@ -64,11 +64,11 @@ public class ResourceRegistryTest extends TestCase {
         Resource r1 = resourceRegistry.createResourceImpl("r1", false);
         Resource r2 = resourceRegistry.createResourceImpl("r2", false);
         r1.includeImpl(r2, false);
-        
+
         assertTrue(resourceRegistry.removeResourceImpl(r2, false));
         assertFalse(r1.contains(r2));
     }
-    
+
     public void testAddRemoveSubContext() {
         ResourceRegistry subContext = new ResourceRegistry("test");
         assertFalse(resourceRegistry.removeSubContext(subContext));
@@ -86,7 +86,7 @@ public class ResourceRegistryTest extends TestCase {
         assertSame(subContext, resourceRegistry.getSubContext("test"));
         assertNull(resourceRegistry.getSubContext("invalid"));
     }
-    
+
     public void testRemoveResourceInSubContext() {
         ResourceRegistry subContext = new ResourceRegistry("test");
         assertTrue(resourceRegistry.registerSubContext(subContext));
@@ -97,15 +97,15 @@ public class ResourceRegistryTest extends TestCase {
         assertTrue(resourceRegistry.removeResourceImpl(r1, false));
         assertFalse(r2.contains(r1));
     }
-    
+
     public void testGetResourceManager() {
         ResourceManager resourceManager = new ResourceManager();
         ResourceRegistry subContext = new ResourceRegistry("test");
         resourceManager.registerSubContext(resourceRegistry);
         resourceRegistry.registerSubContext(subContext);
-        
+
         assertSame(resourceManager, subContext.getResourceManager());
-        
+
         resourceRegistry.removeSubContext(subContext);
         assertNull(subContext.getResourceManager());
     }
@@ -115,7 +115,7 @@ public class ResourceRegistryTest extends TestCase {
         ResourceRegistry subContext = new ResourceRegistry("test");
         resourceManager.registerSubContext(resourceRegistry);
         resourceRegistry.registerSubContext(subContext);
-        
+
         assertEquals("root.null.test", subContext.getGlobalId());
     }
 }

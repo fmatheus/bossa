@@ -33,41 +33,41 @@ import com.bigbross.bossa.resource.Resource;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public interface Listener {
-        
+
     /**
      * Returns the id of this listener. This id must be unique with respect
      * to the desired notification bus. <p>
-     *  
+     *
      * @return the id of this listener.
      */
     String getId();
-    
+
     /**
      * Indicates if this listener is interested in an event type. The
      * notification bus will only notify this listener of the event types it
      * is interested. <p>
-     * 
+     *
      * @param type the type of the event.
      * @return <code>true</code> if this listener is interested in the event,
      *         <code>false</code> otherwise.
      */
     boolean interested(int type);
-    
+
     /**
      * Returns the resource used to further filter the work item or activity
      * related events passed to this listener. The notification bus will only
      * notify this listener of events associated with resources that contain
      * the resource returned by this method. If the resource returned is
      * <code>null</code>, no resource filtering will happen. <p>
-     * 
+     *
      * @return the resource to be used as filter.
      */
     Resource getResource();
-    
+
     /**
      * Notifies this listener of an event. See the event class for the
      * information provided to the listener. <p>
-     * 
+     *
      * @param event the event.
      * @see com.bigbross.bossa.notify.Event
      */

@@ -35,7 +35,7 @@ import com.bigbross.bossa.wfnet.WorkItem;
 
 /**
  * This class manages the generation of work item lists. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class WorkManager implements Serializable {
@@ -44,7 +44,7 @@ public class WorkManager implements Serializable {
 
     /**
      * Creates a new empty work manager. <p>
-     * 
+     *
      * @param engine the bossa engine this work manager is part.
      */
     public WorkManager(Bossa engine) {
@@ -57,10 +57,10 @@ public class WorkManager implements Serializable {
     public WorkManager() {
         this(null);
     }
-    
+
     /**
      * Returns the bossa engine this work manager is part. <p>
-     * 
+     *
      * @return The bossa engine this work manager is part.
      */
     Bossa getBossa() {
@@ -70,7 +70,7 @@ public class WorkManager implements Serializable {
     /**
      * Returns a list of all work items in the engine that can be opened
      * by the provided resource. <p>
-     * 
+     *
      * @param resource the resource.
      * @return the list of work items.
      */
@@ -81,11 +81,11 @@ public class WorkManager implements Serializable {
     /**
      * Returns a list of all work items in the engine that can be opened
      * by the provided resource, including the initial work items. <p>
-     * 
+     *
      * @param resource the resource.
      * @param getInitial set to <code>true</code> to get the initial work
      *                   items and to <code>false</code> to only get the
-     *                   standard work items. 
+     *                   standard work items.
      * @return the list of work items.
      */
     public List getWorkItems(Resource resource, boolean getInitial) {
@@ -103,7 +103,7 @@ public class WorkManager implements Serializable {
     /**
      * Returns a list of all activities in the engine that are under the
      * responsability of the provided resource. <p>
-     * 
+     *
      * @param resource the resource.
      * @return the list of activities.
      */

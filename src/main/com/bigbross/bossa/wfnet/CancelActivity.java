@@ -28,7 +28,7 @@ package com.bigbross.bossa.wfnet;
 /**
  * This class implements the cancel operation of <code>Activity</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Activity#cancel()
  */
@@ -37,12 +37,12 @@ class CancelActivity extends WFNetTransaction {
     private String caseTypeId;
     private int caseId;
     private int activityId;
-    
+
     /**
      * Creates a new cancel operation. <p>
-     * 
+     *
      * @param activity the activity to be canceled.
-     */    
+     */
     CancelActivity(Activity activity) {
         this.activityId = activity.getId();
         this.caseId = activity.getCase().getId();
@@ -51,13 +51,13 @@ class CancelActivity extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
      * @see WFNetTransaction#execute(CaseTypeManager)
      */
-    protected Object execute(CaseTypeManager caseTypeManager) 
+    protected Object execute(CaseTypeManager caseTypeManager)
         throws EvaluationException {
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);

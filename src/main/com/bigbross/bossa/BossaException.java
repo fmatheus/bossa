@@ -29,7 +29,7 @@ import java.io.PrintWriter;
 
 /**
  * This class represents an exception of the Bossa system. <p>
- * 
+ *
  * This exception also implements the behaviour of a nested (or chained)
  * exception, such as the <code>Throwable</code> class in Java 1.4.
  * This is an exception which may contain another throwable which

@@ -39,9 +39,9 @@ import com.bigbross.bossa.Bossa;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public abstract class NotificationQueue implements Serializable {
-    
+
     private List queue;
-    
+
     /**
      * Creates new empty notification queue. <p>
      */
@@ -51,17 +51,17 @@ public abstract class NotificationQueue implements Serializable {
 
     /**
      * Adds an event to this notification queue. <p>
-     * 
+     *
      * @param event the event to be added.
      */
     protected void addEvent(Event event) {
         queue.add(event);
     }
-    
+
     /**
      * Notifies all events currently present in this queue and flushes it.
      * <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      */
     public void notifyAll(Bossa bossa) {

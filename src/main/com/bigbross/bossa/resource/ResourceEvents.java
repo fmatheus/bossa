@@ -43,9 +43,9 @@ public class ResourceEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a resource creation in the
      * resource manager. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_RESOURCE_ID <p>
-     * 
+     *
      * @see ResourceEvents#ATTRIB_RESOURCE_ID
      */
     public static final String ID_CREATE_RESOURCE = "create_resource";
@@ -53,9 +53,9 @@ public class ResourceEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a resource removal from the
      * resource manager. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_RESOURCE_ID <p>
-     * 
+     *
      * @see ResourceEvents#ATTRIB_RESOURCE_ID
      */
     public static final String ID_REMOVE_RESOURCE = "remove_resource";
@@ -63,10 +63,10 @@ public class ResourceEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a resource being added to the
      * include list of another resource. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_RESOURCE_ID and
      * ATTRIB_HOST_RESOURCE_ID <p>
-     * 
+     *
      * @see ResourceEvents#ATTRIB_RESOURCE_ID
      * @see ResourceEvents#ATTRIB_HOST_RESOURCE_ID
      */
@@ -75,10 +75,10 @@ public class ResourceEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a resource being added to the
      * exclude list of another resource. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_RESOURCE_ID and
      * ATTRIB_HOST_RESOURCE_ID <p>
-     * 
+     *
      * @see ResourceEvents#ATTRIB_RESOURCE_ID
      * @see ResourceEvents#ATTRIB_HOST_RESOURCE_ID
      */
@@ -87,10 +87,10 @@ public class ResourceEvents extends NotificationQueue {
     /**
      * Constant to indicate the event of a resource being removed from the
      * lists of another resource. <p>
-     * 
+     *
      * This event contains the following attributes: ATTRIB_RESOURCE_ID and
      * ATTRIB_HOST_RESOURCE_ID <p>
-     * 
+     *
      * @see ResourceEvents#ATTRIB_RESOURCE_ID
      * @see ResourceEvents#ATTRIB_HOST_RESOURCE_ID
      */
@@ -109,7 +109,7 @@ public class ResourceEvents extends NotificationQueue {
 
     /**
      * Creates a single resource event and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param resource the resource involved.
@@ -123,11 +123,11 @@ public class ResourceEvents extends NotificationQueue {
                                bossa.getTimeSource().getTime()));
         }
     }
-                              
+
 
     /**
      * Creates an event with two resources and puts it in the queue. <p>
-     * 
+     *
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param resource the resource being added or removed.

@@ -43,6 +43,6 @@ public class ImportTest extends TestCase {
         CaseTypeXMLLoader loader =
             new CaseTypeXMLLoader("etc/test-data/wfnet-coverage.pnml");
         CaseType caseType = loader.createCaseType();
-        new WFNetCoverage().check(caseType);        
+        new WFNetCoverage().check(caseType);
     }
 }

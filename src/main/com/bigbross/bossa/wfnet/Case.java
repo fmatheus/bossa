@@ -68,16 +68,16 @@ public class Case implements Serializable {
     private Map attributes;
 
     private transient BSFManager bsf;
-    
+
     private WFNetEvents eventQueue;
 
     /**
      * Creates a new case, using the provided token count and attributes.
      * Appropriate work items are activated according to the provided
      * data. <p>
-     * 
+     *
      * @param caseType the case type of this case.
-     * @param state the initial token count as a map (<code>String</code>, 
+     * @param state the initial token count as a map (<code>String</code>,
      *              <code>Integer</code>), indexed by the place id.
      *              This state map must have a token count for every place.
      * @param attributes the initial attributes as a map (<code>String</code>,
@@ -98,7 +98,7 @@ public class Case implements Serializable {
 	this.marking = new int[state.size()];
         Iterator i = state.keySet().iterator();
         while (i.hasNext()) {
-            String placeId = (String) i.next(); 
+            String placeId = (String) i.next();
             int newCount = ((Integer) state.get(placeId)).intValue();
             marking[getCaseType().getPlace(placeId).getIndex()] = newCount;
         }
@@ -126,7 +126,7 @@ public class Case implements Serializable {
 
     /**
      * Returns the id of this case. <p>
-     * 
+     *
      * @return the id of this case.
      */
     public int getId() {
@@ -135,7 +135,7 @@ public class Case implements Serializable {
 
     /**
      * Returns the case type of this case. <p>
-     * 
+     *
      * @return the case type of this case.
      */
     public CaseType getCaseType() {
@@ -144,12 +144,12 @@ public class Case implements Serializable {
 
     /**
      * Returns the bossa engine this case is part, if any. <p>
-     * 
+     *
      * @return the bossa engine this case is part, <code>null</code> if not
      *         part of a bossa engine.
      */
     Bossa getBossa() {
-        if (getCaseType() != null && 
+        if (getCaseType() != null &&
             getCaseType().getCaseTypeManager() != null) {
             return getCaseType().getCaseTypeManager().getBossa();
         } else {
@@ -160,7 +160,7 @@ public class Case implements Serializable {
     /**
      * Returns the resource registry with the local resources of this
      * case. <p>
-     * 
+     *
      * @return the resource registry with the local resources of this
      * case.
      */
@@ -170,7 +170,7 @@ public class Case implements Serializable {
 
     /**
      * Returns all local resources of this case. <p>
-     * 
+     *
      * @return a list of all local resources of this case.
      */
     public List getResources() {
@@ -180,8 +180,8 @@ public class Case implements Serializable {
     /**
      * Returns the state of the case, that is, how many tokens are in each
      * place. <p>
-     * 
-     * @return the token count as a map (<code>String</code>, 
+     *
+     * @return the token count as a map (<code>String</code>,
      *         <code>Integer</code>), indexed by the place id.
      */
     public Map getState() {
@@ -199,8 +199,8 @@ public class Case implements Serializable {
      * place. This method bypasses the usual transition firing process and
      * should be used with caution to override the normal sequence of
      * activities. <p>
-     * 
-     * @param state the token count as a map (<code>String</code>, 
+     *
+     * @param state the token count as a map (<code>String</code>,
      *              <code>Integer</code>), indexed by the place id. Only the
      *              places present in this map have their token count modified,
      *              the others are unchanged.
@@ -218,11 +218,11 @@ public class Case implements Serializable {
      * place. This method bypasses the usual transition firing process and
      * should be used with caution to override the normal sequence of
      * activities. <p>
-     * 
+     *
      * This method will not persist the result of its activation and should
      * be used only internally as a part of a persistent transaction. <p>
-     * 
-     * @param state the token count as a map (<code>String</code>, 
+     *
+     * @param state the token count as a map (<code>String</code>,
      *              <code>Integer</code>), indexed by the place id. Only the
      *              places present in this map have their token count modified,
      *              the others are unchanged.
@@ -236,7 +236,7 @@ public class Case implements Serializable {
         }
         Iterator i = state.keySet().iterator();
         while (i.hasNext()) {
-            String placeId = (String) i.next(); 
+            String placeId = (String) i.next();
             int newCount = ((Integer) state.get(placeId)).intValue();
             marking[getCaseType().getPlace(placeId).getIndex()] = newCount;
             eventQueue.newPlaceEvent(getBossa(), WFNetEvents.ID_SET_TOKENS,
@@ -252,7 +252,7 @@ public class Case implements Serializable {
 
     /**
      * Returns the current attributes of this case. <p>
-     * 
+     *
      * @return the attributes as an unmodifiable map (<code>String</code>,
      *         <code>Object</code>) of variables names (as used in
      *         edge weight expressions) and Java objects.
@@ -264,7 +264,7 @@ public class Case implements Serializable {
     /**
      * Returns the list of currently fireable work items associated
      * with this case. <p>
-     *  
+     *
      * @return A list with the fireable work items of this case.
      */
     public List getWorkItems() {
@@ -275,14 +275,14 @@ public class Case implements Serializable {
             if (wi.isFireable()) {
                 items.add(wi);
             }
-        }        
+        }
 
 	return items;
     }
 
     /**
      * Returns a specific work item, selected by its id. <p>
-     * 
+     *
      * @param id the work item id.
      * @return the work item, <code>null</code> if there is no work item
      *         with this id.
@@ -293,8 +293,8 @@ public class Case implements Serializable {
 
     /**
      * Returns a list of activities associated with this case. <p>
-     * 
-     * @return The list of activities of this case. 
+     *
+     * @return The list of activities of this case.
      */
     public List getActivities() {
         List acts = new ArrayList(activities.size());
@@ -304,7 +304,7 @@ public class Case implements Serializable {
 
     /**
      * Returns a specific activity, selected by its id. <p>
-     * 
+     *
      * @param id the activity id.
      * @return the activity, <code>null</code> if there is no activity
      *         with this id.
@@ -315,16 +315,16 @@ public class Case implements Serializable {
 
     /**
      * Returns the next activity id for this case. <p>
-     * 
+     *
      * @return the next activity id.
-     */ 
+     */
     int nextActivityId() {
 	return activitySequence++;
     }
 
     /**
      * Indicates if this case is a template case of some case type. <p>
-     * 
+     *
      * @return <code>true</code> is this case is a template,
      *         <code>false</code> otherwise.
      */
@@ -376,21 +376,21 @@ public class Case implements Serializable {
     /**
      * Evaluates an integer expression using the local attributes of this
      * case. <p>
-     * 
+     *
      * @param expression the expression to be evaluated.
      * @return The expression result.
      * @exception EvaluationException if an evaluation error occurs.
      */
     int eval(String expression) throws EvaluationException {
         try {
-            Object result = bsf.eval("javascript", "WFNet", 
+            Object result = bsf.eval("javascript", "WFNet",
                                      0, 0, expression);
             if (result instanceof Number) {
                 return ((Number) result).intValue();
             } else if (result instanceof Boolean) {
 	       return ((Boolean) result).booleanValue() ? 1 : 0;
             } else {
-                throw new EvaluationException("'" + result + 
+                throw new EvaluationException("'" + result +
                                             "' is not a number or boolean.");
             }
         } catch (BSFException e) {
@@ -401,7 +401,7 @@ public class Case implements Serializable {
 
     /**
      * Tries to activate all deactivated transitions of this case. <p>
-     * 
+     *
      * @return a list of the activated work items.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
@@ -424,7 +424,7 @@ public class Case implements Serializable {
 
     /**
      * Tries to deactivate all activated transitions of this case. <p>
-     * 
+     *
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
@@ -444,7 +444,7 @@ public class Case implements Serializable {
     /**
      * Indicates if a transition is fireable, that is, if it is an actual
      * work item. <p>
-     * 
+     *
      * @param t the transition.
      * @return <code>true</code> if the transition is fireable;
      *         <code>false</code> otherwise.
@@ -465,10 +465,10 @@ public class Case implements Serializable {
      * Opens a work item. A open work item is represented by
      * an activity and is locked to the resource who opened it. The actual
      * completion of the work item in handled by the created activity. <p>
-     * 
+     *
      * This method will not persist the result of its activation and should
      * be used only internally as a part of a persistent transaction. <p>
-     * 
+     *
      * @param wi the work item to be opened.
      * @param resource the resource that is opening the work item.
      * @return The activity created by the opening of this work item,
@@ -522,7 +522,7 @@ public class Case implements Serializable {
     /**
      * Closes and finishes an activity. Call this method when the
      * activity is successfully completed. <p>
-     * 
+     *
      * Closes the <code>Case</code> when the last activity is closed, that is,
      * no work items to open nor open activities remain. <p>
      *
@@ -536,10 +536,10 @@ public class Case implements Serializable {
      * the value of these attributes will be used when evaluating edge
      * weights. If you do not want to set any new attribute, use
      * <code>null</code> as the attribute mapping. <p>
-     * 
+     *
      * This method will not persist the result of its activation and should
      * be used only internally as a part of a persistent transaction. <p>
-     * 
+     *
      * @param activity the activity to be closed.
      * @param newAttributes the attributes mapping.
      * @return <code>true</code> if the activity is succesfully opened,
@@ -590,10 +590,10 @@ public class Case implements Serializable {
      * Cancel an activity. Call this method if the activity could not
      * be completed. The related work item will return to the list of
      * available work items and can be opened again. <p>
-     * 
+     *
      * This method will not persist the result of its activation and should
      * be used only internally as a part of a persistent transaction. <p>
-     * 
+     *
      * @param activity the activity to be canceled.
      * @return <code>true</code> if the activity is succesfully canceled,
      *         <code>false</code> otherwise.
@@ -636,7 +636,7 @@ public class Case implements Serializable {
     /**
      * Performs the required actions related to timed firing in a list
      * of activated work items. <p>
-     * 
+     *
      * @param activated the list of activated work items.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of this case
@@ -649,14 +649,14 @@ public class Case implements Serializable {
              * We may have a deep, nested chain of timed firings.
              * Before acting, check if the work item is still active.
              * *And* we only process zero timeouts for now.
-             */ 
+             */
             if (wi.isFireable() && wi.getTransition().getTimeout() == 0) {
                 Resource timerResource =
                     getResourceRegistry().getResource("__timer");
                 if (timerResource == null) {
                     timerResource = getResourceRegistry().
                                           createResourceImpl("__timer", false);
-                } 
+                }
                 Activity a = open(wi, timerResource);
                 close(a, null);
             }

@@ -29,14 +29,14 @@ import com.bigbross.bossa.BossaException;
 /**
  * This exception is thrown if an error occours while evaluating
  * an expression. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class EvaluationException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException()</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException()
      */
     public EvaluationException() {
@@ -45,7 +45,7 @@ public class EvaluationException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(String)
      */
     public EvaluationException(String message) {
@@ -54,8 +54,8 @@ public class EvaluationException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String, Throwable)</code>.
-     * 
-     * @see com.bigbross.bossa.BossaException#BossaException(String, 
+     *
+     * @see com.bigbross.bossa.BossaException#BossaException(String,
      *                                                       Throwable)
      */
     public EvaluationException(String message, Throwable cause) {
@@ -64,7 +64,7 @@ public class EvaluationException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(Throwable)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(Throwable)
      */
     public EvaluationException(Throwable cause) {

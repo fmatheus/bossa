@@ -37,7 +37,7 @@ public class IOUtil {
     public static boolean createTestDir() {
         return testDir.mkdir();
     }
-    
+
     public static boolean removeTestDir() {
         if (testDir.exists()) {
             File[] contents = testDir.listFiles();

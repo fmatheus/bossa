@@ -28,7 +28,7 @@ package com.bigbross.bossa.wfnet;
 /**
  * This class implements the close operation of <code>Case</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Case#closeCase()
  */
@@ -36,12 +36,12 @@ class CloseCase extends WFNetTransaction {
 
     private String caseTypeId;
     private int caseId;
-    
+
     /**
      * Creates a new open operation. <p>
-     * 
+     *
      * @param caze the case to be closed.
-     */    
+     */
     CloseCase(Case caze) {
         this.caseId = caze.getId();
         this.caseTypeId = caze.getCaseType().getId();
@@ -49,7 +49,7 @@ class CloseCase extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @see WFNetTransaction#execute(CaseTypeManager)
      */
     protected Object execute(CaseTypeManager caseTypeManager) {

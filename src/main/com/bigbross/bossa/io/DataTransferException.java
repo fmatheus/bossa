@@ -30,14 +30,14 @@ import com.bigbross.bossa.BossaException;
 /**
  * This exception is thrown if an error occours when exporting or
  * importing Bossa data. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class DataTransferException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException()</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException()
      */
     public DataTransferException() {
@@ -46,7 +46,7 @@ public class DataTransferException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(String)
      */
     public DataTransferException(String message) {
@@ -55,8 +55,8 @@ public class DataTransferException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(String, Throwable)</code>.
-     * 
-     * @see com.bigbross.bossa.BossaException#BossaException(String, 
+     *
+     * @see com.bigbross.bossa.BossaException#BossaException(String,
      *                                                       Throwable)
      */
     public DataTransferException(String message, Throwable cause) {
@@ -65,7 +65,7 @@ public class DataTransferException extends BossaException {
 
     /**
      * See <code>BossaException.BossaException(Throwable)</code>.
-     * 
+     *
      * @see com.bigbross.bossa.BossaException#BossaException(Throwable)
      */
     public DataTransferException(Throwable cause) {

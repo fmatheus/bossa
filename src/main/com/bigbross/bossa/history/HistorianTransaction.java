@@ -31,7 +31,7 @@ import com.bigbross.bossa.BossaTransaction;
 /**
  * This class represents all transactions applied to the <code>Historian</code>
  * object. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 abstract class HistorianTransaction extends BossaTransaction {
@@ -45,7 +45,7 @@ abstract class HistorianTransaction extends BossaTransaction {
 
     /**
      * Executes a transaction in a historian. <p>
-     * 
+     *
      * @param historian the historian.
      * @return the value returned by the transaction.
      */

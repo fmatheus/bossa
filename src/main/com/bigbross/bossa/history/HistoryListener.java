@@ -39,12 +39,12 @@ import com.bigbross.bossa.resource.Resource;
 public class HistoryListener implements Listener, Serializable {
 
     private String id;
-    
+
     private Historian historian;
 
     /**
      * Creates a new listener. <p>
-     * 
+     *
      * @param historian the historian this listener is working to.
      */
     public HistoryListener(Historian historian) {

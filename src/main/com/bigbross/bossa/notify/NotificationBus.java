@@ -42,7 +42,7 @@ import com.bigbross.bossa.wfnet.WFNetEvents;
  * This class manages all event notifications inside Bossa. The events are
  * notified to listeners registered in the bus. This registration can happen
  * either at the bus creation or at a later time. <p>
- * 
+ *
  * The listeners registered after the bus is created will not be preserved
  * if this bus is serialized. Due to this behaviour, objects outside the Bossa
  * core that are registered as listeners may lose notification of events if
@@ -60,20 +60,20 @@ public class NotificationBus implements Serializable {
 
     /**
      * Creates a new notification bus with some persistent listeners. <p>
-     * 
+     *
      * @param engine the bossa engine this notification bus is part.
      * @param persistentListeners a list of the persistent listeners.
      */
     public NotificationBus(Bossa engine, List persistentListeners) {
         this.engine = engine;
-        this.persistentListeners = persistentListeners != null ? 
+        this.persistentListeners = persistentListeners != null ?
                                    persistentListeners : new ArrayList();
         this.transientListeners = new HashMap();
     }
 
     /**
      * Creates a new empty notification bus. <p>
-     * 
+     *
      * @param engine the bossa engine this notification bus is part.
      */
     public NotificationBus(Bossa engine) {
@@ -82,7 +82,7 @@ public class NotificationBus implements Serializable {
 
     /**
      * Returns the bossa engine this notification bus is part. <p>
-     * 
+     *
      * @return the bossa engine this notification bus is part.
      */
     Bossa getBossa() {
@@ -91,13 +91,13 @@ public class NotificationBus implements Serializable {
 
     /**
      * Registers a new listener of the notification bus. <p>
-     * 
+     *
      * @param listener the object that will act as a listener of the
      *                 notification bus.
      * @return <code>true</code> if the listener is registered,
      *         <code>false</code> if there is already a listener registered
      *         with the same id.
-     */    
+     */
     public boolean registerListener(Listener listener) {
         if (transientListeners.containsKey(listener.getId())) {
             return false;
@@ -105,10 +105,10 @@ public class NotificationBus implements Serializable {
         transientListeners.put(listener.getId(), listener);
         return true;
     }
-    
+
     /**
      * Removes the listener from the notification bus, if present. <p>
-     * 
+     *
      * @param id the id of the listener.
      */
     public void removeListener(String id) {
@@ -117,11 +117,11 @@ public class NotificationBus implements Serializable {
 
     /**
      * Informs the occurrence of an event to all registered listeners. <p>
-     * 
+     *
      * An event has an id and some attributes that are dependent on the event
      * type. See the constructor of the <code>Event</code> class for more
      * information. <p>
-     * 
+     *
      * @param event the event.
      * @see com.bigbross.bossa.notify.Event#Event
      */
@@ -142,7 +142,7 @@ public class NotificationBus implements Serializable {
 
     /**
      * Informs the occurrence of an event to a single listener. <p>
-     * 
+     *
      * @param event the event.
      * @param l the listener.
      * @param resourceManager the resource manager with respect to will
@@ -169,7 +169,7 @@ public class NotificationBus implements Serializable {
             }
         }
     }
-    
+
     /**
      * @see java.io.Serializable
      */

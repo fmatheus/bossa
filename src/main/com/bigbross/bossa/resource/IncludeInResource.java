@@ -28,7 +28,7 @@ package com.bigbross.bossa.resource;
 /**
  * This class implements the include operation of <code>Resource</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#include(Resource)
  * @see Resource#includeImpl(Resource, boolean)
@@ -38,9 +38,9 @@ class IncludeInResource extends ResourceHandlerTransaction {
     /**
      * Creates a new include operation. <p>
      *
-     * @param host the resource that will receive the include. 
+     * @param host the resource that will receive the include.
      * @param resource the resource that will be included.
-     */    
+     */
     IncludeInResource(Resource host, Resource resource) {
         super(host, resource);
     }

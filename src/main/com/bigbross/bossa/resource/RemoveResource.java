@@ -28,7 +28,7 @@ package com.bigbross.bossa.resource;
 /**
  * This class implements the remove resource operation of
  * <code>ResourceManager</code> through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see ResourceManager#removeResource(Resource)
  * @see ResourceManager#removeResourceImpl(Resource, boolean)
@@ -36,12 +36,12 @@ package com.bigbross.bossa.resource;
 class RemoveResource extends ResourceTransaction {
 
     private String id;
-    
+
     /**
      * Creates a new remove resource operation. <p>
-     * 
+     *
      * @param resource the resource.
-     */    
+     */
     RemoveResource(Resource resource) {
         this.id = resource.getId();
     }

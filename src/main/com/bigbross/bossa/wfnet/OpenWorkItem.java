@@ -30,7 +30,7 @@ import com.bigbross.bossa.resource.Resource;
 /**
  * This class implements the open operation of <code>WorkItem</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see WorkItem#open(Resource)
  */
@@ -40,13 +40,13 @@ class OpenWorkItem extends WFNetTransaction {
     private int caseId;
     private String workItemId;
     private String resourceId;
-    
+
     /**
      * Creates a new open operation. <p>
-     * 
+     *
      * @param workItem the work item to be opened.
      * @param resource the resource opening it.
-     */    
+     */
     OpenWorkItem(WorkItem workItem, Resource resource) {
         this.workItemId = workItem.getId();
         this.caseId = workItem.getCase().getId();
@@ -56,7 +56,7 @@ class OpenWorkItem extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
@@ -70,7 +70,7 @@ class OpenWorkItem extends WFNetTransaction {
                                 getResourceManager().getResource(resourceId);
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         WorkItem workItem = caze.getWorkItem(workItemId);
-        
+
         return caze.open(workItem, resource);
     }
 }

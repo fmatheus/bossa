@@ -28,19 +28,19 @@ package com.bigbross.bossa.resource;
 /**
  * This class implements the remove operation of <code>Resource</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#remove(Resource)
  * @see Resource#removeImpl(Resource, boolean)
  */
 class RemoveFromResource extends ResourceHandlerTransaction {
-    
+
     /**
      * Creates a new remove operation. <p>
      *
-     * @param host the resource that will release the resource. 
+     * @param host the resource that will release the resource.
      * @param resource the resource that will be removed.
-     */    
+     */
     RemoveFromResource(Resource host, Resource resource) {
         super(host, resource);
     }

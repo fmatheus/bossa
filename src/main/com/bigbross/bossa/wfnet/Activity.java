@@ -40,12 +40,12 @@ public class Activity implements Serializable {
     private int id;
 
     private WorkItem workItem;
-    
+
     private Resource resource;
 
     /**
      * Creates a new activity. <p>
-     * 
+     *
      * @param workItem the open work item this activity represents.
      * @param resource the resource that opened the work item.
      */
@@ -57,7 +57,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the id of this activity. <p>
-     * 
+     *
      * @return the id of this activity.
      */
     public int getId() {
@@ -66,7 +66,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the resource responsible by this activity. <p>
-     * 
+     *
      * @return the resource id.
      */
     public Resource getResource() {
@@ -75,7 +75,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the id of the work item that created this activity. <p>
-     * 
+     *
      * @return the id of the work item that created this activity.
      */
     public String getWorkItemId() {
@@ -84,7 +84,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the case type of this activity. <p>
-     * 
+     *
      * @return The case type of this activity.
      */
     public CaseType getCaseType() {
@@ -93,7 +93,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the case of this activity. <p>
-     * 
+     *
      * @return The case of this activity.
      */
     public Case getCase() {
@@ -102,7 +102,7 @@ public class Activity implements Serializable {
 
     /**
      * Returns the transition the open work item represents. <p>
-     * 
+     *
      * @return The transition the open work item represents.
      */
     Transition getTransition() {
@@ -112,7 +112,7 @@ public class Activity implements Serializable {
     /**
      * Closes and finishes this activity. Call this method when the
      * activity is successfully completed. <p>
-     * 
+     *
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
      * @exception SetAttributeException if the underlying expression
@@ -130,7 +130,7 @@ public class Activity implements Serializable {
     /**
      * Closes and finishes an activity. Call this method when the
      * activity is successfully completed. <p>
-     * 
+     *
      * An attribute mapping should be passed when this method is called.
      * This is a (<code>String</code>, <code>Object</code>) mapping of
      * variables names (as used in edge weight expressions) and Java objects.
@@ -140,7 +140,7 @@ public class Activity implements Serializable {
      * The attributes provided will overwrite current set attributes and
      * the value of these attributes will be used when evaluating edge
      * weights. <p>
-     * 
+     *
      * @param attributes the attributes mapping.
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
@@ -160,7 +160,7 @@ public class Activity implements Serializable {
      * Cancel this activity. Call this method if the activity could not
      * be completed. The related work item will return to the list of
      * available work items and can be opened again. <p>
-     * 
+     *
      * @return <code>true</code> if the activity is succesfully canceled,
      *         <code>false</code> otherwise.
      * @exception EvaluationException if an expression evaluation error
@@ -175,7 +175,7 @@ public class Activity implements Serializable {
 
     /**
      * Executes a transaction that returns a boolean value. <p>
-     * 
+     *
      * @param transaction the transaction;
      * @return The <code>boolean</code> returned by the transaction execution.
      */

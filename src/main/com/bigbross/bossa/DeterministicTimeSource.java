@@ -46,7 +46,7 @@ public class DeterministicTimeSource implements TimeSource {
 
     /**
      * Sets the time of this time source. <p>
-     * 
+     *
      * @param time the new time.
      */
     public void setTime(Date time) {

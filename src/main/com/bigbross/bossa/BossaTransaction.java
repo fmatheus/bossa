@@ -33,18 +33,18 @@ import com.bigbross.bossa.Bossa;
 
 /**
  * This class represents all transactions applied to a Bossa engine. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public abstract class BossaTransaction implements TransactionWithQuery {
 
     /**
      * Executes a transaction in a prevalent system. <p>
-     * 
+     *
      * This method sets the engine time source to the time
      * provided. It should only be called by the prevayler instance
      * providing persistence to the engine. <p>
-     * 
+     *
      * @see org.prevayler.TransactionWithQuery#executeAndQuery(Object, Date)
      */
     public Object executeAndQuery(Object system, Date time) throws Exception {
@@ -55,12 +55,12 @@ public abstract class BossaTransaction implements TransactionWithQuery {
 
     /**
      * Executes a transaction in a Bossa engine. <p>
-     * 
+     *
      * This method uses the time currently set in the engine time source. <p>
-     * 
+     *
      * @param bossa the Bossa engine.
      * @return the value returned by the transaction.
-     * @exception BossaException if a Bossa error occurs. 
+     * @exception BossaException if a Bossa error occurs.
      */
     public abstract Object execute(Bossa bossa) throws BossaException;
 }

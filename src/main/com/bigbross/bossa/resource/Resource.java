@@ -64,7 +64,7 @@ public class Resource implements Container, Serializable {
 
     /**
      * Returns the resource registry this resource is registered into. <p>
-     * 
+     *
      * @return the resource registry this resource is registered into.
      */
     ResourceRegistry getResourceRegistry() {
@@ -73,7 +73,7 @@ public class Resource implements Container, Serializable {
 
     /**
      * Returns the bossa engine this resource is part, if any. <p>
-     * 
+     *
      * @return the bossa engine this resource is part,
      *         <code>null</code> if not part of a bossa engine.
      */
@@ -108,7 +108,7 @@ public class Resource implements Container, Serializable {
 
     /**
      * Returns the includes list of this resource. <p>
-     * 
+     *
      * @return the includes list of this resource.
      */
     public Set getIncludes() {
@@ -117,7 +117,7 @@ public class Resource implements Container, Serializable {
 
     /**
      * Returns the excludes list of this resource. <p>
-     * 
+     *
      * @return the excludes list of this resource.
      */
     public Set getExcludes() {
@@ -135,7 +135,7 @@ public class Resource implements Container, Serializable {
      *            execution of this method persistent.
      */
     public boolean include(Resource resource) throws BossaException {
-        ResourceTransaction includeTransaction = 
+        ResourceTransaction includeTransaction =
             new IncludeInResource(this, resource);
         return
             ((Boolean) getBossa().execute(includeTransaction)).booleanValue();
@@ -148,7 +148,7 @@ public class Resource implements Container, Serializable {
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param resource the resource to be included.
      * @param notify if this operation should be notified.
      * @return <code>false</code> if resource includes this resource,
@@ -173,7 +173,7 @@ public class Resource implements Container, Serializable {
     /**
      * Excludes a resource from this resource. Removes the resource from
      * the includes list if needed. <p>
-     * 
+     *
      * @param resource the resource to be excluded.
      * @return <code>false</code> if resource excludes this resource,
      *         <code>true</code> otherwise.
@@ -183,7 +183,7 @@ public class Resource implements Container, Serializable {
     public boolean exclude(Resource resource) throws BossaException {
         ResourceTransaction excludeTransaction =
             new ExcludeInResource(this, resource);
-        return 
+        return
             ((Boolean) getBossa().execute(excludeTransaction)).booleanValue();
     }
 
@@ -194,7 +194,7 @@ public class Resource implements Container, Serializable {
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param resource the resource to be excluded.
      * @param notify if this operation should be notified.
      * @return <code>false</code> if resource excludes this resource,
@@ -237,7 +237,7 @@ public class Resource implements Container, Serializable {
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param resource the resource to be removed.
      * @param notify if this operation should be notified.
      */

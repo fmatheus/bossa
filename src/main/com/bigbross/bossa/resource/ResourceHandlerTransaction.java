@@ -29,7 +29,7 @@ package com.bigbross.bossa.resource;
  * This class implements a generic operation of the <code>Resource</code>
  * class. It will locate two resources wherever they may be in the system.
  * <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 abstract class ResourceHandlerTransaction extends ResourceTransaction {
@@ -38,13 +38,13 @@ abstract class ResourceHandlerTransaction extends ResourceTransaction {
     private String hostId;
     private String resourceRegistryId;
     private String resourceId;
-    
+
     /**
      * Creates a new resource operation. <p>
      *
-     * @param host the resource that will perform the operation. 
+     * @param host the resource that will perform the operation.
      * @param resource the resource that will be manipulated.
-     */    
+     */
     ResourceHandlerTransaction(Resource host, Resource resource) {
         this.hostRegistryId =
             host.getResourceRegistry().getGlobalId();
@@ -69,8 +69,8 @@ abstract class ResourceHandlerTransaction extends ResourceTransaction {
 
     /**
      * Executes a transaction using the two provided resources. <p>
-     * 
-     * @param host the resource that will perform the operation. 
+     *
+     * @param host the resource that will perform the operation.
      * @param resource the resource that will be manipulated.
      * @return the value returned by the transaction.
      */

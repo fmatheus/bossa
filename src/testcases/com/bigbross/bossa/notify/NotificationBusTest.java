@@ -75,14 +75,14 @@ public class NotificationBusTest extends TestCase {
         assertEquals(1, theGood.runs());
         assertEquals(1, theBad.runs());
     }
-    
+
 
     public void testImutableEvent() {
         BadListener theBad = new BadListener("The Bad", 0, null);
         assertTrue(bus.registerListener(theBad));
         Event event = new Event("event1", Event.WFNET_EVENT,
                                 new HashMap(), new Date());
-        
+
         bus.notifyEvent(event);
         assertEquals(1, theBad.runs());
         assertNull(event.getAttributes().get("bad"));
@@ -91,19 +91,19 @@ public class NotificationBusTest extends TestCase {
 
     public void testFilterByType() {
         TestListener theGood =
-            new GoodListener("test1", Event.RESOURCE_EVENT, null); 
+            new GoodListener("test1", Event.RESOURCE_EVENT, null);
         assertTrue(bus.registerListener(theGood));
 
         bus.notifyEvent(new Event("event1", Event.WFNET_EVENT,
                                   new HashMap(), new Date()));
         assertEquals(0, theGood.runs());
     }
-    
+
     public void testFilterByResource() throws Exception {
         Bossa bossa = BossaFactory.transientBossa();
-        NotificationBus bus = bossa.getNotificationBus(); 
+        NotificationBus bus = bossa.getNotificationBus();
         ResourceManager resourceManager = bossa.getResourceManager();
-        
+
         Resource trumps = resourceManager.createResource("trumps");
         Resource jdoe = resourceManager.createResource("joedoe");
         Resource mdoe = resourceManager.createResource("marydoe");
@@ -129,13 +129,13 @@ public class NotificationBusTest extends TestCase {
                                   attrib, new Date()));
         assertEquals(2, theGood.runs());
     }
-    
+
     public void testNotificationQueue() throws PersistenceException {
         Bossa bossa = BossaFactory.transientBossa();
         TestListener theGood = new GoodListener("test", 0, null);
         assertTrue(bossa.getNotificationBus().registerListener(theGood));
 
-        /* Creates a concrete anonymous inner class */ 
+        /* Creates a concrete anonymous inner class */
         NotificationQueue queue = new NotificationQueue() {};
         queue.addEvent(new Event("event1", Event.WFNET_EVENT,
                                  new HashMap(), new Date()));

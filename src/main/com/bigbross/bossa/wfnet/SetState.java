@@ -31,7 +31,7 @@ import com.bigbross.bossa.BossaException;
 /**
  * This class implements the set state operation of <code>Case</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Case#setState(Map)
  */
@@ -40,13 +40,13 @@ class SetState extends WFNetTransaction {
     private String caseTypeId;
     private int caseId;
     private Map newState;
-    
+
     /**
      * Creates a new open operation. <p>
-     * 
+     *
      * @param workItem the work item to be opened.
      * @param resource the resource opening it.
-     */    
+     */
     SetState(Case caze, Map newState) {
         this.caseId = caze.getId();
         this.caseTypeId = caze.getCaseType().getId();
@@ -55,7 +55,7 @@ class SetState extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.

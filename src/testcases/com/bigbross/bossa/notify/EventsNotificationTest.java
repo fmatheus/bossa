@@ -50,7 +50,7 @@ public class EventsNotificationTest extends TestCase {
     private WorkManager workManager;
     private Resource frank, sally;
     private MemoryListener listener;
-    
+
     public EventsNotificationTest(String name) {
 	super(name);
     }
@@ -62,7 +62,7 @@ public class EventsNotificationTest extends TestCase {
         frank = resourceManager.getResource("frank");
         sally = resourceManager.getResource("sally");
         workManager = bossa.getWorkManager();
-        
+
         listener = new MemoryListener("test", 0, null);
         bossa.getNotificationBus().registerListener(listener);
     }
@@ -107,7 +107,7 @@ public class EventsNotificationTest extends TestCase {
         wi.open(sally).close();
         wi = (WorkItem) workManager.getWorkItems(frank).get(0);
         wi.open(frank).close();
-        
+
 
         List events = listener.getNotifications();
         Event event = (Event) events.get(events.size() - 1);
@@ -307,11 +307,11 @@ public class EventsNotificationTest extends TestCase {
         event = (Event) events.get(events.size() - 4);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_SET_TOKENS, event.getId());
-        
+
         event = (Event) events.get(events.size() - 3);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_WORK_ITEM_INACTIVE, event.getId());
-        
+
         event = (Event) events.get(events.size() - 2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_WORK_ITEM_ACTIVE, event.getId());
@@ -324,7 +324,7 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(caze.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
     }
-    
+
     public void testLogCreateRemoveResource() throws Exception {
         Resource joe = resourceManager.createResource("joedoe");
         resourceManager.removeResource(joe);
@@ -342,10 +342,10 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(joe.getId(),
             event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
     }
-    
+
     public void testLogIncludeInResource() throws Exception {
         frank.include(sally);
-        
+
         List events = listener.getNotifications();
         assertEquals(1, events.size());
         Event event = (Event) events.get(0);
@@ -359,7 +359,7 @@ public class EventsNotificationTest extends TestCase {
 
     public void testLogExcludeInResource() throws Exception {
         frank.exclude(sally);
-        
+
         List events = listener.getNotifications();
         assertEquals(1, events.size());
         Event event = (Event) events.get(0);
@@ -374,7 +374,7 @@ public class EventsNotificationTest extends TestCase {
     public void testLogRemoveFromResource() throws Exception {
         frank.include(sally);
         frank.remove(sally);
-        
+
         List events = listener.getNotifications();
         assertEquals(2, events.size());
         Event event = (Event) events.get(1);

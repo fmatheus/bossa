@@ -37,34 +37,34 @@ import java.util.Map;
 public class Event implements Comparable, Serializable {
 
     private String id;
-    
+
     private int type;
-    
+
     private Map attributes;
-    
+
     private Date time;
 
     /**
      * Constant to indicate a work item or activity related event type.
      */
     public static final int WFNET_EVENT = 1;
-    
+
     /**
      * Constant to indicate a resource manipulation event type.
      */
     public static final int RESOURCE_EVENT = 2;
-    
+
     /**
      * Creates an event. For a list of the possible event types, see the
      * constants defined in this class. <p>
-     * 
+     *
      * The meaning of the id and of the attributes map are
      * defined by the generator of the event. The only exception is that a
      * event with type <code>WFNET_EVENT</code> <i>should</i> contain an
      * attribute named <code>WFNetEvents.ATTRIB_RESOURCE_ID</code>,
      * indicating the resource this event affects. Also all attribute
      * mappings are <code>String</code> id to <code>String</code> value. <p>
-     * 
+     *
      * @param id the id of this event.
      * @param type the type os this event.
      * @param attributes a <code>Map</code> containing the attributes.
@@ -80,7 +80,7 @@ public class Event implements Comparable, Serializable {
 
     /**
      * Returns the id of this event. <p>
-     * 
+     *
      * @return the id of this event.
      */
     public String getId() {
@@ -89,7 +89,7 @@ public class Event implements Comparable, Serializable {
 
     /**
      * Returns the type of this event. <p>
-     * 
+     *
      * @return the type of this event.
      */
     public int getType() {
@@ -98,10 +98,10 @@ public class Event implements Comparable, Serializable {
 
     /**
      * Returns the attributes map of this event. <p>
-     * 
+     *
      * Notice that it is not possible to change this map. If tried, an
      * UnsupportedOperationException will be thrown.
-     * 
+     *
      * @return the attributes map of this event.
      */
     public Map getAttributes() {
@@ -110,7 +110,7 @@ public class Event implements Comparable, Serializable {
 
     /**
      * Returns the time this event happened. <p>
-     * 
+     *
      * @return the time this event happened.
      */
     public Date getTime() {
@@ -120,7 +120,7 @@ public class Event implements Comparable, Serializable {
     /**
      * Note: this class has a natural ordering that is inconsistent with
      * equals. <p>
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object o) {

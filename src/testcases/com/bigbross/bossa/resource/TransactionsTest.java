@@ -53,18 +53,18 @@ public class TransactionsTest extends TestCase {
     public void testRemoveResource() {
         Resource resource = resourceManager.createResourceImpl("joe", false);
         assertNotNull(resource);
-        
+
         RemoveResource transaction = new RemoveResource(resource);
         assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertNull(resourceManager.getResource("joe"));
     }
-    
+
     public void testIncludeInResource() throws Exception {
         Resource group = resourceManager.createResourceImpl("trumps", false);
         Resource element = resourceManager.createResourceImpl("joe", false);
 
-        IncludeInResource transaction = new IncludeInResource(group, element);        
+        IncludeInResource transaction = new IncludeInResource(group, element);
         assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertTrue(group.contains(element));
@@ -75,17 +75,17 @@ public class TransactionsTest extends TestCase {
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
-        
+
         Resource group = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
         Resource element = myResourceManager.createResourceImpl("joe", false);
 
-        IncludeInResource transaction = new IncludeInResource(group, element);        
+        IncludeInResource transaction = new IncludeInResource(group, element);
         assertTrue(((Boolean) transaction.execute(myResourceManager)).
                    booleanValue());
         assertTrue(group.contains(element));
     }
-    
+
     public void testExcludeInResource() throws Exception {
         Resource group1 = resourceManager.createResourceImpl("trumps", false);
         Resource group2 = resourceManager.createResourceImpl("good", false);
@@ -93,8 +93,8 @@ public class TransactionsTest extends TestCase {
         group1.includeImpl(group2, false);
         group2.includeImpl(element, false);
         assertTrue(group1.contains(element));
-        
-        ExcludeInResource transaction = new ExcludeInResource(group1, element);        
+
+        ExcludeInResource transaction = new ExcludeInResource(group1, element);
         assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertFalse(group1.contains(element));
@@ -105,7 +105,7 @@ public class TransactionsTest extends TestCase {
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
-        
+
         Resource group1 = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
         Resource group2 = myResourceManager.createResourceImpl("good", false);
@@ -113,20 +113,20 @@ public class TransactionsTest extends TestCase {
         group1.includeImpl(group2, false);
         group2.includeImpl(element, false);
         assertTrue(group1.contains(element));
-        
-        ExcludeInResource transaction = new ExcludeInResource(group1, element);        
+
+        ExcludeInResource transaction = new ExcludeInResource(group1, element);
         assertTrue(((Boolean) transaction.execute(myResourceManager)).
                    booleanValue());
         assertFalse(group1.contains(element));
     }
-    
+
     public void testRemoveFromResource() throws Exception {
         Resource group = resourceManager.createResourceImpl("trumps", false);
         Resource element = resourceManager.createResourceImpl("joe", false);
         group.includeImpl(element, false);
         assertTrue(group.contains(element));
 
-        RemoveFromResource transaction = new RemoveFromResource(group, element);        
+        RemoveFromResource transaction = new RemoveFromResource(group, element);
         transaction.execute(resourceManager);
         assertFalse(group.contains(element));
     }
@@ -136,14 +136,14 @@ public class TransactionsTest extends TestCase {
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
-        
+
         Resource group = (Resource)
             caseTypeManager.getCaseType("test").getResources().get(0);
         Resource element = myResourceManager.createResourceImpl("joe", false);
         group.includeImpl(element, false);
         assertTrue(group.contains(element));
 
-        RemoveFromResource transaction = new RemoveFromResource(group, element);        
+        RemoveFromResource transaction = new RemoveFromResource(group, element);
         transaction.execute(myResourceManager);
         assertFalse(group.contains(element));
     }

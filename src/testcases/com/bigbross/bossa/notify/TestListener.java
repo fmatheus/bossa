@@ -60,7 +60,7 @@ public abstract class TestListener implements Listener {
             return true;
         } else {
             return this.type == type;
-        } 
+        }
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class TestListener implements Listener {
     public int runs() {
         return this.runs;
     }
-    
+
     /**
      * @see com.bigbross.bossa.notify.Listener#notifyEvent(
      *      com.bigbross.bossa.notify.Event)

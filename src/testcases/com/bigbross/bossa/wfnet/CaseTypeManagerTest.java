@@ -56,10 +56,10 @@ public class CaseTypeManagerTest extends TestCase {
         assertFalse(caseTypeManager.registerCaseTypeImpl(
                         BossaTestUtil.createCaseType("test1")));
     }
-    
+
     public void testQueryCaseType() throws Exception {
         CaseType expected = BossaTestUtil.createCaseType("test1");
-        
+
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         assertSame(expected, caseTypeManager.getCaseType("test1"));
     }
@@ -70,7 +70,7 @@ public class CaseTypeManagerTest extends TestCase {
 
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
-        
+
         List l = caseTypeManager.getCaseTypes();
         assertEquals(2, l.size());
         String id = ((CaseType) l.get(0)).getId();
@@ -78,22 +78,22 @@ public class CaseTypeManagerTest extends TestCase {
         id = ((CaseType) l.get(1)).getId();
         assertTrue(id.equals("test1") || id.equals("test2"));
     }
-    
+
     public void testRemoveCaseType() throws Exception {
         CaseType expected = BossaTestUtil.createCaseType("test1");
-        
+
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         caseTypeManager.removeCaseTypeImpl("test1");
         assertNull(caseTypeManager.getCaseType("test1"));
         assertNull(expected.getCaseTypeManager());
     }
-    
+
     public void testGetWorkItems() throws Exception {
         CaseType ct1 = BossaTestUtil.createCaseType("test1");
         CaseType ct2 = BossaTestUtil.createCaseType("test2");
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
-        
+
         assertEquals(0, caseTypeManager.getWorkItems().size());
         assertEquals(2, caseTypeManager.getWorkItems(true).size());
     }
@@ -105,10 +105,10 @@ public class CaseTypeManagerTest extends TestCase {
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
         WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
         wi.getCase().open(wi, joe);
-        
+
         assertEquals(1, caseTypeManager.getActivities().size());
     }
-    
+
     public void testResourceRegistryManagement() throws Exception {
         Bossa bossa = BossaFactory.transientBossa();
         ResourceManager rm = bossa.getResourceManager();
@@ -116,7 +116,7 @@ public class CaseTypeManagerTest extends TestCase {
         CaseType ct = BossaTestUtil.createCaseType("test");
         ResourceRegistry testRegistry = new ResourceRegistry(ct.getId());
 
-        ctm.registerCaseTypeImpl(ct);        
+        ctm.registerCaseTypeImpl(ct);
         assertFalse(rm.registerSubContext(testRegistry));
         ctm.removeCaseTypeImpl(ct.getId());
         assertTrue(rm.registerSubContext(testRegistry));

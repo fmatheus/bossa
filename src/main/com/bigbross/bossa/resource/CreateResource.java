@@ -28,7 +28,7 @@ package com.bigbross.bossa.resource;
 /**
  * This class implements the create resource operation of
  * <code>ResourceManager</code> through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see ResourceManager#createResource(String)
  * @see ResourceManager#createResourceImpl(String, boolean)
@@ -36,12 +36,12 @@ package com.bigbross.bossa.resource;
 class CreateResource extends ResourceTransaction {
 
     private String id;
-    
+
     /**
      * Creates a new create resource operation. <p>
-     * 
+     *
      * @param id the resource id.
-     */    
+     */
     CreateResource(String id) {
         this.id = id;
     }

@@ -58,7 +58,7 @@ public class WFNetUtil {
 
     static boolean fire(Case caze, String workItemId, Map attributes)
         throws Exception  {
-        return fire(caze, workItemId, attributes, 
+        return fire(caze, workItemId, attributes,
                     ResourceUtil.createResource("jdoe"));
     }
 

@@ -58,7 +58,7 @@ public class ResourceManagerTest extends TestCase {
         context1.registerSubContext(context2);
 
         assertSame(context1,
-                   resourceManager.getRegistry(context1.getGlobalId()));        
+                   resourceManager.getRegistry(context1.getGlobalId()));
         assertSame(context2,
                    resourceManager.getRegistry(context2.getGlobalId()));
     }
@@ -70,7 +70,7 @@ public class ResourceManagerTest extends TestCase {
         resourceManager.registerSubContext(context1);
 
         assertSame(context1,
-                   resourceManager.getRegistry(context1.getGlobalId()));        
+                   resourceManager.getRegistry(context1.getGlobalId()));
         assertSame(context2,
                    resourceManager.getRegistry(context2.getGlobalId()));
     }

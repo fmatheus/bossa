@@ -31,7 +31,7 @@ import com.bigbross.bossa.BossaException;
 /**
  * This class implements the close operation of <code>Activity</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Activity#close()
  */
@@ -44,10 +44,10 @@ class CloseActivity extends WFNetTransaction {
 
     /**
      * Creates a new close operation. <p>
-     * 
+     *
      * @param activity the activity to be closed.
      * @param attributes an optional attributes map.
-     */    
+     */
     CloseActivity(Activity activity, Map attributes) {
         this.activityId = activity.getId();
         this.caseId = activity.getCase().getId();
@@ -57,7 +57,7 @@ class CloseActivity extends WFNetTransaction {
 
     /**
      * Executes the operation. <p>
-     * 
+     *
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error

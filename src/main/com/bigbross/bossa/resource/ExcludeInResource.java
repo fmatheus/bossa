@@ -28,19 +28,19 @@ package com.bigbross.bossa.resource;
 /**
  * This class implements the exclude operation of <code>Resource</code>
  * through the prevalence subsystem. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#exclude(Resource)
  * @see Resource#excludeImpl(Resource, boolean)
  */
 class ExcludeInResource extends ResourceHandlerTransaction {
-    
+
     /**
      * Creates a new exclude operation. <p>
      *
-     * @param host the resource that will receive the exclude. 
+     * @param host the resource that will receive the exclude.
      * @param resource the resource that will be excluded.
-     */    
+     */
     ExcludeInResource(Resource host, Resource resource) {
         super(host, resource);
     }

@@ -31,7 +31,7 @@ import com.bigbross.bossa.BossaTransaction;
 /**
  * This class represents all transactions applied to the Resource persistent
  * objects. <p>
- * 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 abstract class ResourceTransaction extends BossaTransaction {
@@ -45,7 +45,7 @@ abstract class ResourceTransaction extends BossaTransaction {
 
     /**
      * Executes a transaction in a resource manager. <p>
-     * 
+     *
      * @param resourceManager the resource manager.
      * @return the value returned by the transaction.
      */

@@ -61,26 +61,26 @@ import com.bigbross.bossa.notify.Event;
  *   &lt;attribute id="work_item_id">check_price&lt;/attribute>
  *  &lt;/event>
  * &lt;/events></pre>
- * 
+ *
  * The <code>events</code> element is used to group a list of events.
  * The <code>event</code> element represents a single event and it is
  * composed by a single <code>id</code> element, a single <code>time</code>
  * element and zero or more <code>attribute</code> elements. <p>
- * 
+ *
  * The <code>id</code> element contains the id of the event. The
  * <code>time</code> element contains the time of the event as the
  * number of milliseconds since January 1, 1970, 00:00:00 GMT. Each
  * <code>attribute</code> element represents one attribute mapping of
- * the event. <p> 
+ * the event. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class EventsXMLHelper {
-    
+
     /**
      * Converts the provided event list to a XML file. If the file exists,
      * it will be overwritten. <p>
-     * 
+     *
      * @param events the events to be exported.
      * @param file the name of the file.
      * @throws DataTransferException if an error happens during the export.
@@ -97,7 +97,7 @@ public class EventsXMLHelper {
                 new BufferedOutputStream(new FileOutputStream(file));
             StreamResult streamResult = new StreamResult(out);
             handler.setResult(streamResult);
-        
+
             AttributesImpl atb = new AttributesImpl();
             handler.startDocument();
             handler.startElement("", "", "events", atb);

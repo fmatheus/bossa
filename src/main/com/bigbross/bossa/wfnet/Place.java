@@ -36,12 +36,12 @@ public class Place implements Serializable {
     private int index;
 
     private String id;
-    
+
     private int initialMarking;
 
     /**
      * Creates a new place. <p>
-     * 
+     *
      * @param index the index of this place in the marking array.
      * @param id the id of this place.
      * @param initialMarking the initial marking, the number of tokens in
@@ -52,10 +52,10 @@ public class Place implements Serializable {
 	this.id = id;
         this.initialMarking = initialMarking;
     }
-    
+
     /**
      * Returns the index of this place. <p>
-     * 
+     *
      * @return the index of this place.
      */
     public int getIndex() {
@@ -64,7 +64,7 @@ public class Place implements Serializable {
 
     /**
      * Returns the id of this place. <p>
-     * 
+     *
      * @return the id of this place.
      */
     public String getId() {
@@ -73,7 +73,7 @@ public class Place implements Serializable {
 
     /**
      * Returns the initial marking of this place. <p>
-     * 
+     *
      * @return the initial marking of this place.
      */
     public int getInitialMarking() {

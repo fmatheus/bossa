@@ -50,7 +50,7 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Creates a new empty case type manager. <p>
-     * 
+     *
      * @param engine the bossa engine this case type manager is part.
      */
     public CaseTypeManager(Bossa engine) {
@@ -67,7 +67,7 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Returns the bossa engine this resorce manager is part. <p>
-     * 
+     *
      * @return The bossa engine this resorce manager is part.
      */
     Bossa getBossa() {
@@ -76,14 +76,14 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Registers a new case type in the manager. <p>
-     * 
+     *
      * @param caseType the case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
-     */    
+     */
     public boolean registerCaseType(CaseType caseType) throws BossaException {
         WFNetTransaction registerTransaction = new RegisterCaseType(caseType);
         return ((Boolean) getBossa().execute(registerTransaction)).
@@ -92,7 +92,7 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Registers a new case type read from a PNML file in the manager. <p>
-     * 
+     *
      * @param file the PNML file.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
@@ -105,7 +105,7 @@ public class CaseTypeManager implements Serializable {
      *            occurs.
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
-     */    
+     */
     public boolean registerCaseType(String file) throws BossaException {
         CaseType caseType = new CaseTypeXMLLoader(file).createCaseType();
         return registerCaseType(caseType);
@@ -113,17 +113,17 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Registers a new case type in the manager. <p>
-     * 
+     *
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param caseType the <code>CaseType</code> object containing the
      *                 case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
-     */    
+     */
     public boolean registerCaseTypeImpl(CaseType caseType) {
         if (caseTypes.containsKey(caseType.getId())) {
             return false;
@@ -141,11 +141,11 @@ public class CaseTypeManager implements Serializable {
         queue.notifyAll(getBossa());
         return true;
     }
-    
+
     /**
      * Removes the case type from the manager, if present. This operation will
      * remove also <emph>all</emph> cases of this case type. <p>
-     * 
+     *
      * @param id the id of the case type.
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
@@ -158,11 +158,11 @@ public class CaseTypeManager implements Serializable {
     /**
      * Removes the case type from the manager, if present. This operation will
      * remove also <emph>all</emph> cases of this case type. <p>
-     * 
+     *
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
-     * 
+     *
      * @param id the id of the case type.
      */
     public void removeCaseTypeImpl(String id) {
@@ -180,20 +180,20 @@ public class CaseTypeManager implements Serializable {
             queue.notifyAll(getBossa());
         }
     }
-    
+
     /**
      * Returns the case type with the provided id. <p>
-     * 
+     *
      * @param id the id of the desired case type.
-     * @return The case type if it exists, <code>null</code> otherwise. 
+     * @return The case type if it exists, <code>null</code> otherwise.
      */
     public CaseType getCaseType(String id) {
         return (CaseType) caseTypes.get(id);
     }
-    
+
     /**
      * Returns all registered case types. <p>
-     * 
+     *
      * @return A list of all case types registered.
      */
     public List getCaseTypes() {
@@ -201,10 +201,10 @@ public class CaseTypeManager implements Serializable {
         caseTypeList.addAll(caseTypes.values());
         return caseTypeList;
     }
-    
+
     /**
      * Returns the list of all work items of all registered case types. <p>
-     * 
+     *
      * @return The list of all work itens of all registered case types.
      */
     public List getWorkItems() {
@@ -215,15 +215,15 @@ public class CaseTypeManager implements Serializable {
      * Returns the list of all work items of all registered case types.
      * If desired, the initial work item(s) can be returned. Opening an
      * initial work item will create a new case. <p>
-     * 
+     *
      * @param getInitial set to <code>true</code> to get the initial work
      *                   items and to <code>false</code> to only get the
-     *                   standard work items. 
+     *                   standard work items.
      * @return The list of all work itens of all registered case types.
      */
     public List getWorkItems(boolean getInitial) {
         ArrayList items = new ArrayList();
-        Iterator i = caseTypes.values().iterator();   
+        Iterator i = caseTypes.values().iterator();
         while (i.hasNext()) {
             items.addAll(((CaseType) i.next()).getWorkItems(getInitial));
         }
@@ -232,12 +232,12 @@ public class CaseTypeManager implements Serializable {
 
     /**
      * Returns the list of all activities of all registered case types. <p>
-     * 
+     *
      * @return The list of all activities of all registered case types.
      */
     public List getActivities() {
         ArrayList acts = new ArrayList();
-        Iterator i = caseTypes.values().iterator();   
+        Iterator i = caseTypes.values().iterator();
         while (i.hasNext()) {
             acts.addAll(((CaseType) i.next()).getActivities());
         }

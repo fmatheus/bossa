@@ -30,7 +30,7 @@ import java.util.Map;
 import com.bigbross.bossa.Bossa;
 
 /**
- * This class manages the creation and removal of resources. Resources 
+ * This class manages the creation and removal of resources. Resources
  * are groups of resources, indexed by a string id. Single users are
  * empty resources, their presence indicates the id is in use. <p>
  *
@@ -39,12 +39,12 @@ import com.bigbross.bossa.Bossa;
 public class ResourceManager extends ResourceRegistry {
 
     private Bossa engine;
-    
+
     private Map allRegistries;
 
     /**
      * Creates a new empty resource manager. <p>
-     * 
+     *
      * @param engine the bossa engine this resorce manager is part.
      */
     public ResourceManager(Bossa engine) {
@@ -60,10 +60,10 @@ public class ResourceManager extends ResourceRegistry {
     public ResourceManager() {
         this(null);
     }
-    
+
     /**
      * Returns the bossa engine this resource manager is part. <p>
-     * 
+     *
      * @return the bossa engine this resource manager is part.
      */
     Bossa getBossa() {
@@ -72,7 +72,7 @@ public class ResourceManager extends ResourceRegistry {
 
     /**
      * Returns the top level resource registry, the resource manager. <p>
-     * 
+     *
      * @return the resource manager, <code>null</code> if the root registry
      *         is not a resource manager.
      */
@@ -82,7 +82,7 @@ public class ResourceManager extends ResourceRegistry {
 
     /**
      * Adds a resource registry to the global registry index. <p>
-     * 
+     *
      * @param registry the resource registry.
      * @return <code>true</code> if the registry was added,
      *         <code>false</code> if the registry was already present.
@@ -99,12 +99,12 @@ public class ResourceManager extends ResourceRegistry {
             return false;
         }
     }
-    
+
     /**
      * Returns the resource registry indexed by its global id. Using this
      * method it is possible to retrieve any resource registry in the
      * system.
-     * 
+     *
      * @param globalId the global id of the registry.
      * @return the resource registry,
      *         <code>null</code> if the registry was not found.
@@ -116,10 +116,10 @@ public class ResourceManager extends ResourceRegistry {
     ResourceRegistry getRegistry(String globalId) {
         return (ResourceRegistry) allRegistries.get(globalId);
     }
-    
+
     /**
      * Removes a resource registry from the global registry index. <p>
-     * 
+     *
      * @param registry the resource registry.
      * @return <code>true</code> if the registry was removed,
      *         <code>false</code> if the registry was not found.

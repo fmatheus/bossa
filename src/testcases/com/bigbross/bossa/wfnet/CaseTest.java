@@ -54,17 +54,17 @@ public class CaseTest extends TestCase {
             String key = (String) i.next();
             if (expected.get(key) != null) {
                 assertEquals(expected.get(key), actual.get(key));
-                matches++; 
+                matches++;
             } else {
-                assertEquals(new Integer(0), actual.get(key)); 
+                assertEquals(new Integer(0), actual.get(key));
             }
         }
         assertEquals(matches, expected.size());
-    } 
+    }
 
     public void testGetWorkItem() throws Exception {
         Case caze = WFNetUtil.createCase();
-        
+
         WorkItem wi = caze.getWorkItem("a");
         assertNotNull(wi);
         assertEquals("a", wi.getId());
@@ -100,9 +100,9 @@ public class CaseTest extends TestCase {
 
     public void testInvalidOpen() throws Exception {
         Case caze = WFNetUtil.createCase();
-        
+
         Map start = caze.getState();
-        
+
         assertFalse(WFNetUtil.fire(caze, "b", null));
 
         CaseTest.sameState(start, caze.getState());
@@ -110,7 +110,7 @@ public class CaseTest extends TestCase {
 
     public void testOpenCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
-        
+
         Map start = caze.getState();
 
         Activity act = caze.open(caze.getWorkItem("a"), jdoe);
@@ -119,21 +119,21 @@ public class CaseTest extends TestCase {
 
         CaseTest.sameState(start, caze.getState());
     }
-    
+
     public void testInvalidCloseCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
-        
+
         Map expected = new HashMap();
         expected.put("B", new Integer(1));
         Activity act = caze.open(caze.getWorkItem("a"), jdoe);
         assertNotNull(act);
         assertTrue(caze.close(act, null));
-        
+
         CaseTest.sameState(expected, caze.getState());
-        
+
         assertFalse(caze.close(act, null));
         CaseTest.sameState(expected, caze.getState());
-        
+
         assertFalse(caze.cancel(act));
         CaseTest.sameState(expected, caze.getState());
     }
@@ -141,14 +141,14 @@ public class CaseTest extends TestCase {
     public void testAttributes() throws Exception {
         Case caze = WFNetUtil.createCase();
         Map attributes = caze.getAttributes();
-        
+
         assertEquals(4, attributes.size());
         assertEquals(new Boolean(false), attributes.get("SOK"));
         assertEquals(new Boolean(false), attributes.get("DIR"));
         assertEquals("", attributes.get("ADIR"));
         assertEquals(new Boolean(false), attributes.get("OK"));
     }
-    
+
     public void testEdgeEvaluation() throws Exception {
         Case caze = WFNetUtil.createCase();
         caze.declare("SOK", new Boolean(true));
@@ -160,7 +160,7 @@ public class CaseTest extends TestCase {
 
         assertEquals(3, e1.eval(caze));
         assertEquals(0, e2.eval(caze));
-        
+
         e1 = Edge.newInput(null, "AVL * XXX && DIR");
         try {
             e1.eval(caze);
@@ -210,7 +210,7 @@ public class CaseTest extends TestCase {
         a.output(A, "1");
         caseType.buildTemplate(null);
         Case caze = caseType.openCaseImpl(null);
-        
+
         Map expected = new HashMap();
         expected.put("A", new Integer(1));
         expected.put("B", new Integer(1));
@@ -255,7 +255,7 @@ public class CaseTest extends TestCase {
 
         caze.setStateImpl(newState);
         CaseTest.sameState(newState, caze.getState());
-        
+
         assertFalse(caze.getWorkItem("a").isFireable());
         List workItens = caze.getWorkItems();
         assertEquals(1, workItens.size());
@@ -268,7 +268,7 @@ public class CaseTest extends TestCase {
         assertTrue(caze.getWorkItem("a").isFireable());
         assertEquals(2, caze.getWorkItems().size());
     }
-    
+
     public void testSetStateZeroTimeout() throws Exception {
         Case caze = WFNetUtil.createAutoFireCase();
 
@@ -276,7 +276,7 @@ public class CaseTest extends TestCase {
         newState.put("A", new Integer(0));
         newState.put("B", new Integer(1));
         newState.put("C", new Integer(0));
-        
+
         Map expected = new HashMap();
         expected.put("A", new Integer(0));
         expected.put("B", new Integer(0));
@@ -312,7 +312,7 @@ public class CaseTest extends TestCase {
         assertTrue("a".equals(w0.getId()) || "a".equals(w1.getId()));
         assertTrue("b".equals(w0.getId()) || "b".equals(w1.getId()));
     }
-    
+
     public void testCanPerformWorkItem() throws BossaException {
         CaseType caseType = new CaseType("canPerform");
         Place A = caseType.registerPlace("A", 1);
@@ -327,7 +327,7 @@ public class CaseTest extends TestCase {
         Resource bosses = (Resource) caseType.getResources().get(0);
         assertEquals("bosses", bosses.getId());
         bosses.includeImpl(jdoe, false);
-        
+
         Case caze = caseType.openCaseImpl(null);
         assertTrue(caze.getWorkItem("a").canBePerformedBy(jdoe));
         assertFalse(caze.getWorkItem("a").canBePerformedBy(mary));
