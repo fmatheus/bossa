@@ -658,19 +658,6 @@ public class Case implements Serializable {
         }
     }
 
-    public String toString() {
-
-        StringBuffer string = new StringBuffer();
-
-        string.append("\t");
-        for (int i = 0; i < marking.length; ++i) {
-            string.append(marking[i]);
-            string.append("\t");
-        }
-
-        return string.toString();
-    }
-
     /**
      * @see java.io.Serializable
      */

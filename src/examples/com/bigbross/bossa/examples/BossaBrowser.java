@@ -142,6 +142,7 @@ public class BossaBrowser {
                "a <id>                      List activities of a case type.\n" +
                "t <id>                      List resources of a case type.\n" +
                "y <listId>                  List resources of a case.\n" +
+               "m <listId> <place>=<n> ...  Change state of a case.\n" +
                "-----------------------------------------------------------\n" +
                "lr                          List all resources.\n" +
                "gr <id>                     Register a resource.\n" +
@@ -194,7 +195,8 @@ public class BossaBrowser {
                 lastCaseList = caseTypeManager.getCaseType(id).getCases();
                 for (int i = 0; i < lastCaseList.size(); i++) {
                     Case caze = (Case) lastCaseList.get(i);
-                    System.out.println(i + ":\t" + caze.getId() + "\t" + caze);
+                    System.out.println(i + ":\t" + caze.getId() + "\t" +
+                                       caze.getState());
                 }
             } else if (operation.equals("w")) {
                 System.out.println("\tctID\tcID\twiID");
@@ -264,6 +266,19 @@ public class BossaBrowser {
                             + "\t"
                             + (r.isGroup() ? "yes" : "no"));
                 }
+            } else if (operation.equals("m")) {
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                Case caze = (Case) lastCaseList.get(listId);
+                HashMap newState = new HashMap();
+                while (tokenizer.hasMoreTokens()) {
+                    StringTokenizer t =
+                        new StringTokenizer(tokenizer.nextToken(), "=");
+                    String placeId = t.nextToken();
+                    int value = Integer.parseInt(t.nextToken());
+                    newState.put(placeId, new Integer(value));
+                }
+                caze.setState(newState);
+                System.out.println("ok.");
             } else if (operation.equals("lr")) {
                 System.out.println("\trID\tgroup?");
                 System.out.println("-------------------------------------");

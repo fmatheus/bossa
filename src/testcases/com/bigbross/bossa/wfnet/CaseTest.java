@@ -352,13 +352,4 @@ public class CaseTest extends TestCase {
         assertEquals(0, output.input(caze));
         assertEquals(0, input.output(caze));
     }
-
-    public void testToString() throws Exception {
-
-        String expected = "\t1\t0\t0\t0\t0\t0\t0\t0\t";
-        
-        String result = WFNetUtil.createCase().toString();
-
-        assertEquals(expected, result);
-    }
 }

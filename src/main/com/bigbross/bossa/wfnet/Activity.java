@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -177,15 +177,5 @@ public class Activity implements Serializable {
         Boolean result = (Boolean) getCaseType().getCaseTypeManager().
             getBossa().execute(transaction);
         return result.booleanValue();
-    }
-
-    public String toString() {
-	StringBuffer string = new StringBuffer();
-
-	string.append(id);
-	string.append(".");
-	string.append(workItem.getTransition().toString());
-
-	return string.toString();
     }
 }
