@@ -60,7 +60,7 @@ class OpenWorkItem extends WFNetTransaction {
     /**
      * Executes the operation. <p>
      * 
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case

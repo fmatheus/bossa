@@ -27,7 +27,7 @@ package com.bigbross.bossa.wfnet;
 import com.bigbross.bossa.BossaException;
 
 /**
- * This exception is thrown if the underling expression evaluation system
+ * This exception is thrown if the underlying expression evaluation system
  * has problems setting an attribute. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>

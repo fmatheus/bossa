@@ -73,7 +73,7 @@ public class Case implements Serializable {
      * @param caseType the case type of this case.
      * @param marking the initial marking (tokens).
      * @param attributes the initial attributes.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
@@ -108,7 +108,7 @@ public class Case implements Serializable {
      * Creates a new case, using the provided template.
      * 
      * @param template the <code>Case</code> to be used as template.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
     Case(Case template) throws BossaException {
@@ -264,7 +264,7 @@ public class Case implements Serializable {
      *
      * @param id the attribute identifier.
      * @param value an <code>Object</code> with the attribute value.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
     void declare(String id, Object value) throws SetAttributeException {
@@ -281,7 +281,7 @@ public class Case implements Serializable {
      * Declares all the attributes to be used at expression evaluation.
      *
      * @param attributes a <code>Map</code> of attributes to be declared.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
     void declare(Map attributes) throws SetAttributeException {
@@ -441,7 +441,7 @@ public class Case implements Serializable {
      * @param newAttributes the attributes mapping.
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of this case

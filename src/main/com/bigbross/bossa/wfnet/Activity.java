@@ -106,7 +106,7 @@ public class Activity implements Serializable {
      * 
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
@@ -128,7 +128,7 @@ public class Activity implements Serializable {
      * @param attributes the attributes mapping.
      * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case

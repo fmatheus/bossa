@@ -271,7 +271,7 @@ public class CaseType implements Serializable {
      * 
      * @param marking the initial marking.
      * @return the newly created case.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
@@ -313,7 +313,7 @@ public class CaseType implements Serializable {
      * 
      * @param marking the marking of the template case.
      * @param attributes the attributes of the template case.
-     * @exception SetAttributeException if the underling expression
+     * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
