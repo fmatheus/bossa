@@ -1,0 +1,57 @@
+
+                                ===== 
+                                Bossa
+                                -----
+                        A Java workflow engine.
+                        =======================
+
+PNK WFNet Editor
+================
+
+This is a customized version of the fantastic Petri Net Kernel (PNK)
+that can be used to graphically create and edit Petri net workflow
+case types for the Bossa engine.
+
+
+Petri Net Kernel
+================
+
+The PNK provides a framework to create Petri net based applications.
+We used the standard editor application with a Petri net definition
+created by us to provide graphical case type editing.
+
+The PNK page is: http://www.informatik.hu-berlin.de/top/pnk/ 
+Go there for the full PNK distribution, that includes other
+applications and net types. (But not the WFNet net type, yet.)
+
+The PNK is distributed under the GNU GPL license. Please read the
+README.txt and gpl.txt files.
+
+
+Dependencies
+============
+
+The PNK requires a JAXP 1.1 parser/transformer. If you are using J2SE
+1.4 these are already provided. Otherwise, Jakarta Xalan-Java 2 (which
+includes the Xerces parser in its binary distribution) is a good open
+source implementation (http://xml.apache.org/xalan-j/).
+
+
+Running The Editor
+==================
+
+Ensure that you have a JAXP 1.1 implementation in your classpath, and
+execute:
+
+	java -jar PNK2classes.jar
+
+
+Bossa
+=====
+
+Bossa is a workflow engine written in Java. The engine is very fast
+and lightweight, uses a very expressive Petri net notation to define
+workflows, does not require a RDBMS and is very simple to use and to
+integrate with java applications.
+
+Get it at: http://www.bigbross.com/bossa/
