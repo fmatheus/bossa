@@ -26,7 +26,9 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.prevayler.Command;
@@ -103,16 +105,23 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * @param The CaseType object containing the case type.
+     * @param the <code>CaseType</code> object containing the case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
      */    
     public boolean registerCaseType(CaseType caseType) {
+        /* FIXME: Where is the place of this validation code? */
         if (caseTypes.containsKey(caseType.getId())) {
             return false;
         }
-        // Do the command magic here.
+        WFNetCommand registerCommand = new RegisterCaseType(caseType);
+        try {
+          executeCommand(registerCommand);
+        } catch (Exception e) {
+            /* FIXME: Exceptions, please. */
+            System.out.println("Prevayler error!"); e.printStackTrace();
+        }
         return true;
     }
 
@@ -123,7 +132,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
-     * @param The CaseType object containing the case type.
+     * @param the <code>CaseType</code> object containing the case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
@@ -140,10 +149,16 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * Removes the case type from the manager. This operation will remove also
      * <emph>all</emph> cases of this case type.
      * 
-     * @param id The id of the case type.
+     * @param id the id of the case type.
      */
     public void removeCaseType(String id) {
-        // Do the command magic here.
+        WFNetCommand removeCommand = new RemoveCaseType(id);
+        try {
+          executeCommand(removeCommand);
+        } catch (Exception e) {
+            /* FIXME: Exceptions, please. */
+            System.out.println("Prevayler error!"); e.printStackTrace();
+        }
     }
 
     /**
@@ -154,7 +169,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
-     * @param id The id of the case type.
+     * @param id the id of the case type.
      */
     void removeCaseTypeImpl(String id) {
         caseTypes.remove(id);
@@ -163,10 +178,19 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     /**
      * Returns the case type with the provided id. <p>
      * 
-     * @param id The id of the desired case type.
+     * @param id the id of the desired case type.
      * @return The case type if it exists, <code>null</code> otherwise. 
      */
     public CaseType getCaseType(String id) {
         return (CaseType) caseTypes.get(id);
+    }
+    
+    /**
+     * Returns all registered case types. <p>
+     * 
+     * @return A list of all case types registered.
+     */
+    public Iterator getCaseTypes() {
+        return Collections.unmodifiableCollection(caseTypes.values()).iterator();
     }
 }

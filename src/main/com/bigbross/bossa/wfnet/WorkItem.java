@@ -68,6 +68,13 @@ public class WorkItem {
     }
 
     public Activity open() {
-	return getCase().open(this);
+        WFNetCommand openCommand = new OpenWorkItem(this);
+        try {
+          return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
+        } catch (Exception e) {
+            /* FIXME: Exceptions, please. */
+            System.out.println("Prevayler error!"); e.printStackTrace();
+        }
+        return null;
     }
 }
