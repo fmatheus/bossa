@@ -85,10 +85,21 @@ public class CaseType implements Serializable {
         return id;
     }
     
+    /**
+     * Returns the <code>Place</code> of this case type with the specified id. <p>
+     *
+     * @param id the <code>Place</code> id.
+     * @return the <code>Place</code>, or <code>null</code> if there is no place.
+     */
     public Place getPlace(String id) {
 	return (Place) places.get(id);
     }
 
+    /**
+     * Returns all places of this case type. <p>
+     * 
+     * @return a list of all places of this case type.
+     */
     public Place[] getPlaces() {
 
 	Place[] array = new Place[places.size()];
@@ -102,16 +113,33 @@ public class CaseType implements Serializable {
 	return array;
     }
 
+    /**
+     * Creates a <code>Place</code> with the specified id in this case type. <p>
+     *
+     * @param id the <code>Place</code> id.
+     * @return the created <code>Place</code>.
+     */
     public Place registerPlace(String id) {
 	Place place = new Place(this, places.size(), id);
 	places.put(id, place);
 	return place;
     }
 
+    /**
+     * Returns the <code>Transition</code> of this case type with the specified id. <p>
+     *
+     * @param id the <code>Transition</code> id.
+     * @return the <code>Transition</code>, or <code>null</code> if there is no transition.
+     */
     public Transition getTransition(String id) {
 	return (Transition) transitions.get(id);
     }
 
+    /**
+     * Returns all transitions of this case type. <p>
+     * 
+     * @return a list of all transitions of this case type.
+     */
     public Transition[] getTransitions() {
 
 	Transition[] array = new Transition[transitions.size()];
@@ -125,29 +153,37 @@ public class CaseType implements Serializable {
 	return array;
     }
 
+    /**
+     * Creates a <code>Transition</code> with the specified id in this case type. <p>
+     *
+     * @param id the <code>Transition</code> id.
+     * @param resource the expression to select the resource responsible by this <code>Transition</code>.
+     * @return the created <code>Transition</code>.
+     * @see com.bigbross.bossa.resource.Expression
+     */
     public Transition registerTransition(String id, String resource) {
 	Transition trans = new Transition(this, transitions.size(), id, resource);
 	transitions.put(id, trans);
 	return trans;
     }
 
-    public Edge[] getEdges(Transition t) {
+    Edge[] getEdges(Transition t) {
 	return edges[t.getIndex()];
     }
 
-    public Edge getEdge(int t, int p) {
+    Edge getEdge(int t, int p) {
 	return edges[t][p];
     }
 
-    public Edge getEdge(Transition t, Place p) {
+    Edge getEdge(Transition t, Place p) {
 	return getEdge(t.getIndex(), p.index);
     }
 
-    public void setEdge(int t, int p, Edge edge) {
+    void setEdge(int t, int p, Edge edge) {
 	edges[t][p] = edge;
     }
 
-    public void setEdge(Transition t, Place p, Edge edge) {
+    void setEdge(Transition t, Place p, Edge edge) {
 	setEdge(t.getIndex(), p.index, edge);
     }
 
