@@ -1,0 +1,98 @@
+
+                                ===== 
+                                Bossa
+                                -----
+                        A Java workflow engine.
+                        =======================
+
+TODO
+====
+
+Here are documented possible future features and refactorings of
+Bossa. It is an attempt to document the roadmap to the 1.0 version and
+as an idea repository.
+
+
+1.0
+===
+
+Major stuff that has to be done before 1.0. 
+
+* Timed transitions: The current implementation only handles
+  zero timeout. This will be a bit tricky to implement considering
+  that Bossa can be part of an external prevalent system (Bossa will
+  generate transactions spontaneously). 
+
+* Upgrade between stable Bossa versions: If the class signature
+  changes, it isn't possible to load binary snapshots. Solutions
+  include adding a serialVersionUID and handling compatible but
+  different implementations, or use XML serialization and provide
+  stylesheets to migrate versions.
+
+* Thread safety: Check if the current thread model is
+  sufficient. Ensure that it works with a transient Bossa.
+
+* Freeze API: Ideally with a community comment phase.
+
+* Documentation: We need to document all the stuff created since 0.3.1
+  until 1.0.
+  - Notification bus, transient Bossa, Bossa factory, history, timed
+  transitions, administrative functions (set state, open close case,
+  etc.), case type XML import, etc.
+  - Document case type modeling with more examples, covering all
+  modeling techniques that can be used in Bossa (edge weights,
+  timeouts, work item resources, etc.). Improve the programmatic and
+  XML demo case type. How to use the PNK: how to model, how to set
+  attributes, PNML format used.
+  - Add more theoretical links in the docs and in the web.
+
+
+Refactorings
+============
+
+Minor stuff that would be great if done before 1.0.
+
+* Use an object to keep the case marking so we can: 1) Simplify
+  get/set marking. 2) Simplify state change notification. 3) Atomic
+  set all marking, giving consistent evaluation exception in open(),
+  close() and cancel().
+
+* CaseType: Unnecessary visibility of all CaseType methods. Use a
+  factory to separate case type creation from use. Make CaseType a
+  cloneable object.
+
+* Do the XML events export using JDOM.
+
+* Select BSF engines in the Bossa factory.
+
+* Study alternative case indexes: long, string, user set.
+
+* Study problem of setting attributes outside of close().
+
+* A method to discover the attributes more likely to be set upon
+  close().
+
+* Add operation to list case attributes to the Bossa Browser.
+
+* Improve test coverage: XML events export.
+
+* Prevayler: 
+  - Invisible I/O errors in transaction may happen: file or directory
+  removed, filesystem crash, etc. Old PersistenceException in
+  javadocs.
+  - Incompatibility with rollback mechanism and register case type (it
+  changes the transaction object attributes).
+
+
+Beyond 1.0
+==========
+
+Cool stuff for the future.
+
+* A graphical Bossa Browser, maybe web.
+
+* Edge weight compilation for speed.
+
+* Determining resources dynamically.
+
+* Event XML format DTD.
