@@ -65,15 +65,15 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
         if (instance == null) {
             try {
                 Prevayler prevayler = new SnapshotPrevayler(new CaseTypeManager(),
-                                                            "WFNet");
+                                                            "build/WFNet", 1);
                 instance = (CaseTypeManager) prevayler.system();
                 instance.setPrevayler(prevayler);
             } catch (IOException e) {
                 /* FIXME: Throw an exception here. */
-                System.out.println("Prevayler error, IOException.");
+                System.out.println("Prevayler error!"); e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 /* FIXME: Throw an exception here. */
-                System.out.println("Prevayler error, ClassNotFoundException.");
+                System.out.println("Prevayler error!"); e.printStackTrace();
             } 
         }
         return instance;
@@ -97,10 +97,24 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
         this.prevayler = prevayler;
     }
     
+    /**
+     * Executes a command using the current <code>Prevayler</code>. <p>
+     */
     Serializable executeCommand(Command command) throws Exception {
         /* FIXME: Get the prevayler especific exceptions and wrap them. */
         return prevayler.executeCommand(command);
     }    
+
+    /**
+     * Writes to disk the complete object tree rooted at this case type
+     * manager. This method only works if the <code>Prevayler</code> used
+     * is a <code>SnapshotPrevayler</code>. <p>
+     */
+    void takeSnapshot() throws IOException {
+        if (prevayler instanceof SnapshotPrevayler) {
+            ((SnapshotPrevayler) prevayler).takeSnapshot();
+        }
+    }
 
     /**
      * Registers a new case type in the manager. <p>
