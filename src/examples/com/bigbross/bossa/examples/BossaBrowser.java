@@ -155,12 +155,12 @@ public class BossaBrowser {
                "wr <listId>                 List work itens of a resource.\n" +
                "ar <listId>                 List activities of a resource.\n" +
                "-----------------------------------------------------------\n" +
-               "o  <listId> <resListId>          Open a work item.\n" +
-               "cl <listId>                      Close an activity.\n" +
-               "ca <listId>                      Cancel an activity.\n" +
-               "f  <listId> <resListId>          Fire a work item.\n" +
-               "vs <caseType> <case> <id> <int>  Declare a case attribute.\n" +
-               "vl <caseType> <case>             List case attributes.\n" +
+               "o  <listId> <resListId>            Open a work item.\n" +
+               "cl <listId>                        Close an activity.\n" +
+               "ca <listId>                        Cancel an activity.\n" +
+               "f  <listId> <resListId>            Fire a work item.\n" +
+               "vs <caseType> <case> <id> <value>  Declare a case attribute.\n" +
+               "vl <caseType> <case>               List case attributes.\n" +
                "-----------------------------------------------------------\n" +
                "h                           Display all history.\n" +
                "ht <id>                     Display a case type history.\n" +
