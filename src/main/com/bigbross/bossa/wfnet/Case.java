@@ -386,7 +386,8 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    Activity open(WorkItem wi, Resource resource) throws BossaException {
+    public Activity open(WorkItem wi, Resource resource)
+        throws BossaException {
 
 	if (!wi.isFireable()) {
 	    return null;
@@ -406,9 +407,11 @@ public class Case implements Serializable {
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
 
-        Resource group = getResourceRegistry().getResource(wi.getTransition().getId());
+        Resource group =
+            getResourceRegistry().getResource(wi.getTransition().getId());
         if (group == null) {
-            group = getResourceRegistry().createResourceImpl(wi.getTransition().getId());
+            group = getResourceRegistry().createResourceImpl(
+                                                wi.getTransition().getId());
         }
         group.includeImpl(resource);
 
@@ -444,7 +447,8 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    boolean close(Activity activity, Map newAttributes) throws BossaException {
+    public boolean close(Activity activity, Map newAttributes)
+        throws BossaException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
@@ -483,7 +487,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    boolean cancel(Activity activity) throws EvaluationException {
+    public boolean cancel(Activity activity) throws EvaluationException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
@@ -499,7 +503,7 @@ public class Case implements Serializable {
 
         Resource resource = activity.getResource();
         Resource group = getResourceRegistry().getResource(activity.getTransition().getId());
-        group.excludeImpl(resource);
+        group.removeImpl(resource);
 
         activities.remove(new Integer(activity.getId()));
 

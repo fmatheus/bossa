@@ -211,7 +211,7 @@ public class Resource implements Container, Serializable {
      * 
      * @param resource the resource to be removed.
      */
-    void removeImpl(Resource resource) {
+    public void removeImpl(Resource resource) {
         includes.remove(resource);
         excludes.remove(resource);
     }

@@ -102,7 +102,7 @@ public class CaseTypeManager implements Serializable {
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
      */    
-    boolean registerCaseTypeImpl(CaseType caseType) {
+    public boolean registerCaseTypeImpl(CaseType caseType) {
         if (caseTypes.containsKey(caseType.getId())) {
             return false;
         }
@@ -138,7 +138,7 @@ public class CaseTypeManager implements Serializable {
      * 
      * @param id the id of the case type.
      */
-    void removeCaseTypeImpl(String id) {
+    public void removeCaseTypeImpl(String id) {
         caseTypes.remove(id);
     }
     
