@@ -42,9 +42,9 @@ public class CaseTest extends TestCase {
     }
 
     private boolean fire(Case caze, String workItemId) {
-	Activity act = caze.getWorkItem(workItemId).open();
+	Activity act = caze.open(caze.getWorkItem(workItemId));
 	if (act != null) {
-	    return act.close();
+	    return caze.close(act);
 	}
 	return false;
     }
@@ -92,9 +92,9 @@ public class CaseTest extends TestCase {
         
         int[] start = caze.getMarking();
 
-        Activity act = caze.getWorkItem("a").open();
+        Activity act = caze.open(caze.getWorkItem("a"));
         assertNotNull(act);
-        assertTrue(act.cancel());
+        assertTrue(caze.cancel(act));
 
         int[] end = caze.getMarking();
 
