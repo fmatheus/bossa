@@ -124,7 +124,7 @@ public class CaseType implements Serializable {
      * @return the created <code>Place</code>.
      */
     public Place registerPlace(String id) {
-	Place place = new Place(this, places.size(), id);
+	Place place = new Place(places.size(), id);
 	places.put(id, place);
 	return place;
     }

@@ -33,14 +33,11 @@ import java.io.Serializable;
  */
 public class Place implements Serializable {
 
-    CaseType ct;
-
     int index;
 
     String id;
 
-    Place(CaseType ct, int index, String id) {
-	this.ct = ct;
+    Place(int index, String id) {
 	this.index = index;
 	this.id = id;
     }
