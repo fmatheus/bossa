@@ -86,10 +86,12 @@ public class CaseType implements Serializable {
     }
     
     /**
-     * Returns the <code>Place</code> of this case type with the specified id. <p>
+     * Returns the <code>Place</code> of this case type with the specified
+     * id. <p>
      *
      * @param id the <code>Place</code> id.
-     * @return the <code>Place</code>, or <code>null</code> if there is no place.
+     * @return the <code>Place</code>, 
+     *         or <code>null</code> if there is no such a place.
      */
     public Place getPlace(String id) {
 	return (Place) places.get(id);
@@ -114,7 +116,8 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a <code>Place</code> with the specified id in this case type. <p>
+     * Creates a <code>Place</code> with the specified id in this case
+     * type. <p>
      *
      * @param id the <code>Place</code> id.
      * @return the created <code>Place</code>.
@@ -126,10 +129,12 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Returns the <code>Transition</code> of this case type with the specified id. <p>
+     * Returns the <code>Transition</code> of this case type with the
+     * specified id. <p>
      *
      * @param id the <code>Transition</code> id.
-     * @return the <code>Transition</code>, or <code>null</code> if there is no transition.
+     * @return the <code>Transition</code>,
+     *         or <code>null</code> if there is no such transition.
      */
     public Transition getTransition(String id) {
 	return (Transition) transitions.get(id);
@@ -154,10 +159,12 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a <code>Transition</code> with the specified id in this case type. <p>
+     * Creates a <code>Transition</code> with the specified id in this case
+     * type. <p>
      *
      * @param id the <code>Transition</code> id.
-     * @param resource the expression to select the resource responsible by this <code>Transition</code>.
+     * @param resource the expression to select the resource responsible by
+     *        this <code>Transition</code>.
      * @return the created <code>Transition</code>.
      * @see com.bigbross.bossa.resource.Expression
      */
@@ -167,22 +174,62 @@ public class CaseType implements Serializable {
 	return trans;
     }
 
+    /**
+     * Returns all the edges incident (input, output and incative) to a
+     * transition. <p>
+     * 
+     * @param t the transition.
+     * @return an array of all edges incident to a transition.
+     */
     Edge[] getEdges(Transition t) {
 	return edges[t.getIndex()];
     }
 
+    /**
+     * Returns the edge that connects the transition with index <code>t</code>
+     * to the place with index <code>p</code>. The edge can be an input,
+     * output or inactive edge (if there is no edge connecting them). <p>
+     * 
+     * @param t the transition index.
+     * @param p the place index.
+     * @return the edge connecting them.
+     */
     Edge getEdge(int t, int p) {
 	return edges[t][p];
     }
 
+    /**
+     * Returns the edge that connects a transition to a place. The edge can
+     * be an input, output or inactive edge (if there is no edge connecting
+     * them). <p>
+     * 
+     * @param t the transition.
+     * @param p the place.
+     * @return the edge connecting them.
+     */
     Edge getEdge(Transition t, Place p) {
 	return getEdge(t.getIndex(), p.index);
     }
 
+    /**
+     * Sets the edge that connects the transition with index <code>t</code>
+     * to the place with index <code>p</code>. <p>
+     * 
+     * @param t the transition index.
+     * @param p the place index.
+     * @param edge the edge connecting them.
+     */
     void setEdge(int t, int p, Edge edge) {
 	edges[t][p] = edge;
     }
 
+    /**
+     * Sets the edge that connects a transition to a place. <p>
+     * 
+     * @param t the transition.
+     * @param p the place.
+     * @param edge the edge connecting them.
+     */
     void setEdge(Transition t, Place p, Edge edge) {
 	setEdge(t.getIndex(), p.index, edge);
     }
@@ -239,7 +286,8 @@ public class CaseType implements Serializable {
      * Closes an open case. <p>
      *
      * @param caze the <code>Case</code> to be closed.
-     * @return <code>true</code> if the case was open, <code>false</code> otherwise.
+     * @return <code>true</code> if the case was open,
+     *         <code>false</code> otherwise.
      */
     boolean closeCase(Case caze) {
         return cases.remove(new Integer(caze.getId())) != null;
@@ -270,7 +318,8 @@ public class CaseType implements Serializable {
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */ 
-    public void buildTemplate(int[] marking, Map attributes) throws BossaException {
+    public void buildTemplate(int[] marking, Map attributes)
+        throws BossaException {
         if (template == null) {
             template = new Case(this, marking, attributes);
         }

@@ -46,6 +46,15 @@ public class Transition implements Serializable {
 
     private Expression resource;
 
+    /**
+     * Creates a new transition. <p>
+     * 
+     * @param caseType the case type this transition is contained.
+     * @param index the index of this transition in the transition map.
+     * @param id the id of this transition.
+     * @param resource the expression to select the resource responsible by
+     *                 this transition.
+     */
     Transition(CaseType caseType, int index, String id, String resource) {
 	this.caseType = caseType;
 	this.index = index;
@@ -81,19 +90,51 @@ public class Transition implements Serializable {
         return index;
     }
 
+    /**
+     * Returns the edge that connects this transition to a place. The edge can
+     * be an input, output or inactive edge (if there is no edge connecting
+     * this transition to the place). <p>
+     * 
+     * @param p the place.
+     * @return the edge connecting this transition to <code>p</code>.
+     */
     Edge getEdge(Place p) {
 	return caseType.getEdge(this, p);
     }
 
+    /**
+     * Returns all the edges incident (input, output and inactive) to this
+     * transition. <p>
+     * 
+     * @return an array of all edges incident to this transition.
+     */
     Edge[] getEdges() {
 	return caseType.getEdges(this);
     }
 
-    void input(Place p, String expression) {
+    /**
+     * Creates an input edge connecting a place <code>p</code> to this
+     * transition. An input edge ties the firing of this transition to the
+     * availability of <code>expression</code> tokens in the place
+     * <code>p</code>.
+     * 
+     * @param p the place.
+     * @param expression the condition expression.
+     */
+    public void input(Place p, String expression) {
 	caseType.setEdge(index, p.index, Edge.newInput(expression));
     }
 
-    void output(Place p, String expression) {
+    /**
+     * Creates an output edge connecting this transition to a place
+     * <code>p</code>. An output edge produces, after the firing of this
+     * transition, <code>expression</code> tokens in the place
+     * <code>p</code>.
+     * 
+     * @param p the place.
+     * @param expression the condition expression.
+     */
+    public void output(Place p, String expression) {
 	caseType.setEdge(index, p.index, Edge.newOutput(expression));
     }
 
