@@ -26,7 +26,10 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a specific instance of a case type. It
@@ -44,17 +47,17 @@ public class Case implements Serializable {
 
     private WorkItem[] workItems;
 
-    private List activities;
+    private Map activities;
 
-    private int workSequence;
+    private int activitySequence;
 
     Case(CaseType caseType, int[] marking) {
 
 	this.id = caseType.nextCaseId();
 	this.caseType = caseType;
 	this.marking = marking;
-        this.activities = new ArrayList();
-        this.workSequence = 0;
+        this.activities = new HashMap();
+        this.activitySequence = 1;
 
 	Transition[] ts = caseType.getTransitions();
 	workItems = new WorkItem[ts.length];
@@ -126,13 +129,18 @@ public class Case implements Serializable {
     }
 
     /**
-     * Returns a list of activities associated with the provided resource.
-     * If the resource id is <code>null</code>, the list contains
-     * all activities of this case. <p>
+     * Returns a list of activities associated with this case. <p>
      * 
-     * @param resource the resource id.
-     * @return The list of activities associated with the resource. 
+     * @return The list of activities of this case. 
      */
+    public List getActivities() {
+        List acts = new ArrayList(activities.size());
+        Iterator i = activities.values().iterator();
+        while (i.hasNext()) {
+            acts.add(i.next()); 
+        }
+        return acts;
+    }
 
     /**
      * Return a specific activity, selected by its id. <p>
@@ -141,10 +149,12 @@ public class Case implements Serializable {
      * @return the activity, <code>null</code> if there is no activity
      *         with this id.
      */
+    public Activity getActivity(int id) {
+        return (Activity) activities.get(new Integer(id));
+    }
 
-
-    int nextWorkItemId() {
-	return ++workSequence;
+    int nextActivityId() {
+	return activitySequence++;
     }
 
     boolean isTemplate() {
@@ -188,7 +198,7 @@ public class Case implements Serializable {
 	}
 
 	Activity activity = new Activity(wi);
-	activities.add(activity);
+	activities.put(new Integer(activity.getId()), activity);
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
 	    this.marking[i] -= edges[i].input();
@@ -200,11 +210,11 @@ public class Case implements Serializable {
 
     boolean close(Activity activity) {
 
-	if (!activities.contains(activity)) {
+	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
 	}
 
-	activities.remove(activity);
+	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
 	    this.marking[i] += edges[i].output();
@@ -216,11 +226,11 @@ public class Case implements Serializable {
 
     boolean cancel(Activity activity) {
 
-	if (!activities.contains(activity)) {
+	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
 	}
 
-	activities.remove(activity);
+	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
 	    this.marking[i] += edges[i].input();

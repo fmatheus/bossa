@@ -39,7 +39,7 @@ public class Activity implements Serializable {
 
     Activity(WorkItem workItem) {
 	this.workItem = workItem;
-	this.id = getCase().nextWorkItemId();
+	this.id = getCase().nextActivityId();
     }
 
     /**

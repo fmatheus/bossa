@@ -133,7 +133,6 @@ public class CaseTest extends TestCase {
     public void testWorkItensList() {
 
         Case caze = newTestCase();
-
         assertTrue(fire(caze, "a"));
         assertTrue(fire(caze, "b"));
 
@@ -155,6 +154,32 @@ public class CaseTest extends TestCase {
         assertTrue(t2.getId().equals("c") || 
                    t2.getId().equals("d") ||
                    t2.getId().equals("f"));
+    }
+
+    public void testActivitiesList() {
+
+        Case caze = newTestCase();
+        assertTrue(fire(caze, "a"));
+        assertTrue(fire(caze, "b"));
+        List workItens = caze.getWorkItems();
+        WorkItem wi0 = (WorkItem) workItens.get(0);
+        WorkItem wi1 = (WorkItem) workItens.get(1);
+        caze.open(wi0);        
+        caze.open(wi1);
+
+        List activities = caze.getActivities();        
+        assertEquals(2, activities.size());
+        Activity a0 = (Activity) activities.get(0);
+        Activity a1 = (Activity) activities.get(1);
+        assertFalse(a0.getId() == a1.getId());
+        assertTrue(a0.getId() == 3 || a0.getId() == 4);
+        assertTrue(a1.getId() == 3 || a1.getId() == 4);
+        assertFalse(a0.getTransition().getId().equals(
+                                                a1.getTransition().getId()));
+        assertTrue(wi0.getId().equals(a0.getTransition().getId()) ||
+                   wi1.getId().equals(a0.getTransition().getId()));
+        assertTrue(wi0.getId().equals(a1.getTransition().getId()) ||
+                   wi1.getId().equals(a1.getTransition().getId()));
     }
 
     public void testToString() {
