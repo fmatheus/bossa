@@ -40,9 +40,9 @@ public class CaseTypeManagerTest extends TestCase {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
         
         assertTrue(caseTypeManager.registerCaseType(
-                        new CaseTypeTest("hohoho").createTestCaseType("test1")));
+                        CaseTypeTest.createTestCaseType("test1")));
         assertFalse(caseTypeManager.registerCaseType(
-                        new CaseTypeTest("hohoho").createTestCaseType("test1")));
+                        CaseTypeTest.createTestCaseType("test1")));
     }
     
     public void testQueryCaseType() {
