@@ -115,15 +115,17 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("w <id>\t\tList work itens of a case type.");
                 System.out.println("a <id>\t\tList activities of a case type.");
                 System.out.println("o <caseType> <case> <wi>\tOpen a work item.");
-                System.out.println("cl <caseType> <case> <wi>\tClose an activity.");
-                System.out.println("ca <caseType> <case> <wi>\tCancel an activity.");
+                System.out.println("cl <caseType> <case> <a>\tClose an activity.");
+                System.out.println("ca <caseType> <case> <a>\tCancel an activity.");
+                System.out.println("f <caseType> <case> <wi>\tFire a work item.");
                 System.out.println("s\t\t\t\tTakes a snapshot.");
                 System.out.println("q\t\t\t\tQuits the browser.");
             } else if (operation.equals("l")) {
+                System.out.println(" ctID");
+                System.out.println("-------------------------------------");
                 List l = caseTypeManager.getCaseTypes();
                 for (int i = 0; i < l.size(); i++) {
-                    System.out.println(" " + i + " " +
-                                       ((CaseType) l.get(i)).getId());
+                    System.out.println(" " + ((CaseType) l.get(i)).getId());
                 }    
             } else if (operation.equals("g")) {
                 String id = tokenizer.nextToken();
@@ -135,31 +137,34 @@ public class CaseTypeManagerTest extends TestCase {
                 caseTypeManager.removeCaseType(id);
                 System.out.println("ok.");
             } else if (operation.equals("c")) {
+                System.out.println(" cID\tmarking");
+                System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
                 List l = caseTypeManager.getCaseType(id).getCases();
                 for (int i = 0; i < l.size(); i++) {
                     Case caze = (Case) l.get(i);
-                    System.out.println(" " + i + " " + caze.getId() +
-                                       " " + caze);
+                    System.out.println(" " + caze.getId() + "\t" + caze);
                 }    
             } else if (operation.equals("w")) {
+                System.out.println(" ctID\tcID\twiID");
+                System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
                 List l = caseTypeManager.getCaseType(id).getWorkItems(true);
                 for (int i = 0; i < l.size(); i++) {
                     WorkItem wi = (WorkItem) l.get(i);
-                    System.out.println(" " + i + " " + id + " " +  
-                                       wi.getCase().getId() + " " +
-                                       wi.getId() +
-                                       " fireable=" + wi.isFireable());
+                    System.out.println(" " + id + "\t\t" + wi.getCase().getId() +
+                                       "\t\t" + wi.getId());
                 }    
             } else if (operation.equals("a")) {
+                System.out.println(" ctID\tcID\taID\ttransition");
+                System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
                 List l = caseTypeManager.getCaseType(id).getActivities();
                 for (int i = 0; i < l.size(); i++) {
                     Activity a = (Activity) l.get(i);
-                    System.out.println(" " + i + " " + id + " " + 
-                                       a.getCase().getId() + " " +
-                                       a.getId() + " transition=" +
+                    System.out.println(" " + id + "\t\t" + 
+                                       a.getCase().getId() + "\t\t" +
+                                       a.getId() + "\t\t" +
                                        a.getTransition().getId());
                 }
             } else if (operation.equals("o")) {
@@ -185,6 +190,15 @@ public class CaseTypeManagerTest extends TestCase {
                 Activity a = caseTypeManager.getCaseType(caseTypeId).
                                getCase(caseId).getActivity(actId);
                 boolean result = a.cancel();
+                System.out.println("ok. Success=" + result);
+            } else if (operation.equals("f")) {
+                String caseTypeId = tokenizer.nextToken();
+                int caseId = Integer.parseInt(tokenizer.nextToken());
+                String wiId = tokenizer.nextToken();
+                WorkItem wi = caseTypeManager.getCaseType(caseTypeId).
+                               getCase(caseId).getWorkItem(wiId);
+                Activity a = wi.open();
+                boolean result = a.close();
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("s")) {
                 caseTypeManager.takeSnapshot();
