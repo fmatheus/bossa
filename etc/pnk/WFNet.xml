@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE netTypeSpecification SYSTEM "netTypeSpecification.dtd">
+<netTypeSpecification name="WFNet">
+  <extendable class="de.huberlin.informatik.pnk.kernel.Net">
+    <extension name="id" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+    <extension name="initialAttributes" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+  </extendable>
+  <extendable class="de.huberlin.informatik.pnk.kernel.Place">
+    <extension name="id" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+    <extension name="initialMarking" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+  </extendable>
+  <extendable class="de.huberlin.informatik.pnk.kernel.Transition"> 
+    <extension name="id" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+    <extension name="resource" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+    <extension name="timeout" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+  </extendable> 
+  <extendable class="de.huberlin.informatik.pnk.kernel.Arc">
+    <extension name="name" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+    <extension name="weight" class="de.huberlin.informatik.pnk.netElementExtensions.base.StringExtension"/>
+  </extendable>
+</netTypeSpecification>

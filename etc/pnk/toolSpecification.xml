@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE toolSpecification SYSTEM "toolSpecification.dtd">
+<toolSpecification>
+	
+  <!-- Nettypes -->
+  
+  <nettype id="wfnet"
+           typeSpecification="file:netTypeSpecifications/WFNet.xml"/>
+	
+  <!-- Applications -->
+
+  <application id="a1"
+               mainClass="de.huberlin.informatik.pnk.editor.Editor"
+               maxinstances="inf">
+  </application>
+
+  <application id="a24"
+               mainClass="de.huberlin.informatik.pnk.app.DoNetLayout"
+               maxinstances="5">
+  </application>
+
+  <!-- Input / Output -->
+
+  <format id="pnml" ioClass="de.huberlin.informatik.pnk.appControl.PnmlInOut">
+  </format>
+	
+  <!-- default settings --> 
+	
+  <standardNettype ref="wfnet"/>
+  <standardApplication ref="a1"/>
+  <standardFormat ref="pnml"/>
+
+</toolSpecification>
