@@ -70,11 +70,11 @@ public class Edge implements Serializable {
 	return new Edge(expression) {
 
 		int weight(Case caze) throws EvaluationException {
-		    return - eval(caze);
+		    return - this.eval(caze);
 		}
 
 		int input(Case caze) throws EvaluationException {
-		    return eval(caze);
+		    return this.eval(caze);
 		}
 
 		public String toString() {
@@ -94,11 +94,11 @@ public class Edge implements Serializable {
 	return new Edge(expression) {
 
 		int weight(Case caze) throws EvaluationException {
-		    return eval(caze);
+		    return this.eval(caze);
 		}
 
 		int output(Case caze) throws EvaluationException {
-		    return eval(caze);
+		    return this.eval(caze);
 		}
 	    };
     }
