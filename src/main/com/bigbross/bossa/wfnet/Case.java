@@ -128,6 +128,10 @@ public class Case {
 	return ++workSequence;
     }
 
+    boolean isTemplate() {
+	return id == 0;
+    }
+
     private void activate() {
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (!workItems[i].isFireable()) {
@@ -157,6 +161,11 @@ public class Case {
 
 	if (!wi.isFireable()) {
 	    return null;
+	}
+
+	if (isTemplate()) {
+	    Case caze = caseType.newCase(getMarking());
+	    return caze.open(caze.getWorkItem(wi.getId()));
 	}
 
 	Activity activity = new Activity(wi);

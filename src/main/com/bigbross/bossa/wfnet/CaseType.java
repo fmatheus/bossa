@@ -47,6 +47,8 @@ public class CaseType {
 
     private Map cases;
 
+    private Case template;
+
     private int caseSequence;
 
     /**
@@ -122,7 +124,6 @@ public class CaseType {
     }
 
     public Edge getEdge(int t, int p) {
-	sync();
 	return edges[t][p];
     }
 
@@ -131,7 +132,6 @@ public class CaseType {
     }
 
     public void setEdge(int t, int p, Edge edge) {
-	sync();
 	edges[t][p] = edge;
     }
 
@@ -146,7 +146,7 @@ public class CaseType {
      * @return the next case id.
      */
     int nextCaseId() {
-        return ++caseSequence;
+        return caseSequence++;
     }
 
     /**
@@ -180,13 +180,18 @@ public class CaseType {
         return (Case) cases.get(new Integer(id));
     }
 
-    private void sync() {
+    public void buildMap(int[] marking) {
+
 	if (edges == null) {
 	    Edge edge = new Edge();
 	    edges = new Edge[transitions.size()][places.size()];
 	    for (int i = 0; i < edges.length; ++i) {
 		Arrays.fill(edges[i], edge);
 	    }
+	}
+
+	if (template == null) {
+	    template = newCase(marking);
 	}
     }
 

@@ -37,8 +37,8 @@ public class CaseTest extends TestCase {
     }
 
     Case newTestCase() {
-        return new CaseTypeTest("hohoho").createTestCaseType().
-                newCase(new int[] {1,0,0,0,0,0,0,0});
+        return CaseTypeTest.createTestCaseType().
+	    newCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
     private boolean fire(Case caze, String workItemId) {
@@ -58,8 +58,6 @@ public class CaseTest extends TestCase {
     } 
 
     public void testFirstShot() {
-        System.out.println("First Shot:");
-
         Case caze = newTestCase();
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
@@ -72,8 +70,6 @@ public class CaseTest extends TestCase {
     }
 
     public void testInvalidShot() {
-	System.out.println("Invalid Shot:");
-
         Case caze = newTestCase();
         
         int[] start = caze.getMarking();
@@ -86,8 +82,6 @@ public class CaseTest extends TestCase {
     }
 
     public void testRollback() {
-        System.out.println("Rollback:");
-
         Case caze = newTestCase();
         
         int[] start = caze.getMarking();
@@ -102,8 +96,6 @@ public class CaseTest extends TestCase {
     }
 
     public void testMachineGun() {
-	System.out.println("Machine Gun:");
-
         Case caze = newTestCase();
 
         int[] expected = new int[] {0,2,0,0,1,0,1,2};
@@ -120,8 +112,21 @@ public class CaseTest extends TestCase {
         assertTrue(sameState(expected, actual));
     }
 
+    public void testAutomaticCreation() {
+	Case template = CaseTypeTest.createTestCaseType().getCase(0);
+
+	Activity a1 = template.open(template.getWorkItem("a"));
+	Case caze = a1.getCase();
+	assertEquals(1, caze.getId());
+
+        assertTrue(caze.cancel(a1));
+
+	Activity a2 = caze.open(caze.getWorkItem("a"));
+	assertEquals(1, a2.getCase().getId());
+    }
+
     /**
-     * This test checks if the list of work itens if correct. <p>
+     * This test checks if the list of work itens is correct. <p>
      */
     public void testWorkItensList() {
 

@@ -36,11 +36,11 @@ public class CaseTypeTest extends TestCase {
     	System.out.println("Setting up a case type test.");
     }
 
-    CaseType createTestCaseType() {
+    static CaseType createTestCaseType() {
         return createTestCaseType("Testing 1,2,3...");
     }
 
-    CaseType createTestCaseType(String id) {
+    static CaseType createTestCaseType(String id) {
      
         CaseType caseType = new CaseType(id);
 
@@ -59,6 +59,8 @@ public class CaseTypeTest extends TestCase {
         Transition d = caseType.registerTransition("d", "y");
         Transition e = caseType.registerTransition("e", "y");
         Transition f = caseType.registerTransition("f", "x");
+
+	caseType.buildMap(new int[] {1,0,0,0,0,0,0,0});
 
         a.input(A,  "1");
         a.output(B, "1");
