@@ -98,11 +98,9 @@ public class Case implements Serializable {
         workItems = new HashMap(ts.size());
         for (Iterator i = ts.iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();
-            workItems.put(t.getId(), new WorkItem(this, t));
+            /* An EvaluationException can be thrown here. */
+            workItems.put(t.getId(), new WorkItem(this, t, isFireable(t)));
         }
-
-        /* An EvaluationException can be thrown here. */
-	deactivate();
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));

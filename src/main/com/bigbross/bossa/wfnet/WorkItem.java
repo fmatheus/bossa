@@ -53,16 +53,6 @@ public class WorkItem implements Serializable {
      * 
      * @param caze the case.
      * @param transition the transition.
-     */ 
-    WorkItem(Case caze, Transition transition) {
-        this(caze, transition, true);
-    }
-
-    /**
-     * Creates a new work item. <p>
-     * 
-     * @param caze the case.
-     * @param transition the transition.
      * @param fireable the work item fireable status.
      */ 
     WorkItem(Case caze, Transition transition, boolean fireable) {
@@ -74,7 +64,7 @@ public class WorkItem implements Serializable {
     /**
      * Returns the case type of this work item. <p>
      * 
-     * @return The case type of this work item.
+     * @return the case type of this work item.
      */
     public CaseType getCaseType() {
 	return getCase().getCaseType();
@@ -83,7 +73,7 @@ public class WorkItem implements Serializable {
     /**
      * Returns the case of this work item. <p>
      * 
-     * @return The case of this work item.
+     * @return the case of this work item.
      */
     public Case getCase() {
 	return caze;
@@ -92,7 +82,7 @@ public class WorkItem implements Serializable {
     /**
      * Returns the transition this work item represents. <p>
      * 
-     * @return The transition this work item represents.
+     * @return the transition this work item represents.
      */
     Transition getTransition() {
 	return transition;
@@ -102,7 +92,7 @@ public class WorkItem implements Serializable {
      * Returns the id of this work item. It is the same id of the
      * transition this work item represents. <p>
      * 
-     * @return The id of this work item.
+     * @return the id of this work item.
      */
     public String getId() {
         return getTransition().getId();
@@ -148,7 +138,7 @@ public class WorkItem implements Serializable {
      * completion of the work item in handled by the created activity. <p>
      * 
      * @param resource the resource that is opening the work item.
-     * @return The activity created by the opening of this work item,
+     * @return the activity created by the opening of this work item,
      *         <code>null</code> if the work item could not be opened.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
