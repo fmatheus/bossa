@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.bigbross.bossa.notify.Event;
+import com.bigbross.bossa.resource.ResourceEvents;
+import com.bigbross.bossa.wfnet.WFNetEvents;
 
 /**
  * This class keeps the historical records of a Bossa engine. <p>
@@ -65,12 +67,98 @@ public class Historian implements Serializable {
     }
     
     /**
-     * Return all events that took place util now. <p>
+     * Filters the events inside a time range by case, case type and
+     * resource. The time range will be computed including the start date
+     * and excluding the end date. <p>
      * 
-     * @return all events that took place util now.
+     * @param start the start date.
+     * @param end the end date.
+     * @return the filtered events.
+     */
+    private List filterHistory(Date start, Date end, String caseTypeId,
+                               int caseId, String resourceId) {
+        int startPosition, endPosition;
+        startPosition = start == null ? 0 : findPlaceInHistory(start);
+        endPosition = end == null ? history.size() : findPlaceInHistory(end);
+        List events = new ArrayList(Math.abs(endPosition - startPosition));
+        for (int i = startPosition; i < endPosition; i++) {
+            Event event = (Event) history.get(i);
+            if (caseTypeId != null && ! hasCaseType(event, caseTypeId)) {
+                continue;
+            }
+            if (caseId != -1 && caseTypeId != null &&
+                ! hasCase(event, caseId)) {
+                continue;
+            }
+            if (resourceId != null && ! hasResource(event, resourceId)) {
+                continue;
+            }
+            events.add(event);
+        }
+        return events;
+    }
+
+    /**
+     * Indicates if an event was related to a case type. <p> 
+     * 
+     * @param event the event.
+     * @param caseTypeId the id of the case type.
+     * @return <code>true</code> if the case type is present in the event;
+     *         <code>false</code> otherwise.
+     */
+    private boolean hasCaseType(Event event, String caseTypeId) {
+        if (event.getType() == Event.WFNET_EVENT) {
+            return caseTypeId.equals(event.getAttributes().get(
+                                           WFNetEvents.ATTRIB_CASE_TYPE_ID)); 
+        }
+        return false;
+    }
+
+    /**
+     * Indicates if an event was related to a case. <p> 
+     * 
+     * @param event the event.
+     * @param caseId the id of the case.
+     * @return <code>true</code> if the case is present in the event;
+     *         <code>false</code> otherwise.
+     */
+    private boolean hasCase(Event event, int caseId) {
+        if (event.getType() == Event.WFNET_EVENT) {
+            return new Integer(caseId).equals(event.getAttributes().get(
+                                                  WFNetEvents.ATTRIB_CASE_ID)); 
+        }
+        return false;
+    }
+
+    /**
+     * Indicates if an event was related to a resource. <p> 
+     * 
+     * @param event the event.
+     * @param resourceId the resource id.
+     * @return <code>true</code> if the resource is present in the event;
+     *         <code>false</code> otherwise.
+     */
+    private boolean hasResource(Event event, String resourceId) {
+        if (event.getType() == Event.RESOURCE_EVENT) {
+            return resourceId.equals(event.getAttributes().get(
+                                    ResourceEvents.ATTRIB_HOST_RESOURCE_ID)) || 
+                   resourceId.equals(event.getAttributes().get(
+                                    ResourceEvents.ATTRIB_RESOURCE_ID));
+        }
+        if (event.getType() == Event.WFNET_EVENT) {
+            return resourceId.equals(event.getAttributes().get(
+                                    WFNetEvents.ATTRIB_RESOURCE_ID));
+        }
+        return false;
+    }
+
+    /**
+     * Return all events that took place until now. <p>
+     * 
+     * @return all events that took place until now.
      */
     public List getHistory() {
-        return getHistory(null, null); 
+        return filterHistory(null, null, null, -1, null);
     }
     
     /**
@@ -81,7 +169,7 @@ public class Historian implements Serializable {
      * @return the events that took place after the start date until now.
      */
     public List getHistory(Date start) {
-        return getHistory(start, null);
+        return filterHistory(start, null, null, -1, null);
     }
     
     /**
@@ -93,14 +181,128 @@ public class Historian implements Serializable {
      * @return the events that took place between the two dates.
      */
     public List getHistory(Date start, Date end) {
-        int startPosition, endPosition;
-        startPosition = start == null ? 0 : findPlaceInHistory(start);
-        endPosition = end == null ? history.size() : findPlaceInHistory(end);
-        List events = new ArrayList(Math.abs(endPosition - startPosition));
-        for (int i = startPosition; i < endPosition; i++) {
-            events.add(history.get(i));
-        }
-        return events;
+        return filterHistory(start, end, null, -1, null);
+    }
+    
+    /**
+     * Return all events that took place until now and are related to a
+     * case type. <p>
+     * 
+     * @param caseTypeId the id of the case type.
+     * @return all events that took place until now related to the case type.
+     */
+    public List getCaseTypeHistory(String caseTypeId) {
+        return filterHistory(null, null, caseTypeId, -1, null);
+    }
+    
+    /**
+     * Returns the events that took place after the start date, inclusive,
+     * until now and are related to a case type. <p>
+     * 
+     * @param start the start date.
+     * @param caseTypeId the id of the case type.
+     * @return the events that took place after the start date until now
+     *         related to the case type.
+     */
+    public List getCaseTypeHistory(Date start, String caseTypeId) {
+        return filterHistory(start, null, caseTypeId, -1, null);
+    }
+    
+    /**
+     * Returns the events that took place between the start date and the
+     * end date, including the start date and excluding the end date, and
+     * are related to a case type. <p>
+     * 
+     * @param start the start date.
+     * @param end the end date.
+     * @param caseTypeId the id of the case type.
+     * @return the events that took place between the two dates, related to
+     *         the case type.
+     */
+    public List getCaseTypeHistory(Date start, Date end, String caseTypeId) {
+        return filterHistory(start, end, caseTypeId, -1, null);
+    }
+    
+    /**
+     * Return all events that took place until now and are related to a
+     * case. <p>
+     * 
+     * @param caseTypeId the id of the case type.
+     * @param caseId the id of the case.
+     * @return all events that took place util now related to the case.
+     */
+    public List getCaseHistory(String caseTypeId, int caseId) {
+        return filterHistory(null, null, caseTypeId, caseId, null);
+    }
+    
+    /**
+     * Returns the events that took place after the start date, inclusive,
+     * until now and are related to a case. <p>
+     * 
+     * @param start the start date.
+     * @param caseTypeId the id of the case type.
+     * @param caseId the id of the case.
+     * @return the events that took place after the start date until now
+     *         related to the case.
+     */
+    public List getCaseHistory(Date start, String caseTypeId, int caseId) {
+        return filterHistory(start, null, caseTypeId, caseId, null);
+    }
+    
+    /**
+     * Returns the events that took place between the start date and the
+     * end date, including the start date and excluding the end date, and
+     * are related to a case. <p>
+     * 
+     * @param start the start date.
+     * @param end the end date.
+     * @param caseTypeId the id of the case type.
+     * @param caseId the id of the case.
+     * @return the events that took place between the two dates, related
+     *         to the case.
+     */
+    public List getCaseHistory(Date start, Date end,
+                               String caseTypeId, int caseId) {
+        return filterHistory(start, end, caseTypeId, caseId, null);
+    }
+    
+    /**
+     * Return all events that took place until now and are related to a
+     * resource. <p>
+     * 
+     * @param resourceId the id of the resource.
+     * @return all events that took place until now related to the resource.
+     */
+    public List getResourceHistory(String resourceId) {
+        return filterHistory(null, null, null, -1, resourceId);
+    }
+    
+    /**
+     * Returns the events that took place after the start date, inclusive,
+     * until now and are related to a resource. <p>
+     * 
+     * @param start the start date.
+     * @param resourceId the id of the resource.
+     * @return the events that took place after the start date until now
+     *         related to the resource.
+     */
+    public List getResourceHistory(Date start, String resourceId) {
+        return filterHistory(start, null, null, -1, resourceId);
+    }
+    
+    /**
+     * Returns the events that took place between the start date and the end
+     * date, including the start date and excluding the end date, and
+     * are related to a resource. <p>
+     * 
+     * @param start the start date.
+     * @param end the end date.
+     * @param resourceId the id of the resource.
+     * @return the events that took place between the two dates, related to
+     *         the resource.
+     */
+    public List getResourceHistory(Date start, Date end, String resourceId) {
+        return filterHistory(start, end, null, -1, resourceId);
     }
     
     /**

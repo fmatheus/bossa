@@ -31,6 +31,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.notify.Event;
+import com.bigbross.bossa.resource.ResourceEvents;
+import com.bigbross.bossa.wfnet.WFNetEvents;
 
 public class HistorianTest extends TestCase {
 
@@ -47,18 +49,33 @@ public class HistorianTest extends TestCase {
 
     protected void setUp() {
         historian = new Historian();
+        HashMap attributes = new HashMap();
+        attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype1");
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(1));
+        attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource1");
         Date aTime = new Date();
         aTime.setTime(t1);
-        e0 = new Event("teste0", Event.WFNET_EVENT, new HashMap(), aTime);
+        e0 = new Event("teste0", Event.WFNET_EVENT, attributes, aTime);
+        attributes = new HashMap();
+        attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype2");
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(1));
+        attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource2");
         aTime = new Date();
         aTime.setTime(t2);
-        e1 = new Event("teste1", Event.WFNET_EVENT, new HashMap(), aTime);
+        e1 = new Event("teste1", Event.WFNET_EVENT, attributes, aTime);
+        attributes = new HashMap();
+        attributes.put(ResourceEvents.ATTRIB_HOST_RESOURCE_ID, "hostresource");
+        attributes.put(ResourceEvents.ATTRIB_RESOURCE_ID, "resource1");
         aTime = new Date();
         aTime.setTime(t3);
-        e2 = new Event("teste2", Event.RESOURCE_EVENT, new HashMap(), aTime);
+        e2 = new Event("teste2", Event.RESOURCE_EVENT, attributes, aTime);
+        attributes = new HashMap();
+        attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype1");
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(2));
+        attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource3");
         aTime = new Date();
         aTime.setTime(t4);
-        e3 = new Event("teste3", Event.WFNET_EVENT, new HashMap(), aTime);
+        e3 = new Event("teste3", Event.WFNET_EVENT, attributes, aTime);
     }
 
     public void testNewEvents() {
@@ -121,5 +138,46 @@ public class HistorianTest extends TestCase {
         assertSame(e2, events.get(1));
         
         assertEquals(0, historian.getHistory(end, start).size());
+    }
+    
+    public void testCaseTypeHistory() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        List events = historian.getCaseTypeHistory("casetype1");
+        assertEquals(2, events.size());
+        assertSame(e0, events.get(0));
+        assertSame(e3, events.get(1));
+        
+        assertEquals(0, historian.getCaseTypeHistory("foo").size());
+    }
+
+    public void testCaseHistory() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        List events = historian.getCaseHistory("casetype1", 2);
+        assertEquals(1, events.size());
+        assertSame(e3, events.get(0));
+        
+        assertEquals(0, historian.getCaseHistory("casetype1", 4).size());
+    }
+
+    public void testResourceHistory() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        List events = historian.getResourceHistory("resource1");
+        assertEquals(2, events.size());
+        assertSame(e0, events.get(0));
+        assertSame(e2, events.get(1));
+        
+        assertEquals(0, historian.getCaseTypeHistory("bar").size());
     }
 }
