@@ -230,7 +230,7 @@ public class Case implements Serializable {
      * @return the work item, <code>null</code> if there is no work item
      *         with this id.
      */
-    WorkItem getWorkItem(String id) {
+    public WorkItem getWorkItem(String id) {
         return (WorkItem) workItems.get(id);
     }
 
@@ -252,7 +252,7 @@ public class Case implements Serializable {
      * @return the activity, <code>null</code> if there is no activity
      *         with this id.
      */
-    Activity getActivity(int id) {
+    public Activity getActivity(int id) {
         return (Activity) activities.get(new Integer(id));
     }
 
