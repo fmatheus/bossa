@@ -32,9 +32,9 @@ import java.util.List;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
-import com.bigbross.bossa.DataTransferException;
+import com.bigbross.bossa.io.DataTransferException;
+import com.bigbross.bossa.io.EventsXMLHelper;
 import com.bigbross.bossa.notify.Event;
-import com.bigbross.bossa.notify.EventsXMLHelper;
 import com.bigbross.bossa.resource.ResourceEvents;
 import com.bigbross.bossa.wfnet.WFNetEvents;
 

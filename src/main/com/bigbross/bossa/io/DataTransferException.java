@@ -22,7 +22,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
+package com.bigbross.bossa.io;
+
+import com.bigbross.bossa.BossaException;
 
 
 /**

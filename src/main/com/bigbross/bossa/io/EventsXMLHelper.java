@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa.notify;
+package com.bigbross.bossa.io;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -43,7 +43,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.bigbross.bossa.DataTransferException;
+import com.bigbross.bossa.notify.Event;
 
 
 /**
