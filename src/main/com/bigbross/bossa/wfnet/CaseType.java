@@ -163,9 +163,7 @@ public class CaseType implements Serializable {
      */
     Case newCase(int[] marking) throws EvaluationException {
         Case caze = new Case(this, marking);
-        if (!caze.isTemplate()) {
-            cases.put(new Integer(caze.getId()), caze);
-        }
+        cases.put(new Integer(caze.getId()), caze);
         return caze;
     }
     
@@ -193,7 +191,7 @@ public class CaseType implements Serializable {
      */ 
     public void buildTemplate(int[] marking) throws EvaluationException {
         if (template == null) {
-            template = newCase(marking);
+            template = new Case(this, marking);
         }
     }
 
