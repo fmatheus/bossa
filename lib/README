@@ -14,6 +14,12 @@ Bossa requires the following software to run:
    Notes: The newer the better, 1.4 works fine (and fast).
    URL: http://java.sun.com/
 
+ * JAXP 1.2 parser/transformer
+   Notes: If you are using J2SE 1.4 these are already provided. Otherwise,
+   Jakarta Xalan-Java 2 (which includes a parser) is a good open source
+   implementation.
+   URL: http://xml.apache.org/xalan-j/
+
  + Prevayler >=2.00.001
    URL: http://www.prevayler.org/
 
