@@ -115,7 +115,7 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
-        assertEquals(act.getTransition().getId(), /* FIXME */
+        assertEquals(act.getWorkItemId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
         assertEquals(new Integer(act.getCase().getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
@@ -139,7 +139,7 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
-        assertEquals(act.getTransition().getId(), /* FIXME */
+        assertEquals(act.getWorkItemId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
         assertEquals(new Integer(act.getCase().getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));

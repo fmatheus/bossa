@@ -162,7 +162,7 @@ public class CaseTest extends TestCase {
 
         Activity act = caze.getActivity(1);
         assertNotNull(act);
-        assertEquals("a", act.getTransition().getId());
+        assertEquals("a", act.getWorkItemId());
         assertNull(caze.getActivity(2));
     }
 

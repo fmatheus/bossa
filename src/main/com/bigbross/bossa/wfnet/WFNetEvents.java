@@ -188,7 +188,7 @@ public abstract class WFNetEvents {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_ACTIVITY_ID, new Integer(act.getId()));
-            attrib.put(ATTRIB_ACTIVITY_WI_ID, act.getTransition().getId()); /*FIXME*/
+            attrib.put(ATTRIB_ACTIVITY_WI_ID, act.getWorkItemId());
             attrib.put(ATTRIB_CASE_ID, new Integer(act.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, act.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, act.getResource().getId());

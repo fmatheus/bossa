@@ -74,6 +74,15 @@ public class Activity implements Serializable {
     }
 
     /**
+     * Returns the id of the work item that created this activity. <p>
+     * 
+     * @return the id of the work item that created this activity.
+     */
+    public String getWorkItemId() {
+        return getTransition().getId();
+    }
+
+    /**
      * Returns the case type of this activity. <p>
      * 
      * @return The case type of this activity.
@@ -96,7 +105,7 @@ public class Activity implements Serializable {
      * 
      * @return The transition the open work item represents.
      */
-    public Transition getTransition() {
+    Transition getTransition() {
 	return workItem.getTransition();
     }
 

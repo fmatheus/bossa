@@ -427,10 +427,9 @@ public class Case implements Serializable {
         deactivate();
 
         Resource group =
-            getResourceRegistry().getResource(wi.getTransition().getId());
+            getResourceRegistry().getResource(wi.getId());
         if (group == null) {
-            group = getResourceRegistry().createResourceImpl(
-                        wi.getTransition().getId());
+            group = getResourceRegistry().createResourceImpl(wi.getId());
         }
         group.includeImpl(resource);
 
@@ -527,8 +526,8 @@ public class Case implements Serializable {
 	activate();
 
         Resource resource = activity.getResource();
-        Resource group = getResourceRegistry().getResource(
-                            activity.getTransition().getId());
+        Resource group =
+            getResourceRegistry().getResource(activity.getWorkItemId());
         group.removeImpl(resource);
 
         activities.remove(new Integer(activity.getId()));

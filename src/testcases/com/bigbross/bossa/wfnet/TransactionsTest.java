@@ -81,7 +81,7 @@ public class TransactionsTest extends TestCase {
 
         Activity act = (Activity) transaction.execute(caseTypeManager, now);
         assertNotNull(act);
-        assertEquals(wi.getTransition().getId(), act.getTransition().getId());
+        assertEquals(wi.getId(), act.getWorkItemId());
 
         int[] expected = new int[] {0,0,0,0,0,0,0,0};
         int[] actual = caze.getMarking();

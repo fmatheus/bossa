@@ -197,7 +197,7 @@ public class BossaBrowser {
                             + "\t\t"
                             + a.getId()
                             + "\t\t"
-                            + a.getTransition().getId());
+                            + a.getWorkItemId());
                 }
             } else if (operation.equals("t")) {
                 System.out.println("\trID\tgroup?");
@@ -326,7 +326,7 @@ public class BossaBrowser {
                             + "\t\t"
                             + a.getId()
                             + "\t\t"
-                            + a.getTransition().getId());
+                            + a.getWorkItemId());
                 }
             } else if (operation.equals("o")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());

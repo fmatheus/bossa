@@ -94,7 +94,7 @@ public class WorkItem implements Serializable {
      * 
      * @return The transition this work item represents.
      */
-    public Transition getTransition() {
+    Transition getTransition() {
 	return transition;
     }
 
@@ -118,14 +118,23 @@ public class WorkItem implements Serializable {
 	return fireable;
     }
 
+    /**
+     * Indicates if this work item can be open by the provided resource. <p>
+     * 
+     * @param resource the resource.
+     * @return <code>true</code> if the resource can open this work item;
+     *         <code>false</code> otherwise.
+     */
     public boolean canBePerformedBy(Resource resource) {
-        return getTransition().getResource().contains(caze.getResourceRegistry(), resource);
+        return getTransition().getResource().
+                    contains(caze.getResourceRegistry(), resource);
     }
 
     /**
      * Updates the firing status of this work item. <p>
      * 
-     * @return <code>true</code> if the work item is fireable, <code>false</code> otherwise.
+     * @return <code>true</code> if the work item is fireable,
+     *         <code>false</code> otherwise.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */

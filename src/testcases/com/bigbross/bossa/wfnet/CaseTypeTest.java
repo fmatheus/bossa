@@ -152,7 +152,7 @@ public class CaseTypeTest extends TestCase {
                    c1.getId() == a2.getCase().getId());
         assertTrue(c2.getId() == a1.getCase().getId() ||
                    c2.getId() == a2.getCase().getId());
-        assertEquals("a", a1.getTransition().getId());
-        assertEquals("a", a2.getTransition().getId());
+        assertEquals("a", a1.getWorkItemId());
+        assertEquals("a", a2.getWorkItemId());
     }
 }
