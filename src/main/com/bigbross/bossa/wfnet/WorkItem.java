@@ -27,6 +27,7 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.resource.Expression;
 import com.bigbross.bossa.resource.Resource;
 
 /**
@@ -116,8 +117,10 @@ public class WorkItem implements Serializable {
      *         <code>false</code> otherwise.
      */
     public boolean canBePerformedBy(Resource resource) {
-        return getTransition().getResource().
-                    contains(caze.getResourceRegistry(), resource);
+        Expression e = getTransition().getResource();
+        return e == null ? 
+                true :
+                e.contains(caze.getResourceRegistry(), resource);
     }
 
     /**

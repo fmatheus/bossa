@@ -29,19 +29,21 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
 
 public class CaseTest extends TestCase {
 
-    static final Resource jdoe = ResourceUtil.createResource("jdoe");
+    private Resource jdoe;
 
     public CaseTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
+        jdoe = ResourceUtil.createResource("jdoe");
     }
 
     static boolean sameState(int[] s1, int[] s2) {
@@ -179,6 +181,28 @@ public class CaseTest extends TestCase {
         assertNotSame(w0, w1);
         assertNotNull(caze.getWorkItem("a"));
         assertNotNull(caze.getWorkItem("b"));
+    }
+    
+    public void testCanPerformWorkItem() throws BossaException {
+        CaseType caseType = new CaseType("canPerform");
+        Place A = caseType.registerPlace("A", 1);
+        Transition a = caseType.registerTransition("a", "bosses");
+        Transition b = caseType.registerTransition("b", "");
+        Transition c = caseType.registerTransition("c", null);
+        a.input(A,  "1");
+        b.input(A,  "1");
+        c.input(A,  "1");
+        caseType.buildTemplate(null);
+        Resource mary = ResourceUtil.createResource("mary");
+        Resource bosses = (Resource) caseType.getResources().get(0);
+        assertEquals("bosses", bosses.getId());
+        bosses.includeImpl(jdoe, false);
+        
+        Case caze = caseType.openCase();
+        assertTrue(caze.getWorkItem("a").canBePerformedBy(jdoe));
+        assertFalse(caze.getWorkItem("a").canBePerformedBy(mary));
+        assertTrue(caze.getWorkItem("b").canBePerformedBy(jdoe));
+        assertTrue(caze.getWorkItem("c").canBePerformedBy(jdoe));
     }
 
     public void testGetActivity() throws Exception {

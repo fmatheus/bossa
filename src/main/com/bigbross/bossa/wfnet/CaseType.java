@@ -127,7 +127,9 @@ public class CaseType implements Serializable {
      *
      * @param id the transition id.
      * @param resource the expression to select the resource responsible by
-     *        this transition.
+     *        this transition. <code>null</code> or a empty string means
+     *        every resource can perform work itens associated with this
+     *        transition.
      * @return the created transition.
      * @see com.bigbross.bossa.resource.Expression
      */

@@ -59,12 +59,12 @@ public class CaseTypeTest extends TestCase {
 
     public void testTransition() throws BossaException {
         CaseType caseType = new CaseType("transitions");
-        caseType.registerTransition("a", "joedoe");
+        caseType.registerTransition("a", "bosses");
         caseType.registerTransition("b", "");
         caseType.registerTransition("c", null);
         caseType.buildTemplate(null);
         
-        assertEquals("joedoe",
+        assertEquals("bosses",
                      caseType.getTransition("a").getResource().toString());
         assertNull(caseType.getTransition("b").getResource());
         assertNull(caseType.getTransition("c").getResource());
