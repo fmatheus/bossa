@@ -19,11 +19,11 @@ organized as a library to be used by server side applications
 in the future, to implement a shell over the current library to offer
 workflow services as a stand alone server.
 
-Bossa is being built by the BigBross team (http://bigbross.com), an
-effort to produce first class open source software in Brazil.
+Bossa is being built by the BigBross team (http://www.bigbross.com),
+an effort to produce first class open source software in Brazil.
 
-The Bossa project page is located at http://bigbross.com/bossa. Look
-there for more informations about Bossa: features, documentation,
+The Bossa project page is located at http://www.bigbross.com/bossa.
+Look there for more informations about Bossa: features, documentation,
 examples, mailing lists, cvs access, etc.
 
 Bossa is free software, licensed under the GNU GPL (see the file
@@ -32,6 +32,17 @@ Bossa is free software, licensed under the GNU GPL (see the file
 This software is OSI Certified Open Source Software.
 OSI Certified is a certification mark of the Open Source Initiative.
 (http://www.opensource.org/)
+
+
+Status
+======
+
+Bossa is still alpha quality software.
+
+We have a fully functional workflow engine and we are confident that
+there are no major bugs. However, the APIs are still young and liable
+to change. So, we do not recommend the use of Bossa in production
+environments, yet.
 
 
 Compiling Bossa
@@ -84,7 +95,7 @@ Bossa requires the following software to compile:
   Notes: Binaries not available at the site, get from our download page.
   URL: http://www.prevayler.org/
 
-* BSF CVS (2.3.0-rc1+)
+* BSF CVS
   Notes: We need the current cvs version of BSF, get binaries from our
   download page.
   URL: http://jakarta.apache.org/bsf/
@@ -99,7 +110,7 @@ Bossa requires the following software to run:
 
 * Prevayler 1.03.003
 
-* BSF CVS (2.3.0-rc1+)
+* BSF CVS
 
 * Rhino
 
