@@ -22,9 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa.wfnet;
-
-import com.bigbross.bossa.BossaException;
+package com.bigbross.bossa;
 
 /**
  * This exception is thrown if an error occours when making an
