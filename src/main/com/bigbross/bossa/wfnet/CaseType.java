@@ -135,6 +135,9 @@ public class CaseType implements Serializable {
      * transition will never fire automatically. If it is zero, this
      * transition will fire immediately. <p>
      *
+     * NOTICE: As of this version of Bossa, the only timeout possible is
+     * zero or no timeout. <p>
+     *
      * @param id the transition id.
      * @param resource the expression to select the resource responsible by
      *        this transition.
@@ -153,6 +156,9 @@ public class CaseType implements Serializable {
     /**
      * Creates a transition with the specified id and resource expression,
      * but with no timeout, in this case type. <p>
+     *
+     * NOTICE: As of this version of Bossa, the only timeout possible is
+     * zero or no timeout. <p>
      *
      * @param id the transition id.
      * @param resource the expression to select the resource responsible by

@@ -157,7 +157,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testZeroTimeout() throws Exception {
-/*        CaseType caseType = new CaseType("auto-fire");
+        CaseType caseType = new CaseType("auto-fire");
         Place A = caseType.registerPlace("A", 1);
         Place B = caseType.registerPlace("B");
         Place C = caseType.registerPlace("C");
@@ -172,7 +172,9 @@ public class CaseTest extends TestCase {
 
         assertTrue(sameState(new int[] {1,0,0}, caze.getMarking()));
         assertTrue(WFNetUtil.fire(caze, "a", null));
-        assertTrue(sameState(new int[] {0,0,1}, caze.getMarking()));*/
+        assertTrue(sameState(new int[] {0,0,1}, caze.getMarking()));
+        /* Add a test to stress nested auto firing and case closing. */
+        assertEquals(0, caseType.getCases().size());
     }
 
     public void testAutomaticCreation() throws Exception {

@@ -339,25 +339,24 @@ public class Case implements Serializable {
     /**
      * Tries to activate all deactivated transitions of this case. <p>
      * 
-     * @return the number of fireable work items.
+     * @return a list of the activated work items.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    private int activate() throws EvaluationException {
-        int actives = workItems.size();
+    private List activate() throws EvaluationException {
+        ArrayList activated = new ArrayList(workItems.size());
         for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
             WorkItem wi = (WorkItem) i.next();
             if (!wi.isFireable()) {
                 if (wi.update()) {
+                  activated.add(wi);
                   eventQueue.newWorkItemEvent(getBossa(),
                                               WFNetEvents.ID_WORK_ITEM_ACTIVE,
                                               wi, null);
-                } else {
-                    actives -= 1;
                 }
             }
         }
-        return actives;
+        return activated;
     }
 
     /**
@@ -415,7 +414,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    public Activity open(WorkItem wi, Resource resource)
+    Activity open(WorkItem wi, Resource resource)
         throws BossaException {
 
 	if (!wi.isFireable()) {
@@ -483,7 +482,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    public boolean close(Activity activity, Map newAttributes)
+    boolean close(Activity activity, Map newAttributes)
         throws BossaException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
@@ -503,15 +502,17 @@ public class Case implements Serializable {
         }
 
         /* An EvaluationException can be inconsistently thrown here. */
-	int actives = activate();
+	List activated = activate();
         activities.remove(new Integer(activity.getId()));
 
         eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
                                     activity);
         eventQueue.notifyAll(getBossa());
 
-        if (actives == 0 && activities.size() == 0) {
+        if (getWorkItems().size() == 0 && activities.size() == 0) {
             caseType.closeCase(this);
+        } else {
+            processTimedFiring(activated);
         }
 
 	return true;
@@ -532,7 +533,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    public boolean cancel(Activity activity) throws EvaluationException {
+    boolean cancel(Activity activity) throws EvaluationException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
@@ -562,6 +563,36 @@ public class Case implements Serializable {
         eventQueue.notifyAll(getBossa());
 
 	return true;
+    }
+
+    /**
+     * Performs the required actions related to timed firing in a list
+     * of activated work items. <p>
+     * 
+     * @param activated the list of activated work items.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
+     */
+    private void processTimedFiring(List activated) throws BossaException {
+        for (Iterator i = activated.iterator(); i.hasNext(); ) {
+            WorkItem wi = (WorkItem) i.next();
+            /*
+             * We may have a deep, nested chain of timed firings.
+             * Before acting, check if the work item is still active.
+             * *And* we only process zero timeouts for now.
+             */ 
+            if (wi.isFireable() && wi.getTransition().getTimeout() == 0) {
+                Resource timerResource =
+                    getResourceRegistry().getResource("__timer");
+                if (timerResource == null) {
+                    timerResource = getResourceRegistry().
+                                          createResourceImpl("__timer", false);
+                } 
+                Activity a = open(wi, timerResource);
+                close(a, null);
+            }
+        }
     }
 
     public String toString() {
