@@ -147,6 +147,14 @@ public class ResourceManager implements Serializable {
      *         <code>false</code> if the resource was not found.
      */
     public boolean removeResourceImpl(Resource resource) {
-        return resources.remove(resource.getId()) != null;
+        if (resources.remove(resource.getId()) != null) {
+            Iterator i = resources.values().iterator();
+            while (i.hasNext()) {
+                ((Resource) i.next()).removeImpl(resource);
+            } 
+            return true;
+        } else {
+            return false;
+        }
     }
 }

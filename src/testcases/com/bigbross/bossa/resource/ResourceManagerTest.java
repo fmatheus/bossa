@@ -32,42 +32,43 @@ import junit.framework.TestCase;
 
 public class ResourceManagerTest extends TestCase {
 
+    private ResourceManager resourceManager;
+
     public ResourceManagerTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
 	System.out.println("Setting up a resource manager test.");
+        resourceManager = new ResourceManager();
     }
 
     public void testCreateResource() {
-        ResourceManager resourceManager = new ResourceManager();
-
         assertNotNull(resourceManager.createResourceImpl("testResource"));
         assertNull(resourceManager.createResourceImpl("testResource"));
     }
     
     public void testGetResource() {
-        ResourceManager resourceManager = new ResourceManager();
         assertNull(resourceManager.getResource("testResource"));
-
         Resource test = resourceManager.createResourceImpl("testResource");
         assertNotNull(test);
-
         assertSame(test, resourceManager.getResource("testResource"));
         assertSame(resourceManager, test.getResourceManager());
     }
 
     public void testRemoveResource() {
-        ResourceManager resourceManager = new ResourceManager();
-
-        assertNotNull(resourceManager.createResourceImpl("testResource"));
-
-        Resource test = resourceManager.getResource("testResource");
+        Resource test = resourceManager.createResourceImpl("testResource");
         assertNotNull(test);
         assertTrue(resourceManager.removeResourceImpl(test));
-
         assertNotNull(resourceManager.createResourceImpl("testResource"));
     }
 
+    public void testNestedRemoveResource() {
+        Resource r1 = resourceManager.createResourceImpl("r1");
+        Resource r2 = resourceManager.createResourceImpl("r2");
+        r1.includeImpl(r2);
+        
+        assertTrue(resourceManager.removeResourceImpl(r2));
+        assertFalse(r1.contains(r2));
+    }
 }
