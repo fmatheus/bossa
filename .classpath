@@ -7,5 +7,6 @@
     <classpathentry kind="lib" path="/usr/share/java/prevayler.jar"/>
     <classpathentry kind="lib" path="/usr/share/java/log4j.jar"/>
     <classpathentry kind="lib" path="/usr/share/java/bsf-JS-patch.jar"/>
+    <classpathentry kind="lib" path="/usr/share/java/rhino.jar"/>
     <classpathentry kind="output" path="build/eclipse"/>
 </classpath>
