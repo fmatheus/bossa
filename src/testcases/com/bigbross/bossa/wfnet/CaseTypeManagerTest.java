@@ -61,4 +61,9 @@ public class CaseTypeManagerTest extends TestCase {
         caseTypeManager.removeCaseType("test1");
         assertNull(caseTypeManager.getCaseType("test1"));
     }
+    
+    public static void main(String[] args) {
+        System.out.println("Starting system...");
+        CaseTypeManager caseTypeManager = CaseTypeManager.getInstance();
+    }
 }

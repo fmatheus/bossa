@@ -4,5 +4,6 @@
     <classpathentry kind="src" path="src/testcases"/>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="/usr/share/java/junit.jar"/>
+    <classpathentry kind="lib" path="/home/gdvieira/devel/prevail/bin/prevayler-1.03.jar"/>
     <classpathentry kind="output" path="build/eclipse"/>
 </classpath>

@@ -24,22 +24,81 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.prevayler.Command;
+import org.prevayler.Prevayler;
+import org.prevayler.implementation.AbstractPrevalentSystem;
+import org.prevayler.implementation.SnapshotPrevayler;
+
 /**
  * This class manages all registered case types of the workflow
- * system. It provides all the case type life cycle functions. <p>
+ * system. It provides all the case type life cycle functions and is
+ * the entry point of the WFNet package. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class CaseTypeManager {
+public class CaseTypeManager extends AbstractPrevalentSystem {
     
-    Map caseTypes;
+    /*
+     * Static part of class, responsible for singleton behavior.
+     */
+
+    /**
+     * The instance of this singleton object. <p>
+     */
+    private static CaseTypeManager instance = null;
+
+    /**
+     * Gets the instance of this singleton object. If there isn't an
+     * instance allocated yet, one is created. <p>
+     *
+     * @return The instance of this singleton object.
+     */
+    public static CaseTypeManager getInstance() {
+
+        if (instance == null) {
+            try {
+                Prevayler prevayler = new SnapshotPrevayler(new CaseTypeManager(),
+                                                            "WFNet");
+                instance = (CaseTypeManager) prevayler.system();
+                instance.setPrevayler(prevayler);
+            } catch (IOException e) {
+                /* FIXME: Throw an exception here. */
+                System.out.println("Prevayler error, IOException.");
+            } catch (ClassNotFoundException e) {
+                /* FIXME: Throw an exception here. */
+                System.out.println("Prevayler error, ClassNotFoundException.");
+            } 
+        }
+        return instance;
+    }
+
+
+    /*
+     * Instance part of class.
+     */
+
+    private Map caseTypes;
+
+    private transient Prevayler prevayler;
     
     public CaseTypeManager() {
         caseTypes = new HashMap();
+        prevayler = null;
     }
+
+    private void setPrevayler(Prevayler prevayler) {
+        this.prevayler = prevayler;
+    }
+    
+    Serializable executeCommand(Command command) throws Exception {
+        /* FIXME: Get the prevayler especific exceptions and wrap them. */
+        return prevayler.executeCommand(command);
+    }    
 
     /**
      * Registers a new case type in the manager. <p>
