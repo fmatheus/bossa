@@ -87,6 +87,17 @@ public class ResourceManager implements Serializable {
     }
 
     /**
+     * Returns all registered resources. <p>
+     * 
+     * @return A list of all resources registered.
+     */
+    public List getResources() {
+        ArrayList resourceList = new ArrayList();
+        resourceList.addAll(resources.values());
+        return resourceList;
+    }
+
+    /**
      * Creates a new resource in the manager. <p>
      * 
      * @param id the id of the resource to be created.
