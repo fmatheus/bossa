@@ -76,16 +76,22 @@ public class CaseTypeTest extends TestCase {
                      ((WorkItem) template.getWorkItems().get(0)).getId());
     }
 
-    public void testNewCase() {
-        Case caze = null;
-        try {
-            caze = WFNetUtil.createCaseType("test").
-                openCase(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+    public void testOpenCase() {
+        Case caze = WFNetUtil.createCase();
         assertNotNull(caze);
+
+        CaseType caseType = caze.getCaseType();
+        assertSame(caze, caseType.getCase(1));
+    }
+
+    public void testCloseCase() {
+        Case caze = WFNetUtil.createCase(new int[] {0,0,0,0,1,0,0,0});
+        CaseType caseType = caze.getCaseType();
+        assertSame(caze, caseType.getCase(1));
+        assertTrue(WFNetUtil.fire(caze, "d", null));
+        assertSame(caze, caseType.getCase(1));
+        assertTrue(WFNetUtil.fire(caze, "e", null));
+        assertNull(caseType.getCase(1));
     }
     
     public void testGetCase() {

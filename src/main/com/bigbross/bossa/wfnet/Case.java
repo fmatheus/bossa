@@ -260,15 +260,18 @@ public class Case implements Serializable {
     /**
      * Tries to activate all deactivated transitions of this case. <p>
      * 
+     * @return the number of fireable work items.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    private void activate() throws EvaluationException {
+    private int activate() throws EvaluationException {
+        int actives = workItems.length;
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (!workItems[i].isFireable()) {
-		workItems[i].update();
+		actives -= workItems[i].update() ? 0 : 1;
 	    }
 	}
+        return actives;
     }
 
     /**
@@ -349,6 +352,9 @@ public class Case implements Serializable {
      * Closes and finishes an activity. Call this method when the
      * activity is successfuly completed. <p>
      * 
+     * Closes the <code>Case</code> when the last activity is closed, that is,
+     * no work items to open nor open activities remain. <p>
+     *
      * An attribute mapping can be passed when this method is called.
      * The attributes provided will overwrite current set attributes and
      * the value of these attributes will be used when evaluating edge
@@ -389,8 +395,12 @@ public class Case implements Serializable {
 	    this.marking[i] += edges[i].output(this);
 	}
         /* An EvaluationException can be inconsistently thrown here. */
-	activate();
+	int actives = activate();
         activities.remove(new Integer(activity.getId()));
+
+        if (actives == 0 && activities.size() == 0) {
+            caseType.closeCase(this);
+        }
 
 	return true;
     }

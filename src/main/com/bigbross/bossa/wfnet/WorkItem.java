@@ -115,11 +115,12 @@ public class WorkItem implements Serializable {
     /**
      * Updates the firing status of this work item. <p>
      * 
+     * @return <code>true</code> if the work item is fireable, <code>false</code> otherwise.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    void update() throws EvaluationException {
-        fireable = getCase().isFireable(transition);
+    boolean update() throws EvaluationException {
+        return fireable = getCase().isFireable(transition);
     }
 
     /**

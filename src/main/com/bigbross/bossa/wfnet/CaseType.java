@@ -184,6 +184,16 @@ public class CaseType implements Serializable {
         cases.put(new Integer(caze.getId()), caze);
         return caze;
     }
+
+    /**
+     * Closes a open case. <p>
+     *
+     * @param caze the <code>Case</code> to be closed.
+     * @return <code>true</code> if the case was open, <code>false</code> otherwise.
+     */
+    boolean closeCase(Case caze) {
+        return cases.remove(new Integer(caze.getId())) != null;
+    }
     
     /**
      * Builds the transition map. Call this method after you have created
