@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 public class ExpressionTest extends TestCase {
 
-    ResourceManager manager;
+    ResourceRegistry registry;
 
     Resource a, b, c, x, A, B, C;
 
@@ -42,15 +42,22 @@ public class ExpressionTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a expression test.");
-        manager = new ResourceManager();
-        A = manager.createResourceImpl("A");
-        B = manager.createResourceImpl("B");
-        C = manager.createResourceImpl("C");
-        a = manager.createResourceImpl("a");
-        b = manager.createResourceImpl("b");
-        c = manager.createResourceImpl("c");
-        x = manager.createResourceImpl("x");
+	System.out.println("Setting up an expression test.");
+        registry = new ResourceRegistry();
+        A = new Resource(null, "A");
+        B = new Resource(null, "B");
+        C = new Resource(null, "C");
+        a = new Resource(null, "a");
+        b = new Resource(null, "b");
+        c = new Resource(null, "c");
+        x = new Resource(null, "x");
+        registry.addResource(A);
+        registry.addResource(B);
+        registry.addResource(C);
+        registry.addResource(a);
+        registry.addResource(b);
+        registry.addResource(c);
+        registry.addResource(x);
         A.includeImpl(a);
         A.includeImpl(x);
         B.includeImpl(b);
@@ -59,14 +66,14 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testReference() {
-        Container resource = manager.compile("C");
+        Container resource = registry.compile("C");
         assertTrue(resource.contains(C));
         assertTrue(resource.contains(c));
         assertFalse(resource.contains(x));
     }
 
     public void testUnion() {
-        Container resource = manager.compile("A+B");
+        Container resource = registry.compile("A+B");
         assertTrue(resource.contains(a));
         assertTrue(resource.contains(b));
         assertTrue(resource.contains(x));
@@ -74,21 +81,21 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testIntersection() {
-        Container resource = manager.compile("A^B");
+        Container resource = registry.compile("A^B");
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
         assertFalse(resource.contains(b));
     }
 
     public void testSubtraction() {
-        Container resource = manager.compile("A-B");
+        Container resource = registry.compile("A-B");
         assertTrue(resource.contains(a));
         assertFalse(resource.contains(b));
         assertFalse(resource.contains(x));
     }
 
     public void testExpression() {
-        Container resource = manager.compile("A^B+C");
+        Container resource = registry.compile("A^B+C");
         assertTrue(resource.contains(c));
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
@@ -96,7 +103,7 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testGroup() {
-        Container resource = manager.compile("A^(B+C)");
+        Container resource = registry.compile("A^(B+C)");
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
         assertFalse(resource.contains(b));

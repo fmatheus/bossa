@@ -159,10 +159,7 @@ public class ResourceManager implements Serializable {
      */
     public boolean removeResourceImpl(Resource resource) {
         if (resources.remove(resource.getId()) != null) {
-            Iterator i = resources.values().iterator();
-            while (i.hasNext()) {
-                ((Resource) i.next()).removeImpl(resource);
-            } 
+            clearReferences(resource);
             return true;
         } else {
             return false;
@@ -170,14 +167,15 @@ public class ResourceManager implements Serializable {
     }
 
     /**
-     * Compiles a resource expression. <p>
-     * It uses this <code>ResourceManager</code> to link the resources in the expression.
-     *
-     * @param expression the resource expression to be compiled.
-     * @return a <code>Container</code> representing the compiled resource expression.
+     * Removes any direct reference to a resource from all resources in
+     * this resource manager. <p>
+     * 
+     * @param resource the resource to be removed.
      */
-    public Container compile(String expression) {
-        return Expression.compile(this, expression);
+    private void clearReferences(Resource resource) {
+        Iterator i = resources.values().iterator();
+        while (i.hasNext()) {
+            ((Resource) i.next()).removeImpl(resource);
+        } 
     }
-
 }

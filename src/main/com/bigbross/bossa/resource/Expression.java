@@ -53,24 +53,28 @@ public abstract class Expression implements Container, Serializable {
     /**
      * Compiles a resource expression. <p>
      *
-     * @param manager a <code>ResourceManager</code> to link the resources in the expression.
+     * @param registry a <code>ResourceRegistry</code> to link the resources
+     *        in the expression.
      * @param expression the resource expression to be compiled.
-     * @return a <code>Container</code> representing the compiled resource expression.
+     * @return a <code>Container</code> representing the compiled resource
+     *         expression.
      */
-    public static Container compile(ResourceManager manager, String expression) {
+    public static Container compile(ResourceRegistry registry, String expression) {
         StringTokenizer expr = new StringTokenizer(expression, DELIM, true);
-        return compile(manager, expr, compile(manager, expr, null));
+        return compile(registry, expr, compile(registry, expr, null));
     }
 
     /**
      * Parses a resource expression building a binary tree. <p>
      *
-     * @param manager a <code>ResourceManager</code> to link the resources in the expression.
+     * @param registry a <code>ResourceRegistry</code> to link the resources
+     *        in the expression.
      * @param expression the remaining resource expression to be compiled.
      * @param node a <code>Container</code> value of the left node.
-     * @return a <code>Container</code> node of the compiled resource expression.
+     * @return a <code>Container</code> node of the compiled resource
+     *         expression.
      */
-    protected static Container compile(ResourceManager manager, StringTokenizer expression, Container node) {
+    protected static Container compile(ResourceRegistry registry, StringTokenizer expression, Container node) {
         if (!expression.hasMoreTokens()) {
             return node;
         }
@@ -80,7 +84,7 @@ public abstract class Expression implements Container, Serializable {
         switch (tok.charAt(0)) {
 
         case OR: // Union node
-            return compile(manager, expression, new Expression(node, compile(manager, expression, node)) {
+            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
 
                     public boolean contains(Resource resource) {
                         return left.contains(resource) || right.contains(resource);
@@ -92,7 +96,7 @@ public abstract class Expression implements Container, Serializable {
                 });
 
         case AND: // Intersection node
-            return compile(manager, expression, new Expression(node, compile(manager, expression, node)) {
+            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
 
                     public boolean contains(Resource resource) {
                         return left.contains(resource) && right.contains(resource);
@@ -104,7 +108,7 @@ public abstract class Expression implements Container, Serializable {
                 });
 
         case SUB: // Subtraction node
-            return compile(manager, expression, new Expression(node, compile(manager, expression, node)) {
+            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
 
                     public boolean contains(Resource resource) {
                         return !right.contains(resource) && left.contains(resource);
@@ -116,13 +120,13 @@ public abstract class Expression implements Container, Serializable {
                 });
 
         case LP: // Parenthesis node
-            return compile(manager, expression, compile(manager, expression, node));
+            return compile(registry, expression, compile(registry, expression, node));
 
         case RP: // Parenthesis end
             return node;
 
         default: // Resource reference
-            return manager.getResource(tok.trim());
+            return registry.getResource(tok.trim());
 
         }
 
@@ -135,14 +139,6 @@ public abstract class Expression implements Container, Serializable {
      * @return <code>true</code> if the resource is found, <code>false</code> otherwise.
      */
     public abstract boolean contains(Resource resource);
-
-    public static void main(String[] args) throws Exception {
-        ResourceManager manager = new ResourceManager();
-        manager.createResourceImpl("A");
-        manager.createResourceImpl("B");
-        manager.createResourceImpl("C");
-        System.out.println(manager.compile(args[0]));
-    }
 
     /**
      * Returns a string with the resource expression. <p>
