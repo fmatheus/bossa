@@ -53,7 +53,7 @@ public class WFNetTestSuite extends TestCase {
 	// All tests should be added here
 	TestSuite suite = new TestSuite("WFNet Test Suite");
 	//suite.addTest(new TestSuite(CaseTest.class));
-	suite.addTest(new TestSuite(CaseTypeTest.class));
+	suite.addTest(new TestSuite(CaseTest.class));
 	return suite;
     }
 }
