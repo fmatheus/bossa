@@ -103,12 +103,32 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * @param The CaseType object containig the case type.
+     * @param The CaseType object containing the case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
      */    
     public boolean registerCaseType(CaseType caseType) {
+        if (caseTypes.containsKey(caseType.getId())) {
+            return false;
+        }
+        // Do the command magic here.
+        return true;
+    }
+
+    /**
+     * Registers a new case type in the manager. <p>
+     * 
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param The CaseType object containing the case type.
+     * @return <code>true</code> if the case type is registered,
+     *         <code>false</code> if there is already a case type
+     *         registered with the same id.
+     */    
+    boolean registerCaseTypeImpl(CaseType caseType) {
         if (caseTypes.containsKey(caseType.getId())) {
             return false;
         }
@@ -123,14 +143,25 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * @param id The id of the case type.
      */
     public void removeCaseType(String id) {
+        // Do the command magic here.
+    }
+
+    /**
+     * Removes the case type from the manager. This operation will remove also
+     * <emph>all</emph> cases of this case type. <p>
+     * 
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param id The id of the case type.
+     */
+    void removeCaseTypeImpl(String id) {
         caseTypes.remove(id);
     }
     
     /**
      * Returns the case type with the provided id. <p>
-     * 
-     * FIXME: Maybe this is the place to provide a facade do the prevalent
-     * system, instead of giving access to the case type itself. <p>
      * 
      * @param id The id of the desired case type.
      * @return The case type if it exists, <code>null</code> otherwise. 

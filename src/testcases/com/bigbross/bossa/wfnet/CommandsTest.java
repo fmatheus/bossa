@@ -38,13 +38,33 @@ public class CommandsTest extends TestCase {
 	System.out.println("Setting up a command test.");
     
         caseTypeManager = new CaseTypeManager();
-        caseTypeManager.registerCaseType(CaseTypeTest.createTestCaseType("theTestCase"));
-        CaseType caseType = caseTypeManager.getCaseType("theTestCase");
+        caseTypeManager.registerCaseTypeImpl(
+            CaseTypeTest.createTestCaseType("theTestCaseType"));
+        CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
         caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
+    public void testRegisterCaseType() {
+        CaseType caseType = CaseTypeTest.createTestCaseType("anotherTestCaseType");
+        RegisterCaseType command = new RegisterCaseType(caseType);
+        
+        command.execute(caseTypeManager);
+        
+        CaseType stored = caseTypeManager.getCaseType("anotherTestCaseType");
+        assertNotNull(stored);
+        assertSame(caseType, stored);
+    }
+
+    public void testRemoveCaseType() {
+        RemoveCaseType command = new RemoveCaseType("theTestCaseType");
+        
+        command.execute(caseTypeManager);
+        
+        assertNull(caseTypeManager.getCaseType("theTestCaseType"));
+    }
+
     public void testOpenWorkItem() {
-        Case caze = caseTypeManager.getCaseType("theTestCase").getCase(1);
+        Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = caze.getWorkItems()[0];
         OpenWorkItem command = new OpenWorkItem(wi);
 

@@ -27,33 +27,26 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 
 /**
- * This class implements the open operation of <code>WorkItem</code>
- * through the prevalence subsystem. <p>
+ * This class implements the register case type operation of
+ * <code>CaseTypeManager</code> through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.WorkItem#open()
- * @see com.bigbross.bossa.wfnet.Case#open(WorkItem)
+ * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseType(CaseType)
+ * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseTypeImpl(CaseType)
  */
-class OpenWorkItem extends WFNetCommand {
+class RegisterCaseType extends WFNetCommand {
 
-    private String caseTypeId;
-    private int caseId;
-    private String workItemId;
+    private CaseType caseType;
     
-    OpenWorkItem(WorkItem workItem) {
-        this.workItemId = workItem.getId();
-        this.caseId = workItem.getCase().getId();
-        this.caseTypeId = workItem.getCaseType().getId();
+    RegisterCaseType(CaseType caseType) {
+        this.caseType = caseType;
     }
 
     /**
-     * @see com.bigbross.bossa.wfnet.command.WFNetCommand#execute(CaseTypeManager)
+     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
     protected Serializable execute(CaseTypeManager caseTypeManager) {
-    
-        Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
-        WorkItem workItem = caze.getWorkItem(workItemId);
-        
-        return caze.open(workItem);
+        caseTypeManager.registerCaseTypeImpl(caseType);
+        return null;
     }
 }

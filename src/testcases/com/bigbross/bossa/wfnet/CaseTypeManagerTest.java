@@ -39,9 +39,9 @@ public class CaseTypeManagerTest extends TestCase {
     public void testRegisterCaseType() {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
         
-        assertTrue(caseTypeManager.registerCaseType(
+        assertTrue(caseTypeManager.registerCaseTypeImpl(
                         CaseTypeTest.createTestCaseType("test1")));
-        assertFalse(caseTypeManager.registerCaseType(
+        assertFalse(caseTypeManager.registerCaseTypeImpl(
                         CaseTypeTest.createTestCaseType("test1")));
     }
     
@@ -49,7 +49,7 @@ public class CaseTypeManagerTest extends TestCase {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
         CaseType expected = CaseTypeTest.createTestCaseType("test1");
         
-        assertTrue(caseTypeManager.registerCaseType(expected));
+        assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         assertSame(expected, caseTypeManager.getCaseType("test1"));
     }
     
@@ -57,8 +57,8 @@ public class CaseTypeManagerTest extends TestCase {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
         CaseType expected = CaseTypeTest.createTestCaseType("test1");
         
-        assertTrue(caseTypeManager.registerCaseType(expected));
-        caseTypeManager.removeCaseType("test1");
+        assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
+        caseTypeManager.removeCaseTypeImpl("test1");
         assertNull(caseTypeManager.getCaseType("test1"));
     }
     
