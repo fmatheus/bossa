@@ -29,11 +29,11 @@ import com.bigbross.bossa.wfnet.WFNetUtil;
 public class ResourceUtil {
 
     public static Resource createResource(String id) {
-        return createResource(null, id);
+        return new Resource(null, id);
     }
 
     public static Resource createResource(ResourceRegistry manager, String id) {
-        return new Resource(manager, id);
+        return manager.createResourceImpl(id);
     }
 
     public static void prepareWorkTest(ResourceManager resourceManager) {
