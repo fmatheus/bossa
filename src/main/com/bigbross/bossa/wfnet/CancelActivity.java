@@ -40,6 +40,11 @@ class CancelActivity extends WFNetCommand {
     private int caseId;
     private int activityId;
     
+    /**
+     * Creates a new cancel operation. <p>
+     * 
+     * @param activity the activity to be canceled.
+     */    
     CancelActivity(Activity activity) {
         this.activityId = activity.getId();
         this.caseId = activity.getCase().getId();
@@ -47,9 +52,15 @@ class CancelActivity extends WFNetCommand {
     }
 
     /**
-     * @see com.bigbross.bossa.wfnet.command.WFNetCommand#execute(CaseTypeManager)
+     * Executes the operation. <p>
+     * 
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    protected Serializable execute(CaseTypeManager caseTypeManager) 
+        throws EvaluationException {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);

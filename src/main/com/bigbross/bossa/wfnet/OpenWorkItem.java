@@ -31,8 +31,8 @@ import java.io.Serializable;
  * through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.WorkItem#open()
- * @see com.bigbross.bossa.wfnet.Case#open(WorkItem)
+ * @see com.bigbross.bossa.wfnet.WorkItem#open(String)
+ * @see com.bigbross.bossa.wfnet.Case#open(WorkItem, String)
  */
 class OpenWorkItem extends WFNetCommand {
 
@@ -41,6 +41,12 @@ class OpenWorkItem extends WFNetCommand {
     private String workItemId;
     private String resource;
     
+    /**
+     * Creates a new open operation. <p>
+     * 
+     * @param workItem the wor item to be opened.
+     * @param resource the resource opening it.
+     */    
     OpenWorkItem(WorkItem workItem, String resource) {
         this.workItemId = workItem.getId();
         this.caseId = workItem.getCase().getId();
@@ -49,9 +55,15 @@ class OpenWorkItem extends WFNetCommand {
     }
 
     /**
-     * @see com.bigbross.bossa.wfnet.command.WFNetCommand#execute(CaseTypeManager)
+     * Executes the operation. <p>
+     * 
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    protected Serializable execute(CaseTypeManager caseTypeManager)
+        throws EvaluationException {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         WorkItem workItem = caze.getWorkItem(workItemId);

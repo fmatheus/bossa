@@ -29,7 +29,13 @@ import java.io.Serializable;
 import org.apache.log4j.Logger;
 
 /**
- * This class represents a transition of a specific case instance.
+ * This class represents a transition of a specific case instance. <p>
+ * 
+ * We use a somewhat non standard definition of a work item: instead of
+ * a <emph>fireable</emph> transition a work item is a <emph>likely 
+ * fireable</emph> transition. All methods of this class account for this
+ * and it is possible to discover in advance if a work item is actually
+ * fireable without opening it.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
@@ -56,10 +62,6 @@ public class WorkItem implements Serializable {
         this.fireable = true;
     }
 
-    void update() {
-	fireable = getCase().isFireable(transition);
-    }
-
     public CaseType getCaseType() {
 	return getCase().getCaseType();
     }
@@ -76,8 +78,24 @@ public class WorkItem implements Serializable {
         return getTransition().getId();
     }
 
+    /**
+     * Indicates if this work item is fireable. <p>
+     * 
+     * @return <code>true</code> if the work item is fireable;
+     *         <code>false</code> otherwise.
+     */
     public boolean isFireable() {
 	return fireable;
+    }
+
+    /**
+     * Updates the firing status of this work item. <p>
+     * 
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    void update() throws EvaluationException {
+        fireable = getCase().isFireable(transition);
     }
 
     /**

@@ -34,7 +34,6 @@ import java.util.Map;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.apache.log4j.Logger;
 
 /**
  * This class represents a specific instance of a case type. It
@@ -43,14 +42,6 @@ import org.apache.log4j.Logger;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Case implements Serializable {
-
-    /**
-     * The logger object used by this class. <p>
-     *
-     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
-     *      target=_top>Log4J HomePage</a>
-     */
-    private static Logger logger = Logger.getLogger(Case.class.getName());
 
     private int id;
 
@@ -68,9 +59,18 @@ public class Case implements Serializable {
 
     private transient BSFManager bsf;
 
-    Case(CaseType caseType, int[] marking) {
+    /**
+     * Creates a new case, using the provided marking. An initial scan of
+     * the provided marking is performed, and appropriate work items are
+     * created.
+     * 
+     * @param caseType the case type of this case.
+     * @param marking the initial marking (tokens).
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    Case(CaseType caseType, int[] marking) throws EvaluationException {
 
-	this.id = caseType.nextCaseId();
 	this.caseType = caseType;
 	this.marking = marking;
         this.activities = new HashMap();
@@ -84,7 +84,10 @@ public class Case implements Serializable {
 	    workItems[i] = new WorkItem(this, ts[i]);
 	}
 
+        /* An EvaluationException can be thrown here. */
 	deactivate();
+
+        this.id = caseType.nextCaseId();
     }
 
     /**
@@ -205,8 +208,8 @@ public class Case implements Serializable {
             bsf.declareBean(id, value, value.getClass());
 	    attributes.put(id, value);
 	} catch (BSFException e) {
-            throw new SetAttributeException("Could not set variable: " + id,
-                                            e);
+            throw new SetAttributeException("Could not set variable '" +
+                                            id + "'", e);
 	}
     }
 
@@ -214,21 +217,36 @@ public class Case implements Serializable {
      * Evaluates an integer expression using the local attributes of this
      * case. <p>
      * 
-     * @return the expression result.
-     * @exception BSFException if an error occurs.
+     * @param expression the expression to be evaluated.
+     * @return The expression result.
+     * @exception EvaluationException if an evaluation error occurs.
      */
-    int eval(String expression) throws BSFException {
-	Object result = bsf.eval("javascript", "WFNet", 0, 0, expression);
-	if (result instanceof Number) {
-	    return ((Number) result).intValue();
-	}
-	if (result instanceof Boolean) {
-	    return ((Boolean) result).booleanValue() ? 1 : 0;
-	}
-	throw new BSFException("'" + result + "' is not a number.");
+    int eval(String expression) throws EvaluationException {
+        try {
+            Object result = bsf.eval("javascript", "WFNet", 
+                                     0, 0, expression);
+            if (result instanceof Number) {
+                return ((Number) result).intValue();
+            } else if (result instanceof Boolean) {
+	       return ((Boolean) result).booleanValue() ? 1 : 0;
+            } else {
+                throw new EvaluationException("'" + result + 
+                                            "' is not a number or boolean.");
+            }
+        } catch (BSFException e) {
+                throw new EvaluationException("Error in the expression " +
+                                              "evaluation sub-system.", e);
+        }
+        
     }
 
-    private void activate() {
+    /**
+     * Tries to activate all deactivated transitions of this case. <p>
+     * 
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    private void activate() throws EvaluationException {
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (!workItems[i].isFireable()) {
 		workItems[i].update();
@@ -236,7 +254,13 @@ public class Case implements Serializable {
 	}
     }
 
-    private void deactivate() {
+    /**
+     * Tries to deactivate all activated transitions of this case. <p>
+     * 
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    private void deactivate() throws EvaluationException {
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (workItems[i].isFireable()) {
 		workItems[i].update();
@@ -244,7 +268,17 @@ public class Case implements Serializable {
 	}
     }
 
-    boolean isFireable(Transition t) {
+    /**
+     * Indicates if a transition is fireable, that is, if it is an actual
+     * work item. <p>
+     * 
+     * @param t the transition.
+     * @return <code>true</code> if the transition is fireable;
+     *         <code>false</code> otherwise.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    boolean isFireable(Transition t) throws EvaluationException {
 	for(int i = 0; i < marking.length; ++i) {
 	    if (marking[i] < caseType.getEdge(t.getIndex(), i).input(this)) {
 		return false;
@@ -264,25 +298,31 @@ public class Case implements Serializable {
      * @param wi the work item to be opened.
      * @param resource the resource that is opening the work item.
      * @return The activity created the opening of this work item.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
      */
-    Activity open(WorkItem wi, String resource) {
+    Activity open(WorkItem wi, String resource) throws EvaluationException {
 
 	if (!wi.isFireable()) {
 	    return null;
 	}
 
 	if (isTemplate()) {
-	    Case caze = caseType.newCase(getMarking());
+            /* An EvaluationException can be consistently thrown here. */
+            Case caze = caseType.newCase(getMarking());
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
-	Activity activity = new Activity(wi, resource);
-	activities.put(new Integer(activity.getId()), activity);
-	Edge[] edges = activity.getTransition().getEdges();
-	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] -= edges[i].input(this);
-	}
-	deactivate();
+        Activity activity = new Activity(wi, resource);
+        activities.put(new Integer(activity.getId()), activity);
+	Edge[] edges = wi.getTransition().getEdges();
+        for(int i = 0; i < marking.length; ++i) {
+            /* An EvaluationException can be inconsistently thrown here. */
+            this.marking[i] -= edges[i].input(this);
+        }
+        /* An EvaluationException can be inconsistently thrown here. */
+        deactivate();
 
 	return activity;
     }
@@ -306,9 +346,12 @@ public class Case implements Serializable {
      *         <code>false</code> otherwise.
      * @exception SetAttributeException if the underling expression
      *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
      */
     boolean close(Activity activity, Map newAttributes) 
-        throws SetAttributeException {
+        throws SetAttributeException, EvaluationException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
@@ -325,8 +368,10 @@ public class Case implements Serializable {
 	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
+            /* An EvaluationException can be inconsistently thrown here. */
 	    this.marking[i] += edges[i].output(this);
 	}
+        /* An EvaluationException can be inconsistently thrown here. */
 	activate();
 
 	return true;
@@ -343,8 +388,11 @@ public class Case implements Serializable {
      * @param activity the activity to be canceled.
      * @return <code>true</code> is the activity is succesfuly canceled,
      *         <code>false</code> otherwise.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
      */
-    boolean cancel(Activity activity) {
+    boolean cancel(Activity activity) throws EvaluationException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
@@ -353,8 +401,10 @@ public class Case implements Serializable {
 	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
+            /* An EvaluationException can be inconsistently thrown here. */
 	    this.marking[i] += edges[i].input(this);
 	}
+        /* An EvaluationException can be inconsistently thrown here. */
 	activate();
 
 	return true;

@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.BossaException;
+
 import junit.framework.TestCase;
 
 public class CaseTest extends TestCase {
@@ -41,8 +43,14 @@ public class CaseTest extends TestCase {
     }
 
     Case newTestCase() {
-        return CaseTypeTest.createTestCaseType().
-	    newCase(new int[] {1,0,0,0,0,0,0,0});
+        try {
+            return CaseTypeTest.createTestCaseType().
+	       newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+        return null;    
     }
 
     static boolean sameState(int[] s1, int[] s2) {
@@ -54,15 +62,15 @@ public class CaseTest extends TestCase {
     } 
 
     private boolean fire(Case caze, String workItemId, Map attributes) {
-	Activity act = caze.open(caze.getWorkItem(workItemId), "jdoe");
-	if (act != null) {
-            try {
-	       return caze.close(act, attributes);
-            } catch (SetAttributeException e) {
-                e.printStackTrace();
-                fail(e.toString());
+        try {
+            Activity act = caze.open(caze.getWorkItem(workItemId), "jdoe");
+            if (act != null) {
+                return caze.close(act, attributes);
             }
-	}
+        } catch (BossaException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 	return false;
     }
 
@@ -104,9 +112,14 @@ public class CaseTest extends TestCase {
         
         int[] start = caze.getMarking();
 
-        Activity act = caze.open(caze.getWorkItem("a"), "jdoe");
-        assertNotNull(act);
-        assertTrue(caze.cancel(act));
+        try {
+            Activity act = caze.open(caze.getWorkItem("a"), "jdoe");
+            assertNotNull(act);
+            assertTrue(caze.cancel(act));
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
         int[] end = caze.getMarking();
 
@@ -136,18 +149,30 @@ public class CaseTest extends TestCase {
     public void testAutomaticCreation() {
 	Case template = CaseTypeTest.createTestCaseType().getTemplate();
 
-	Activity a1 = template.open(template.getWorkItem("a"), "jdoe");
-	Case caze = a1.getCase();
-	assertEquals(1, caze.getId());
+        try {
+            Activity a1 = template.open(template.getWorkItem("a"), "jdoe");
+	    Case caze = a1.getCase();
+            assertEquals(1, caze.getId());
 
-        assertTrue(caze.cancel(a1));
+            assertTrue(caze.cancel(a1));
 
-	Activity a2 = caze.open(caze.getWorkItem("a"), "jdoe");
-	assertEquals(1, a2.getCase().getId());
+            Activity a2 = caze.open(caze.getWorkItem("a"), "jdoe");
+            assertEquals(1, a2.getCase().getId());
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
     }
 
     public void testWorkItensList() {
-        Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {1,1,0,0,0,0,0,0});
+        Case caze = null;
+        try {
+            caze = CaseTypeTest.createTestCaseType().
+                newCase(new int[] {1,1,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
         List workItens = caze.getWorkItems();
         assertEquals(2, workItens.size());
 
@@ -161,7 +186,12 @@ public class CaseTest extends TestCase {
     public void testGetActivity() {
         Case caze = newTestCase();
         WorkItem wi = caze.getWorkItem("a");
-        caze.open(wi, "jdoe");
+        try {
+            caze.open(wi, "jdoe");
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
         Activity act = caze.getActivity(1);
         assertNotNull(act);
@@ -170,21 +200,28 @@ public class CaseTest extends TestCase {
     }
 
     public void testActivitiesList() {
-        Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {2,0,0,0,0,0,0,0});
-        WorkItem wi = caze.getWorkItem("a");
+        Case caze = null;
+        try {
+            caze = CaseTypeTest.createTestCaseType().
+                newCase(new int[] {2,0,0,0,0,0,0,0});
+            WorkItem wi = caze.getWorkItem("a");
 
-        caze.open(wi, "jdoe");
-        assertEquals(1, caze.getActivities().size());
+            caze.open(wi, "jdoe");
+            assertEquals(1, caze.getActivities().size());
 
-        caze.open(wi, "jdoe");
-        List activities = caze.getActivities();
-        assertEquals(2, activities.size());
+            caze.open(wi, "jdoe");
+            List activities = caze.getActivities();
+            assertEquals(2, activities.size());
 
-        Activity a0 = (Activity) activities.get(0);
-        Activity a1 = (Activity) activities.get(1);
-        assertNotSame(a0, a1);
-        assertSame(a0.getTransition(), a1.getTransition());
-        assertEquals("jdoe", a0.getResource());
+            Activity a0 = (Activity) activities.get(0);
+            Activity a1 = (Activity) activities.get(1);
+            assertNotSame(a0, a1);
+            assertSame(a0.getTransition(), a1.getTransition());
+            assertEquals("jdoe", a0.getResource());
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
     }
 
     public void testEdgeEvaluation() {
@@ -201,8 +238,13 @@ public class CaseTest extends TestCase {
 	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
 	Edge e2 = Edge.newOutput("AVL * SOK && DIR");
 
-	assertEquals(3, e1.eval(caze));
-	assertEquals(0, e2.eval(caze));
+        try {
+	   assertEquals(3, e1.eval(caze));
+	   assertEquals(0, e2.eval(caze));
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
     }
 
     public void testToString() {

@@ -154,11 +154,14 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a new case with the provided tokens. <p>
+     * Creates a new case with the provided marking (tokens). <p>
      * 
-     * @return the newly created case.
+     * @param marking the initial marking.
+     * @return The newly created case.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
      */
-    Case newCase(int[] marking) {
+    Case newCase(int[] marking) throws EvaluationException {
         Case caze = new Case(this, marking);
         if (!caze.isTemplate()) {
             cases.put(new Integer(caze.getId()), caze);
@@ -181,12 +184,14 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Builds the template case that will spaw all other cases. Call this
+     * Builds the template case that will spawn all other cases. Call this
      * method after you have finished building the case type. <p>
      * 
      * @param marking The marking of the template case.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
      */ 
-    public void buildTemplate(int[] marking) {
+    public void buildTemplate(int[] marking) throws EvaluationException {
         if (template == null) {
             template = newCase(marking);
         }

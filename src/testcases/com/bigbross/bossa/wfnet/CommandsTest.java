@@ -26,6 +26,8 @@ package com.bigbross.bossa.wfnet;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaException;
+
 public class CommandsTest extends TestCase {
 
     private CaseTypeManager caseTypeManager;
@@ -41,7 +43,12 @@ public class CommandsTest extends TestCase {
         caseTypeManager.registerCaseTypeImpl(
             CaseTypeTest.createTestCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
-        caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        try {
+            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
     }
 
     public void testRegisterCaseType() {
@@ -68,9 +75,14 @@ public class CommandsTest extends TestCase {
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         OpenWorkItem command = new OpenWorkItem(wi, "jdoe");
 
-        Activity act = (Activity) command.execute(caseTypeManager);
-        assertNotNull(act);
-        assertEquals(wi.getTransition().getId(), act.getTransition().getId());
+        try {
+            Activity act = (Activity) command.execute(caseTypeManager);
+            assertNotNull(act);
+            assertEquals(wi.getTransition().getId(), act.getTransition().getId());
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
         int[] expected = new int[] {0,0,0,0,0,0,0,0};
         int[] actual = caze.getMarking();
@@ -80,13 +92,13 @@ public class CommandsTest extends TestCase {
     public void testCloseActivity() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        Activity activity = caze.open(wi, "jdoe");
-        CloseActivity command = new CloseActivity(activity, null);
-        
-        assertEquals(1, caze.getActivities().size());
         try {
+            Activity activity = caze.open(wi, "jdoe");
+            CloseActivity command = new CloseActivity(activity, null);
+        
+            assertEquals(1, caze.getActivities().size());
             command.execute(caseTypeManager);        
-        } catch (SetAttributeException e) {
+        } catch (BossaException e) {
             e.printStackTrace();
             fail(e.toString());
         }
@@ -100,12 +112,17 @@ public class CommandsTest extends TestCase {
     public void testCancelActivity() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        Activity activity = caze.open(wi, "jdoe");
-        CancelActivity command = new CancelActivity(activity);
+        try {
+            Activity activity = caze.open(wi, "jdoe");
+            CancelActivity command = new CancelActivity(activity);
         
-        assertEquals(1, caze.getActivities().size());
-        command.execute(caseTypeManager);        
-        assertEquals(0, caze.getActivities().size());
+            assertEquals(1, caze.getActivities().size());
+            command.execute(caseTypeManager);        
+            assertEquals(0, caze.getActivities().size());
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
         int[] expected = new int[] {1,0,0,0,0,0,0,0};
         int[] actual = caze.getMarking();

@@ -87,8 +87,13 @@ public class CaseTypeTest extends TestCase {
         f.input(C,  "1");
         f.output(B, "1");
         f.output(H, "1");
-        
-        caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
+
+        try {        
+            caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException exception) {
+            exception.printStackTrace();
+            fail(exception.toString());
+        }
 
         return caseType;
     }
@@ -129,19 +134,37 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testNewCase() {
-        assertNotNull(createTestCaseType().newCase(new int[] {1,0,0,0,0,0,0,0}));
+        Case caze = null;
+        try {
+            caze = createTestCaseType().newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+        assertNotNull(caze);
     }
     
     public void testGetCase() {
         CaseType caseType = createTestCaseType();
-        Case caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        Case caze = null;
+        try {
+            caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
         assertSame(caze, caseType.getCase(caze.getId()));
     }        
 
     public void testGetAllCases() {
         CaseType caseType = createTestCaseType();
-        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        try {
+            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
         
         List l = caseType.getCases();
         assertEquals(2, l.size());
@@ -153,8 +176,15 @@ public class CaseTypeTest extends TestCase {
     
     public void testGetWorkItems() {
         CaseType caseType = createTestCaseType();
-        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        Case c1 = null;
+        Case c2 = null;
+        try {
+            c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
         
         List wi = caseType.getWorkItems();
         assertEquals(2, wi.size());
@@ -169,10 +199,17 @@ public class CaseTypeTest extends TestCase {
 
     public void testGetActivities() {
         CaseType caseType = createTestCaseType();
-        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        c1.open(c1.getWorkItem("a"), "jdoe");
-        c2.open(c2.getWorkItem("a"), "jdoe");
+        Case c1 = null;
+        Case c2 = null;
+        try {
+            c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            c1.open(c1.getWorkItem("a"), "jdoe");
+            c2.open(c2.getWorkItem("a"), "jdoe");
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
         List activities = caseType.getActivities();
         assertEquals(2, activities.size());
@@ -186,5 +223,4 @@ public class CaseTypeTest extends TestCase {
         assertEquals("a", a1.getTransition().getId());
         assertEquals("a", a2.getTransition().getId());
     }
-
 }
