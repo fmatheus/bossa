@@ -29,7 +29,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.WFNetUtil;
 
@@ -77,9 +76,9 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testIncludeInCaseTypeResource()  throws Exception {
-        Bossa bossa = BossaTestSuite.createTestBossa();
+        Bossa bossa = Bossa.createBossa(null);
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
-        WFNetUtil.prepareWorkTest(caseTypeManager);
+        caseTypeManager.registerCaseType(WFNetUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
         
         Resource group = (Resource)
@@ -107,9 +106,9 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testExcludeInCaseTypeResource() throws Exception {
-        Bossa bossa = BossaTestSuite.createTestBossa();
+        Bossa bossa = Bossa.createBossa(null);
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
-        WFNetUtil.prepareWorkTest(caseTypeManager);
+        caseTypeManager.registerCaseType(WFNetUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
         
         Resource group1 = (Resource)
@@ -138,9 +137,9 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testRemoveFromCaseTypeResource() throws Exception {
-        Bossa bossa = BossaTestSuite.createTestBossa();
+        Bossa bossa = Bossa.createBossa(null);
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
-        WFNetUtil.prepareWorkTest(caseTypeManager);
+        caseTypeManager.registerCaseType(WFNetUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
         
         Resource group = (Resource)

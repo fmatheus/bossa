@@ -29,24 +29,4 @@ public class ResourceUtil {
     public static Resource createResource(String id) {
         return new Resource(null, id);
     }
-
-    public static Resource createResource(ResourceRegistry manager, String id) {
-        return manager.createResourceImpl(id);
-    }
-
-    public static void prepareWorkTest(ResourceManager resourceManager) {
-        Resource joe = resourceManager.createResourceImpl("joe");
-        Resource mar = resourceManager.createResourceImpl("mary");
-        Resource pan = resourceManager.createResourceImpl("pan");
-
-        ResourceRegistry registry = resourceManager.getSubContext("test");
-        Resource sol = registry.getResource("requesters");
-        Resource com = registry.getResource("sales");
-        Resource dir = registry.getResource("directors");
-
-        sol.includeImpl(joe); sol.includeImpl(mar); sol.includeImpl(pan);
-        com.includeImpl(joe); com.includeImpl(pan);
-        dir.includeImpl(mar);
-    }
-
 }

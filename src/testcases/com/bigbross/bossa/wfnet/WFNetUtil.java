@@ -36,7 +36,8 @@ public class WFNetUtil {
         return createCaseType(id, new int[] {1,0,0,0,0,0,0,0});
     }
 
-    public static CaseType createCaseType(String id, int[] marking) throws Exception {
+    static CaseType createCaseType(String id, int[] marking)
+        throws Exception {
      
         CaseType caseType = new CaseType(id);
 
@@ -92,42 +93,26 @@ public class WFNetUtil {
         return caseType;
     }
 
-    public static Case createCase() throws Exception {
+    static Case createCase() throws Exception {
         return createCaseType("test").openCase();
     }
 
-    public static Case createCase(int[] marking) throws Exception {
+    static Case createCase(int[] marking) throws Exception {
         return createCaseType("test", marking).openCase();
     }
 
-    public static boolean fire(Case caze, String workItemId, Map attributes) throws Exception  {
-        return fire(caze, workItemId, attributes, ResourceUtil.createResource("jdoe"));
+    static boolean fire(Case caze, String workItemId, Map attributes)
+        throws Exception  {
+        return fire(caze, workItemId, attributes, 
+                    ResourceUtil.createResource("jdoe"));
     }
 
-    public static boolean fire(Case caze, String workItemId, Map attributes,
-                               Resource resource) throws Exception {
+    static boolean fire(Case caze, String workItemId, Map attributes,
+                        Resource resource) throws Exception {
         Activity act = caze.open(caze.getWorkItem(workItemId), resource);
         if (act != null) {
             return act.getCase().close(act, attributes);
         }
 	return false;
     }
-
-    public static boolean fire(WorkItem workItem, Map attributes, Resource resource) throws Exception {
-	return fire(workItem.getCase(), workItem.getId(), attributes, resource);
-    }
-
-    public static void prepareWorkTest(CaseTypeManager caseTypeManager)
-        throws Exception {
-        CaseType caseType = createCaseType("test");
-        caseTypeManager.registerCaseTypeImpl(caseType);
-    }
-
-    public static void createActWorkTest(CaseTypeManager caseTypeManager)
-        throws Exception  {
-        WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
-        Resource joe = caseTypeManager.getBossa().getResourceManager().getResource("joe");
-        wi.getCase().open(wi, joe);
-    }
-
 }

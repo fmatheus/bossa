@@ -27,20 +27,14 @@ package com.bigbross.bossa.work;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaTestSuite;
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
-import com.bigbross.bossa.resource.ResourceManager;
-import com.bigbross.bossa.resource.ResourceUtil;
-import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
 
 public class WorkManagerTest extends TestCase {
 
-    private Resource joe, pan;
+    private Resource frank, sally;
     private WorkManager workManager;
-    private CaseTypeManager caseTypeManager;
-    private ResourceManager resourceManager;
 
     public WorkManagerTest(String name) {
 	super(name);
@@ -48,34 +42,31 @@ public class WorkManagerTest extends TestCase {
 
     protected void setUp() throws Exception {
 	System.out.println("Setting up a work manager test.");
-        Bossa bossa = BossaTestSuite.createTestBossa();
+        Bossa bossa = BossaTestUtil.createCompleteTestBossa();
         workManager = bossa.getWorkManager();
-        caseTypeManager = bossa.getCaseTypeManager();
-        resourceManager = bossa.getResourceManager();
-        WFNetUtil.prepareWorkTest(caseTypeManager);
-        ResourceUtil.prepareWorkTest(resourceManager);
-        joe = resourceManager.getResource("joe");
-        pan = resourceManager.getResource("pan");
+        frank = bossa.getResourceManager().getResource("frank");
+        sally = bossa.getResourceManager().getResource("sally");
     }
 
     public void testWorkItemList() {
-        assertEquals(0, workManager.getWorkItems(joe).size());
-        assertEquals(1, workManager.getWorkItems(joe, true).size());
+        assertEquals(0, workManager.getWorkItems(frank).size());
+        assertEquals(1, workManager.getWorkItems(frank, true).size());
     }
 
     public void testMetaResource() throws Exception {
-        WorkItem work = (WorkItem) workManager.getWorkItems(joe, true).get(0);
-        assertTrue(WFNetUtil.fire(work, null, joe));
-        assertEquals(0, workManager.getWorkItems(joe).size());
+        WorkItem work = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        assertTrue(work.open(frank).close());
+        assertEquals(0, workManager.getWorkItems(frank).size());
 
-        work = (WorkItem) workManager.getWorkItems(pan).get(0);
-        assertTrue(WFNetUtil.fire(work, null, pan));
-        assertEquals(1, workManager.getWorkItems(joe).size());
-        assertEquals(0, workManager.getWorkItems(pan).size());
+        work = (WorkItem) workManager.getWorkItems(sally).get(0);
+        assertTrue(work.open(sally).close());
+        assertEquals(1, workManager.getWorkItems(frank).size());
+        assertEquals(0, workManager.getWorkItems(sally).size());
     }
 
     public void testActivitiesList() throws Exception {
-        WFNetUtil.createActWorkTest(caseTypeManager);
-        assertEquals(1, workManager.getActivities(joe).size());
+        WorkItem work = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        work.open(frank);
+        assertEquals(1, workManager.getActivities(frank).size());
     }
 }

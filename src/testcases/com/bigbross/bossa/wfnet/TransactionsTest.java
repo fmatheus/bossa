@@ -29,9 +29,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.Resource;
-import com.bigbross.bossa.resource.ResourceUtil;
 
 public class TransactionsTest extends TestCase {
 
@@ -46,12 +44,12 @@ public class TransactionsTest extends TestCase {
     protected void setUp() throws Exception {
 	System.out.println("Setting up a wfnet transaction test.");
     
-        Bossa bossa = BossaTestSuite.createTestBossa();
+        Bossa bossa = Bossa.createBossa(null);
         caseTypeManager = bossa.getCaseTypeManager();
 
         now = new Date();
 
-        jdoe = ResourceUtil.createResource(bossa.getResourceManager(), "jdoe");
+        jdoe = bossa.getResourceManager().createResource("jdoe");
 
         caseTypeManager.registerCaseTypeImpl(
             WFNetUtil.createCaseType("theTestCaseType"));
