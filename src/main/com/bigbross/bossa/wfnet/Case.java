@@ -320,7 +320,6 @@ public class Case implements Serializable {
         try {
             Object result = bsf.eval("javascript", "WFNet", 
                                      0, 0, expression);
-	    System.out.println("DEBUG:"+expression+":="+result);
             if (result instanceof Number) {
                 return ((Number) result).intValue();
             } else if (result instanceof Boolean) {
