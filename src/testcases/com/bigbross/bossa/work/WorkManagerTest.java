@@ -24,8 +24,6 @@
 
 package com.bigbross.bossa.work;
 
-import java.util.HashMap;
-
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.Resource;
@@ -72,10 +70,7 @@ public class WorkManagerTest extends TestCase {
         assertEquals(0, workManager.getWorkItems(joe).size());
 
         work = (WorkItem) workManager.getWorkItems(pan).get(0);
-        HashMap attributes = new HashMap();
-        attributes.put("SOK", new Boolean(false));
-        attributes.put("DIR", new Boolean(false));
-        assertTrue(WFNetUtil.fire(work, attributes, pan));
+        assertTrue(WFNetUtil.fire(work, null, pan));
         assertEquals(1, workManager.getWorkItems(joe).size());
         assertEquals(0, workManager.getWorkItems(pan).size());
     }

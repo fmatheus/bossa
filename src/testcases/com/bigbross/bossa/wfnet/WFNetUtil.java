@@ -82,7 +82,13 @@ public class WFNetUtil {
         f.output(B, "OK");
         f.output(H, "!OK");
 
-        caseType.buildTemplate(marking, null);
+        HashMap attributes = new HashMap();
+        attributes.put("SOK", new Boolean(false));
+        attributes.put("DIR", new Boolean(false));
+        attributes.put("ADIR", "");
+        attributes.put("OK", new Boolean(false));
+
+        caseType.buildTemplate(marking, attributes);
 
         return caseType;
     }

@@ -238,6 +238,12 @@ public class CaseType implements Serializable {
         if (template == null) {
             template = new Case(this, marking, attributes);
         }
+
+        for (int i = 0; i < edges.length; ++i) {
+            for (int j = 0; j < edges[i].length; ++j) {
+                edges[i][j].weight(template);
+            }
+        }
     }
 
     /**
