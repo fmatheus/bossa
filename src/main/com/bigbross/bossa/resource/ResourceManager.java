@@ -168,4 +168,16 @@ public class ResourceManager implements Serializable {
             return false;
         }
     }
+
+    /**
+     * Compiles a resource expression. <p>
+     * It uses this <code>ResourceManager</code> to link the resources in the expression.
+     *
+     * @param expression the resource expression to be compiled.
+     * @return a <code>Container</code> representing the compiled resource expression.
+     */
+    public Container compile(String expression) {
+        return Expression.compile(this, expression);
+    }
+
 }

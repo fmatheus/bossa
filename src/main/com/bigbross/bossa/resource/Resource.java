@@ -38,7 +38,7 @@ import com.bigbross.bossa.BossaException;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Resource implements Serializable {
+public class Resource implements Container, Serializable {
 
     private ResourceManager resourceManager;
 
@@ -299,4 +299,14 @@ public class Resource implements Serializable {
 
         return false;
     }
+
+    /**
+     * Returns a string with the resource identifier. <p>
+     *
+     * @return a string representation of this resource.
+     */
+    public String toString() {
+        return id;
+    }
+
 }

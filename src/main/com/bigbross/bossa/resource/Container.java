@@ -24,38 +24,20 @@
 
 package com.bigbross.bossa.resource;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
- * Tests using Resource package testcases.
+ * A resource or resource expression. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class ResourceTestSuite extends TestCase {
+public interface Container {
 
     /**
-     * Constructor.
+     * Determines if a resource is contained in this resource. <p>
      *
-     * @param name the name.
+     * @param resource the resource to be looked for.
+     * @return <code>true</code> if the resource is found,
+     *         <code>false</code> otherwise.
      */
-    public ResourceTestSuite(String name) {
-	super(name);
-    }
+    public boolean contains(Resource resource);
 
-    /**
-     * Makes the test suite.
-     *
-     * @return the suite.
-     */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Resource Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(ResourceTest.class));
-	suite.addTest(new TestSuite(ExpressionTest.class));
-	suite.addTest(new TestSuite(ResourceManagerTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
-    }
 }
