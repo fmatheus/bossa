@@ -229,15 +229,6 @@ public class CaseType implements Serializable {
     }
     
     /**
-     * Builds the transition map. Call this method after you have created
-     * all places and transitions and before you start creating edges. <p>
-     * 
-     * FIXME: Remove!!!!!!!
-     */
-    public void buildMap() {
-    }
-
-    /**
      * Builds the template case that will spawn all other cases. Call this
      * method after you have finished building the case type. <p>
      * 

@@ -80,7 +80,6 @@ public class CaseTypeTest extends TestCase {
         Place A = caseType.registerPlace("A");
         Place B = caseType.registerPlace("B");
         Transition a = caseType.registerTransition("a", "joedoe");
-        caseType.buildMap();
         a.input(A,  "1");
         a.output(B, "FOO");
     

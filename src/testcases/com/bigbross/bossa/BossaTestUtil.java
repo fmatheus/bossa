@@ -61,8 +61,6 @@ public class BossaTestUtil {
         Transition e = caseType.registerTransition("e", "sales");
         Transition f = caseType.registerTransition("f", "$a");
     
-        caseType.buildMap();
-    
         a.input(A,  "1");
         a.output(B, "1");
     
