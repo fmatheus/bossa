@@ -24,6 +24,8 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 
 public class CaseTypeTest extends TestCase {
@@ -136,4 +138,19 @@ public class CaseTypeTest extends TestCase {
         Case caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         assertSame(caze, caseType.getCase(caze.getId()));
     }        
+
+    public void testGetAllCases() {
+        CaseType caseType = createTestCaseType();
+        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        assertNotNull(c1);
+        assertNotNull(c2);
+        
+        Iterator i = caseType.getCases();
+        int id = ((Case) i.next()).getId();
+        assertTrue(id == 1 || id == 2);
+        id = ((Case) i.next()).getId();
+        assertTrue(id == 1 || id == 2);
+        assertFalse(i.hasNext());
+    }
 }

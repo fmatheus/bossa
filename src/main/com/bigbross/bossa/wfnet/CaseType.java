@@ -26,6 +26,7 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -157,21 +158,12 @@ public class CaseType implements Serializable {
      */
     Case newCase(int[] marking) {
         Case caze = new Case(this, marking);
-        cases.put(new Integer(caze.getId()), caze);
+        if (!caze.isTemplate()) {
+            cases.put(new Integer(caze.getId()), caze);
+        }
         return caze;
     }
     
-    /**
-     * Returns a case by its id. <p>
-     * 
-     * @param id the case id.
-     * @return the case with the provided id, <code>null</code> if
-     *         this case does not exists.
-     */
-    public Case getCase(int id) {
-        return (Case) cases.get(new Integer(id));
-    }
-
     public void buildMap(int[] marking) {
 
 	if (edges == null) {
@@ -185,6 +177,37 @@ public class CaseType implements Serializable {
 	if (template == null) {
 	    template = newCase(marking);
 	}
+    }
+
+    /**
+     * Returns the template case. This case should not be used directly. <p>
+     * 
+     * FIXME: This method should be removed. <p>
+     * 
+     * @return The template case.
+     */
+    Case getTemplate() {
+        return template;
+    }
+
+    /**
+     * Returns a case by its id. <p>
+     * 
+     * @param id the case id.
+     * @return the case with the provided id, <code>null</code> if
+     *         this case does not exists.
+     */
+    public Case getCase(int id) {
+        return (Case) cases.get(new Integer(id));
+    }
+
+    /**
+     * Returns all cases of this case type. <p>
+     * 
+     * @return An <code>Iterator</code> to all active cases.
+     */
+    public Iterator getCases() {
+        return Collections.unmodifiableCollection(cases.values()).iterator();
     }
 
     public String toString() {

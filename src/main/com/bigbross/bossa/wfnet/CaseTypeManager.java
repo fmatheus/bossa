@@ -202,7 +202,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     /**
      * Returns all registered case types. <p>
      * 
-     * @return A list of all case types registered.
+     * @return An <code>Iterator</code> to all case types registered.
      */
     public Iterator getCaseTypes() {
         return Collections.unmodifiableCollection(caseTypes.values()).iterator();

@@ -113,7 +113,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testAutomaticCreation() {
-	Case template = CaseTypeTest.createTestCaseType().getCase(0);
+	Case template = CaseTypeTest.createTestCaseType().getTemplate();
 
 	Activity a1 = template.open(template.getWorkItem("a"));
 	Case caze = a1.getCase();
