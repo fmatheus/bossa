@@ -61,10 +61,12 @@
   <property name="dist.javadocs.tests" value="${dist.dir}/javadocs.tests"/>
   <property name="dist.doc" value="${dist.dir}/doc"/>
   <property name="tests.dir" value="src/testcases"/>
+  <property name="examples.dir" value="src/examples"/>
 
   <property name="build.dir" value="build"/>
   <property name="build.classes" value="${build.dir}/classes"/>
   <property name="build.tests" value="${build.dir}/testcases"/>
+  <property name="build.examples" value="${build.dir}/examples"/>
 
   <property name="docbook.xsl"
     value="/usr/share/sgml/docbook/xsl-stylesheets/html/docbook.xsl"/>
@@ -92,9 +94,14 @@
     <path refid="project.class.path"/>
   </path>
 
+  <path id="examples.class.path">
+    <pathelement location="${build.examples}"/>
+    <path refid="tests.class.path"/>
+  </path>
+
   <!-- Tasks -->
 
-  <target name="init" description="Initialize">
+  <target name="init">
     <tstamp>
       <format property="subversion" pattern="yyyy.MM.dd.hh.mm.ss"/>
     </tstamp>
@@ -105,7 +112,7 @@
   </target>
 
   <target name="build" depends="init"
-	  description="Compiles the source code">
+	  description="Compiles the source code.">
     <mkdir dir="${build.classes}"/>
     <javac srcdir="${src.dir}"
            destdir="${build.classes}"
@@ -117,7 +124,7 @@
   </target>
 
   <target name="jar" depends="build"
-	  description="Creates distribution .jar files">
+	  description="Creates library jar file.">
     <jar jarfile="${dist.dir}/${name}-${version}.jar" basedir="${build.classes}"/>
   </target>
 
@@ -133,7 +140,7 @@
   </target>
 
   <target name="javadoc" depends="javadoc_check" unless="javadoc.notrequired"
-          description="Creates the API documentation">
+          description="Generates the API documentation.">
     <mkdir dir="${dist.javadocs}"/>
     <javadoc packagenames="${domain.package}/*"
              useexternalfile="yes"
@@ -152,7 +159,7 @@
   </target>
 
   <target name="javadoc-tests" depends="javadoc_check" unless="tests.javadoc.notrequired"
-          description="Creates the API documentation for test utilities">
+          description="Generates the API documentation for the tests.">
     <mkdir dir="${dist.javadocs.tests}"/>
     <javadoc packagenames="${domain.package}/*"
              sourcepath="${tests.dir}"
@@ -166,11 +173,11 @@
              windowtitle="${Name} Test Utilities"
              doctitle="${Name} Test Utilities">
       <group title="Bossa Core" packages="com.bigbross.bossa*"/>
-      <bottom><![CDATA[<i>Copyright &#169; 2002 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
+      <bottom><![CDATA[<i>Copyright &#169; 2003 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
     </javadoc>
   </target>
 
-  <target name="docbook" description="Generates documentation">
+  <target name="docbook" description="Generates documentation.">
     <mkdir dir="${dist.doc}"/>
     <copy todir="${dist.doc}">
       <fileset dir="${doc.dir}" includes="**/*.png, **/*.html"/>
@@ -185,13 +192,13 @@
   </target>
 
   <target name="clean"
-	  description="Cleans up build and dist directories">
+	  description="Cleans up build and dist directories.">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
   </target>
 
   <target name="distclean" depends="clean"
-	  description="Cleans up everything">
+	  description="Cleans up everything.">
     <delete>
       <fileset dir="${basedir}" includes="**/*~" defaultexcludes="no"/>
       <fileset dir="${basedir}" includes="**/.#*" defaultexcludes="no"/>
@@ -209,7 +216,7 @@
     </javac>
   </target>
 
-  <target name="test" depends="run-tests" description="Runs JUnit tests"/>
+  <target name="test" depends="run-tests" description="Runs JUnit tests."/>
 
   <target name="run-tests" depends="dump-info, compile-tests" if="junit.present">
     <junit printsummary="${junit.summary}" haltonfailure="yes"
@@ -221,7 +228,7 @@
     </junit>
   </target>
 
-  <target name="dump-info" description="Echoes useful system properties">
+  <target name="dump-info" description="Echoes useful system properties.">
     <echo message="java.vm.info=${java.vm.info}"/>
     <echo message="java.vm.name=${java.vm.name}"/>
     <echo message="java.vm.vendor=${java.vm.vendor}"/>
@@ -237,8 +244,25 @@
     <echo message="user.language=${user.language}"/>
   </target>
 
+  <target name="compile-examples" depends="compile-tests">
+    <mkdir dir="${build.examples}"/>
+    <javac srcdir="${examples.dir}"
+           destdir="${build.examples}"
+	   classpathref="examples.class.path"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}">
+    </javac>
+  </target>
+
+  <target name="bossa-browser" depends="compile-examples"
+          description="Runs the Bossa browser example application.">
+  	<java classname="com.bigbross.bossa.examples.BossaBrowser"
+  		  classpathref="examples.class.path"/>
+  </target>
+
   <target name="source" depends="distclean"
-          description="Builds source tar.gz and zip files">
+          description="Creates source tar.gz and zip files.">
     <mkdir dir="${dist.dir}/${fullname}"/>
     <copy todir="${dist.dir}/${fullname}" preservelastmodified="yes">
       <fileset dir="${basedir}" excludes="${dist.dir}/, ${lib.dir}/*.jar"/>
@@ -254,7 +278,7 @@
   </target>
 
   <target name="dist" depends="jar, javadoc, docbook"
-	  description="Creates binary and documentation tar.gz and zip files">
+	  description="Creates binary and documentation tar.gz and zip files.">
     <copy todir="${build.dir}/${fullname}" preservelastmodified="yes">
       <fileset dir="${dist.dir}" excludes="*.tar.gz, *.zip"/>
     </copy>
@@ -268,7 +292,7 @@
   </target>
 
   <target name="release" depends="source, dist"
-	  description="Creates all distribution files">
+	  description="Creates all distribution files.">
     <tar tarfile="${dist.dir}/${fullname}-dep.tar.gz"
          basedir="${basedir}"
          compression="gzip"

@@ -2,7 +2,8 @@
 <classpath>
     <classpathentry kind="src" path="src/main"/>
     <classpathentry kind="src" path="src/testcases"/>
-    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry kind="src" path="src/examples"/>
+    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="/usr/share/java/junit.jar"/>
     <classpathentry kind="lib" path="lib/bsf.jar"/>
     <classpathentry kind="lib" path="lib/prevayler.jar"/>

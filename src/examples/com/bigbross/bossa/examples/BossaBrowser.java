@@ -22,7 +22,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
+package com.bigbross.bossa.examples;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
@@ -94,6 +96,7 @@ public class BossaBrowser {
         System.out.println("## WFNet Browser ##");
         System.out.println("Enter command (q to quit, h or help):");
         System.out.print("> ");
+        System.out.flush();
 
         String line;
         StringTokenizer tokenizer;
@@ -398,6 +401,7 @@ public class BossaBrowser {
                 System.out.println("Invalid command.");
             }
             System.out.print("> ");
+            System.out.flush();
         }
     }
 

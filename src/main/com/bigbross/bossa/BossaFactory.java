@@ -52,7 +52,7 @@ public class BossaFactory {
     /**
      * Creates a new Bossa factory with default configuration values. <p>
      */
-    BossaFactory() {
+    public BossaFactory() {
         transientBossa = false;
         stateDir = "BossaState";
     }
