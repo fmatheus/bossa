@@ -84,7 +84,12 @@ public class CommandsTest extends TestCase {
         CloseActivity command = new CloseActivity(activity, null);
         
         assertEquals(1, caze.getActivities().size());
-        command.execute(caseTypeManager);        
+        try {
+            command.execute(caseTypeManager);        
+        } catch (SetAttributeException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
         assertEquals(0, caze.getActivities().size());
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};

@@ -135,7 +135,7 @@ public class Case implements Serializable {
     /**
      * Returns a specific work item, selected by its id. <p>
      * 
-     * FIXME: Maybe we should return null if the work item is not
+     * FIXME: Maybe we should return null also if the work item is not
      * fireable.
      * 
      * @param id the work item id.
@@ -143,8 +143,12 @@ public class Case implements Serializable {
      *         with this id.
      */
     WorkItem getWorkItem(String id) {
-        int index = caseType.getTransition(id).getIndex();
-        return workItems[index];
+        Transition t = caseType.getTransition(id);
+        if (t != null) {
+            return workItems[t.getIndex()];
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -159,7 +163,7 @@ public class Case implements Serializable {
     }
 
     /**
-     * Return a specific activity, selected by its id. <p>
+     * Returns a specific activity, selected by its id. <p>
      * 
      * @param id the activity id.
      * @return the activity, <code>null</code> if there is no activity
@@ -169,10 +173,21 @@ public class Case implements Serializable {
         return (Activity) activities.get(new Integer(id));
     }
 
+    /**
+     * Returns the next activity id for this case. <p>
+     * 
+     * @return The next activity id.
+     */ 
     int nextActivityId() {
 	return activitySequence++;
     }
 
+    /**
+     * Indicates if this case is a template case of some case type. <p>
+     * 
+     * @return <code>true</code> is this case is a template,
+     *         <code>false</code> otherwise.
+     */
     boolean isTemplate() {
 	return id == 0;
     }
@@ -182,13 +197,16 @@ public class Case implements Serializable {
      *
      * @param id the attribute identifier.
      * @param value an <code>Object</code> with the attribute value.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      */
-    void declare(String id, Object value) {
+    void declare(String id, Object value) throws SetAttributeException {
 	try {
+            bsf.declareBean(id, value, value.getClass());
 	    attributes.put(id, value);
-	    bsf.declareBean(id, value, value.getClass());
 	} catch (BSFException e) {
-	    logger.warn(e.getMessage());
+            throw new SetAttributeException("Could not set variable: " + id,
+                                            e);
 	}
     }
 
@@ -286,8 +304,11 @@ public class Case implements Serializable {
      * @param newAttributes the attributes mapping.
      * @return <code>true</code> is the activity is succesfuly opened,
      *         <code>false</code> otherwise.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      */
-    boolean close(Activity activity, Map newAttributes) {
+    boolean close(Activity activity, Map newAttributes) 
+        throws SetAttributeException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;

@@ -33,7 +33,7 @@ import java.util.Map;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see com.bigbross.bossa.wfnet.Activity#close()
- * @see com.bigbross.bossa.wfnet.Case#close(Activity)
+ * @see com.bigbross.bossa.wfnet.Case#close(Activity, Map)
  */
 class CloseActivity extends WFNetCommand {
 
@@ -41,7 +41,13 @@ class CloseActivity extends WFNetCommand {
     private int caseId;
     private int activityId;
     private Map attributes;
-    
+
+    /**
+     * Creates a new close operation. <p>
+     * 
+     * @param activity the activity to be closed.
+     * @param attributes an optional attributes map.
+     */    
     CloseActivity(Activity activity, Map attributes) {
         this.activityId = activity.getId();
         this.caseId = activity.getCase().getId();
@@ -50,9 +56,12 @@ class CloseActivity extends WFNetCommand {
     }
 
     /**
-     * @see com.bigbross.bossa.wfnet.command.WFNetCommand#execute(CaseTypeManager)
+     * Executes the operation. <p>
+     * 
+     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    protected Serializable execute(CaseTypeManager caseTypeManager) 
+        throws SetAttributeException {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);

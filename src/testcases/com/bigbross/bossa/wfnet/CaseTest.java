@@ -56,9 +56,23 @@ public class CaseTest extends TestCase {
     private boolean fire(Case caze, String workItemId, Map attributes) {
 	Activity act = caze.open(caze.getWorkItem(workItemId), "jdoe");
 	if (act != null) {
-	    return caze.close(act, attributes);
+            try {
+	       return caze.close(act, attributes);
+            } catch (SetAttributeException e) {
+                e.printStackTrace();
+                fail(e.toString());
+            }
 	}
 	return false;
+    }
+
+    public void testGetWorkItem() {
+        Case caze = newTestCase();
+        
+        WorkItem wi = caze.getWorkItem("a");
+        assertNotNull(wi);
+        assertEquals("a", wi.getId());
+        assertNull(caze.getWorkItem("invalid id"));
     }
 
     public void testFirstShot() {
@@ -132,9 +146,6 @@ public class CaseTest extends TestCase {
 	assertEquals(1, a2.getCase().getId());
     }
 
-    /**
-     * This test checks if the list of work itens is correct. <p>
-     */
     public void testWorkItensList() {
         Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {1,1,0,0,0,0,0,0});
         List workItens = caze.getWorkItems();
@@ -145,6 +156,17 @@ public class CaseTest extends TestCase {
         assertNotSame(w0, w1);
         assertNotNull(caze.getWorkItem("a"));
         assertNotNull(caze.getWorkItem("b"));
+    }
+
+    public void testGetActivity() {
+        Case caze = newTestCase();
+        WorkItem wi = caze.getWorkItem("a");
+        caze.open(wi, "jdoe");
+
+        Activity act = caze.getActivity(1);
+        assertNotNull(act);
+        assertEquals("a", act.getTransition().getId());
+        assertNull(caze.getActivity(2));
     }
 
     public void testActivitiesList() {
@@ -167,9 +189,14 @@ public class CaseTest extends TestCase {
 
     public void testEdgeEvaluation() {
         Case caze = newTestCase();
-	caze.declare("SOK", new Boolean(true));
-	caze.declare("DIR", new Boolean(false));
-	caze.declare("AVL", new Integer(3));
+        try {
+	   caze.declare("SOK", new Boolean(true));
+	   caze.declare("DIR", new Boolean(false));
+	   caze.declare("AVL", new Integer(3));
+        } catch (SetAttributeException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
 
 	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
 	Edge e2 = Edge.newOutput("AVL * SOK && DIR");
