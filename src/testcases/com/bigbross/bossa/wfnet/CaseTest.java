@@ -130,9 +130,11 @@ public class CaseTest extends TestCase {
     }
 
     public void testAutomaticCreation() throws Exception {
-	Case template = WFNetUtil.createCaseType("test").getTemplate();
+        CaseType caseType = WFNetUtil.createCaseType("test");
+        WorkItem wi = (WorkItem) caseType.getWorkItems(true).get(0);
+        Case template = wi.getCase();
 
-        Activity a1 = template.open(template.getWorkItem("a"), jdoe);
+        Activity a1 = template.open(wi, jdoe);
         Case caze = a1.getCase();
         assertEquals(1, caze.getId());
 

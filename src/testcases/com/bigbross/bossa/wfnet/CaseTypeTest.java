@@ -67,7 +67,10 @@ public class CaseTypeTest extends TestCase {
 
     public void testTemplate() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
-        Case template = caseType.getTemplate();
+
+        List workItems = caseType.getWorkItems(true);
+        assertEquals(1, workItems.size());
+        Case template = ((WorkItem) workItems.get(0)).getCase();
         assertNotNull(template);
         assertEquals(0, template.getId());
         assertEquals(1, template.getWorkItems().size());

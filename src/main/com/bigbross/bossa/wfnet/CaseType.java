@@ -329,17 +329,6 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Returns the template case. This case should not be used directly. <p>
-     * 
-     * FIXME: This method should be removed. <p>
-     * 
-     * @return The template case.
-     */
-    Case getTemplate() {
-        return template;
-    }
-
-    /**
      * Returns the case type manager this case type is registered into. <p>
      * 
      * @return The case type manager this case type is registered into.
