@@ -33,8 +33,8 @@ import com.bigbross.bossa.resource.Resource;
  * through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.WorkItem#open(String)
- * @see com.bigbross.bossa.wfnet.Case#open(WorkItem, String)
+ * @see com.bigbross.bossa.wfnet.WorkItem#open(Resource)
+ * @see com.bigbross.bossa.wfnet.Case#open(WorkItem, Resource)
  */
 class OpenWorkItem extends WFNetCommand {
 
