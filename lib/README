@@ -1,0 +1,44 @@
+
+                                ===== 
+                                Bossa
+                                -----
+                        A java workflow engine.
+                        =======================
+
+Dependencies
+============
+
+Bossa requires the following software to run:
+(If specified the version number indicates minimum requirements.)
+
+ * J2SE 1.2 JRE
+   Notes: The newer the better, 1.4 works fine (and fast).
+   URL: http://java.sun.com/
+
+ + Prevayler 1.03.003
+   Notes: Binaries not available at the site, get from our download page.
+   URL: http://www.prevayler.org/
+
+ + BSF cvs20030213
+   Notes: We need a unreleased version of BSF.
+   URL: http://jakarta.apache.org/bsf/
+
+ + Rhino 1.5R2
+   URL: http://www.mozilla.org/rhino/
+
+For convenience, we provide an archive with the binaries marked with a +
+in our download page.
+
+Bossa requires the aditional software to compile:
+
+ * J2SE 1.2 SDK
+   Notes: The newer the better, 1.4 works fine (and fast).
+   URL: http://java.sun.com/
+
+ * Ant
+   Notes: We use 1.5.1, older versions may work.
+   URL: http://ant.apache.org/
+
+ * JUnit 3.8.1
+   Notes: For the tests only.
+   URL: http://www.junit.org/
