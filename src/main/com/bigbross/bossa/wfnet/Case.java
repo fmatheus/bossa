@@ -664,6 +664,21 @@ public class Case implements Serializable {
     }
 
     /**
+     * Closes this case. A case will close automatically when there are no
+     * active work items. This method should only be used to override
+     * the normal case closing procedure and prematurely abort a case. <p>
+     *
+     * @return <code>true</code> if the case could be closed,
+     *         <code>false</code> otherwise.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
+     */
+    public boolean closeCase() throws BossaException {
+        WFNetTransaction closeCase = new CloseCase(this);
+        return ((Boolean) getBossa().execute(closeCase)).booleanValue();
+    }
+
+    /**
      * @see java.io.Serializable
      */
     private void readObject(java.io.ObjectInputStream in)

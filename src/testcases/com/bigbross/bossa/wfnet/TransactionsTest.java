@@ -150,4 +150,13 @@ public class TransactionsTest extends TestCase {
         expected.put("E", new Integer(1));
         CaseTest.sameState(expected, caze.getState());
     }
+
+    public void testCloseCase() throws Exception {
+        CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
+        Case caze = caseType.getCase(1);
+        CloseCase transaction = new CloseCase(caze);
+        
+        transaction.execute(caseTypeManager);
+        assertNull(caseType.getCase(1));
+    }
 }
