@@ -31,15 +31,16 @@ package com.bigbross.bossa.wfnet;
  */
 public class WorkItem {
 
-    Case caze;
+    private Case caze;
 
-    Transition transition;
+    private Transition transition;
 
-    boolean fireable = true;
+    private boolean fireable;
 
     WorkItem(Case caze, Transition transition) {
 	this.caze = caze;
 	this.transition = transition;
+        this.fireable = true;
     }
 
     void update() {
@@ -58,6 +59,10 @@ public class WorkItem {
 	return transition;
     }
 
+    public String getId() {
+        return getTransition().id;
+    }
+
     public boolean isFireable() {
 	return fireable;
     }
@@ -65,5 +70,4 @@ public class WorkItem {
     public Activity open() {
 	return getCase().open(this);
     }
-
 }
