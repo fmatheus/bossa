@@ -42,8 +42,6 @@ public class TransactionsTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a resource transaction test.");
-    
         resourceManager = new ResourceManager();
         now = new Date();
     }

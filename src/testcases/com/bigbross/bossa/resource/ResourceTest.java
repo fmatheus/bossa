@@ -37,7 +37,6 @@ public class ResourceTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a resource test.");
         r0 = new Resource(null, "r0");
         r1 = new Resource(null, "r1");
         r2 = new Resource(null, "r2");

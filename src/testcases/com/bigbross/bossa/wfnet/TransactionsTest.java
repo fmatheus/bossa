@@ -42,8 +42,6 @@ public class TransactionsTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-	System.out.println("Setting up a wfnet transaction test.");
-    
         Bossa bossa = Bossa.createBossa(null);
         caseTypeManager = bossa.getCaseTypeManager();
 

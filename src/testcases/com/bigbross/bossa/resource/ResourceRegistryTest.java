@@ -35,7 +35,6 @@ public class ResourceRegistryTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a resource registry test.");
         resourceRegistry = new ResourceRegistry("null");
     }
 

@@ -42,7 +42,6 @@ public class CaseTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a case test.");
     }
 
     static boolean sameState(int[] s1, int[] s2) {

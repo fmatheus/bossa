@@ -46,8 +46,6 @@ public class EventsNotificationTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-	System.out.println("Setting up an event notification test.");
-    
         Bossa bossa = BossaTestUtil.createCompleteTestBossa();
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();

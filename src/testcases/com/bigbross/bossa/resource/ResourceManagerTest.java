@@ -35,7 +35,6 @@ public class ResourceManagerTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a resource manager test.");
         resourceManager = new ResourceManager();
     }
 

@@ -42,7 +42,6 @@ public class NotificationBusTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up a notification bus test.");
         List persistent = new ArrayList();
         persistent.add(new GoodListener("persist", 0, null));
         bus = new NotificationBus(persistent);

@@ -37,7 +37,6 @@ public class ExpressionTest extends TestCase {
     }
 
     protected void setUp() {
-	System.out.println("Setting up an expression test.");
         registry = new ResourceRegistry("null");
         A = registry.createResourceImpl("A");
         B = registry.createResourceImpl("B");

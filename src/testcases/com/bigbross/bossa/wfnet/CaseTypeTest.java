@@ -38,7 +38,6 @@ public class CaseTypeTest extends TestCase {
     }
 
     protected void setUp() {
-    	System.out.println("Setting up a case type test.");
     }
 
     public void testCreation() throws Exception {

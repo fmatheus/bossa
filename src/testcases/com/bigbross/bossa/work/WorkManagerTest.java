@@ -41,7 +41,6 @@ public class WorkManagerTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-	System.out.println("Setting up a work manager test.");
         Bossa bossa = BossaTestUtil.createCompleteTestBossa();
         workManager = bossa.getWorkManager();
         frank = bossa.getResourceManager().getResource("frank");

@@ -42,7 +42,6 @@ public class CaseTypeManagerTest extends TestCase {
     }
 
     protected void setUp() {
-    	System.out.println("Setting up a case type manager test.");
         caseTypeManager = new CaseTypeManager();
     }
 
