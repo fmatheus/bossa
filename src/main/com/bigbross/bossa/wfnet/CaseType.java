@@ -366,7 +366,7 @@ public class CaseType implements Serializable {
      * 
      * @param id the case id.
      * @return the case with the provided id, <code>null</code> if
-     *         this case does not exists.
+     *         this case does not exist.
      */
     public Case getCase(int id) {
         if (id == 0) {

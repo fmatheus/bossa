@@ -211,7 +211,7 @@ public class ResourceRegistry implements Serializable {
     /**
      * Creates a new resource in this registry. <p>
      * 
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
@@ -247,7 +247,7 @@ public class ResourceRegistry implements Serializable {
     /**
      * Removes a resource from this registry. <p>
      * 
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 

@@ -93,7 +93,7 @@ public class CaseTypeManager implements Serializable {
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
@@ -132,7 +132,7 @@ public class CaseTypeManager implements Serializable {
      * Removes the case type from the manager. This operation will remove also
      * <emph>all</emph> cases of this case type. <p>
      * 
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 

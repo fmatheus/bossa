@@ -130,7 +130,7 @@ public class Resource implements Container, Serializable {
      * Includes a resource in this resource. Removes the resource from
      * the excludes list if needed. <p>
      *
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
@@ -169,7 +169,7 @@ public class Resource implements Container, Serializable {
      * Excludes a resource from this resource. Removes the resource from
      * the includes list if needed. <p>
      *
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
@@ -205,7 +205,7 @@ public class Resource implements Container, Serializable {
      * Removes a resource from this resource. Effectively removes it from
      * any of the includes or excludes list. <p>
      *
-     * This method does not creates a command to the prevalent system. The
+     * This method does not create a command to the prevalent system. The
      * execution of this method will not be persistent unless it is called by
      * an appropriate command. <p>
      * 
