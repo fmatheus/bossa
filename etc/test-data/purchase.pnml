@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<pnml>
+  <net id="n1" type="WFNet">
+    <place id="p1">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p1</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="38" y="62" />
+      
+      </graphics>
+    </place>
+    <place id="p2">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p2</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="238" y="62" />
+      
+      </graphics>
+    </place>
+    <place id="p3">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p3</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="337" y="163" />
+      
+      </graphics>
+    </place>
+    <place id="p4">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p4</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="438" y="64" />
+      
+      </graphics>
+    </place>
+    <place id="p5">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p5</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="636" y="63" />
+      
+      </graphics>
+    </place>
+    <place id="p6">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p6</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="738" y="163" />
+      
+      </graphics>
+    </place>
+    <place id="p7">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p7</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="637" y="263" />
+      
+      </graphics>
+    </place>
+    <place id="p8">
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>p8</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        <position page="1" x="537" y="262" />
+      
+      </graphics>
+    </place>
+    <transition id="t1">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t1</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="138" y="63" />
+      
+      </graphics>
+    </transition>
+    <transition id="t2">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t2</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="336" y="63" />
+      
+      </graphics>
+    </transition>
+    <transition id="t3">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t3</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="537" y="63" />
+      
+      </graphics>
+    </transition>
+    <transition id="t4">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t4</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="737" y="63" />
+      
+      </graphics>
+    </transition>
+    <transition id="t5">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t5</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="738" y="263" />
+      
+      </graphics>
+    </transition>
+    <transition id="t6">
+      <resource>
+        <graphics>
+          
+          <offset page="1" x="20" y="46" />
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          <offset page="1" x="20" y="69" />
+        
+        </graphics>
+        <value></value>
+      </id>
+      <name>
+        <graphics>
+          
+          <offset page="1" x="20" y="0" />
+        
+        </graphics>
+        <value>t6</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          <offset page="1" x="20" y="23" />
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        <position page="1" x="338" y="264" />
+      
+      </graphics>
+    </transition>
+    <arc id="a1" source="p1" target="t1">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-5" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="87" y="62" />
+      
+      </graphics>
+    </arc>
+    <arc id="a2" source="t1" target="p2">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-5" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="188" y="62" />
+      
+      </graphics>
+    </arc>
+    <arc id="a3" source="p2" target="t2">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-5" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="287" y="62" />
+      
+      </graphics>
+    </arc>
+    <arc id="a4" source="t2" target="p3">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-32" y="-24" />
+        
+        </graphics>
+        <value>!SOK</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="336" y="113" />
+      
+      </graphics>
+    </arc>
+    <arc id="a5" source="p3" target="t6">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="6" y="-24" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="337" y="213" />
+      
+      </graphics>
+    </arc>
+    <arc id="a6" source="t6" target="p2">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-18" y="-26" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="288" y="163" />
+      
+      </graphics>
+    </arc>
+    <arc id="a7" source="t6" target="p8">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-6" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="442" y="264" />
+      
+      </graphics>
+    </arc>
+    <arc id="a8" source="t2" target="p4">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-33" y="-30" />
+        
+        </graphics>
+        <value>SOK &amp;&amp; DIR</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="388" y="63" />
+      
+      </graphics>
+    </arc>
+    <arc id="a9" source="p4" target="t3">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-6" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="487" y="63" />
+      
+      </graphics>
+    </arc>
+    <arc id="a10" source="t3" target="p5">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="-34" y="-30" />
+        
+        </graphics>
+        <value>ADIR=="ok"</value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="10" y="23" />
+        
+        </graphics>
+        <value></value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="586" y="63" />
+      
+      </graphics>
+    </arc>
+    <arc id="a11" source="t2" target="p5">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-52" y="-67" />
+        
+        </graphics>
+        <value>SOK &amp;&amp; !DIR</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="488" y="189" />
+      
+      </graphics>
+    </arc>
+    <arc id="a12" source="t3" target="p2">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="-39" y="22" />
+        
+        </graphics>
+        <value>ADIR=="back"</value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="10" y="23" />
+        
+        </graphics>
+        <value></value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="386" y="-47" />
+      
+      </graphics>
+    </arc>
+    <arc id="a13" source="p5" target="t4">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-8" y="-31" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="683" y="64" />
+      
+      </graphics>
+    </arc>
+    <arc id="a14" source="t3" target="p8">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="9" y="-13" />
+        
+        </graphics>
+        <value>ADIR=="cancel"</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="537" y="162" />
+      
+      </graphics>
+    </arc>
+    <arc id="a15" source="t4" target="p6">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-16" y="-16" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="737" y="113" />
+      
+      </graphics>
+    </arc>
+    <arc id="a16" source="p6" target="t5">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-15" y="-17" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="738" y="213" />
+      
+      </graphics>
+    </arc>
+    <arc id="a17" source="t5" target="p7">
+      <name>
+        <graphics>
+          
+          <offset page="1" x="10" y="0" />
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          <offset page="1" x="-7" y="-32" />
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        <position page="1" x="687" y="263" />
+      
+      </graphics>
+    </arc>
+    <id>
+      <value>purchase_20040301</value>
+    </id>
+    <name>
+      <value>Purchase Workflow</value>
+    </name>
+  </net>
+</pnml>
+

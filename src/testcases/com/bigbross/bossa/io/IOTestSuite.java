@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -22,51 +22,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
+package com.bigbross.bossa.io;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.bigbross.bossa.history.HistoryTestSuite;
-import com.bigbross.bossa.io.IOTestSuite;
-import com.bigbross.bossa.notify.NotifyTestSuite;
-import com.bigbross.bossa.resource.ResourceTestSuite;
-import com.bigbross.bossa.wfnet.WFNetTestSuite;
-import com.bigbross.bossa.work.WorkTestSuite;
-
 /**
- * Tests using all testcases.
+ * Tests using IO package testcases.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class BossaTestSuite extends TestCase {
+ */
+public class IOTestSuite extends TestCase {
 
     /**
      * Constructor.
      *
-     * @param name The name.
-     **/
-    public BossaTestSuite(String name) {
+     * @param name the name.
+     */
+    public IOTestSuite(String name) {
 	super(name);
     }
 
     /**
-     * Makes the suite of tests.
+     * Makes the test suite.
      *
-     * @return The suite.
-     **/
+     * @return the suite.
+     */
     public static Test suite() {
-	TestSuite suite = new TestSuite("Bossa Test Suite");
+	TestSuite suite = new TestSuite("IO Test Suite");
         /* All tests should be added here. */
-        suite.addTest(new TestSuite(TimeSourceTest.class));
-	suite.addTest(WFNetTestSuite.suite());
-        suite.addTest(ResourceTestSuite.suite());
-        suite.addTest(WorkTestSuite.suite());
-        suite.addTest(NotifyTestSuite.suite());
-        suite.addTest(HistoryTestSuite.suite());
-        suite.addTest(IOTestSuite.suite());
-        suite.addTest(new TestSuite(SlowFileTests.class));
+        suite.addTest(new TestSuite(ImportTest.class));
 	return suite;
     }
 }

@@ -8,5 +8,6 @@
     <classpathentry kind="lib" path="lib/bsf.jar"/>
     <classpathentry kind="lib" path="lib/prevayler.jar"/>
     <classpathentry kind="lib" path="lib/rhino.jar"/>
+    <classpathentry kind="lib" path="lib/jdom.jar"/>
     <classpathentry kind="output" path="build/eclipse"/>
 </classpath>
