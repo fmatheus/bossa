@@ -79,14 +79,14 @@ public class CaseTypeTest extends TestCase {
 
     public void testMissingInitialValues() {
         CaseType caseType = new CaseType("missing");
-        Place A = caseType.registerPlace("A");
-        Place B = caseType.registerPlace("B");
+        Place A = caseType.registerPlace("A", 1);
+        Place B = caseType.registerPlace("B", 0);
         Transition a = caseType.registerTransition("a", "joedoe");
         a.input(A,  "1");
         a.output(B, "FOO");
     
         try {
-            caseType.buildTemplate(new int[] {1,0}, null);
+            caseType.buildTemplate(null);
             fail("Undetected undeclared attribute.");
         } catch (BossaException e) {
         }

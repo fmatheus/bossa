@@ -86,15 +86,16 @@ public class CaseType implements Serializable {
     }
     
     /**
-     * Creates a place with the specified id in this case type. <p>
+     * Creates a place with the specified id and initial marking in this
+     * case type. <p>
      *
      * @param id the place id.
+     * @param initialMarking the initial marking, the number of tokens in
+     *                       this place when a new case starts.
      * @return the created place.
-     * 
-     * FIXME: Go on!
      */
-    public Place registerPlace(String id) {
-	Place place = new Place(places.size(), id, -1);
+    public Place registerPlace(String id, int initialMarking) {
+	Place place = new Place(places.size(), id, initialMarking);
 	places.put(id, place);
 	return place;
     }
@@ -213,18 +214,25 @@ public class CaseType implements Serializable {
      * Builds the template case that will spawn all other cases. Call this
      * method after you have finished building the case type. <p>
      * 
-     * @param marking the marking of the template case.
      * @param attributes the attributes of the template case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */ 
-    public void buildTemplate(int[] marking, Map attributes)
+    public void buildTemplate(Map attributes)
         throws BossaException {
-        if (template == null) {
-            template = new Case(this, marking, attributes);
+
+        if (template != null) {
+            return;
         }
+        
+        int[] marking = new int[places.size()];
+        for (Iterator i = places.values().iterator(); i.hasNext(); ) {
+            Place p = (Place) i.next();
+            marking[p.getIndex()] = p.getInitialMarking();
+        }
+        template = new Case(this, marking, attributes);
 
         for (Iterator i = getTransitions().iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();

@@ -45,14 +45,14 @@ public class BossaTestUtil {
     
         CaseType caseType = new CaseType(id);
     
-        Place A = caseType.registerPlace("A");
-        Place B = caseType.registerPlace("B");
-        Place C = caseType.registerPlace("C");
-        Place D = caseType.registerPlace("D");
-        Place E = caseType.registerPlace("E");
-        Place F = caseType.registerPlace("F");
-        Place G = caseType.registerPlace("G");
-        Place H = caseType.registerPlace("H");
+        Place A = caseType.registerPlace("A", marking[0]);
+        Place B = caseType.registerPlace("B", marking[1]);
+        Place C = caseType.registerPlace("C", marking[2]);
+        Place D = caseType.registerPlace("D", marking[3]);
+        Place E = caseType.registerPlace("E", marking[4]);
+        Place F = caseType.registerPlace("F", marking[5]);
+        Place G = caseType.registerPlace("G", marking[6]);
+        Place H = caseType.registerPlace("H", marking[7]);
     
         Transition a = caseType.registerTransition("a", "requesters");
         Transition b = caseType.registerTransition("b", "sales-$a");
@@ -90,7 +90,7 @@ public class BossaTestUtil {
         attributes.put("ADIR", "");
         attributes.put("OK", new Boolean(false));
     
-        caseType.buildTemplate(marking, attributes);
+        caseType.buildTemplate(attributes);
     
         return caseType;
     }
