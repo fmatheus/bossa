@@ -27,6 +27,7 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -156,5 +157,47 @@ public class CaseTypeManager implements Serializable {
         ArrayList caseTypeList = new ArrayList();
         caseTypeList.addAll(caseTypes.values());
         return caseTypeList;
+    }
+    
+    /**
+     * Returns the list of all work items of all registered case types. <p>
+     * 
+     * @return The list of all work itens of all registered case types.
+     */
+    public List getWorkItems() {
+        return getWorkItems(false);
+    }
+
+    /**
+     * Returns the list of all work items of all registered case types.
+     * If desired, the initial work item(s) can be returned. Opening an
+     * initial work item will create a new case. <p>
+     * 
+     * @param getInitial set to <code>true</code> to get the initial work
+     *                   items and to <code>false</code> to only get the
+     *                   standard work items. 
+     * @return The list of all work itens of all registered case types.
+     */
+    public List getWorkItems(boolean getInitial) {
+        ArrayList items = new ArrayList();
+        Iterator i = caseTypes.values().iterator();   
+        while (i.hasNext()) {
+            items.addAll(((CaseType) i.next()).getWorkItems(getInitial));
+        }
+        return items;
+    }
+
+    /**
+     * Returns the list of all activities of all registered case types. <p>
+     * 
+     * @return The list of all activities of all registered case types.
+     */
+    public List getActivities() {
+        ArrayList acts = new ArrayList();
+        Iterator i = caseTypes.values().iterator();   
+        while (i.hasNext()) {
+            acts.addAll(((CaseType) i.next()).getActivities());
+        }
+        return acts;
     }
 }

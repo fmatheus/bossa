@@ -268,10 +268,12 @@ public class CaseType implements Serializable {
      * If desired, the initial work item(s) can be returned. Opening an
      * initial work item will create a new case. <p>
      * 
+     * @param getInitial set to <code>true</code> to get the initial work
+     *                   items and to <code>false</code> to only get the
+     *                   standard work items. 
      * @return The list of work itens of this case type.
      */
     public List getWorkItems(boolean getInitial) {
-
         ArrayList items = new ArrayList();
         if (getInitial) {
             items.addAll(template.getWorkItems());
@@ -289,7 +291,6 @@ public class CaseType implements Serializable {
      * @return The list of activities of this case type.
      */
     public List getActivities() {
-
         ArrayList acts = new ArrayList();
         Iterator i = cases.values().iterator();   
         while (i.hasNext()) {
@@ -299,7 +300,6 @@ public class CaseType implements Serializable {
     }
 
     public String toString() {
-
 	StringBuffer string = new StringBuffer();
 	Place[] p = getPlaces();
 	Transition[] t = getTransitions();
