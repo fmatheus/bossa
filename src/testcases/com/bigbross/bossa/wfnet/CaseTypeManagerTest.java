@@ -110,6 +110,9 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("l\t\t\tList case types.");
                 System.out.println("g <id>\tRegister the test case type.");
                 System.out.println("r <id>\tRemove a case type.");
+                System.out.println("c <id>\tList cases of a case type.");
+                System.out.println("w <id>\tList work itens of a case type.");
+                System.out.println("a <id>\tList activities of a case type.");
                 System.out.println("s\t\t\tTakes a snapshot.");
                 System.out.println("q\t\t\tQuits the browser.");
             } else if (operation.equals("l")) {
@@ -128,6 +131,21 @@ public class CaseTypeManagerTest extends TestCase {
                 String id = tokenizer.nextToken();
                 caseTypeManager.removeCaseType(id);
                 System.out.println("ok.");
+            } else if (operation.equals("c")) {
+                String id = tokenizer.nextToken();
+                Iterator i = caseTypeManager.getCaseType(id).getCases();
+                int count = 1;
+                while (i.hasNext()) {
+                    Case caze = (Case) i.next();
+                    System.out.println(" " + count++ + " " + caze.getId() +
+                                       " " + caze);
+                }    
+            } else if (operation.equals("w")) {
+                String id = tokenizer.nextToken();
+
+            } else if (operation.equals("a")) {
+                String id = tokenizer.nextToken();
+
             } else if (operation.equals("s")) {
                 caseTypeManager.takeSnapshot();
                 System.out.println("ok.");
