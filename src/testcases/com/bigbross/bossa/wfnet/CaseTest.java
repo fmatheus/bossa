@@ -186,14 +186,13 @@ public class CaseTest extends TestCase {
     }
 
     public void testEdgeEvaluation() {
-	CaseTypeManager.getInstance();
         Case caze = newTestCase();
 	caze.declare("SOK", new Boolean(true));
 	caze.declare("DIR", new Boolean(false));
 	caze.declare("AVL", new Integer(3));
 
 	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
-	Edge e2 = Edge.newOutput("AVL * SOK && DIR;[\"a\", \"b\"]");
+	Edge e2 = Edge.newOutput("AVL * SOK && DIR");
 
 	assertEquals(3, e1.eval(caze));
 	assertEquals(0, e2.eval(caze));
