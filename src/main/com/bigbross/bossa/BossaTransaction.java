@@ -59,7 +59,7 @@ public abstract class BossaTransaction implements TransactionWithQuery {
      * This method uses the time currently set in the engine time source. <p>
      * 
      * @param bossa the Bossa engine.
-     * @return the result of the transaction execution.
+     * @return the value returned by the transaction.
      * @exception BossaException if a Bossa error occurs. 
      */
     public abstract Object execute(Bossa bossa) throws BossaException;

@@ -26,10 +26,8 @@ package com.bigbross.bossa;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
 
 import org.prevayler.Prevayler;
-import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.history.Historian;
 import com.bigbross.bossa.notify.NotificationBus;
@@ -108,17 +106,13 @@ public class Bossa implements Serializable {
      * @return the value returned by the transaction.
      * @exception BossaException if the transaction throws an exception.
      */
-    public Object execute(TransactionWithQuery transaction)
+    public Object execute(BossaTransaction transaction)
         throws BossaException {
         try {
             if (prevayler != null) {
                 return prevayler.execute(transaction);
             } else {
-                /* 
-                 * FIXME: This is not deterministic if we are inside another
-                 * prevalent system.
-                 */
-                return transaction.executeAndQuery(this, new Date());
+                return transaction.execute(this);
             }
         } catch (BossaException e) {
             throw e;

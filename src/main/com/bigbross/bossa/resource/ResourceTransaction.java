@@ -47,7 +47,7 @@ abstract class ResourceTransaction extends BossaTransaction {
      * Executes a transaction in a resource manager. <p>
      * 
      * @param resourceManager the resource manager.
-     * @return the result of the transaction execution.
+     * @return the value returned by the transaction.
      */
     protected abstract Object execute(ResourceManager resourceManager);
 }

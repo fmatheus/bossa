@@ -72,7 +72,7 @@ abstract class ResourceHandlerTransaction extends ResourceTransaction {
      * 
      * @param host the resource that will perform the operation. 
      * @param resource the resource that will be manipulated.
-     * @return the result of the transaction execution.
+     * @return the value returned by the transaction.
      */
     protected abstract Object execute(Resource host, Resource resource);
 }

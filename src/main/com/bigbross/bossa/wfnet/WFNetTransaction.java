@@ -48,8 +48,8 @@ abstract class WFNetTransaction extends BossaTransaction {
      * Executes a transaction in a case type manager. <p>
      * 
      * @param caseTypeManager the case type manager.
-     * @return the result of the transaction execution.
-     * @exception BossaException if a Bossa error occurs. 
+     * @return the value returned by the transaction.
+     * @exception BossaException if the transaction throws an exception.
      */
     protected abstract Object execute(CaseTypeManager caseTypeManager)
         throws BossaException;
