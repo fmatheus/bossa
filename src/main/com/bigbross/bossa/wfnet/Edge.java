@@ -29,20 +29,37 @@ import java.util.Map;
 
 /**
  * This class represents one edge of one transition.
- * It may be a input or output edge.
+ * It may be a input or output edge, mapping the precondition or postcondition of one transition.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Edge {
     
+    /**
+     * The condition expression of this edge.
+     */
     protected String expression = "0";
 
+    /**
+     * Creates a new <code>Edge</code> instance, with no condition (weight 0).
+     */
     Edge() {}
 
-    Edge(String expression) {
+    /**
+     * Creates a new <code>Edge</code> instance.
+     *
+     * @param expression the condition expression.
+     */
+    protected Edge(String expression) {
 	this.expression = expression;
     }
 
+    /**
+     * Creates a new input edge, with the transition precondition expression. <p>
+     *
+     * @param expression the expression.
+     * @return the input <code>Edge</code>.
+     */
     static Edge newInput(String expression) {
 	return new Edge(expression) {
 
@@ -60,6 +77,12 @@ public class Edge {
 	    };
     }
 
+    /**
+     * Creates a new output edge, with the transition postcondition expression. <p>
+     *
+     * @param expression the expression.
+     * @return the output <code>Edge</code>.
+     */
     static Edge newOutput(String expression) {
 	return new Edge(expression) {
 
@@ -73,22 +96,47 @@ public class Edge {
 	    };
     }
 
+    /**
+     * Returns the weight of this edge. <p>
+     *
+     * @return a negative, zero, or a positive integer as this edge is an precondition, no-condition, or an postcondition.
+     */
     int weight() {
 	return 0;
     }
 
+    /**
+     * Returns the weight of an precondition edge. <p>
+     *
+     * @return a positive integer as this edge is an precondition, zero otherwise.
+     */
     int input() {
 	return 0;
     }
 
+    /**
+     * Returns the weight of an postcondition edge. <p>
+     *
+     * @return a positive integer as this edge is an postcondition, zero otherwise.
+     */
     int output() {
 	return 0;
     }
 
-    int eval() {
+    /**
+     * Evaluates the expression. <p>
+     *
+     * @return the expression result.
+     */
+    protected int eval() {
 	return Integer.parseInt(expression);
     }
 
+    /**
+     * Returns a string with the condition expression. <p>
+     *
+     * @return a string representation of this edge.
+     */
     public String toString() {
 	return expression;
     }
