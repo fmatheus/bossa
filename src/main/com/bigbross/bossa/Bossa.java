@@ -29,7 +29,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.prevayler.Prevayler;
-import org.prevayler.PrevaylerFactory;
 import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.notify.NotificationBus;
@@ -39,54 +38,13 @@ import com.bigbross.bossa.work.WorkManager;
 
 /**
  * This class represents a workflow engine in the Bossa workflow library. 
- * Use an instance of this class, created by the factory method
- * <code>createBossa</code>, to access all elements of the Bossa API. <p>
+ * Use an instance of this class, created by the factory class
+ * <code>BossaFactory</code>, to access all elements of the Bossa API. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ * @see com.bigbross.bossa.BossaFactory
  */
 public class Bossa implements Serializable {
-
-    /**
-     * This factory method creates a Bossa workflow engine. <p>
-     * 
-     * The engine created is persistent if a valid persistence directory is
-     * provided. If the persistence directory is empty, a new Bossa
-     * engine will be created. If the persistence directory contains data
-     * of an already running Bossa engine, it will be restarted. <p>
-     * 
-     * The engine created is transient if <code>null</code> is passed as
-     * the persistence directory. A transient Bossa engine can be embeded in
-     * a prevalent system, being persisted with it, otherwise all operations
-     * will be lost in case of system shutdown. <p>
-     * 
-     * @param persistDir the directory that holds or will hold the state
-     *        of the created engine.
-     * @return the newly created bossa engine.
-     * @exception PersistenceException if an error occours starting the
-     *            persistence mechanism.
-     */
-    public static Bossa createBossa(String persistDir)
-        throws PersistenceException {
-        Bossa newBossa = new Bossa();
-        newBossa.setNotificationBus(new NotificationBus());
-        if (persistDir != null) {
-            try {
-                Prevayler prevayler =
-                    PrevaylerFactory.createPrevayler(newBossa, persistDir);
-                newBossa = (Bossa) prevayler.prevalentSystem();
-                newBossa.setPrevayler(prevayler);
-                return newBossa;
-            } catch (IOException e) {
-                throw new PersistenceException("I/O error starting prevayler.",
-                                                e);
-            } catch (ClassNotFoundException e) {
-                throw new PersistenceException("Reflection error in prevayler.",
-                                                e);
-            }
-        } else {
-            return newBossa;
-        }
-    }
 
     private CaseTypeManager caseTypeManager;
 
@@ -114,7 +72,7 @@ public class Bossa implements Serializable {
      * 
      * @param notificationBus the notification bus.
      */ 
-    private void setNotificationBus(NotificationBus notificationBus) {
+    void setNotificationBus(NotificationBus notificationBus) {
         this.notificationBus = notificationBus;
     }
 
@@ -123,7 +81,7 @@ public class Bossa implements Serializable {
      * 
      * @param prevayler the prevayler.
      */
-    private void setPrevayler(Prevayler prevayler) {
+    void setPrevayler(Prevayler prevayler) {
         this.prevayler = prevayler;
     }
 

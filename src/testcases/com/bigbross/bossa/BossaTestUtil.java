@@ -34,7 +34,7 @@ import com.bigbross.bossa.wfnet.WFNetUtil;
 public class BossaTestUtil {
 
     public static Bossa createCompleteTestBossa() throws Exception {
-        Bossa bossa = Bossa.createBossa(null);
+        Bossa bossa = BossaFactory.transientBossa();
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         ResourceManager resourceManager = bossa.getResourceManager();
         

@@ -29,6 +29,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.resource.Resource;
 
 public class TransactionsTest extends TestCase {
@@ -42,7 +43,7 @@ public class TransactionsTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-        Bossa bossa = Bossa.createBossa(null);
+        Bossa bossa = BossaFactory.transientBossa();
         caseTypeManager = bossa.getCaseTypeManager();
 
         now = new Date();

@@ -60,7 +60,9 @@ public class BossaBrowser {
     List lastCaseTypeResourceList;
 
     public BossaBrowser() throws Exception {
-        bossa = Bossa.createBossa("build/BossaState");
+        BossaFactory factory = new BossaFactory();
+        factory.setStateDir("build/BossaBrowserState");
+        bossa = factory.createBossa();
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();
         workManager = bossa.getWorkManager();
