@@ -34,11 +34,8 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.resource.Resource#include(Resource)
  * @see com.bigbross.bossa.resource.Resource#includeImpl(Resource)
  */
-class IncludeInResource extends ResourceCommand {
+class IncludeInResource extends ResourceHandlerCommand {
 
-    private String hostId;
-    private String resourceId;
-    
     /**
      * Creates a new include operation. <p>
      *
@@ -46,18 +43,16 @@ class IncludeInResource extends ResourceCommand {
      * @param resource the resource that will be included.
      */    
     IncludeInResource(Resource host, Resource resource) {
-        this.hostId = host.getId();
-        this.resourceId = resource.getId();
+        super(host, resource);
     }
 
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
+     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     *      Resource, Resource)
      */
-    protected Serializable execute(ResourceManager resourceManager) {
-        Resource host = resourceManager.getResource(hostId);
-        Resource resource = resourceManager.getResource(resourceId);
+    protected Serializable execute(Resource host, Resource resource) {
         return new Boolean(host.includeImpl(resource));
     }
 }

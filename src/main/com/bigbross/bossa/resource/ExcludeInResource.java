@@ -34,10 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.resource.Resource#exclude(Resource)
  * @see com.bigbross.bossa.resource.Resource#excludeImpl(Resource)
  */
-class ExcludeInResource extends ResourceCommand {
-
-    private String hostId;
-    private String resourceId;
+class ExcludeInResource extends ResourceHandlerCommand {
     
     /**
      * Creates a new exclude operation. <p>
@@ -46,18 +43,16 @@ class ExcludeInResource extends ResourceCommand {
      * @param resource the resource that will be excluded.
      */    
     ExcludeInResource(Resource host, Resource resource) {
-        this.hostId = host.getId();
-        this.resourceId = resource.getId();
+        super(host, resource);
     }
 
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
+     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     *      Resource, Resource)
      */
-    protected Serializable execute(ResourceManager resourceManager) {
-        Resource host = resourceManager.getResource(hostId);
-        Resource resource = resourceManager.getResource(resourceId);
+    protected Serializable execute(Resource host, Resource resource) {
         return new Boolean(host.excludeImpl(resource));
     }
 }

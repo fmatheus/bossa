@@ -26,7 +26,11 @@ package com.bigbross.bossa.resource;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.BossaTestSuite;
+import com.bigbross.bossa.wfnet.CaseTypeManager;
+import com.bigbross.bossa.wfnet.WFNetUtil;
 
 public class CommandsTest extends TestCase {
 
@@ -58,7 +62,7 @@ public class CommandsTest extends TestCase {
         assertNull(resourceManager.getResource("joe"));
     }
     
-    public void testIncludeInResource() {
+    public void testIncludeInResource() throws Exception {
         Resource group = resourceManager.createResourceImpl("trumps");
         Resource element = resourceManager.createResourceImpl("joe");
 
@@ -67,8 +71,24 @@ public class CommandsTest extends TestCase {
                    booleanValue());
         assertTrue(group.contains(element));
     }
+
+    public void testIncludeInCaseTypeResource()  throws Exception {
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+        WFNetUtil.prepareWorkTest(caseTypeManager);
+        ResourceManager myResourceManager = bossa.getResourceManager();
+        
+        Resource group = (Resource)
+            caseTypeManager.getCaseType("test").getResources().get(0);
+        Resource element = myResourceManager.createResourceImpl("joe");
+
+        IncludeInResource command = new IncludeInResource(group, element);        
+        assertTrue(((Boolean) command.execute(myResourceManager)).
+                   booleanValue());
+        assertTrue(group.contains(element));
+    }
     
-    public void testExcludeInResource() {
+    public void testExcludeInResource() throws Exception {
         Resource group1 = resourceManager.createResourceImpl("trumps");
         Resource group2 = resourceManager.createResourceImpl("good");
         Resource element = resourceManager.createResourceImpl("joe");
@@ -81,8 +101,28 @@ public class CommandsTest extends TestCase {
                    booleanValue());
         assertFalse(group1.contains(element));
     }
+
+    public void testExcludeInCaseTypeResource() throws Exception {
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+        WFNetUtil.prepareWorkTest(caseTypeManager);
+        ResourceManager myResourceManager = bossa.getResourceManager();
+        
+        Resource group1 = (Resource)
+            caseTypeManager.getCaseType("test").getResources().get(0);
+        Resource group2 = myResourceManager.createResourceImpl("good");
+        Resource element = myResourceManager.createResourceImpl("joe");
+        group1.includeImpl(group2);
+        group2.includeImpl(element);
+        assertTrue(group1.contains(element));
+        
+        ExcludeInResource command = new ExcludeInResource(group1, element);        
+        assertTrue(((Boolean) command.execute(myResourceManager)).
+                   booleanValue());
+        assertFalse(group1.contains(element));
+    }
     
-    public void testRemoveFromResource() {
+    public void testRemoveFromResource() throws Exception {
         Resource group = resourceManager.createResourceImpl("trumps");
         Resource element = resourceManager.createResourceImpl("joe");
         group.includeImpl(element);
@@ -90,6 +130,23 @@ public class CommandsTest extends TestCase {
 
         RemoveFromResource command = new RemoveFromResource(group, element);        
         command.execute(resourceManager);
+        assertFalse(group.contains(element));
+    }
+
+    public void testRemoveFromCaseTypeResource() throws Exception {
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+        WFNetUtil.prepareWorkTest(caseTypeManager);
+        ResourceManager myResourceManager = bossa.getResourceManager();
+        
+        Resource group = (Resource)
+            caseTypeManager.getCaseType("test").getResources().get(0);
+        Resource element = myResourceManager.createResourceImpl("joe");
+        group.includeImpl(element);
+        assertTrue(group.contains(element));
+
+        RemoveFromResource command = new RemoveFromResource(group, element);        
+        command.execute(myResourceManager);
         assertFalse(group.contains(element));
     }
 }

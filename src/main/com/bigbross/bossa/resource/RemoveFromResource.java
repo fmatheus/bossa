@@ -34,10 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.resource.Resource#remove(Resource)
  * @see com.bigbross.bossa.resource.Resource#removeImpl(Resource)
  */
-class RemoveFromResource extends ResourceCommand {
-
-    private String hostId;
-    private String resourceId;
+class RemoveFromResource extends ResourceHandlerCommand {
     
     /**
      * Creates a new remove operation. <p>
@@ -46,18 +43,16 @@ class RemoveFromResource extends ResourceCommand {
      * @param resource the resource that will be removed.
      */    
     RemoveFromResource(Resource host, Resource resource) {
-        this.hostId = host.getId();
-        this.resourceId = resource.getId();
+        super(host, resource);
     }
 
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
+     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     *      Resource, Resource)
      */
-    protected Serializable execute(ResourceManager resourceManager) {
-        Resource host = resourceManager.getResource(hostId);
-        Resource resource = resourceManager.getResource(resourceId);
+    protected Serializable execute(Resource host, Resource resource) {
         host.removeImpl(resource);
         return null;
     }
