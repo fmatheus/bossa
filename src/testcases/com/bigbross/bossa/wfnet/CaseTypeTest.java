@@ -171,8 +171,8 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = createTestCaseType();
         Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        c1.open(c1.getWorkItem("a"));
-        c2.open(c2.getWorkItem("a"));
+        c1.open(c1.getWorkItem("a"), "jdoe");
+        c2.open(c2.getWorkItem("a"), "jdoe");
 
         List activities = caseType.getActivities();
         assertEquals(2, activities.size());

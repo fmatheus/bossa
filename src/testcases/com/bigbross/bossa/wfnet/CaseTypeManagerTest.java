@@ -176,7 +176,7 @@ public class CaseTypeManagerTest extends TestCase {
                 String wiId = tokenizer.nextToken();
                 WorkItem wi = caseTypeManager.getCaseType(caseTypeId).
                                getCase(caseId).getWorkItem(wiId);
-                Activity a = wi.open();
+                Activity a = wi.open("jdoe");
                 System.out.println("ok. Activity: " + a.getId());
             } else if (operation.equals("cl")) {
                 String caseTypeId = tokenizer.nextToken();
@@ -202,7 +202,7 @@ public class CaseTypeManagerTest extends TestCase {
                 HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
                 WorkItem wi = caseTypeManager.getCaseType(caseTypeId).
                                getCase(caseId).getWorkItem(wiId);
-                Activity a = wi.open();
+                Activity a = wi.open("jdoe");
                 boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("vs")) {

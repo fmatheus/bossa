@@ -48,10 +48,13 @@ public class Activity implements Serializable {
     private int id;
 
     private WorkItem workItem;
+    
+    private String resource;
 
-    Activity(WorkItem workItem) {
-	this.workItem = workItem;
-	this.id = getCase().nextActivityId();
+    Activity(WorkItem workItem, String resource) {
+        this.workItem = workItem;
+        this.id = getCase().nextActivityId();
+        this.resource = resource;
     }
 
     /**
@@ -61,6 +64,15 @@ public class Activity implements Serializable {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * Returns the resource responsible by this activity. <p>
+     * 
+     * @return the resource id.
+     */
+    public String getResource() {
+        return resource;
     }
 
     public CaseType getCaseType() {

@@ -244,9 +244,10 @@ public class Case implements Serializable {
      * be used only internally as a part of a persistent transaction. <p>
      * 
      * @param wi the work item to be opened.
+     * @param resource the resource that is opening the work item.
      * @return The activity created the opening of this work item.
      */
-    Activity open(WorkItem wi) {
+    Activity open(WorkItem wi, String resource) {
 
 	if (!wi.isFireable()) {
 	    return null;
@@ -254,10 +255,10 @@ public class Case implements Serializable {
 
 	if (isTemplate()) {
 	    Case caze = caseType.newCase(getMarking());
-	    return caze.open(caze.getWorkItem(wi.getId()));
+	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
-	Activity activity = new Activity(wi);
+	Activity activity = new Activity(wi, resource);
 	activities.put(new Integer(activity.getId()), activity);
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {

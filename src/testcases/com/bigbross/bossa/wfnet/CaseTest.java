@@ -54,7 +54,7 @@ public class CaseTest extends TestCase {
     } 
 
     private boolean fire(Case caze, String workItemId, Map attributes) {
-	Activity act = caze.open(caze.getWorkItem(workItemId));
+	Activity act = caze.open(caze.getWorkItem(workItemId), "jdoe");
 	if (act != null) {
 	    return caze.close(act, attributes);
 	}
@@ -90,7 +90,7 @@ public class CaseTest extends TestCase {
         
         int[] start = caze.getMarking();
 
-        Activity act = caze.open(caze.getWorkItem("a"));
+        Activity act = caze.open(caze.getWorkItem("a"), "jdoe");
         assertNotNull(act);
         assertTrue(caze.cancel(act));
 
@@ -122,13 +122,13 @@ public class CaseTest extends TestCase {
     public void testAutomaticCreation() {
 	Case template = CaseTypeTest.createTestCaseType().getTemplate();
 
-	Activity a1 = template.open(template.getWorkItem("a"));
+	Activity a1 = template.open(template.getWorkItem("a"), "jdoe");
 	Case caze = a1.getCase();
 	assertEquals(1, caze.getId());
 
         assertTrue(caze.cancel(a1));
 
-	Activity a2 = caze.open(caze.getWorkItem("a"));
+	Activity a2 = caze.open(caze.getWorkItem("a"), "jdoe");
 	assertEquals(1, a2.getCase().getId());
     }
 
@@ -151,10 +151,10 @@ public class CaseTest extends TestCase {
         Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {2,0,0,0,0,0,0,0});
         WorkItem wi = caze.getWorkItem("a");
 
-        caze.open(wi);
+        caze.open(wi, "jdoe");
         assertEquals(1, caze.getActivities().size());
 
-        caze.open(wi);
+        caze.open(wi, "jdoe");
         List activities = caze.getActivities();
         assertEquals(2, activities.size());
 
@@ -162,6 +162,7 @@ public class CaseTest extends TestCase {
         Activity a1 = (Activity) activities.get(1);
         assertNotSame(a0, a1);
         assertSame(a0.getTransition(), a1.getTransition());
+        assertEquals("jdoe", a0.getResource());
     }
 
     public void testEdgeEvaluation() {

@@ -39,11 +39,13 @@ class OpenWorkItem extends WFNetCommand {
     private String caseTypeId;
     private int caseId;
     private String workItemId;
+    private String resource;
     
-    OpenWorkItem(WorkItem workItem) {
+    OpenWorkItem(WorkItem workItem, String resource) {
         this.workItemId = workItem.getId();
         this.caseId = workItem.getCase().getId();
         this.caseTypeId = workItem.getCaseType().getId();
+        this.resource = resource;
     }
 
     /**
@@ -54,6 +56,6 @@ class OpenWorkItem extends WFNetCommand {
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         WorkItem workItem = caze.getWorkItem(workItemId);
         
-        return caze.open(workItem);
+        return caze.open(workItem, resource);
     }
 }

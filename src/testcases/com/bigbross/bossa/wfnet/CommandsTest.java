@@ -66,7 +66,7 @@ public class CommandsTest extends TestCase {
     public void testOpenWorkItem() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        OpenWorkItem command = new OpenWorkItem(wi);
+        OpenWorkItem command = new OpenWorkItem(wi, "jdoe");
 
         Activity act = (Activity) command.execute(caseTypeManager);
         assertNotNull(act);
@@ -80,7 +80,7 @@ public class CommandsTest extends TestCase {
     public void testCloseActivity() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        Activity activity = caze.open(wi);
+        Activity activity = caze.open(wi, "jdoe");
         CloseActivity command = new CloseActivity(activity, null);
         
         assertEquals(1, caze.getActivities().size());
@@ -95,7 +95,7 @@ public class CommandsTest extends TestCase {
     public void testCancelActivity() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        Activity activity = caze.open(wi);
+        Activity activity = caze.open(wi, "jdoe");
         CancelActivity command = new CancelActivity(activity);
         
         assertEquals(1, caze.getActivities().size());

@@ -85,10 +85,11 @@ public class WorkItem implements Serializable {
      * an activity and is locked to the resource who opened it. The actual
      * completion of the work item in handled by the created activity. <p>
      * 
+     * @param resource the resource that is opening the work item.
      * @return The activity created the opening of this work item.
      */
-    public Activity open() {
-        WFNetCommand openCommand = new OpenWorkItem(this);
+    public Activity open(String resource) {
+        WFNetCommand openCommand = new OpenWorkItem(this, resource);
         try {
           return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
         } catch (Exception e) {
