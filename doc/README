@@ -36,7 +36,7 @@ process a bit by adding this line to "build.properties".
 
 	docbookx.dtd=<docbook-XML-4.1.2-DTD-dir>/docbookx.dtd
 
-Not that this last step is *optional*.
+Note that this last step is *optional*.
 
 With everything in place, simply run:
 

@@ -1,5 +1,5 @@
 
-Bossa 0.5.0 "3.500 BC", 2003-12-XX
+Bossa 0.5.0 "3.500 BC", 2003-12-03
 ----------------------------------
 
 * Added an historian to track events that happened in the engine. It is
@@ -9,7 +9,12 @@ Bossa 0.5.0 "3.500 BC", 2003-12-XX
 * Added history support to the Bossa Browser to demo the new history
   feature.
 
+* Improved the transient Bossa: now it is possible to embed it
+  deterministically with relation to time using time sources.
+
 * Fixed the resource filtering in the notification bus. Now it works.
+
+* Fixed leaking resource registries in case type and case type manager.
 
 
 Bossa 0.4.1 "Fall", 2003-11-14
