@@ -108,6 +108,9 @@ public class CaseTypeManager implements Serializable {
         }
         caseTypes.put(caseType.getId(), caseType);
         caseType.setCaseTypeManager(this);
+        if (getBossa() !=null) {
+            getBossa().getResourceManager().getMainContext().registerSubContext(caseType.getResourceRegistry());
+        }
         return true;
     }
     
