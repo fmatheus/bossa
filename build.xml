@@ -34,7 +34,7 @@
   <!-- Name of project and version, used to create filenames -->
   <property name="Name"    value="Bossa Workflow Management System"/>
   <property name="name"    value="bossa"/>
-  <property name="version" value="0.2.1"/>
+  <property name="version" value="0.2.2"/>
   <property name="fullname" value="${name}-${version}" />
 
   <!-- Set global properties for this build -->
@@ -44,6 +44,7 @@
   <property name="build.compiler" value="modern"/>
   <property name="build.compiler.emacs" value="on"/>
   <property name="javadoc" value="http://java.sun.com/j2se/1.3/docs/api"/>
+  <property name="javadoc.access" value="public"/>
   <property name="testcase" value="com.bigbross.bossa.BossaTestSuite"/>
   <property name="junit.fork" value="false"/>
   <property name="junit.filtertrace" value="off"/>
@@ -133,7 +134,7 @@
 	     link="${javadoc}"
              destdir="${dist.javadocs}"
 	     use="true"
-	     private="true"
+             access="${javadoc.access}"
              author="true"
              version="true"
              windowtitle="${Name} API"
@@ -151,7 +152,7 @@
              link="${javadoc}"
              destdir="${dist.javadocs.tests}"
              use="true"
-             private="true"
+             access="${javadoc.access}"
              author="true"
              version="true"
              windowtitle="${Name} Test Utilities"
