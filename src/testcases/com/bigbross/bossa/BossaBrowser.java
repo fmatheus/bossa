@@ -365,7 +365,13 @@ public class BossaBrowser {
                 String caseTypeId = tokenizer.nextToken();
                 String caseId = tokenizer.nextToken();
                 String id = tokenizer.nextToken();
-                Integer value = new Integer(tokenizer.nextToken());
+                String valueStr = tokenizer.nextToken();
+                Object value;
+                try {
+                    value = new Integer(valueStr);
+                } catch (NumberFormatException e) {
+                    value = valueStr;
+                }
                 HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
                 if (attributes == null) {
                     attributes = new HashMap();

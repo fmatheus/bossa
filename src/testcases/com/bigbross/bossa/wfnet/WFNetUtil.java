@@ -74,8 +74,8 @@ public class WFNetUtil {
         e.output(G, "1");
 
         f.input(C,  "1");
-        f.output(B, "1");
-        f.output(H, "1");
+        f.output(B, "OK");
+        f.output(H, "!OK");
 
         caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
 
