@@ -70,9 +70,6 @@ class CloseActivity extends WFNetCommand {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);
-        
-        boolean result = caze.close(activity, attributes);
-        
-        return new Boolean(result); /* FIXME: Ridiculous, isn't? */ 
+        return new Boolean(caze.close(activity, attributes));
     }
 }

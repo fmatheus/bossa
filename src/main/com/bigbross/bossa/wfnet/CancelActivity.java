@@ -64,9 +64,6 @@ class CancelActivity extends WFNetCommand {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);
-        
-        boolean result = caze.cancel(activity);
-        
-        return new Boolean(result); /* FIXME: Ridiculous, isn't? */ 
+        return new Boolean(caze.cancel(activity));
     }
 }

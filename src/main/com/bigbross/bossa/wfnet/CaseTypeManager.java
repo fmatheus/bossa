@@ -84,13 +84,9 @@ public class CaseTypeManager implements Serializable {
      */    
     public boolean registerCaseType(CaseType caseType)
         throws BossaException {
-        /* FIXME: Where is the place of this validation code? */
-        if (caseTypes.containsKey(caseType.getId())) {
-            return false;
-        }
         WFNetCommand registerCommand = new RegisterCaseType(caseType);
-        getBossa().executeCommand(registerCommand);
-        return true;
+        return ((Boolean) getBossa().executeCommand(registerCommand)).
+               booleanValue();
     }
 
     /**
