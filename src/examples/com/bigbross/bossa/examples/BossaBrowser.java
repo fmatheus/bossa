@@ -27,6 +27,7 @@ package com.bigbross.bossa.examples;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -164,7 +165,8 @@ public class BossaBrowser {
                "h                           Display all history.\n" +
                "ht <id>                     Display a case type history.\n" +
                "hc <listId>                 Display a case history.\n" +
-               "hr <listId>                 Display a resource history.\n";
+               "hr <listId>                 Display a resource history.\n" +
+               "hx                          Export and purge all history.\n";
               System.out.print(options);
             } else if (operation.equals("s")) {
                 bossa.takeSnapshot();
@@ -440,6 +442,11 @@ public class BossaBrowser {
                 Resource resource = retrieveResource(listId);
                 List l = historian.getResourceHistory(resource.getId());
                 printHistory(l);
+            } else if (operation.equals("hx")) {
+                Date now = new Date();
+                historian.exportHistory(now, "history.xml");
+                historian.purgeHistory(now);
+                System.out.println("History written to history.xml.");
             } else if (operation.equals("")) {
             } else {
                 System.out.println("Invalid command.");
