@@ -41,7 +41,7 @@ public class TransactionsTest extends TestCase {
     }
 
     protected void setUp() {
-        historian = new Historian();
+        historian = new Historian(null);
         HashMap attributes = new HashMap();
         Date aTime = new Date();
         aTime.setTime(HistorianTest.t1);

@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.DataTransferException;
 import com.bigbross.bossa.notify.Event;
 import com.bigbross.bossa.notify.EventsXMLHelper;
@@ -43,13 +45,27 @@ import com.bigbross.bossa.wfnet.WFNetEvents;
  */
 public class Historian implements Serializable {
     
+    private Bossa engine;
+
     private ArrayList history;
 
     /**
      * Creates a new empty historian. <p>
+     * 
+     * @param engine the bossa engine this historian is part.
      */
-    public Historian() {
-        history = new ArrayList();
+    public Historian(Bossa engine) {
+        this.engine = engine;
+        this.history = new ArrayList();
+    }
+
+    /**
+     * Returns the bossa engine this historian is part. <p>
+     * 
+     * @return the bossa engine this historian is part.
+     */
+    Bossa getBossa() {
+        return engine;
     }
 
     /**
@@ -331,10 +347,12 @@ public class Historian implements Serializable {
      * removed. <p>
      * 
      * @param end the limit date for event removal.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public void purgeHistory(Date end) {
+    public void purgeHistory(Date end) throws BossaException {
         HistorianTransaction purgeTransaction = new PurgeHistory(end);
-//        getBossa().execute(purgeTransaction);
+        getBossa().execute(purgeTransaction);
     }
     
     /**

@@ -66,7 +66,7 @@ public class Bossa implements Serializable {
         caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
         workManager = new WorkManager(this);
-        historian = new Historian();
+        historian = new Historian(this);
         notificationBus = null;
         timeSource = new DeterministicTimeSource();
         prevayler = null;

@@ -4,7 +4,8 @@ Bossa 0.X.X "XXX", 200X-XX-XX
 
 * 
 
-* Added a ability to purge old history events.
+* Added the ability to export old history events to a XML file and
+  purge them.
 
 
 Bossa 0.5.0 "3.500 BC", 2003-12-03

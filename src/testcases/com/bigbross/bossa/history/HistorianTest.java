@@ -48,7 +48,7 @@ public class HistorianTest extends TestCase {
     }
 
     protected void setUp() {
-        historian = new Historian();
+        historian = new Historian(null);
         HashMap attributes = new HashMap();
         attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype1");
         attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(1));
