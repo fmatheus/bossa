@@ -56,7 +56,7 @@ public class ResourceTestSuite extends TestCase {
 	suite.addTest(new TestSuite(ExpressionTest.class));
         suite.addTest(new TestSuite(ResourceRegistryTest.class));
 	suite.addTest(new TestSuite(ResourceManagerTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
+        suite.addTest(new TestSuite(TransactionsTest.class));
 	return suite;
     }
 }

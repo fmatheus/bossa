@@ -203,17 +203,17 @@ public class ResourceRegistry implements Serializable {
      *            execution of this method persistent.
      */    
     public Resource createResource(String id) throws BossaException {
-        ResourceCommand createCommand = new CreateResource(id);
+        ResourceTransaction createTransaction = new CreateResource(id);
         return (Resource) getResourceManager().getBossa().
-            executeCommand(createCommand);
+            execute(createTransaction);
     }
 
     /**
      * Creates a new resource in this registry. <p>
      * 
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param id the id of the resource to be created.
      * @return the created <code>Resource</code> object,
@@ -239,17 +239,17 @@ public class ResourceRegistry implements Serializable {
      *            execution of this method persistent.
      */
     public boolean removeResource(Resource resource) throws BossaException {
-        ResourceCommand removeCommand = new RemoveResource(resource);
+        ResourceTransaction removeTransaction = new RemoveResource(resource);
         return ((Boolean) getResourceManager().getBossa().
-            executeCommand(removeCommand)).booleanValue();
+            execute(removeTransaction)).booleanValue();
     }
 
     /**
      * Removes a resource from this registry. <p>
      * 
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be removed.
      * @return <code>true</code> if the resource was removed,

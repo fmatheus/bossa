@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class implements the cancel operation of <code>Activity</code>
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.wfnet.Activity#cancel()
  * @see com.bigbross.bossa.wfnet.Case#cancel(Activity)
  */
-class CancelActivity extends WFNetCommand {
+class CancelActivity extends WFNetTransaction {
 
     private String caseTypeId;
     private int caseId;
@@ -57,11 +57,11 @@ class CancelActivity extends WFNetCommand {
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
-     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
+     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
+     *      CaseTypeManager, Date)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) 
+    protected Object execute(CaseTypeManager caseTypeManager, Date time) 
         throws EvaluationException {
-    
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);
         return new Boolean(caze.cancel(activity));

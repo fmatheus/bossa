@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 import com.bigbross.bossa.BossaException;
@@ -37,7 +37,7 @@ import com.bigbross.bossa.BossaException;
  * @see com.bigbross.bossa.wfnet.Activity#close()
  * @see com.bigbross.bossa.wfnet.Case#close(Activity, Map)
  */
-class CloseActivity extends WFNetCommand {
+class CloseActivity extends WFNetTransaction {
 
     private String caseTypeId;
     private int caseId;
@@ -65,10 +65,11 @@ class CloseActivity extends WFNetCommand {
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
-     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
+     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
+     *      CaseTypeManager, Date)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) throws BossaException {
-    
+    protected Object execute(CaseTypeManager caseTypeManager, Date time)
+        throws BossaException {
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);
         return new Boolean(caze.close(activity, attributes));

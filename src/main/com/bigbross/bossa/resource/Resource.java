@@ -119,20 +119,19 @@ public class Resource implements Container, Serializable {
      *            execution of this method persistent.
      */
     public boolean include(Resource resource) throws BossaException {
-        ResourceCommand includeCommand = 
+        ResourceTransaction includeTransaction = 
             new IncludeInResource(this, resource);
         return ((Boolean) getResourceRegistry().getResourceManager().
-                          getBossa().executeCommand(includeCommand)).
-                          booleanValue();
+            getBossa().execute(includeTransaction)).booleanValue();
     }
 
     /**
      * Includes a resource in this resource. Removes the resource from
      * the excludes list if needed. <p>
      *
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be included.
      * @return <code>false</code> if resource includes this resource,
@@ -158,20 +157,19 @@ public class Resource implements Container, Serializable {
      *            execution of this method persistent.
      */
     public boolean exclude(Resource resource) throws BossaException {
-        ResourceCommand excludeCommand =
+        ResourceTransaction excludeTransaction =
             new ExcludeInResource(this, resource);
         return ((Boolean) getResourceRegistry().getResourceManager().
-                          getBossa().executeCommand(excludeCommand)).
-                          booleanValue();
+            getBossa().execute(excludeTransaction)).booleanValue();
     }
 
     /**
      * Excludes a resource from this resource. Removes the resource from
      * the includes list if needed. <p>
      *
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be excluded.
      * @return <code>false</code> if resource excludes this resource,
@@ -195,19 +193,19 @@ public class Resource implements Container, Serializable {
      *            execution of this method persistent.
      */
     public void remove(Resource resource) throws BossaException {
-        ResourceCommand removeCommand =
+        ResourceTransaction removeTransaction =
             new RemoveFromResource(this, resource);
         getResourceRegistry().getResourceManager().getBossa().
-            executeCommand(removeCommand);
+            execute(removeTransaction);
     }
 
     /**
      * Removes a resource from this resource. Effectively removes it from
      * any of the includes or excludes list. <p>
      *
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param resource the resource to be removed.
      */

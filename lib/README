@@ -14,12 +14,11 @@ Bossa requires the following software to run:
    Notes: The newer the better, 1.4 works fine (and fast).
    URL: http://java.sun.com/
 
- + Prevayler =1.03.003
-   Notes: Binaries not available at the site, get from our download page.
+ + Prevayler >=2.00.001
    URL: http://www.prevayler.org/
 
  + BSF =cvs20030213
-   Notes: We need a unreleased version of BSF.
+   Notes: We need a unreleased version of BSF, get it from our download page.
    URL: http://jakarta.apache.org/bsf/
 
  + Rhino >=1.5R2 <=1.5R3

@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.resource;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class implements the remove resource operation of
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.resource.ResourceManager#removeResource(Resource)
  * @see com.bigbross.bossa.resource.ResourceManager#removeResourceImpl(Resource)
  */
-class RemoveResource extends ResourceCommand {
+class RemoveResource extends ResourceTransaction {
 
     private String id;
     
@@ -50,9 +50,10 @@ class RemoveResource extends ResourceCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
+     * @see com.bigbross.bossa.resource.ResourceTransaction#execute(
+     *      ResourceManager, Date)
      */
-    protected Serializable execute(ResourceManager resourceManager) {
+    protected Object execute(ResourceManager resourceManager, Date time) {
         Resource resource = resourceManager.getResource(id);
         return new Boolean(resourceManager.removeResourceImpl(resource));
     }

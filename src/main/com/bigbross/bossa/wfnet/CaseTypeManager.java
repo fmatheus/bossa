@@ -85,17 +85,17 @@ public class CaseTypeManager implements Serializable {
      */    
     public boolean registerCaseType(CaseType caseType)
         throws BossaException {
-        WFNetCommand registerCommand = new RegisterCaseType(caseType);
-        return ((Boolean) getBossa().executeCommand(registerCommand)).
-               booleanValue();
+        WFNetTransaction registerTransaction = new RegisterCaseType(caseType);
+        return ((Boolean) getBossa().execute(registerTransaction)).
+            booleanValue();
     }
 
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param the <code>CaseType</code> object containing the case type.
      * @return <code>true</code> if the case type is registered,
@@ -124,17 +124,17 @@ public class CaseTypeManager implements Serializable {
      *            execution of this method persistent.
      */
     public void removeCaseType(String id) throws BossaException {
-        WFNetCommand removeCommand = new RemoveCaseType(id);
-        getBossa().executeCommand(removeCommand);
+        WFNetTransaction removeTransaction = new RemoveCaseType(id);
+        getBossa().execute(removeTransaction);
     }
 
     /**
      * Removes the case type from the manager. This operation will remove also
      * <emph>all</emph> cases of this case type. <p>
      * 
-     * This method does not create a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
      * 
      * @param id the id of the case type.
      */

@@ -55,7 +55,7 @@ public class WFNetTestSuite extends TestCase {
 	suite.addTest(new TestSuite(CaseTypeTest.class));
         suite.addTest(new TestSuite(CaseTypeManagerTest.class));
 	suite.addTest(new TestSuite(CaseTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
+        suite.addTest(new TestSuite(TransactionsTest.class));
 	return suite;
     }
 }

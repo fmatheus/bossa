@@ -27,10 +27,9 @@ package com.bigbross.bossa;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.prevayler.Command;
 import org.prevayler.Prevayler;
-import org.prevayler.implementation.AbstractPrevalentSystem;
-import org.prevayler.implementation.SnapshotPrevayler;
+import org.prevayler.PrevaylerFactory;
+import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
@@ -43,7 +42,7 @@ import com.bigbross.bossa.work.WorkManager;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Bossa extends AbstractPrevalentSystem {
+public class Bossa implements Serializable {
 
     /**
      * This factory method creates a Bossa workflow engine. The engine
@@ -61,16 +60,16 @@ public class Bossa extends AbstractPrevalentSystem {
         throws PersistenceException {
         try {
             Prevayler prevayler =
-                new SnapshotPrevayler(new Bossa(), persistDir, 1);
-            Bossa instance = (Bossa) prevayler.system();
+                PrevaylerFactory.createPrevayler(new Bossa(), persistDir);
+            Bossa instance = (Bossa) prevayler.prevalentSystem();
             instance.setPrevayler(prevayler);
             return instance;
         } catch (IOException e) {
             throw new PersistenceException("I/O error starting prevayler.",
-                                           e);
+                                            e);
         } catch (ClassNotFoundException e) {
             throw new PersistenceException("Reflection error in prevayler.",
-                                           e);
+                                            e);
         }
     }
 
@@ -102,19 +101,16 @@ public class Bossa extends AbstractPrevalentSystem {
     }
 
     /**
-     * Executes a command using the current prevayler. <p>
+     * Executes a transaction using the current prevayler. <p>
      * 
-     * @param command the command to be executed.
-     * @return The value returned by the command.
-     * @exception PersistenceException if an error occours when making the
-     *            execution of this command persistent.
-     * @exception BossaException if the command throws an exception.
+     * @param transaction the transaction to be executed.
+     * @return The value returned by the transaction.
+     * @exception BossaException if the transaction throws an exception.
      */
-    public Serializable executeCommand(Command command) throws BossaException {
+    public Object execute(TransactionWithQuery transaction)
+        throws BossaException {
         try {
-            return prevayler.executeCommand(command);
-        } catch (IOException e) {
-            throw new PersistenceException("I/O error in prevayler.", e);
+            return prevayler.execute(transaction);
         } catch (BossaException e) {
             throw e;
         } catch (Exception e) {
@@ -123,14 +119,10 @@ public class Bossa extends AbstractPrevalentSystem {
     }
 
     /**
-     * Writes to disk the complete object tree of this engine instance.
-     * This method only works if the prevayler used
-     * is a <code>SnapshotPrevayler</code>. <p>
+     * Writes to disk the complete object tree of this engine instance. <p>
      */
     public void takeSnapshot() throws IOException {
-        if (prevayler instanceof SnapshotPrevayler) {
-            ((SnapshotPrevayler) prevayler).takeSnapshot();
-        }
+        prevayler.takeSnapshot();
     }
 
     /**

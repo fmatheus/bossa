@@ -115,7 +115,7 @@ public class Activity implements Serializable {
      *            execution of this method persistent.
      */
     public boolean close() throws BossaException {
-        return dispatchCommand(new CloseActivity(this, null));
+        return dispatchTransaction(new CloseActivity(this, null));
     }
 
     /**
@@ -137,7 +137,7 @@ public class Activity implements Serializable {
      *            execution of this method persistent.
      */
     public boolean close(Map attributes) throws BossaException {
-        return dispatchCommand(new CloseActivity(this, attributes));
+        return dispatchTransaction(new CloseActivity(this, attributes));
     }
 
     /**
@@ -154,19 +154,19 @@ public class Activity implements Serializable {
      *            execution of this method persistent.
      */
     public boolean cancel() throws BossaException {
-        return dispatchCommand(new CancelActivity(this));
+        return dispatchTransaction(new CancelActivity(this));
     }
 
     /**
-     * Executes a command that returns a boolean value. <p>
+     * Executes a transaction that returns a boolean value. <p>
      * 
-     * @param command the command;
-     * @return The <code>boolean</code> returned by the command execution.
+     * @param transaction the transaction;
+     * @return The <code>boolean</code> returned by the transaction execution.
      */
-    private boolean dispatchCommand(WFNetCommand command)
+    private boolean dispatchTransaction(WFNetTransaction transaction)
         throws BossaException {
         Boolean result = (Boolean) getCaseType().getCaseTypeManager().
-            getBossa().executeCommand(command);
+            getBossa().execute(transaction);
         return result.booleanValue();
     }
 

@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.resource;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class implements a generic operation of the <code>Resource</code>
@@ -33,7 +33,7 @@ import java.io.Serializable;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-abstract class ResourceHandlerCommand extends ResourceCommand {
+abstract class ResourceHandlerCommand extends ResourceTransaction {
 
     private String hostRegistryId;
     private String hostId;
@@ -58,9 +58,10 @@ abstract class ResourceHandlerCommand extends ResourceCommand {
     /**
      * Locates the resources and calls the specific operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
+     * @see com.bigbross.bossa.resource.ResourceTransaction#execute(
+     *      ResourceManager, Date)
      */
-    protected Serializable execute(ResourceManager resourceManager) 
+    protected Object execute(ResourceManager resourceManager, Date time) 
         throws Exception {
         ResourceRegistry hostRegistry =
             resourceManager.getRegistry(hostRegistryId);
@@ -68,12 +69,13 @@ abstract class ResourceHandlerCommand extends ResourceCommand {
         ResourceRegistry resourceRegistry =
             resourceManager.getRegistry(resourceRegistryId);
         Resource resource = resourceRegistry.getResource(resourceId);
-        return execute(host, resource);
+        return execute(host, resource, time);
     }
 
     /**
-     * Executes a command using the two provided resources. <p>
+     * Executes a transaction using the two provided resources. <p>
      */
-    protected abstract Serializable execute(Resource host, Resource resource)
+    protected abstract Object execute(Resource host, Resource resource,
+                                        Date time)
         throws Exception;
 }

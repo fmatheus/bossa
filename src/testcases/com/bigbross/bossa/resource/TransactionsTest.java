@@ -24,6 +24,8 @@
 
 package com.bigbross.bossa.resource;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
@@ -31,23 +33,26 @@ import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.WFNetUtil;
 
-public class CommandsTest extends TestCase {
+public class TransactionsTest extends TestCase {
 
     private ResourceManager resourceManager;
+    private Date now;
 
-    public CommandsTest(String name) {
+    public TransactionsTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
-	System.out.println("Setting up a resource command test.");
+	System.out.println("Setting up a resource transaction test.");
     
         resourceManager = new ResourceManager();
+        now = new Date();
     }
 
     public void testCreateResource() {
-        CreateResource command = new CreateResource("joe");
-        Resource resource = (Resource) command.execute(resourceManager);
+        CreateResource transaction = new CreateResource("joe");
+        Resource resource =
+            (Resource) transaction.execute(resourceManager, now);
         assertSame(resource, resourceManager.getResource("joe"));
     }
 
@@ -55,8 +60,8 @@ public class CommandsTest extends TestCase {
         Resource resource = resourceManager.createResourceImpl("joe");
         assertNotNull(resource);
         
-        RemoveResource command = new RemoveResource(resource);
-        assertTrue(((Boolean) command.execute(resourceManager)).
+        RemoveResource transaction = new RemoveResource(resource);
+        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
                    booleanValue());
         assertNull(resourceManager.getResource("joe"));
     }
@@ -65,8 +70,8 @@ public class CommandsTest extends TestCase {
         Resource group = resourceManager.createResourceImpl("trumps");
         Resource element = resourceManager.createResourceImpl("joe");
 
-        IncludeInResource command = new IncludeInResource(group, element);        
-        assertTrue(((Boolean) command.execute(resourceManager)).
+        IncludeInResource transaction = new IncludeInResource(group, element);        
+        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
                    booleanValue());
         assertTrue(group.contains(element));
     }
@@ -81,8 +86,8 @@ public class CommandsTest extends TestCase {
             caseTypeManager.getCaseType("test").getResources().get(0);
         Resource element = myResourceManager.createResourceImpl("joe");
 
-        IncludeInResource command = new IncludeInResource(group, element);        
-        assertTrue(((Boolean) command.execute(myResourceManager)).
+        IncludeInResource transaction = new IncludeInResource(group, element);        
+        assertTrue(((Boolean) transaction.execute(myResourceManager, now)).
                    booleanValue());
         assertTrue(group.contains(element));
     }
@@ -95,8 +100,8 @@ public class CommandsTest extends TestCase {
         group2.includeImpl(element);
         assertTrue(group1.contains(element));
         
-        ExcludeInResource command = new ExcludeInResource(group1, element);        
-        assertTrue(((Boolean) command.execute(resourceManager)).
+        ExcludeInResource transaction = new ExcludeInResource(group1, element);        
+        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
                    booleanValue());
         assertFalse(group1.contains(element));
     }
@@ -115,8 +120,8 @@ public class CommandsTest extends TestCase {
         group2.includeImpl(element);
         assertTrue(group1.contains(element));
         
-        ExcludeInResource command = new ExcludeInResource(group1, element);        
-        assertTrue(((Boolean) command.execute(myResourceManager)).
+        ExcludeInResource transaction = new ExcludeInResource(group1, element);        
+        assertTrue(((Boolean) transaction.execute(myResourceManager, now)).
                    booleanValue());
         assertFalse(group1.contains(element));
     }
@@ -127,8 +132,8 @@ public class CommandsTest extends TestCase {
         group.includeImpl(element);
         assertTrue(group.contains(element));
 
-        RemoveFromResource command = new RemoveFromResource(group, element);        
-        command.execute(resourceManager);
+        RemoveFromResource transaction = new RemoveFromResource(group, element);        
+        transaction.execute(resourceManager, now);
         assertFalse(group.contains(element));
     }
 
@@ -144,8 +149,8 @@ public class CommandsTest extends TestCase {
         group.includeImpl(element);
         assertTrue(group.contains(element));
 
-        RemoveFromResource command = new RemoveFromResource(group, element);        
-        command.execute(myResourceManager);
+        RemoveFromResource transaction = new RemoveFromResource(group, element);        
+        transaction.execute(myResourceManager, now);
         assertFalse(group.contains(element));
     }
 }

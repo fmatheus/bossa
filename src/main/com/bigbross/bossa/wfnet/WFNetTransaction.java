@@ -24,34 +24,34 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.Serializable;
+import java.util.Date;
 
-import org.prevayler.Command;
-import org.prevayler.PrevalentSystem;
+import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.Bossa;
 
 
 /**
- * This class represents all commands applied to the WFNet persistent
+ * This class represents all transactions applied to the WFNet persistent
  * objects. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-abstract class WFNetCommand implements Command {
+abstract class WFNetTransaction implements TransactionWithQuery {
 
     /**
-     * Executes a command in a prevalent system. <p>
+     * Executes a transaction in a prevalent system. <p>
      * 
-     * @see org.prevayler.Command#execute(PrevalentSystem)
+     * @see org.prevayler.TransactionWithQuery#executeAndQuery(Object, Date)
      */
-    public Serializable execute(PrevalentSystem system) throws Exception {
-        return execute(((Bossa) system).getCaseTypeManager());
+    public Object executeAndQuery(Object system, Date time) throws Exception {
+        return execute(((Bossa) system).getCaseTypeManager(), time);
     }
 
     /**
-     * Executes a command in the object tree rooted at CaseTypeManager. <p>
+     * Executes a transaction in the object tree rooted at CaseTypeManager. <p>
      */
-    protected abstract Serializable execute(CaseTypeManager caseTypeManager)
+    protected abstract Object execute(CaseTypeManager caseTypeManager,
+                                        Date time)
         throws Exception;
 }

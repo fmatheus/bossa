@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class implements the register case type operation of
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseType(CaseType)
  * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseTypeImpl(CaseType)
  */
-class RegisterCaseType extends WFNetCommand {
+class RegisterCaseType extends WFNetTransaction {
 
     private CaseType caseType;
     
@@ -50,9 +50,10 @@ class RegisterCaseType extends WFNetCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
+     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
+     *      CaseTypeManager, Date)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    protected Object execute(CaseTypeManager caseTypeManager, Date time) {
         boolean result = caseTypeManager.registerCaseTypeImpl(caseType);
         return new Boolean(result);
     }

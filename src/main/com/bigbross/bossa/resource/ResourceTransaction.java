@@ -24,34 +24,35 @@
 
 package com.bigbross.bossa.resource;
 
-import java.io.Serializable;
+import java.util.Date;
 
-import org.prevayler.Command;
-import org.prevayler.PrevalentSystem;
+import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.Bossa;
 
 
 /**
- * This class represents all commands applied to the Resource persistent
+ * This class represents all transactions applied to the Resource persistent
  * objects. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-abstract class ResourceCommand implements Command {
+abstract class ResourceTransaction implements TransactionWithQuery {
 
     /**
-     * Executes a command in a prevalent system. <p>
+     * Executes a transaction in a prevalent system. <p>
      * 
-     * @see org.prevayler.Command#execute(PrevalentSystem)
+     * @see org.prevayler.TransactionWithQuery#executeAndQuery(Object, Date)
      */
-    public Serializable execute(PrevalentSystem system) throws Exception {
-        return execute(((Bossa) system).getResourceManager());
+    public Object executeAndQuery(Object system, Date time)
+        throws Exception {
+        return execute(((Bossa) system).getResourceManager(), time);
     }
 
     /**
      * Executes a command in the object tree rooted at ResourceManager. <p>
      */
-    protected abstract Serializable execute(ResourceManager resourceManager)
+    protected abstract Object execute(ResourceManager resourceManager,
+                                        Date time)
         throws Exception;
 }

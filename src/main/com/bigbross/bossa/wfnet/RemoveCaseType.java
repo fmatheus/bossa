@@ -24,7 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class implements the remove case type operation of
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @see com.bigbross.bossa.wfnet.CaseTypeManager#removeCaseType(String)
  * @see com.bigbross.bossa.wfnet.CaseTypeManager#removeCaseTypeImpl(String)
  */
-class RemoveCaseType extends WFNetCommand {
+class RemoveCaseType extends WFNetTransaction {
 
     private String caseTypeId;
     
@@ -50,9 +50,10 @@ class RemoveCaseType extends WFNetCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
+     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
+     *      CaseTypeManager, Date)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    protected Object execute(CaseTypeManager caseTypeManager, Date time) {
         caseTypeManager.removeCaseTypeImpl(caseTypeId);
         return null;
     }
