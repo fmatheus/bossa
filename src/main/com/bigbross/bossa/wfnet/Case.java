@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -237,7 +238,6 @@ public class Case implements Serializable {
                 throw new EvaluationException("Error in the expression " +
                                               "evaluation sub-system.", e);
         }
-        
     }
 
     /**
@@ -297,7 +297,8 @@ public class Case implements Serializable {
      * 
      * @param wi the work item to be opened.
      * @param resource the resource that is opening the work item.
-     * @return The activity created the opening of this work item.
+     * @return The activity created the opening of this work item,
+     *         <code>null</code> if the work item could not be opened.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
@@ -423,6 +424,10 @@ public class Case implements Serializable {
         return string.toString();
     }
 
+    /**
+     * Restores the state of the not serializable object
+     * <code>BSFManager</code> after this case state is restored. <p>
+     */
     private void readObject(java.io.ObjectInputStream in)
 	throws IOException, ClassNotFoundException {
 	in.defaultReadObject();
@@ -431,9 +436,13 @@ public class Case implements Serializable {
 	while (it.hasNext()) {
 	    Map.Entry attr = (Map.Entry) it.next();
 	    try {
-		bsf.declareBean((String) attr.getKey(), attr.getValue(), attr.getValue().getClass());
-	    } catch (org.apache.bsf.BSFException e) {}
+		bsf.declareBean((String) attr.getKey(), attr.getValue(),
+                                attr.getValue().getClass());
+	    } catch (BSFException e) {
+                throw new InvalidObjectException("Could not restore the " +
+                                                 "BSFmanager object: " +
+                                                 e.toString());
+            }
 	}
     }
-
 }
