@@ -89,6 +89,15 @@ public class ResourceTest extends TestCase {
         assertFalse(r2.contains(r0));
     }
 
+    public void testDoubleCircle() {
+        assertTrue(r0.includeImpl(r1));
+        assertTrue(r0.excludeImpl(r2));
+        
+        assertFalse(r2.includeImpl(r0));
+        
+        assertTrue(r0.contains(r1));
+    }
+
     public void testRemove() {
         assertTrue(r0.includeImpl(r1));
         assertTrue(r1.includeImpl(r2));

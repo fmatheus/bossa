@@ -119,7 +119,7 @@ public class Resource implements Serializable {
      *         <code>true</code> otherwise.
      */
     public boolean includeImpl(Resource resource) {
-        if (resource.contains(this)) {
+        if (resource.depends(this)) {
             return false;
         }
         excludes.remove(resource);
@@ -157,7 +157,7 @@ public class Resource implements Serializable {
      *         <code>true</code> otherwise.
      */
     public boolean excludeImpl(Resource resource) {
-        if (resource.excludes(this)) {
+        if (resource.depends(this)) {
             return false;
         }
         includes.remove(resource);
@@ -195,26 +195,41 @@ public class Resource implements Serializable {
     }
 
     /**
-     * Checks if a resource is excluded by this resource. <p>
+     * Checks if this resource depends on the given resource.
+     * Specifically, checks if it is necessary to call
+     * <code>contains()</code> in the given resource to check
+     * <code>contains()</code> in this resource. <p>
      *
-     * @param resource the resource to be looked for.
-     * @return <code>true</code> if the resource is found,
+     * @param resource the resource to be checked.
+     * @return <code>true</code> if this resource depends,
      *         <code>false</code> otherwise.
      */
-    private boolean excludes(Resource resource) {
+    private boolean depends(Resource resource) {
 
         if (this.equals(resource)) {
             return true;
+        }
+
+        if (includes.contains(resource)) {
+            return true;
+        }
+
+        Iterator it = includes.iterator();
+        while (it.hasNext()) {
+            Resource curr = (Resource) it.next();
+            if (curr.depends(resource)) {
+                return true;
+            }
         }
 
         if (excludes.contains(resource)) {
             return true;
         }
 
-        Iterator it = excludes.iterator();
+        it = excludes.iterator();
         while (it.hasNext()) {
             Resource curr = (Resource) it.next();
-            if (curr.excludes(resource)) {
+            if (curr.depends(resource)) {
                 return true;
             }
         }
@@ -223,7 +238,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     * Determines if a resource is contained in this. <p>
+     * Determines if a resource is contained in this resource. <p>
      *
      * @param resource the resource to be looked for.
      * @return <code>true</code> if the resource is found,
