@@ -39,7 +39,7 @@ import com.bigbross.bossa.resource.ResourceUtil;
 public class CaseTypeTest extends TestCase {
 
     public CaseTypeTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {
@@ -83,10 +83,10 @@ public class CaseTypeTest extends TestCase {
         Transition b = caseType.getTransition("b");
 
         assertEquals("-1", a.getInputEdges().get(0).toString());
-	assertEquals( "1", a.getOutputEdges().get(0).toString());
+        assertEquals( "1", a.getOutputEdges().get(0).toString());
 
         assertEquals("-1", b.getInputEdges().get(0).toString());
-	assertEquals("!SOK", b.getOutputEdges().get(0).toString());
+        assertEquals("!SOK", b.getOutputEdges().get(0).toString());
         assertEquals( "SOK && DIR", b.getOutputEdges().get(1).toString());
         assertEquals( "SOK && !DIR", b.getOutputEdges().get(2).toString());
     }

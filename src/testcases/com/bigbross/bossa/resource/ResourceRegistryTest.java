@@ -31,7 +31,7 @@ public class ResourceRegistryTest extends TestCase {
     private ResourceRegistry resourceRegistry;
 
     public ResourceRegistryTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

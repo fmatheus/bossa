@@ -48,8 +48,8 @@ public class Place implements Serializable {
      *                       this place when a new case starts.
      */
     Place(int index, String id, int initialMarking) {
-	this.index = index;
-	this.id = id;
+        this.index = index;
+        this.id = id;
         this.initialMarking = initialMarking;
     }
 

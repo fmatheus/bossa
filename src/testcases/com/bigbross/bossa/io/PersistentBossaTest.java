@@ -35,7 +35,7 @@ import com.bigbross.bossa.wfnet.WorkItem;
 public class PersistentBossaTest extends TestCase {
 
     public PersistentBossaTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

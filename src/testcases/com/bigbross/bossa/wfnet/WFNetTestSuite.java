@@ -41,7 +41,7 @@ public class WFNetTestSuite extends TestCase {
      * @param name the name.
      */
     public WFNetTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,12 +50,12 @@ public class WFNetTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("WFNet Test Suite");
+        TestSuite suite = new TestSuite("WFNet Test Suite");
         /* All tests should be added here. */
-	suite.addTest(new TestSuite(CaseTypeTest.class));
+        suite.addTest(new TestSuite(CaseTypeTest.class));
         suite.addTest(new TestSuite(CaseTypeManagerTest.class));
-	suite.addTest(new TestSuite(CaseTest.class));
+        suite.addTest(new TestSuite(CaseTest.class));
         suite.addTest(new TestSuite(TransactionsTest.class));
-	return suite;
+        return suite;
     }
 }

@@ -68,6 +68,6 @@ public class WFNetUtil {
         if (act != null) {
             return act.getCase().close(act, attributes);
         }
-	return false;
+        return false;
     }
 }

@@ -43,7 +43,7 @@ public class NotificationBusTest extends TestCase {
     private NotificationBus bus;
 
     public NotificationBusTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

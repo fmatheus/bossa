@@ -61,9 +61,9 @@ public class Transition implements Serializable {
      *                before it fires automatically.
      */
     Transition(CaseType caseType, String id, String resource, long timeout) {
-	this.caseType = caseType;
-	this.id = id;
-	this.resource = resource == null ?
+        this.caseType = caseType;
+        this.id = id;
+        this.resource = resource == null ?
                             null :
                             caseType.getResourceRegistry().compile(resource);
         this.timeout = timeout;
@@ -104,7 +104,7 @@ public class Transition implements Serializable {
      * @return a list of all the input edges of this transition.
      */
     List getInputEdges() {
-	return Collections.unmodifiableList(inputs);
+        return Collections.unmodifiableList(inputs);
     }
 
     /**
@@ -126,7 +126,7 @@ public class Transition implements Serializable {
      * @param expression the weight expression.
      */
     public void input(Place p, String expression) {
-	inputs.add(Edge.newInput(p, expression));
+        inputs.add(Edge.newInput(p, expression));
     }
 
     /**

@@ -95,9 +95,9 @@ public class CaseType implements Serializable {
      * @return the created place.
      */
     public Place registerPlace(String id, int initialMarking) {
-	Place place = new Place(places.size(), id, initialMarking);
-	places.put(id, place);
-	return place;
+        Place place = new Place(places.size(), id, initialMarking);
+        places.put(id, place);
+        return place;
     }
 
     /**
@@ -187,7 +187,7 @@ public class CaseType implements Serializable {
      *         or <code>null</code> if there is no such transition.
      */
     public Transition getTransition(String id) {
-	return (Transition) transitions.get(id);
+        return (Transition) transitions.get(id);
     }
 
     /**

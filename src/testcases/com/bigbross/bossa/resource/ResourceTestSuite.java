@@ -41,7 +41,7 @@ public class ResourceTestSuite extends TestCase {
      * @param name the name.
      */
     public ResourceTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,13 +50,13 @@ public class ResourceTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("Resource Test Suite");
+        TestSuite suite = new TestSuite("Resource Test Suite");
         /* All tests should be added here. */
-	suite.addTest(new TestSuite(ResourceTest.class));
-	suite.addTest(new TestSuite(ExpressionTest.class));
+        suite.addTest(new TestSuite(ResourceTest.class));
+        suite.addTest(new TestSuite(ExpressionTest.class));
         suite.addTest(new TestSuite(ResourceRegistryTest.class));
-	suite.addTest(new TestSuite(ResourceManagerTest.class));
+        suite.addTest(new TestSuite(ResourceManagerTest.class));
         suite.addTest(new TestSuite(TransactionsTest.class));
-	return suite;
+        return suite;
     }
 }

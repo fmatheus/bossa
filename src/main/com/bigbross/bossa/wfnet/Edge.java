@@ -77,7 +77,7 @@ public abstract class Edge implements Serializable {
      *            occurs.
      */
     int weight(Case caze) throws EvaluationException {
-	return INACTIVE.intValue();
+        return INACTIVE.intValue();
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class Edge implements Serializable {
      *            occurs.
      */
     int input(Case caze) throws EvaluationException {
-	return INACTIVE.intValue();
+        return INACTIVE.intValue();
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class Edge implements Serializable {
      *            occurs.
      */
     int output(Case caze) throws EvaluationException {
-	return INACTIVE.intValue();
+        return INACTIVE.intValue();
     }
 
     /**
@@ -177,6 +177,6 @@ public abstract class Edge implements Serializable {
      * @return a string representation of this edge.
      */
     public String toString() {
-	return expression.toString();
+        return expression.toString();
     }
 }

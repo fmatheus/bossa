@@ -41,7 +41,7 @@ public class WorkTestSuite extends TestCase {
      * @param name the name.
      */
     public WorkTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,9 +50,9 @@ public class WorkTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("Work Test Suite");
+        TestSuite suite = new TestSuite("Work Test Suite");
         /* All tests should be added here. */
-	suite.addTest(new TestSuite(WorkManagerTest.class));
-	return suite;
+        suite.addTest(new TestSuite(WorkManagerTest.class));
+        return suite;
     }
 }

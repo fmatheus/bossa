@@ -33,7 +33,7 @@ import com.bigbross.bossa.wfnet.WFNetCoverage;
 public class ImportTest extends TestCase {
 
     public ImportTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

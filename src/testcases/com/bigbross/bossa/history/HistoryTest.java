@@ -43,7 +43,7 @@ public class HistoryTest extends TestCase {
     private Historian historian;
 
     public HistoryTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

@@ -41,7 +41,7 @@ public class CaseTest extends TestCase {
     private Resource jdoe;
 
     public CaseTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {
@@ -184,7 +184,7 @@ public class CaseTest extends TestCase {
     public void testMachineGun() throws Exception {
         Case caze = WFNetUtil.createCase();
         HashMap attributes = new HashMap();
-	attributes.put("SOK", new Boolean(true));
+        attributes.put("SOK", new Boolean(true));
         attributes.put("DIR", new Boolean(true));
         attributes.put("ADIR", "OK");
 

@@ -48,7 +48,7 @@ public class BossaTestSuite extends TestCase {
      * @param name The name.
      **/
     public BossaTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -57,15 +57,15 @@ public class BossaTestSuite extends TestCase {
      * @return The suite.
      **/
     public static Test suite() {
-	TestSuite suite = new TestSuite("Bossa Test Suite");
+        TestSuite suite = new TestSuite("Bossa Test Suite");
         /* All tests should be added here. */
         suite.addTest(new TestSuite(TimeSourceTest.class));
-	suite.addTest(WFNetTestSuite.suite());
+        suite.addTest(WFNetTestSuite.suite());
         suite.addTest(ResourceTestSuite.suite());
         suite.addTest(WorkTestSuite.suite());
         suite.addTest(NotifyTestSuite.suite());
         suite.addTest(HistoryTestSuite.suite());
         suite.addTest(IOTestSuite.suite());
-	return suite;
+        return suite;
     }
 }

@@ -41,7 +41,7 @@ public class IOTestSuite extends TestCase {
      * @param name the name.
      */
     public IOTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,10 +50,10 @@ public class IOTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("IO Test Suite");
+        TestSuite suite = new TestSuite("IO Test Suite");
         /* All tests should be added here. */
         suite.addTest(new TestSuite(ImportTest.class));
         suite.addTest(new TestSuite(PersistentBossaTest.class));
-	return suite;
+        return suite;
     }
 }

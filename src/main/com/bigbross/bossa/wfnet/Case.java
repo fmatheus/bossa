@@ -93,9 +93,9 @@ public class Case implements Serializable {
     Case(CaseType caseType, Map state, Map attributes)
         throws BossaException {
 
-	this.caseType = caseType;
+        this.caseType = caseType;
 
-	this.marking = new int[state.size()];
+        this.marking = new int[state.size()];
         Iterator i = state.keySet().iterator();
         while (i.hasNext()) {
             String placeId = (String) i.next();
@@ -108,7 +108,7 @@ public class Case implements Serializable {
         this.eventQueue = new WFNetEvents();
 
         this.attributes = new HashMap();
-	this.bsf = new BSFManager();
+        this.bsf = new BSFManager();
         /* A SetAttributeException can be thrown here. */
         declare(attributes);
 
@@ -139,7 +139,7 @@ public class Case implements Serializable {
      * @return the case type of this case.
      */
     public CaseType getCaseType() {
-	return this.caseType;
+        return this.caseType;
     }
 
     /**
@@ -277,7 +277,7 @@ public class Case implements Serializable {
             }
         }
 
-	return items;
+        return items;
     }
 
     /**
@@ -319,7 +319,7 @@ public class Case implements Serializable {
      * @return the next activity id.
      */
     int nextActivityId() {
-	return activitySequence++;
+        return activitySequence++;
     }
 
     /**
@@ -329,7 +329,7 @@ public class Case implements Serializable {
      *         <code>false</code> otherwise.
      */
     boolean isTemplate() {
-	return id == 0;
+        return id == 0;
     }
 
     /**
@@ -343,13 +343,13 @@ public class Case implements Serializable {
      *            evaluation system has problems setting an attribute.
      */
     void declare(String id, Object value) throws SetAttributeException {
-	try {
+        try {
             bsf.declareBean(id, value, value.getClass());
-	    attributes.put(id, value);
-	} catch (BSFException e) {
+            attributes.put(id, value);
+        } catch (BSFException e) {
             throw new SetAttributeException("Could not set variable '" +
                                             id + "'", e);
-	}
+        }
     }
 
     /**
@@ -388,7 +388,7 @@ public class Case implements Serializable {
             if (result instanceof Number) {
                 return ((Number) result).intValue();
             } else if (result instanceof Boolean) {
-	       return ((Boolean) result).booleanValue() ? 1 : 0;
+               return ((Boolean) result).booleanValue() ? 1 : 0;
             } else {
                 throw new EvaluationException("'" + result +
                                             "' is not a number or boolean.");
@@ -458,7 +458,7 @@ public class Case implements Serializable {
                 return false;
             }
         }
-	return true;
+        return true;
     }
 
     /**
@@ -480,15 +480,15 @@ public class Case implements Serializable {
     Activity open(WorkItem wi, Resource resource)
         throws BossaException {
 
-	if (!wi.isFireable()) {
-	    return null;
-	}
+        if (!wi.isFireable()) {
+            return null;
+        }
 
-	if (isTemplate()) {
+        if (isTemplate()) {
             /* An EvaluationException can be consistently thrown here. */
             Case caze = caseType.openCaseImpl(null);
-	    return caze.open(caze.getWorkItem(wi.getId()), resource);
-	}
+            return caze.open(caze.getWorkItem(wi.getId()), resource);
+        }
 
         List edges = wi.getTransition().getInputEdges();
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
@@ -516,7 +516,7 @@ public class Case implements Serializable {
                                     wi, resource);
         eventQueue.notifyAll(getBossa());
 
-	return activity;
+        return activity;
     }
 
     /**
@@ -553,9 +553,9 @@ public class Case implements Serializable {
     boolean close(Activity activity, Map newAttributes)
         throws BossaException {
 
-	if (!activities.containsKey(new Integer(activity.getId()))) {
-	    return false;
-	}
+        if (!activities.containsKey(new Integer(activity.getId()))) {
+            return false;
+        }
 
         declare(newAttributes);
 
@@ -570,7 +570,7 @@ public class Case implements Serializable {
         }
 
         /* An EvaluationException can be inconsistently thrown here. */
-	List activated = activate();
+        List activated = activate();
         activities.remove(new Integer(activity.getId()));
 
         eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
@@ -583,7 +583,7 @@ public class Case implements Serializable {
             processTimedFiring(activated);
         }
 
-	return true;
+        return true;
     }
 
     /**
@@ -603,9 +603,9 @@ public class Case implements Serializable {
      */
     boolean cancel(Activity activity) throws EvaluationException {
 
-	if (!activities.containsKey(new Integer(activity.getId()))) {
-	    return false;
-	}
+        if (!activities.containsKey(new Integer(activity.getId()))) {
+            return false;
+        }
 
         List edges = activity.getTransition().getInputEdges();
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
@@ -623,14 +623,14 @@ public class Case implements Serializable {
         group.removeImpl(resource, false);
 
         /* An EvaluationException can be inconsistently thrown here. */
-	activate();
+        activate();
         activities.remove(new Integer(activity.getId()));
 
         eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
                                     activity);
         eventQueue.notifyAll(getBossa());
 
-	return true;
+        return true;
     }
 
     /**
@@ -682,23 +682,23 @@ public class Case implements Serializable {
      * @see java.io.Serializable
      */
     private void readObject(java.io.ObjectInputStream in)
-	throws IOException, ClassNotFoundException {
-	in.defaultReadObject();
+        throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
         /*
          * Restores the state of the non serializable BSFManager object.
          */
-	bsf = new BSFManager();
-	Iterator it = attributes.entrySet().iterator();
-	while (it.hasNext()) {
-	    Map.Entry attr = (Map.Entry) it.next();
-	    try {
-		bsf.declareBean((String) attr.getKey(), attr.getValue(),
+        bsf = new BSFManager();
+        Iterator it = attributes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry attr = (Map.Entry) it.next();
+            try {
+                bsf.declareBean((String) attr.getKey(), attr.getValue(),
                                 attr.getValue().getClass());
-	    } catch (BSFException e) {
+            } catch (BSFException e) {
                 throw new InvalidObjectException("Could not restore the " +
                                                  "BSFmanager object: " +
                                                  e.toString());
             }
-	}
+        }
     }
 }

@@ -88,7 +88,7 @@ public class Activity implements Serializable {
      * @return The case type of this activity.
      */
     public CaseType getCaseType() {
-	return workItem.getCaseType();
+        return workItem.getCaseType();
     }
 
     /**
@@ -97,7 +97,7 @@ public class Activity implements Serializable {
      * @return The case of this activity.
      */
     public Case getCase() {
-	return workItem.getCase();
+        return workItem.getCase();
     }
 
     /**
@@ -106,7 +106,7 @@ public class Activity implements Serializable {
      * @return The transition the open work item represents.
      */
     Transition getTransition() {
-	return workItem.getTransition();
+        return workItem.getTransition();
     }
 
     /**

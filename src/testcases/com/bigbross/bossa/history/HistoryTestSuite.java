@@ -41,7 +41,7 @@ public class HistoryTestSuite extends TestCase {
      * @param name the name.
      */
     public HistoryTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,11 +50,11 @@ public class HistoryTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("History Test Suite");
+        TestSuite suite = new TestSuite("History Test Suite");
         /* All tests should be added here. */
         suite.addTest(new TestSuite(HistorianTest.class));
         suite.addTest(new TestSuite(HistoryTest.class));
         suite.addTest(new TestSuite(TransactionsTest.class));
-	return suite;
+        return suite;
     }
 }

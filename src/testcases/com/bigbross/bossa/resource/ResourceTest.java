@@ -33,7 +33,7 @@ public class ResourceTest extends TestCase {
     Resource r0, r1, r2;
 
     public ResourceTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

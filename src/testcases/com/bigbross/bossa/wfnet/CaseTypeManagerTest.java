@@ -43,7 +43,7 @@ public class CaseTypeManagerTest extends TestCase {
     CaseTypeManager caseTypeManager;
 
     public CaseTypeManagerTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

@@ -37,7 +37,7 @@ public class TransactionsTest extends TestCase {
     private Historian historian;
 
     public TransactionsTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

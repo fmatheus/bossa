@@ -41,7 +41,7 @@ public class NotifyTestSuite extends TestCase {
      * @param name the name.
      */
     public NotifyTestSuite(String name) {
-	super(name);
+        super(name);
     }
 
     /**
@@ -50,10 +50,10 @@ public class NotifyTestSuite extends TestCase {
      * @return the suite.
      */
     public static Test suite() {
-	TestSuite suite = new TestSuite("Notify Test Suite");
+        TestSuite suite = new TestSuite("Notify Test Suite");
         /* All tests should be added here. */
-	suite.addTest(new TestSuite(NotificationBusTest.class));
+        suite.addTest(new TestSuite(NotificationBusTest.class));
         suite.addTest(new TestSuite(EventsNotificationTest.class));
-	return suite;
+        return suite;
     }
 }

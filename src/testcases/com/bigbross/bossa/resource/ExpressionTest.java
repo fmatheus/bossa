@@ -33,7 +33,7 @@ public class ExpressionTest extends TestCase {
     Resource a, b, c, x, A, B, C;
 
     public ExpressionTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

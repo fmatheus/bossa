@@ -31,7 +31,7 @@ public class ResourceManagerTest extends TestCase {
     private ResourceManager resourceManager;
 
     public ResourceManagerTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() {

@@ -57,8 +57,8 @@ public class WorkItem implements Serializable {
      * @param fireable the work item fireable status.
      */
     WorkItem(Case caze, Transition transition, boolean fireable) {
-	this.caze = caze;
-	this.transition = transition;
+        this.caze = caze;
+        this.transition = transition;
         this.fireable = fireable;
     }
 
@@ -68,7 +68,7 @@ public class WorkItem implements Serializable {
      * @return the case type of this work item.
      */
     public CaseType getCaseType() {
-	return getCase().getCaseType();
+        return getCase().getCaseType();
     }
 
     /**
@@ -77,7 +77,7 @@ public class WorkItem implements Serializable {
      * @return the case of this work item.
      */
     public Case getCase() {
-	return caze;
+        return caze;
     }
 
     /**
@@ -86,7 +86,7 @@ public class WorkItem implements Serializable {
      * @return the transition this work item represents.
      */
     Transition getTransition() {
-	return transition;
+        return transition;
     }
 
     /**
@@ -106,7 +106,7 @@ public class WorkItem implements Serializable {
      *         <code>false</code> otherwise.
      */
     public boolean isFireable() {
-	return fireable;
+        return fireable;
     }
 
     /**

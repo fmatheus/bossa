@@ -52,7 +52,7 @@ public class EventsNotificationTest extends TestCase {
     private MemoryListener listener;
 
     public EventsNotificationTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() throws Exception {

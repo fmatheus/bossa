@@ -41,7 +41,7 @@ public class TransactionsTest extends TestCase {
     private Resource jdoe;
 
     public TransactionsTest(String name) {
-	super(name);
+        super(name);
     }
 
     protected void setUp() throws Exception {
