@@ -37,12 +37,12 @@ public class Edge implements Serializable {
     /**
      * Inactive edge.
      */
-    protected final int INACTIVE = 0;
+    protected static final Integer INACTIVE = new Integer(0);
 
     /**
      * The condition expression of this edge.
      */
-    protected String expression = "0";
+    protected Object expression = INACTIVE;
 
     /**
      * Creates a new <code>Edge</code> instance, with no condition
@@ -56,7 +56,11 @@ public class Edge implements Serializable {
      * @param expression the condition expression.
      */
     protected Edge(String expression) {
-	this.expression = expression;
+        try {
+            this.expression = Integer.valueOf(expression);
+        } catch (NumberFormatException e) {
+            this.expression = expression;
+        }
     }
 
     /**
@@ -112,7 +116,7 @@ public class Edge implements Serializable {
      *            occurs.
      */
     int weight(Case caze) throws EvaluationException {
-	return INACTIVE;
+	return INACTIVE.intValue();
     }
 
     /**
@@ -124,7 +128,7 @@ public class Edge implements Serializable {
      *            occurs.
      */
     int input(Case caze) throws EvaluationException {
-	return INACTIVE;
+	return INACTIVE.intValue();
     }
 
     /**
@@ -136,7 +140,7 @@ public class Edge implements Serializable {
      *            occurs.
      */
     int output(Case caze) throws EvaluationException {
-	return INACTIVE;
+	return INACTIVE.intValue();
     }
 
     /**
@@ -149,11 +153,19 @@ public class Edge implements Serializable {
      *            occurs.
      */
     int eval(Case caze) throws EvaluationException {
-        int result = caze.eval(expression);
+        int result;
+
+        if (expression instanceof Integer) {
+            result = ((Integer) expression).intValue();
+        } else {
+            result = caze.eval((String) expression);
+        }
+
         if (result < 0) {
             throw new EvaluationException("The edge absolute weight must " +
                                           "be positive. Was: " + result);
         }
+
         return result;
     }
 
@@ -163,6 +175,6 @@ public class Edge implements Serializable {
      * @return a string representation of this edge.
      */
     public String toString() {
-	return expression;
+	return expression.toString();
     }
 }
