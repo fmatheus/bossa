@@ -24,36 +24,34 @@
 
 package com.bigbross.bossa.notify;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bigbross.bossa.resource.Resource;
 
 /**
- * Tests using Notify package testcases.
+ * This class implements a listener that remembers all notifications. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class NotifyTestSuite extends TestCase {
+public class MemoryListener extends TestListener {
 
-    /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public NotifyTestSuite(String name) {
-	super(name);
+    private List notifications;
+
+    public MemoryListener(String id, int type, Resource resource) {
+        super(id, type, resource);
+        notifications = new ArrayList();
+    }
+
+    public List getNotifications() {
+        return notifications;
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * @see com.bigbross.bossa.notify.Listener#notifyEvent(
+     *      com.bigbross.bossa.notify.Event)
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Notify Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(NotificationBusTest.class));
-        suite.addTest(new TestSuite(EventsNotificationTest.class));
-	return suite;
+    public void notifyEvent(Event event) {
+        notifications.add(event);
     }
 }

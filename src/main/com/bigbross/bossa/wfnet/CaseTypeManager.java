@@ -33,6 +33,7 @@ import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.notify.Event;
 
 /**
  * This class manages all registered case types of the workflow
@@ -114,6 +115,7 @@ public class CaseTypeManager implements Serializable {
             getBossa().getResourceManager().
                 registerSubContext(caseType.getResourceRegistry());
         }
+        notifyCaseType("register_case_type", caseType);
         return true;
     }
     
@@ -141,7 +143,10 @@ public class CaseTypeManager implements Serializable {
      * @param id the id of the case type.
      */
     public void removeCaseTypeImpl(String id) {
-        caseTypes.remove(id);
+        CaseType caseType = (CaseType) caseTypes.remove(id);
+        if (caseType != null) {
+            notifyCaseType("remove_case_type", caseType);
+        }
     }
     
     /**
@@ -205,5 +210,14 @@ public class CaseTypeManager implements Serializable {
             acts.addAll(((CaseType) i.next()).getActivities());
         }
         return acts;
+    }
+    
+    private void notifyCaseType(String notificationId, CaseType caseType) {
+        if (getBossa() != null) {
+            HashMap attrib = new HashMap();
+            attrib.put("case_type_id", caseType.getId());
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            getBossa().getNotificationBus().notifyEvent(event);
+        }
     }
 }
