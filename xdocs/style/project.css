@@ -1,0 +1,9 @@
+#organizationLogo img{
+  padding: 3px 0px 0px 0px;
+  float: right;
+}
+
+#projectLogo img{
+  padding: 10px 0px 0px 0px;
+  float: left;
+}

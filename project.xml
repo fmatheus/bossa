@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <artifactId>bossa</artifactId>
+  <name>Bossa</name>
+  <groupId>bossa</groupId>
+  <currentVersion>${version}</currentVersion>
+  <organization>
+    <name>BigBross Team</name>
+    <url>http://www.bigbross.com</url>
+    <logo>http://cvs.bigbross.com/viewcvs/images/logo.png</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>com.bigbross.bossa</package>
+  <logo>http://www.bigbross.com/bossa/images/bossa_logo.gif</logo>
+  <description>Bossa is a workflow engine written in Java. The engine is very fast and lightweight, uses a very expressive Petri net notation to define workflows, does not require a RDBMS, and is very simple to use and integrate with Java applications. Actually, it was designed to be embedded. Therefore, Bossa is organized as a library to be used by server-side applications (especially Web-oriented ones) that need workflow services.</description>
+  <shortDescription>Workflow engine written in Java, with very expressive Petri net notation to define workflows.</shortDescription>
+  <url>http://www.bigbross.com/bossa/</url>
+  <issueTrackingUrl>http://bugs.bigbross.com</issueTrackingUrl>
+  <siteAddress>bigbross.com</siteAddress>
+  <distributionSite>http://sourceforge.net/project/showfiles.php?group_id=74966</distributionSite>
+  <repository>
+    <connection>scm:cvs:pserver:anon@bigbross.com:/cvs:bossa</connection>
+    <developerConnection>scm:cvs:ext:username@bigbross.com:/cvs:bossa</developerConnection>
+    <url>http://cvs.bigbross.com/bossa/</url>
+  </repository>
+  <mailingLists>
+    <mailingList>
+      <name>${pom.name} List</name>
+      <subscribe>http://lists.bigbross.com/subrequest/bossa</subscribe>
+      <unsubscribe>http://lists.bigbross.com/sigrequest/bossa</unsubscribe>
+      <archive>http://lists.bigbross.com/info/bossa</archive>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <name>Gustavo Maciel Dias Vieira</name>
+      <id>gdvieira</id>
+      <email>gdvieira@bigbross.com</email>
+      <organization>BigBross</organization>
+    </developer>
+    <developer>
+      <name>Fabrício Matheus Gonçalves</name>
+      <id>fmatheus</id>
+      <email>fmatheus@bigbross.com</email>
+      <organization>BigBross</organization>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+    </license>
+  </licenses>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <type>jar</type>
+      <url>http://www.junit.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+      <url>http://www.jdom.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>prevayler</groupId>
+      <artifactId>prevayler</artifactId>
+      <version>20040427</version>
+      <type>jar</type>
+      <url>http://www.prevayler.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>cvs20031009</version>
+      <type>jar</type>
+      <url>http://jakarta.apache.org/bsf/</url>
+    </dependency>
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>rhino</artifactId>
+      <version>1.5R4.1</version>
+      <type>jar</type>
+      <url>http://www.mozilla.org/rhino/</url>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/main</sourceDirectory>
+    <unitTestSourceDirectory>src/testcases</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+  </build>
+</project>
+
