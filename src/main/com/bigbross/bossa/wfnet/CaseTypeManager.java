@@ -24,6 +24,12 @@
 
 package com.bigbross.bossa.wfnet;
 
+/**
+ * This class manages all registered case types of the workflow
+ * system. It provides all the case type life cycle functions. <p>
+ *
+ * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ */
 public class CaseTypeManager {
 
 }

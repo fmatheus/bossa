@@ -24,6 +24,13 @@
 
 package com.bigbross.bossa.wfnet;
 
+/**
+ * This class represents the definition of a process (case type). It
+ * also keeps track of all current cases of this case type and acts as
+ * a proxy to their operations. <p>
+ *
+ * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ */
 public class CaseType {
 
 }

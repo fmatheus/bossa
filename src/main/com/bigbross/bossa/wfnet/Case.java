@@ -24,6 +24,12 @@
 
 package com.bigbross.bossa.wfnet;
 
+/**
+ * This class represents a specific instance of a case type. It
+ * holds the current state of a case. <p>
+ *
+ * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ */
 public class Case {
 
 }
