@@ -30,36 +30,39 @@ import java.util.Map;
 import com.bigbross.bossa.resource.Resource;
 
 /**
- * This interface should be implemented by a class that wants to be registered
- * in the notification bus. <p>
+ * This class implements a broken listener. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public interface Listener {
-    
+public class BadListener implements Listener {
+
+    private String id;
+    private Resource resource;
+
+    public BadListener(String id, Resource resource) {
+        this.id = id;
+        this.resource = resource;
+    }
+
     /**
-     * Returns the id of this listener. This id must be unique with respect
-     * to the desired notification bus. <p>
-     *  
-     * @return the id of this listener.
+     * @see com.bigbross.bossa.notify.Listener#getId()
      */
-    String getId();
-    
+    public String getId() {
+        return id;
+    }
+
     /**
-     * Returns the resource used to filter the events passed to this
-     * listener. If the resource is <code>null</code>, all events will be
-     * passed to this listener. <p>
-     * 
-     * @return the resource used as filter.
+     * @see com.bigbross.bossa.notify.Listener#getResource()
      */
-    Resource getResource();
-    
+    public Resource getResource() {
+        return resource;
+    }
+
     /**
-     * Notifies this listener of an event. <p>
-     * 
-     * @param id the id of the event.
-     * @param time the time the notification bus noticed the event.
-     * @param attributes the attributes of this event.
+     * @see com.bigbross.bossa.notify.Listener#notifyEvent(
+     *      java.lang.String, java.util.Date, java.util.Map)
      */
-    void notifyEvent(String id, Date time, Map attributes);
+    public void notifyEvent(String id, Date time, Map attributes) {
+        throw new RuntimeException("Muahahaha!");
+    }
 }

@@ -24,9 +24,13 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.HashMap;
+
 import junit.framework.TestCase;
 
 public class NotificationBusTest extends TestCase {
+
+    private NotificationBus bus;
 
     public NotificationBusTest(String name) {
 	super(name);
@@ -34,9 +38,26 @@ public class NotificationBusTest extends TestCase {
 
     protected void setUp() {
 	System.out.println("Setting up a notification bus test.");
+        bus = new NotificationBus();
     }
 
-    public void testNada() {
-        assertNull(null);
+    public void testRegisterRemoveListener() {
+        assertTrue(bus.registerListener(new GoodListener("test1", null)));
+        assertFalse(bus.registerListener(new GoodListener("test1", null)));
+        bus.removeListener("test1");
+        assertTrue(bus.registerListener(new GoodListener("test1", null)));
+    }
+
+    public void testNotify() {
+        assertTrue(bus.registerListener(new GoodListener("The Good", null)));
+        assertTrue(bus.registerListener(new BadListener("The Bad", null)));
+        HashMap theUgly = new HashMap();
+        
+        try {
+            bus.notifyEvent("event1", theUgly);
+        } catch (Exception e) {
+            fail("This exception should not propagate here.");
+        }
+        assertEquals("ok", theUgly.get("status"));
     }
 }

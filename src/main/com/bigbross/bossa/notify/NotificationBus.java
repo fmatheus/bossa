@@ -24,7 +24,9 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
@@ -95,5 +97,15 @@ public class NotificationBus {
      * @param attributes a <code>Map</code> containing the attributes.
      */
     public void notifyEvent(String id, Map attributes) {
+        Date now = new Date();
+        Iterator i = listeners.values().iterator();
+        while (i.hasNext()) {
+            Listener l = (Listener) i.next();
+            try {
+                l.notifyEvent(id, now, attributes);
+            } catch (Exception e) {
+                // We ignore listeners exceptions.
+            }
+        }
     }
 }
