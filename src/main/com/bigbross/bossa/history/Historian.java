@@ -30,7 +30,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.bigbross.bossa.DataTransferException;
 import com.bigbross.bossa.notify.Event;
+import com.bigbross.bossa.notify.EventsXMLHelper;
 import com.bigbross.bossa.resource.ResourceEvents;
 import com.bigbross.bossa.wfnet.WFNetEvents;
 
@@ -322,17 +324,34 @@ public class Historian implements Serializable {
         }
         history.add(last + 1, event);
     }
-    
+
     /**
      * Removes from history all events that took place before the provided
-     * date, excluding it from removal. <p>
+     * date. Events that happened exactly at the provided date are not
+     * removed. <p>
      * 
      * @param end the limit date for event removal.
      */
     public void purgeHistory(Date end) {
-        int last = findPlaceInHistory(end);
-        for (int i = 0; i < last; i++) {
-            history.remove(0);
-        }
+        history.subList(0, findPlaceInHistory(end)).clear();
+    }
+    
+    /**
+     * Removes from history all events that took place before the provided
+     * date and exports to a XML file the events removed. Events that
+     * happened exactly at the provided date are not removed. <p>
+     * 
+     * The format of the exported file is the same used by the
+     * <code>EventsXMLHelper</code> class. <p>
+     * 
+     * @param end the limit date for event removal.
+     * @param file the name of the file.
+     * @see com.bigbross.bossa.notify.EventsXMLHelper
+     */
+    public void purgeAndExportHistory(Date end, String file)
+        throws DataTransferException {
+        List purged = filterHistory(null, end, null, -1, null);
+        EventsXMLHelper.export(purged, file);
+        purgeHistory(end);
     }
 }
