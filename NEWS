@@ -2,8 +2,10 @@
 Bossa 0.8.0 "XXXX", 2004-0X-XX
 --------------------------------------------
 
-* Made the openCase() method public and added the a option of setting
-  the initial token count.
+* Made the method to open a case public for administrative purposes
+  and added the a option of setting the initial token count.
+
+* Created a method to close a case for administrative purposes.
 
 * Added a method to read the case attributes.
 

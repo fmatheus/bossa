@@ -35,7 +35,6 @@ import com.bigbross.bossa.BossaException;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see CaseType#openCase()
  * @see CaseType#openCase(Map)
- * @see CaseType#openCaseImpl(Map)
  */
 class OpenCase extends WFNetTransaction {
 

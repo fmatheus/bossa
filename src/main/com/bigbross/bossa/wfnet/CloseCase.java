@@ -31,7 +31,6 @@ package com.bigbross.bossa.wfnet;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Case#closeCase()
- * @see CaseType#closeCase(Case)
  */
 class CloseCase extends WFNetTransaction {
 
