@@ -27,23 +27,14 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import com.bigbross.bossa.BossaException;
 
 /**
- * This class represents a open (firing) work item.
+ * This class represents an open (firing) work item. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Activity implements Serializable {
-
-    /**
-     * The logger object used by this class. <p>
-     *
-     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
-     *      target=_top>Log4J HomePage</a>
-     */
-    private static Logger logger =
-        Logger.getLogger(Activity.class.getName());
 
     private int id;
 
@@ -51,6 +42,12 @@ public class Activity implements Serializable {
     
     private String resource;
 
+    /**
+     * Creates a new activity. <p>
+     * 
+     * @param workItem the open work item this activity represents.
+     * @param resource the resource that opened the work item.
+     */
     Activity(WorkItem workItem, String resource) {
         this.workItem = workItem;
         this.id = getCase().nextActivityId();
@@ -60,7 +57,7 @@ public class Activity implements Serializable {
     /**
      * Returns the id of this activity. <p>
      * 
-     * @return the id of thi activity.
+     * @return the id of this activity.
      */
     public int getId() {
         return id;
@@ -75,53 +72,70 @@ public class Activity implements Serializable {
         return resource;
     }
 
+    /**
+     * Returns the case type of this activity. <p>
+     * 
+     * @return The case type of this activity.
+     */
     public CaseType getCaseType() {
 	return workItem.getCaseType();
     }
 
+    /**
+     * Returns the case of this activity. <p>
+     * 
+     * @return The case of this activity.
+     */
     public Case getCase() {
 	return workItem.getCase();
     }
 
+    /**
+     * Returns the transition the open work item represents. <p>
+     * 
+     * @return The transition the open work item represents.
+     */
     public Transition getTransition() {
 	return workItem.getTransition();
-    }
-
-    private boolean dispatchCommand(WFNetCommand command) {
-        Boolean result = null;
-        try {
-         result = 
-          (Boolean) CaseTypeManager.getInstance().executeCommand(command);
-        } catch (Exception e) {
-            /* FIXME: Exceptions, please. */
-            logger.error("Prevayler error!", e);
-        }
-        return result.booleanValue();
     }
 
     /**
      * Closes and finishes this activity. Call this method when the
      * activity is successfuly completed. <p>
      * 
-     * @return <code>true</code> is the activity is succesfuly opened,
+     * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean close() {
+    public boolean close() throws BossaException {
         return dispatchCommand(new CloseActivity(this, null));
     }
 
     /**
      * Closes and finishes an activity. Call this method when the
-     * activity is successfuly completed. An attribute mapping shuld be
+     * activity is successfuly completed. An attribute mapping should be
      * passed when this method is called. The attributes provided will
      * overwrite current set attributes and the value of these attributes
      * will be used when evaluating edge expressions. <p>
      * 
      * @param attributes the attributes mapping.
-     * @return <code>true</code> is the activity is succesfuly opened,
+     * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean close(Map attributes) {
+    public boolean close(Map attributes) throws BossaException {
         return dispatchCommand(new CloseActivity(this, attributes));
     }
 
@@ -130,11 +144,29 @@ public class Activity implements Serializable {
      * be completed. The related work item will return to the list of
      * available work items and can be opened again. <p>
      * 
-     * @return <code>true</code> is the activity is succesfuly canceled,
+     * @return <code>true</code> if the activity is succesfully canceled,
      *         <code>false</code> otherwise.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean cancel() {
+    public boolean cancel() throws BossaException {
         return dispatchCommand(new CancelActivity(this));
+    }
+
+    /**
+     * Executes a command that returns a boolean value. <p>
+     * 
+     * @param command the command;
+     * @return The <code>boolean</code> returned by the command execution.
+     */
+    private boolean dispatchCommand(WFNetCommand command)
+        throws BossaException {
+        Boolean result = 
+          (Boolean) CaseTypeManager.getInstance().executeCommand(command);
+        return result.booleanValue();
     }
 
     public String toString() {

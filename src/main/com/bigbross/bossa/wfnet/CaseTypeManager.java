@@ -40,6 +40,8 @@ import org.prevayler.Prevayler;
 import org.prevayler.implementation.AbstractPrevalentSystem;
 import org.prevayler.implementation.SnapshotPrevayler;
 
+import com.bigbross.bossa.BossaException;
+
 /**
  * This class manages all registered case types of the workflow
  * system. It provides all the case type life cycle functions and is
@@ -121,10 +123,23 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     
     /**
      * Executes a command using the current <code>Prevayler</code>. <p>
+     * 
+     * @param command the command to be executed.
+     * @return The value returned by the command.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this command persistent.
+     * @exception BossaException if the command throws an exception.
      */
-    Serializable executeCommand(Command command) throws Exception {
-        /* FIXME: Get the prevayler especific exceptions and wrap them. */
-        return prevayler.executeCommand(command);
+    Serializable executeCommand(Command command) throws BossaException {
+        try {
+            return prevayler.executeCommand(command);
+        } catch (IOException e) {
+            throw new PersistenceException("I/O error in prevayler.", e);
+        } catch (BossaException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BossaException("Unexpected exception.", e);
+        }
     }    
 
     /**

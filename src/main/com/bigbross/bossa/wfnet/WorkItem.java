@@ -26,7 +26,7 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 
-import org.apache.log4j.Logger;
+import com.bigbross.bossa.BossaException;
 
 /**
  * This class represents a transition of a specific case instance. <p>
@@ -35,20 +35,11 @@ import org.apache.log4j.Logger;
  * a <emph>fireable</emph> transition a work item is a <emph>likely 
  * fireable</emph> transition. All methods of this class account for this
  * and it is possible to discover in advance if a work item is actually
- * fireable without opening it.
+ * fireable without opening it. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class WorkItem implements Serializable {
-
-    /**
-     * The logger object used by this class. <p>
-     *
-     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
-     *      target=_top>Log4J HomePage</a>
-     */
-    private static Logger logger =
-        Logger.getLogger(Activity.class.getName());
 
     private Case caze;
 
@@ -56,24 +47,51 @@ public class WorkItem implements Serializable {
 
     private boolean fireable;
 
+    /**
+     * Creates a new work item. <p>
+     * 
+     * @param caze the case.
+     * @param transition the transition.
+     */ 
     WorkItem(Case caze, Transition transition) {
 	this.caze = caze;
 	this.transition = transition;
         this.fireable = true;
     }
 
+    /**
+     * Returns the case type of this work item. <p>
+     * 
+     * @return The case type of this work item.
+     */
     public CaseType getCaseType() {
 	return getCase().getCaseType();
     }
 
+    /**
+     * Returns the case of this work item. <p>
+     * 
+     * @return The case of this work item.
+     */
     public Case getCase() {
 	return caze;
     }
 
+    /**
+     * Returns the transition this work item represents. <p>
+     * 
+     * @return The transition this work item represents.
+     */
     public Transition getTransition() {
 	return transition;
     }
 
+    /**
+     * Returns the id of this work item. It is the same id of the
+     * transition this work item represents. <p>
+     * 
+     * @return The id of this work item.
+     */
     public String getId() {
         return getTransition().getId();
     }
@@ -104,16 +122,16 @@ public class WorkItem implements Serializable {
      * completion of the work item in handled by the created activity. <p>
      * 
      * @param resource the resource that is opening the work item.
-     * @return The activity created the opening of this work item.
+     * @return The activity created by the opening of this work item,
+     *         <code>null</code> if the work item could not be opened.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of the case
+     *            may be left inconsistent.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public Activity open(String resource) {
+    public Activity open(String resource) throws BossaException {
         WFNetCommand openCommand = new OpenWorkItem(this, resource);
-        try {
-          return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
-        } catch (Exception e) {
-            /* FIXME: Exceptions, please. */
-            logger.error("Prevayler error!", e);
-        }
-        return null;
+        return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
     }
 }
