@@ -24,31 +24,49 @@
 
 package com.bigbross.bossa.resource;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.bigbross.bossa.BossaException;
+
 /**
- * This represents a resource or a group of resources.
- * This may include or exclude other resources.
+ * This class represents a single resource or a group of resources.
+ * A group of resources may include or exclude other resources. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Resource {
+public class Resource implements Serializable {
 
-    protected String id;
+    private ResourceManager resourceManager;
 
-    protected Set includes = new HashSet();
+    private String id;
 
-    protected Set excludes = new HashSet();
+    private Set includes = new HashSet();
+
+    private Set excludes = new HashSet();
 
     /**
-     * Creates a new <code>Resource</code> instance with given identifier. <p>
+     * Creates a new <code>Resource</code> instance with the given
+     * identifier. <p>
      *
+     * @param resourceManager the resource manager this resource is
+     *        registered into.
      * @param id the resource id.
      */
-    Resource(String id) {
+    Resource(ResourceManager resourceManager, String id) {
+        this.resourceManager = resourceManager;
         this.id = id;
+    }
+
+    /**
+     * Returns the resource manager this resource is registered into. <p>
+     * 
+     * @return the resource manager this resource is registered into.
+     */
+    ResourceManager getResourceManager() {
+        return resourceManager;
     }
 
     /**
@@ -61,22 +79,46 @@ public class Resource {
     }
 
     /**
-     * Returns true if this resource includes other resource, so is a group.
+     * Returns <code>true</code> if this resource includes any other
+     * resources, so it is a group.
      *
-     * @return <code>true</code> if is a group, <code>false</code> otherwise.
+     * @return <code>true</code> if it is a group,
+     *         <code>false</code> otherwise.
      */
     public boolean isGroup() {
         return includes.size() > 0;
     }
 
     /**
-     * Includes a resource to this. <p>
-     * Removes the resource from excludes if needed.
+     * Includes a resource in this resource. Removes the resource from
+     * the excludes list if needed. <p>
      *
      * @param resource the resource to be included.
-     * @return <code>false</code> if resource includes this, <code>true</code> otherwise.
+     * @return <code>false</code> if resource includes this resource,
+     *         <code>true</code> otherwise.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean include(Resource resource) {
+    public boolean include(Resource resource) throws BossaException {
+        ResourceCommand includeCommand = 
+            new IncludeInResource(this, resource);
+        return ((Boolean) getResourceManager().getBossa().
+                          executeCommand(includeCommand)).booleanValue();
+    }
+
+    /**
+     * Includes a resource in this resource. Removes the resource from
+     * the excludes list if needed. <p>
+     *
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param resource the resource to be included.
+     * @return <code>false</code> if resource includes this resource,
+     *         <code>true</code> otherwise.
+     */
+    public boolean includeImpl(Resource resource) {
         if (resource.contains(this)) {
             return false;
         }
@@ -86,13 +128,35 @@ public class Resource {
     }
 
     /**
-     * Excludes a resource from this. <p>
-     * Removes the resource from includes if needed.
-     *
+     * Excludes a resource from this resource. Removes the resource from
+     * the includes list if needed. <p>
+     * 
      * @param resource the resource to be excluded.
-     * @return <code>false</code> if resource excludes this, <code>true</code> otherwise.
+     * @return <code>false</code> if resource excludes this resource,
+     *         <code>true</code> otherwise.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean exclude(Resource resource) {
+    public boolean exclude(Resource resource) throws BossaException {
+        ResourceCommand excludeCommand =
+            new ExcludeInResource(this, resource);
+        return ((Boolean) getResourceManager().getBossa().
+                          executeCommand(excludeCommand)).booleanValue();
+    }
+
+    /**
+     * Excludes a resource from this resource. Removes the resource from
+     * the includes list if needed. <p>
+     *
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param resource the resource to be excluded.
+     * @return <code>false</code> if resource excludes this resource,
+     *         <code>true</code> otherwise.
+     */
+    public boolean excludeImpl(Resource resource) {
         if (resource.excludes(this)) {
             return false;
         }
@@ -102,21 +166,40 @@ public class Resource {
     }
 
     /**
-     * Removes a resource from this. <p>
-     * Removes from any of includes or excludes.
+     * Removes a resource from this resource. Effectively removes it from
+     * any of the includes or excludes list. <p>
      *
      * @param resource the resource to be removed.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public void remove(Resource resource) {
+    public void remove(Resource resource) throws BossaException {
+        ResourceCommand removeCommand =
+            new RemoveFromResource(this, resource);
+        getResourceManager().getBossa().executeCommand(removeCommand);
+    }
+
+    /**
+     * Removes a resource from this resource. Effectively removes it from
+     * any of the includes or excludes list. <p>
+     *
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param resource the resource to be removed.
+     */
+    public void removeImpl(Resource resource) {
         includes.remove(resource);
         excludes.remove(resource);
     }
 
     /**
-     * Checks if a resource is excluded by this. <p>
+     * Checks if a resource is excluded by this resource. <p>
      *
      * @param resource the resource to be looked for.
-     * @return <code>true</code> if the resource is found, <code>false</code> otherwise.
+     * @return <code>true</code> if the resource is found,
+     *         <code>false</code> otherwise.
      */
     private boolean excludes(Resource resource) {
 
@@ -143,7 +226,8 @@ public class Resource {
      * Determines if a resource is contained in this. <p>
      *
      * @param resource the resource to be looked for.
-     * @return <code>true</code> if the resource is found, <code>false</code> otherwise.
+     * @return <code>true</code> if the resource is found,
+     *         <code>false</code> otherwise.
      */
     public boolean contains(Resource resource) {
 
@@ -181,5 +265,4 @@ public class Resource {
 
         return false;
     }
-
 }

@@ -24,37 +24,35 @@
 
 package com.bigbross.bossa.resource;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
 
 /**
- * Tests using Resource package testcases.
- *
+ * This class implements the create resource operation of
+ * <code>ResourceManager</code> through the prevalence subsystem. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ * @see com.bigbross.bossa.resource.ResourceManager#createResource(String)
+ * @see com.bigbross.bossa.resource.ResourceManager#createResourceImpl(String)
  */
-public class ResourceTestSuite extends TestCase {
+class CreateResource extends ResourceCommand {
 
+    private String id;
+    
     /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public ResourceTestSuite(String name) {
-	super(name);
+     * Creates a new create resource operation. <p>
+     * 
+     * @param id the resource id.
+     */    
+    CreateResource(String id) {
+        this.id = id;
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * Executes the operation. <p>
+     * 
+     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Resource Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(ResourceTest.class));
-	suite.addTest(new TestSuite(ResourceManagerTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
+    protected Serializable execute(ResourceManager resourceManager) {
+        return resourceManager.createResourceImpl(id);
     }
 }

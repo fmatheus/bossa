@@ -34,12 +34,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaException;
 
 /**
- * This class manages groups of resources. Resources are only string
- * identifiers and groups are sets of these identifiers. It is possible
- * to create new groups, add and remove resources, get all resources of a
- * group and check if a resource is in a group. <p>
+ * This class manages the creation and removal of resources. Resources 
+ * are groups of resources, indexed by a string id. Single users are
+ * empty resources, their presence indicates the id is in use. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
@@ -67,19 +67,20 @@ public class ResourceManager implements Serializable {
     }
     
     /**
-     * Returns the bossa engine this resorce manager is part. <p>
+     * Returns the bossa engine this resource manager is part. <p>
      * 
-     * @return the bossa engine this resorce manager is part.
+     * @return the bossa engine this resource manager is part.
      */
     Bossa getBossa() {
         return engine;
     }
 
     /**
-     * Returns the resorce with the given id. <p>
+     * Returns the resource with the given id. <p>
      *
      * @param id the resource id.
-     * @return a <code>Resource</code>, <code>null</code> if there is no resource with this id.
+     * @return a <code>Resource</code>, <code>null</code> if there
+     *         is no resource with this id.
      */
     public Resource getResource(String id) {
         return (Resource) resources.get(id);
@@ -89,12 +90,31 @@ public class ResourceManager implements Serializable {
      * Creates a new resource in the manager. <p>
      * 
      * @param id the id of the resource to be created.
-     * @return a <code>Resource</code>, <code>null</code> if there is already a resource with this id.
+     * @return a <code>Resource</code>, <code>null</code> if there is
+     *         already a resource with this id.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */    
-    public Resource createResource(String id) {
+    public Resource createResource(String id) throws BossaException {
+        ResourceCommand createCommand = new CreateResource(id);
+        return (Resource) getBossa().executeCommand(createCommand);
+    }
+
+    /**
+     * Creates a new resource in the manager. <p>
+     * 
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param id the id of the resource to be created.
+     * @return a <code>Resource</code>, <code>null</code> if there is
+     *         already a resource with this id.
+     */    
+    Resource createResourceImpl(String id) {
         Resource resource = null;
         if (!resources.containsKey(id)) {
-            resource = new Resource(id);
+            resource = new Resource(this, id);
             resources.put(id, resource);
         }
         return resource;
@@ -106,9 +126,27 @@ public class ResourceManager implements Serializable {
      * @param resource a <code>Resource</code> to be removed.
      * @return <code>true</code> if the resource was removed,
      *         <code>false</code> if the resource was not found.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public boolean removeResource(Resource resource) {
-        return resources.remove(resource.getId()) != null;
+    public boolean removeResource(Resource resource) throws BossaException {
+        ResourceCommand removeCommand = new RemoveResource(resource);
+        return ((Boolean) getBossa().executeCommand(removeCommand)).
+                booleanValue();
     }
 
+    /**
+     * Removes a resource from the manager. <p>
+     *
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param resource a <code>Resource</code> to be removed.
+     * @return <code>true</code> if the resource was removed,
+     *         <code>false</code> if the resource was not found.
+     */
+    public boolean removeResourceImpl(Resource resource) {
+        return resources.remove(resource.getId()) != null;
+    }
 }

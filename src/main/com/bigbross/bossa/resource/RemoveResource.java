@@ -24,37 +24,36 @@
 
 package com.bigbross.bossa.resource;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
 
 /**
- * Tests using Resource package testcases.
- *
+ * This class implements the remove resource operation of
+ * <code>ResourceManager</code> through the prevalence subsystem. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ * @see com.bigbross.bossa.resource.ResourceManager#removeResource(Resource)
+ * @see com.bigbross.bossa.resource.ResourceManager#removeResourceImpl(Resource)
  */
-public class ResourceTestSuite extends TestCase {
+class RemoveResource extends ResourceCommand {
 
+    private String id;
+    
     /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public ResourceTestSuite(String name) {
-	super(name);
+     * Creates a new remove resource operation. <p>
+     * 
+     * @param resource the resource.
+     */    
+    RemoveResource(Resource resource) {
+        this.id = resource.getId();
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * Executes the operation. <p>
+     * 
+     * @see com.bigbross.bossa.resource.ResourceCommand#execute(ResourceManager)
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Resource Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(ResourceTest.class));
-	suite.addTest(new TestSuite(ResourceManagerTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
+    protected Serializable execute(ResourceManager resourceManager) {
+        Resource resource = resourceManager.getResource(id);
+        return new Boolean(resourceManager.removeResourceImpl(resource));
     }
 }

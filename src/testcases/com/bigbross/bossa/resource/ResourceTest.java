@@ -40,9 +40,9 @@ public class ResourceTest extends TestCase {
 
     protected void setUp() {
 	System.out.println("Setting up a resource test.");
-        r0 = new Resource("r0");
-        r1 = new Resource("r1");
-        r2 = new Resource("r2");
+        r0 = new Resource(null, "r0");
+        r1 = new Resource(null, "r1");
+        r2 = new Resource(null, "r2");
     }
 
     public void testGroupId() {
@@ -50,57 +50,57 @@ public class ResourceTest extends TestCase {
     }
 
     public void testInclude() {
-        assertTrue(r0.include(r1));
+        assertTrue(r0.includeImpl(r1));
         assertFalse(r0.contains(r2));
 
-        assertTrue(r1.include(r2));
+        assertTrue(r1.includeImpl(r2));
         assertTrue(r0.contains(r2));
     }
 
     public void testIncludeCircle() {
-        assertFalse(r0.include(r0));
+        assertFalse(r0.includeImpl(r0));
 
-        assertTrue(r0.include(r1));
-        assertTrue(r1.include(r2));
+        assertTrue(r0.includeImpl(r1));
+        assertTrue(r1.includeImpl(r2));
 
-        assertFalse(r2.include(r1));
-        assertFalse(r2.include(r0));
+        assertFalse(r2.includeImpl(r1));
+        assertFalse(r2.includeImpl(r0));
     }
 
     public void testExclude() {
-        assertTrue(r0.include(r1));
-        assertTrue(r1.include(r2));
+        assertTrue(r0.includeImpl(r1));
+        assertTrue(r1.includeImpl(r2));
         assertTrue(r0.contains(r2));
 
-        assertTrue(r0.exclude(r2));
+        assertTrue(r0.excludeImpl(r2));
         assertFalse(r0.contains(r2));
     }
 
     public void testExcludeCircle() {
-        assertFalse(r0.exclude(r0));
+        assertFalse(r0.excludeImpl(r0));
 
-        assertTrue(r0.exclude(r1));
-        assertTrue(r1.exclude(r2));
+        assertTrue(r0.excludeImpl(r1));
+        assertTrue(r1.excludeImpl(r2));
 
-        assertFalse(r1.exclude(r0));
-        assertFalse(r2.exclude(r0));
+        assertFalse(r1.excludeImpl(r0));
+        assertFalse(r2.excludeImpl(r0));
 
         assertFalse(r0.contains(r2));
         assertFalse(r2.contains(r0));
     }
 
     public void testRemove() {
-        assertTrue(r0.include(r1));
-        assertTrue(r1.include(r2));
+        assertTrue(r0.includeImpl(r1));
+        assertTrue(r1.includeImpl(r2));
         assertTrue(r0.contains(r2));
 
-        assertTrue(r0.exclude(r2));
+        assertTrue(r0.excludeImpl(r2));
         assertFalse(r0.contains(r2));
 
-        r0.remove(r2);
+        r0.removeImpl(r2);
         assertTrue(r0.contains(r2));
 
-        r0.remove(r1);
+        r0.removeImpl(r1);
         assertFalse(r0.contains(r2));
     }
 

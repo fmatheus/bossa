@@ -24,37 +24,34 @@
 
 package com.bigbross.bossa.resource;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
+
+import org.prevayler.Command;
+import org.prevayler.PrevalentSystem;
+
+import com.bigbross.bossa.Bossa;
+
 
 /**
- * Tests using Resource package testcases.
- *
+ * This class represents all commands applied to the Resource persistent
+ * objects. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class ResourceTestSuite extends TestCase {
+abstract class ResourceCommand implements Command {
 
     /**
-     * Constructor.
-     *
-     * @param name the name.
+     * Executes a command in a prevalent system. <p>
+     * 
+     * @see org.prevayler.Command#execute(PrevalentSystem)
      */
-    public ResourceTestSuite(String name) {
-	super(name);
+    public Serializable execute(PrevalentSystem system) throws Exception {
+        return execute(((Bossa) system).getResourceManager());
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * Executes a command in the object tree rooted at ResourceManager. <p>
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Resource Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(ResourceTest.class));
-	suite.addTest(new TestSuite(ResourceManagerTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
-    }
+    protected abstract Serializable execute(ResourceManager resourceManager)
+        throws Exception;
 }

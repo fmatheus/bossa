@@ -43,30 +43,31 @@ public class ResourceManagerTest extends TestCase {
     public void testCreateResource() {
         ResourceManager resourceManager = new ResourceManager();
 
-        assertNotNull(resourceManager.createResource("testResource"));
-        assertNull(resourceManager.createResource("testResource"));
+        assertNotNull(resourceManager.createResourceImpl("testResource"));
+        assertNull(resourceManager.createResourceImpl("testResource"));
     }
     
     public void testGetResource() {
         ResourceManager resourceManager = new ResourceManager();
         assertNull(resourceManager.getResource("testResource"));
 
-        Resource test = resourceManager.createResource("testResource");
+        Resource test = resourceManager.createResourceImpl("testResource");
         assertNotNull(test);
 
         assertSame(test, resourceManager.getResource("testResource"));
+        assertSame(resourceManager, test.getResourceManager());
     }
 
     public void testRemoveResource() {
         ResourceManager resourceManager = new ResourceManager();
 
-        assertNotNull(resourceManager.createResource("testResource"));
+        assertNotNull(resourceManager.createResourceImpl("testResource"));
 
         Resource test = resourceManager.getResource("testResource");
         assertNotNull(test);
-        assertTrue(resourceManager.removeResource(test));
+        assertTrue(resourceManager.removeResourceImpl(test));
 
-        assertNotNull(resourceManager.createResource("testResource"));
+        assertNotNull(resourceManager.createResourceImpl("testResource"));
     }
 
 }
