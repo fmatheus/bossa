@@ -63,13 +63,18 @@ More elaborate instructions:
    create soft links to them in the lib directory under the main tree.
 
 3) Run:
-   # ant dist
+   # ant jar
 
 4) Pick the bossa-x.y.z.jar in the dist directory. Use as prescribed.
 
 5) To generate the javadocs, run:
    # ant javadoc
    Point your browser to dist/javadocs/index.html
+
+6) To generate the docbooks, run:
+   # ant docbook
+   Note: you will have to setup the ant optional tasks for this to work.
+   Point your browser to dist/doc/
 
 
 Dependencies
@@ -83,30 +88,15 @@ dependencies in our download page.
 And Now What?
 =============
 
-Right now, Bossa is lacking how-to documentation on the use of the
-library. However, the library is simple enough that javadoc
-documentation, tests and examples should suffice.
+Right now, Bossa is lacking documentation as comprehensive as we would
+like on the use of the library. However, the library is simple enough
+that the current (somewhat incomplete) documentation, javadocs, tests
+and examples should suffice.
 
-First of all, to use workflow it is necessary to have a workflow
-definition, a case type. A case type is represented by a high level
-Petri net with weighted edges, and is currently created
-programmatically. For a description of workflow modeling as Petri
-nets, somewhat similar to the one we use, see Section 4 of:
-
-http://tmitwww.tm.tue.nl/staff/wvdaalst/Publications/p53.pdf
-
-We will document our Petri model soon. For now a look at the code of
-WFNetUtil.createCaseType() in the testcases directory.
-
-Once the case type is defined, cases can be created to represent the
-enactment of individual workflows. This involves opening, closing and
-canceling work items and activities, and represents the run time
-behavior of a workflow application. An example of such application is
-the BossaBrowser.main(). Look there for examples of use, but beware,
-the code is not of the same high standard of the library. :)
-
-To understand better the examples, the definitive documentation is the
-javadoc. Generate it, read it, enjoy.
+For an overview of what Bossa is about see the Bossa Manifesto
+(dist/doc/manifesto/bossa-manifesto.html). To start with the Bossa API
+see the API HOWTO (dist/doc/api/bossa-api.html), and to understand it
+better the definitive documentation is the javadoc.
 
 
 Directory Structure

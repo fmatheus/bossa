@@ -1,8 +1,14 @@
 
-Bossa 0.? "???", 2003-??-??
----------------------------
+Bossa 0.3.0 "Document It and They Will Come", 2003-03-13
+--------------------------------------------------------
 
-* 
+* We now check if all case variables are set at case type creation
+  time.
+
+* Added an optimization in the edge weight evaluation. If the
+  expression is an integer it won't go to BSF.
+
+* Added documentation: the overview Bossa Manifesto and a API HOWTO.
 
 
 Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-25
@@ -12,8 +18,8 @@ Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-25
 dependencies packages). Made a new release to test it.
 
 
-Bossa 0.2 "A New Hope", 2003-02-19
-----------------------------------
+Bossa 0.2.0 "A New Hope", 2003-02-19
+------------------------------------
 
 * First release. Hello world! Brace yourself!
 
