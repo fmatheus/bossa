@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.resource.Expression;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.WorkItem;

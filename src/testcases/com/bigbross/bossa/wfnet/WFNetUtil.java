@@ -24,10 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
 

@@ -24,8 +24,6 @@
 
 package com.bigbross.bossa.resource;
 
-import com.bigbross.bossa.wfnet.WFNetUtil;
-
 public class ResourceUtil {
 
     public static Resource createResource(String id) {

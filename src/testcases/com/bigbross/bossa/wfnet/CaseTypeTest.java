@@ -24,12 +24,12 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Iterator;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
-import junit.framework.TestCase;
 
 public class CaseTypeTest extends TestCase {
 

@@ -24,13 +24,10 @@
 
 package com.bigbross.bossa.resource;
 
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaException;
 
 /**
  * This class manages the creation and removal of resources. Resources 

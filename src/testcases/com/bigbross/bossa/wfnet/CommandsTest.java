@@ -24,12 +24,12 @@
 
 package com.bigbross.bossa.wfnet;
 
+import junit.framework.TestCase;
+
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
-import junit.framework.TestCase;
 
 public class CommandsTest extends TestCase {
 

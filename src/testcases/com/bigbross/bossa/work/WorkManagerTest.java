@@ -24,17 +24,16 @@
 
 package com.bigbross.bossa.work;
 
+import junit.framework.TestCase;
+
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.resource.ResourceUtil;
-import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.CaseTypeTest;
 import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
-import junit.framework.TestCase;
 
 public class WorkManagerTest extends TestCase {
 

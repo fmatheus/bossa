@@ -25,9 +25,6 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import com.bigbross.bossa.resource.Expression;
 

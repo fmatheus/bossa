@@ -26,7 +26,6 @@ package com.bigbross.bossa;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +34,6 @@ import java.util.StringTokenizer;
 
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
-import com.bigbross.bossa.resource.ResourceUtil;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.Case;
 import com.bigbross.bossa.wfnet.CaseType;

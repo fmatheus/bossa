@@ -27,7 +27,6 @@ package com.bigbross.bossa.resource;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.WFNetUtil;

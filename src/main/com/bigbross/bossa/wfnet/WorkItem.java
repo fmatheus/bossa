@@ -27,7 +27,6 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 
 import com.bigbross.bossa.BossaException;
-import com.bigbross.bossa.resource.Expression;
 import com.bigbross.bossa.resource.Resource;
 
 /**
