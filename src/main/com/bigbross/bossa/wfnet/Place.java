@@ -24,36 +24,39 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Tests using WFNet package testcases.
+ * This class represents a place.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class WFNetTestSuite extends TestCase {
+ */
+public class Place {
 
-    /**
-     * Constructor.
-     *
-     * @param name The name.
-     **/
-    public WFNetTestSuite(String name) {
-	super(name);
+    CaseType ct;
+
+    int index;
+
+    String id;
+
+    Place(CaseType ct, int index, String id) {
+	this.ct = ct;
+	this.index = index;
+	this.id = id;
     }
 
-    /**
-     * Makes the suite of tests.
-     *
-     * @return The suite.
-     **/
-    public static Test suite() {
-	// All tests should be added here
-	TestSuite suite = new TestSuite("WFNet Test Suite");
-	//suite.addTest(new TestSuite(CaseTest.class));
-	suite.addTest(new TestSuite(CaseTypeTest.class));
-	return suite;
+    int weight(Transition t) {
+	return ct.getWeight(t.index, index);
     }
+
+    void input(Transition t, int weight) {
+	ct.setWeight(t.index, index, -weight);
+    }
+
+    void output(Transition t, int weight) {
+	ct.setWeight(t.index, index, weight);
+    }
+
 }

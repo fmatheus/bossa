@@ -24,36 +24,46 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
- * Tests using WFNet package testcases.
+ * This class represents a transition of a specific case instance.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class WFNetTestSuite extends TestCase {
+ */
+public class WorkItem {
 
-    /**
-     * Constructor.
-     *
-     * @param name The name.
-     **/
-    public WFNetTestSuite(String name) {
-	super(name);
+    Case caze;
+
+    Transition transition;
+
+    boolean fireable = true;
+
+    WorkItem(Case caze, Transition transition) {
+	this.caze = caze;
+	this.transition = transition;
     }
 
-    /**
-     * Makes the suite of tests.
-     *
-     * @return The suite.
-     **/
-    public static Test suite() {
-	// All tests should be added here
-	TestSuite suite = new TestSuite("WFNet Test Suite");
-	//suite.addTest(new TestSuite(CaseTest.class));
-	suite.addTest(new TestSuite(CaseTypeTest.class));
-	return suite;
+    void update() {
+	fireable = getCase().isFireable(transition);
     }
+
+    public CaseType getCaseType() {
+	return getCase().getCaseType();
+    }
+
+    public Case getCase() {
+	return caze;
+    }
+
+    public Transition getTransition() {
+	return transition;
+    }
+
+    public boolean isFireable() {
+	return fireable;
+    }
+
+    public Activity open() {
+	return getCase().open(this);
+    }
+
 }

@@ -24,36 +24,52 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
- * Tests using WFNet package testcases.
+ * This class represents a open (firing) work item.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class WFNetTestSuite extends TestCase {
+ */
+public class Activity {
 
-    /**
-     * Constructor.
-     *
-     * @param name The name.
-     **/
-    public WFNetTestSuite(String name) {
-	super(name);
+    int id;
+
+    WorkItem workItem;
+
+    Activity(WorkItem workItem) {
+	this.workItem = workItem;
+	this.id = getCase().nextWorkItemId();
     }
 
-    /**
-     * Makes the suite of tests.
-     *
-     * @return The suite.
-     **/
-    public static Test suite() {
-	// All tests should be added here
-	TestSuite suite = new TestSuite("WFNet Test Suite");
-	//suite.addTest(new TestSuite(CaseTest.class));
-	suite.addTest(new TestSuite(CaseTypeTest.class));
-	return suite;
+    public CaseType getCaseType() {
+	return workItem.getCaseType();
     }
+
+    public Case getCase() {
+	return workItem.getCase();
+    }
+
+    public Transition getTransition() {
+	return workItem.getTransition();
+    }
+
+    public boolean close() {
+	return getCase().close(this);
+    }
+
+    public boolean cancel() {
+	return getCase().cancel(this);
+    }
+
+    public String toString() {
+
+	StringBuffer string = new StringBuffer();
+
+	string.append(id);
+	string.append(".");
+	string.append(workItem.getTransition().toString());
+
+	return string.toString();
+
+    }
+
 }

@@ -24,6 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents a specific instance of a case type. It
  * holds the current state of a case. <p>
@@ -31,5 +34,136 @@ package com.bigbross.bossa.wfnet;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Case {
+
+    int id = 0;
+
+    CaseType caseType;
+
+    int[] marking;
+
+    WorkItem[] workItems;
+
+    List activities = new ArrayList();
+
+    int workSequence = 0;
+
+    Case(CaseType caseType, int[] marking) {
+
+	this.id = caseType.nextCaseId();
+	this.caseType = caseType;
+	this.marking = marking;
+
+	Transition[] ts = caseType.getTransitions();
+	workItems = new WorkItem[ts.length];
+	for (int i = 0; i < workItems.length; ++i) {
+	    workItems[i] = new WorkItem(this, ts[i]);
+	}
+
+	deactivate();
+
+    }
+
+    public CaseType getCaseType() {
+	return caseType;
+    }
+
+    public WorkItem[] getWorkItems() {
+	return workItems;
+    }
+
+    public String toString() {
+
+	StringBuffer string = new StringBuffer();
+
+	string.append("\t");
+	for (int i = 0; i < marking.length; ++i) {
+	    string.append(marking[i]);
+	    string.append("\t");
+	}
+
+	return string.toString();
+
+    }
+
+    int nextWorkItemId() {
+	return ++workSequence;
+    }
+
+    private void add(int[] marking) {
+	for(int i = 0; i < marking.length; ++i) {
+	    this.marking[i] += marking[i];
+	}
+    }
+
+    private void sub(int[] marking) {
+	for(int i = 0; i < marking.length; ++i) {
+	    this.marking[i] -= marking[i];
+	}
+    }
+
+    private void activate() {
+	for (int i = 0; i < workItems.length; ++i) {
+	    if (!workItems[i].isFireable()) {
+		workItems[i].update();
+	    }
+	}
+    }
+
+    private void deactivate() {
+	for (int i = 0; i < workItems.length; ++i) {
+	    if (workItems[i].isFireable()) {
+		workItems[i].update();
+	    }
+	}
+    }
+
+    boolean isFireable(Transition t) {
+	for(int i = 0; i < marking.length; ++i) {
+	    if (marking[i] + caseType.getWeight(t.index, i) < 0) {
+		return false;
+	    }
+	}
+	return true;
+    }
+
+    Activity open(WorkItem wi) {
+
+	if (!wi.isFireable()) {
+	    return null;
+	}
+
+	Activity activity = new Activity(wi);
+	activities.add(activity);
+	add(activity.getTransition().input());
+	deactivate();
+
+	return activity;
+    }
+
+    boolean close(Activity activity) {
+
+	if (!activities.contains(activity)) {
+	    return false;
+	}
+
+	activities.remove(activity);
+	add(activity.getTransition().output());
+	activate();
+
+	return true;
+    }
+
+    boolean cancel(Activity activity) {
+
+	if (!activities.contains(activity)) {
+	    return false;
+	}
+
+	activities.remove(activity);
+	sub(activity.getTransition().input());
+	activate();
+
+	return true;
+    }
 
 }
