@@ -74,13 +74,4 @@ public class ResourceManagerTest extends TestCase {
         assertTrue(resourceManager.removeResourceImpl(test));
         assertNotNull(resourceManager.createResourceImpl("testResource"));
     }
-
-    public void testNestedRemoveResource() {
-        Resource r1 = resourceManager.createResourceImpl("r1");
-        Resource r2 = resourceManager.createResourceImpl("r2");
-        r1.includeImpl(r2);
-        
-        assertTrue(resourceManager.removeResourceImpl(r2));
-        assertFalse(r1.contains(r2));
-    }
 }

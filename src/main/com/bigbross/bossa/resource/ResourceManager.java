@@ -25,13 +25,7 @@
 package com.bigbross.bossa.resource;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
@@ -47,7 +41,7 @@ public class ResourceManager implements Serializable {
 
     private Bossa engine;
 
-    private Map resources;
+    private ResourceRegistry resources;
 
     /**
      * Creates a new empty resource manager. <p>
@@ -56,7 +50,7 @@ public class ResourceManager implements Serializable {
      */
     public ResourceManager(Bossa engine) {
         this.engine = engine;
-        this.resources = new HashMap();
+        this.resources = new ResourceRegistry();
     }
 
     /**
@@ -76,6 +70,17 @@ public class ResourceManager implements Serializable {
     }
 
     /**
+     * Returns the main context of this resource manager. The context,
+     * represented by a <code>ResourceRegistry</code> object should not
+     * be manipulated directly, use the methods of this class instead. <p>
+     * 
+     * @return the registry representing the main resource context.
+     */
+    public ResourceRegistry getMainContext() {
+        return resources;
+    }
+
+    /**
      * Returns the resource with the given id. <p>
      *
      * @param id the resource id.
@@ -83,7 +88,7 @@ public class ResourceManager implements Serializable {
      *         is no resource with this id.
      */
     public Resource getResource(String id) {
-        return (Resource) resources.get(id);
+        return resources.getResource(id);
     }
 
     /**
@@ -92,9 +97,7 @@ public class ResourceManager implements Serializable {
      * @return A list of all resources registered.
      */
     public List getResources() {
-        ArrayList resourceList = new ArrayList();
-        resourceList.addAll(resources.values());
-        return resourceList;
+        return resources.getResources();
     }
 
     /**
@@ -123,12 +126,12 @@ public class ResourceManager implements Serializable {
      *         already a resource with this id.
      */    
     Resource createResourceImpl(String id) {
-        Resource resource = null;
-        if (!resources.containsKey(id)) {
-            resource = new Resource(this, id);
-            resources.put(id, resource);
+        Resource resource = new Resource(this, id);
+        if (resources.addResource(resource)) {
+            return resource;
+        } else {
+            return null;
         }
-        return resource;
     }
 
     /**
@@ -158,24 +161,6 @@ public class ResourceManager implements Serializable {
      *         <code>false</code> if the resource was not found.
      */
     public boolean removeResourceImpl(Resource resource) {
-        if (resources.remove(resource.getId()) != null) {
-            clearReferences(resource);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Removes any direct reference to a resource from all resources in
-     * this resource manager. <p>
-     * 
-     * @param resource the resource to be removed.
-     */
-    private void clearReferences(Resource resource) {
-        Iterator i = resources.values().iterator();
-        while (i.hasNext()) {
-            ((Resource) i.next()).removeImpl(resource);
-        } 
+        return resources.removeResource(resource);
     }
 }
