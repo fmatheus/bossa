@@ -22,41 +22,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
+package com.bigbross.bossa.resource;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.bigbross.bossa.resource.ResourceTestSuite;
-import com.bigbross.bossa.wfnet.WFNetTestSuite;
-
 /**
- * Tests using all testcases.
+ * Tests using Resource package testcases.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class BossaTestSuite extends TestCase {
+ */
+public class ResourceTestSuite extends TestCase {
 
     /**
      * Constructor.
      *
-     * @param name The name.
-     **/
-    public BossaTestSuite(String name) {
+     * @param name the name.
+     */
+    public ResourceTestSuite(String name) {
 	super(name);
     }
 
     /**
-     * Makes the suite of tests.
+     * Makes the test suite.
      *
-     * @return The suite.
-     **/
+     * @return the suite.
+     */
     public static Test suite() {
-	TestSuite suite = new TestSuite("Bossa Test Suite");
+	TestSuite suite = new TestSuite("Resource Test Suite");
         /* All tests should be added here. */
-	suite.addTest(WFNetTestSuite.suite());
-        suite.addTest(ResourceTestSuite.suite());
+	suite.addTest(new TestSuite(ResourceManagerTest.class));
 	return suite;
     }
 }
