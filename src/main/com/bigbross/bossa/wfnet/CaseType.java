@@ -267,14 +267,11 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a new case with the provided marking (tokens). <p>
+     * Creates a new case using the case type template as initial marking. <p>
      * 
-     * @param marking the initial marking.
      * @return the newly created case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
-     * @exception EvaluationException if an expression evaluation error
-     *            occurs.
      */
     Case openCase() throws BossaException {
         Case caze = new Case(template);
