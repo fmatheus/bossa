@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
+import com.bigbross.bossa.PersistenceException;
 import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
@@ -127,6 +128,21 @@ public class NotificationBusTest extends TestCase {
         attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, mdoe.getId());
         bus.notifyEvent(new Event("event3", Event.WFNET_EVENT,
                                   attrib, new Date()));
+        assertEquals(2, theGood.runs());
+    }
+    
+    public void testNotificationQueue() throws PersistenceException {
+        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        TestListener theGood = new GoodListener("test", 0, null);
+        assertTrue(bossa.getNotificationBus().registerListener(theGood));
+
+        /* Creates a concrete anonymous inner class */ 
+        NotificationQueue queue = new NotificationQueue() {};
+        queue.addEvent(new Event("event1", Event.WFNET_EVENT,
+                                 new HashMap(), new Date()));
+        queue.addEvent(new Event("event2", Event.WFNET_EVENT,
+                                 new HashMap(), new Date()));
+        queue.notifyAll(bossa);
         assertEquals(2, theGood.runs());
     }
 }
