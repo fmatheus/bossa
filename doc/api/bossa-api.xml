@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+          "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<article id="bossa-api" class="specification">
+  <articleinfo>
+    <title>Bossa API HOWTO</title>
+    <corpauthor>The BigBross Team</corpauthor>
+    <abstract> 
+      <title>Abstract</title>
+      <para>
+        This HOWTO...
+      </para>
+    </abstract>
+    <copyright>
+      <year>2003</year>
+      <holder>OpenBR Sistemas S/C Ltda.</holder>
+    </copyright>
+  </articleinfo>
+
+<sect1 id="intro">
+  <title>Introduction</title>
+  
+  <para>
+    Bossa is a workflow engine written in Java...
+  </para>
+
+  <para>how it creates the system</para>
+
+  <para>how it creates and registers a case type</para>
+
+  <para>how it creates resources and add then to case type
+  groups</para>
+
+  <para>how it lists the work items.</para>
+
+  <para>how a work item is processed.</para>
+</sect1>
+
+</article>
