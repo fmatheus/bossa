@@ -31,6 +31,7 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.TransactionWithQuery;
 
+import com.bigbross.bossa.notify.NotificationBus;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.work.WorkManager;
@@ -78,6 +79,8 @@ public class Bossa implements Serializable {
     private ResourceManager resourceManager;
     
     private WorkManager workManager;
+    
+    private NotificationBus notificationBus;
 
     private transient Prevayler prevayler;
 
@@ -88,6 +91,7 @@ public class Bossa implements Serializable {
         caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
         workManager = new WorkManager(this);
+        notificationBus = new NotificationBus();
         prevayler = null;
     }
 
@@ -150,5 +154,14 @@ public class Bossa implements Serializable {
      */
     public WorkManager getWorkManager() {
         return workManager;
+    }
+
+    /**
+     * Returns the notification bus of this engine. <p>
+     * 
+     * @return The notification bus of this engine.
+     */
+    public NotificationBus getNotificationBus() {
+        return notificationBus;
     }
 }

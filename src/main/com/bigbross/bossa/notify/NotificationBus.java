@@ -24,40 +24,45 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-
-import com.bigbross.bossa.Bossa;
 
 
 /**
- * This class manages all event notifications inside Bossa. This class is
- * stateless and should be used by classes tightly integrated with the Bossa
- * core. <p>
+ * This class manages all event notifications inside Bossa. The events are
+ * notified to listeners registered in the bus. This registration can happen
+ * either at the bus creation or at a later time. <p>
+ * 
+ * The listeners registered after the bus is created will not be preserved
+ * if this bus is serialized. Due to this behaviour, objects outside the Bossa
+ * core that are registered as listeners may lose notification of events if
+ * a failure crashes the system. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class NotificationBus {
 
-    private Bossa engine;
+    private List persistentListeners;
 
-    private Map listeners;
+    private transient Map transientListeners;
 
     /**
-     * Creates a new empty notification bus. <p>
-     * 
-     * @param engine the bossa engine this notification bus is part.
+     * Creates a new notification bus with some persistent listeners. <p>
+     *  
+     * @param persistentListeners a list of the persistent listeners.
      */
-    public NotificationBus(Bossa engine) {
-        this.engine = engine;
-        this.listeners = new HashMap();
+    public NotificationBus(List persistentListeners) {
+        this.persistentListeners = persistentListeners != null ? 
+                                   persistentListeners : new ArrayList();
+        this.transientListeners = new HashMap();
     }
-    
+
     /**
      * Creates a new empty notification bus. <p>
-     * 
      */
     public NotificationBus() {
         this(null);
@@ -73,10 +78,10 @@ public class NotificationBus {
      *         with the same id.
      */    
     public boolean registerListener(Listener listener) {
-        if (listeners.containsKey(listener.getId())) {
+        if (transientListeners.containsKey(listener.getId())) {
             return false;
         }
-        listeners.put(listener.getId(), listener);
+        transientListeners.put(listener.getId(), listener);
         return true;
     }
     
@@ -86,7 +91,7 @@ public class NotificationBus {
      * @param id the id of the listener.
      */
     public void removeListener(String id) {
-        listeners.remove(id);
+        transientListeners.remove(id);
     }
 
     /**
@@ -98,13 +103,17 @@ public class NotificationBus {
      */
     public void notifyEvent(String id, Map attributes) {
         Date now = new Date();
-        Iterator i = listeners.values().iterator();
-        while (i.hasNext()) {
-            Listener l = (Listener) i.next();
-            try {
-                l.notifyEvent(id, now, attributes);
-            } catch (Exception e) {
-                // We ignore listeners exceptions.
+        Iterator[] iterators = {persistentListeners.iterator(),
+                                transientListeners.values().iterator()};
+        for (int i = 0; i < iterators.length; i++) {
+            Iterator it = iterators[i];
+            while (it.hasNext()) {
+                Listener l = (Listener) it.next();
+                try {
+                    l.notifyEvent(id, now, attributes);
+                } catch (Exception e) {
+                    // We ignore listeners exceptions.
+                }
             }
         }
     }

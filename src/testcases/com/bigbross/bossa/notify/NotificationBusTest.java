@@ -24,7 +24,9 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -38,7 +40,9 @@ public class NotificationBusTest extends TestCase {
 
     protected void setUp() {
 	System.out.println("Setting up a notification bus test.");
-        bus = new NotificationBus();
+        List persistent = new ArrayList();
+        persistent.add(new GoodListener("persistent", null));
+        bus = new NotificationBus(persistent);
     }
 
     public void testRegisterRemoveListener() {
@@ -46,6 +50,7 @@ public class NotificationBusTest extends TestCase {
         assertFalse(bus.registerListener(new GoodListener("test1", null)));
         bus.removeListener("test1");
         assertTrue(bus.registerListener(new GoodListener("test1", null)));
+        assertTrue(bus.registerListener(new GoodListener("persistent", null)));
     }
 
     public void testNotify() {
@@ -58,6 +63,7 @@ public class NotificationBusTest extends TestCase {
         } catch (Exception e) {
             fail("This exception should not propagate here.");
         }
-        assertEquals("ok", theUgly.get("status"));
+        assertEquals("ok ok", theUgly.get("status"));
+        assertEquals("run", theUgly.get("bad"));
     }
 }

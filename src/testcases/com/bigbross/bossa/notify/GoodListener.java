@@ -63,6 +63,12 @@ public class GoodListener implements Listener {
      *      java.lang.String, java.util.Date, java.util.Map)
      */
     public void notifyEvent(String id, Date time, Map attributes) {
-        attributes.put("status", "ok");
+        String status = (String) attributes.get("status");
+        if (status != null) {
+            status = status + " ok";
+        } else {
+            status = "ok";
+        }
+        attributes.put("status", status);
     }
 }
