@@ -66,8 +66,8 @@
   </path>
 
   <path id="lib.class.path">
-    <fileset dir="${lib.dir}">
-      <include name="**/*.jar"/>
+    <fileset dir="${basedir}">
+      <include name="${lib.dir}/*.jar"/>
     </fileset>
   </path>
 
