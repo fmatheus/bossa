@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -24,7 +24,6 @@
 
 package com.bigbross.bossa;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -34,7 +33,7 @@ import java.util.Date;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class DeterministicTimeSource implements TimeSource, Serializable {
+public class DeterministicTimeSource implements TimeSource {
 
     private Date time;
 
