@@ -118,8 +118,7 @@ public class CaseType implements Serializable {
      * @see com.bigbross.bossa.resource.Expression
      */
     public Transition registerTransition(String id, String resource) {
-        Transition trans = new Transition(this, transitions.size(),
-                                          id, resource);
+        Transition trans = new Transition(this, id, resource);
         transitions.put(id, trans);
         return trans;
     }
@@ -140,28 +139,8 @@ public class CaseType implements Serializable {
      * 
      * @return a collection of all transitions of this case type.
      */
-    Collection getAllTransitions() {
+    Collection getTransitions() {
         return Collections.unmodifiableCollection(transitions.values());
-    }
-
-    /**
-     * Returns all transitions of this case type. <p>
-     * 
-     * FIXME: (Hard) Do we really need this method?
-     * 
-     * @return a list of all transitions of this case type.
-     */
-    public Transition[] getTransitions() {
-
-	Transition[] array = new Transition[transitions.size()];
-        Iterator it = transitions.values().iterator();
-
-	while (it.hasNext()) {
-	    Transition curr = (Transition) it.next();
-	    array[curr.getIndex()] = curr;
-	}
-
-	return array;
     }
 
     /**
@@ -245,7 +224,7 @@ public class CaseType implements Serializable {
             template = new Case(this, marking, attributes);
         }
 
-        for (Iterator i = getAllTransitions().iterator(); i.hasNext(); ) {
+        for (Iterator i = getTransitions().iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();
             ArrayList edges = new ArrayList();
             edges.addAll(t.getInputEdges());

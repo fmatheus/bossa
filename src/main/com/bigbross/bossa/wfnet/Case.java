@@ -94,7 +94,7 @@ public class Case implements Serializable {
         /* An SetAttributeException can be thrown here. */
         declare(attributes);
 
-        Collection ts = caseType.getAllTransitions();
+        Collection ts = caseType.getTransitions();
         workItems = new HashMap(ts.size());
         for (Iterator i = ts.iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();

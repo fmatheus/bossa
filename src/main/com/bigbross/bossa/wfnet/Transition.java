@@ -40,8 +40,6 @@ public class Transition implements Serializable {
 
     private CaseType caseType;
 
-    private int index;
-
     private String id;
 
     private Expression resource;
@@ -53,17 +51,13 @@ public class Transition implements Serializable {
     /**
      * Creates a new transition. <p>
      * 
-     * FIXME: Remove index?
-     * 
      * @param caseType the case type this transition is contained.
-     * @param index the index of this transition.
      * @param id the id of this transition.
      * @param resource the expression to select the resource responsible by
      *                 this transition.
      */
-    Transition(CaseType caseType, int index, String id, String resource) {
+    Transition(CaseType caseType, String id, String resource) {
 	this.caseType = caseType;
-	this.index = index;
 	this.id = id;
 	this.resource = caseType.getResourceRegistry().compile(resource);
         this.inputs = new ArrayList();
@@ -86,18 +80,6 @@ public class Transition implements Serializable {
      */
     public Expression getResource() {
         return resource;
-    }
-
-    /**
-     * Returns the index of this transition. The index indicates the line
-     * that represents this transition in the transition map. <p>
-     * 
-     * FIXME: Remove?
-     * 
-     * @return the index of this transition.
-     */
-    int getIndex() {
-        return index;
     }
 
     /**
