@@ -71,7 +71,7 @@ public class CaseTest extends TestCase {
         assertNull(caze.getWorkItem("invalid id"));
     }
 
-    public void testFirstShot() throws Exception {
+    public void testOpenClose() throws Exception {
         Case caze = WFNetUtil.createCase();
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
@@ -83,7 +83,7 @@ public class CaseTest extends TestCase {
         assertTrue(CaseTest.sameState(expected, actual));
     }
 
-    public void testInvalidShot() throws Exception {
+    public void testInvalidOpen() throws Exception {
         Case caze = WFNetUtil.createCase();
         
         int[] start = caze.getMarking();
@@ -95,7 +95,7 @@ public class CaseTest extends TestCase {
         assertTrue(CaseTest.sameState(start, end));
     }
 
-    public void testRollback() throws Exception {
+    public void testOpenCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
         
         int[] start = caze.getMarking();
@@ -107,6 +107,26 @@ public class CaseTest extends TestCase {
         int[] end = caze.getMarking();
 
         assertTrue(CaseTest.sameState(start, end));
+    }
+    
+    public void testInvalidCloseCancel() throws Exception {
+        Case caze = WFNetUtil.createCase();
+        
+        int[] expected = new int[] {0,1,0,0,0,0,0,0};
+        Activity act = caze.open(caze.getWorkItem("a"), jdoe);
+        assertNotNull(act);
+        assertTrue(caze.close(act, null));
+        
+        int[] actual = caze.getMarking();
+        assertTrue(CaseTest.sameState(expected, actual));
+        
+        assertFalse(caze.close(act, null));
+        actual = caze.getMarking();
+        assertTrue(CaseTest.sameState(expected, actual));
+        
+        assertFalse(caze.cancel(act));
+        actual = caze.getMarking();
+        assertTrue(CaseTest.sameState(expected, actual));
     }
 
     public void testMachineGun() throws Exception {
