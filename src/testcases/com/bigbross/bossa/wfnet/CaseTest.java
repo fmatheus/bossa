@@ -142,7 +142,7 @@ public class CaseTest extends TestCase {
     public void testSelfLoop() throws Exception {
         CaseType caseType = new CaseType("selfloop");
         Place A = caseType.registerPlace("A", 1);
-        Place B = caseType.registerPlace("B", 0);
+        Place B = caseType.registerPlace("B");
         Transition a = caseType.registerTransition("a", "joedoe");
         a.input(A,  "1");
         a.output(B, "1");

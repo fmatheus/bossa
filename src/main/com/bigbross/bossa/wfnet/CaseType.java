@@ -101,6 +101,17 @@ public class CaseType implements Serializable {
     }
 
     /**
+     * Creates a place with the specified id and initial marking set to
+     * zero in this case type. <p>
+     *
+     * @param id the place id.
+     * @return the created place.
+     */
+    public Place registerPlace(String id) {
+        return registerPlace(id, 0);
+    }
+
+    /**
      * Returns the place of this case type that has the specified id. <p>
      *
      * @param id the place id.

@@ -80,7 +80,7 @@ public class CaseTypeTest extends TestCase {
     public void testMissingInitialValues() {
         CaseType caseType = new CaseType("missing");
         Place A = caseType.registerPlace("A", 1);
-        Place B = caseType.registerPlace("B", 0);
+        Place B = caseType.registerPlace("B");
         Transition a = caseType.registerTransition("a", "joedoe");
         a.input(A,  "1");
         a.output(B, "FOO");
