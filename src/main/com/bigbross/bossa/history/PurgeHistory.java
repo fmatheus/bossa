@@ -24,37 +24,35 @@
 
 package com.bigbross.bossa.history;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.Date;
+
 
 /**
- * Tests using History package testcases.
+ * This class implements the purge history operation of
+ * <code>Historian</code> through the prevalence subsystem. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ * @see Historian#purgeHistory(Date)
+ * @see Historian#purgeHistoryImpl(Date)
  */
-public class HistoryTestSuite extends TestCase {
+class PurgeHistory extends HistorianTransaction {
 
+    private Date end;
+    
     /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public HistoryTestSuite(String name) {
-	super(name);
+     * Creates a new purge history operation. <p>
+     * 
+     * @param end the end date.
+     */    
+    PurgeHistory(Date end) {
+        this.end = end;
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * @see HistorianTransaction#execute(Historian)
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("History Test Suite");
-        /* All tests should be added here. */
-        suite.addTest(new TestSuite(HistorianTest.class));
-        suite.addTest(new TestSuite(HistoryTest.class));
-        suite.addTest(new TestSuite(TransactionsTest.class));
-	return suite;
+    protected Object execute(Historian historian) {
+        historian.purgeHistoryImpl(end);
+        return null;
     }
 }

@@ -38,10 +38,10 @@ public class HistorianTest extends TestCase {
 
     private Historian historian;
     private Event e0, e1, e2, e3;
-    private static final long t1 = 1069364322000L; 
-    private static final long t2 = 1069365822000L; 
-    private static final long t3 = 1069366362000L; 
-    private static final long t4 = 1069367322000L; 
+    public static final long t1 = 1069364322000L; 
+    public static final long t2 = 1069365822000L; 
+    public static final long t3 = 1069366362000L; 
+    public static final long t4 = 1069367322000L; 
 
     public HistorianTest(String name) {
 	super(name);
@@ -190,19 +190,19 @@ public class HistorianTest extends TestCase {
         Date end = new Date();
         end.setTime(t3);
 
-        historian.purgeHistory(end);
+        historian.purgeHistoryImpl(end);
         List events = historian.getHistory();
         assertEquals(2, events.size());
         assertSame(e2, events.get(0));
         assertSame(e3, events.get(1));
         
         end.setTime(0);
-        historian.purgeHistory(end);
+        historian.purgeHistoryImpl(end);
         events = historian.getHistory();
         assertEquals(2, events.size());
 
         end = new Date();
-        historian.purgeHistory(end);
+        historian.purgeHistoryImpl(end);
         events = historian.getHistory();
         assertEquals(0, events.size());
     }

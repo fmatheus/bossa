@@ -333,25 +333,42 @@ public class Historian implements Serializable {
      * @param end the limit date for event removal.
      */
     public void purgeHistory(Date end) {
-        history.subList(0, findPlaceInHistory(end)).clear();
+        HistorianTransaction purgeTransaction = new PurgeHistory(end);
+//        getBossa().execute(purgeTransaction);
     }
     
     /**
      * Removes from history all events that took place before the provided
-     * date and exports to a XML file the events removed. Events that
-     * happened exactly at the provided date are not removed. <p>
+     * date. Events that happened exactly at the provided date are not
+     * removed. <p>
+     * 
+     * This method does not create a transaction in the prevalent system. The
+     * execution of this method will not be persistent unless it is called
+     * inside an appropriate transaction. <p>
+     * 
+     * @param end the limit date for event removal.
+     */
+    void purgeHistoryImpl(Date end) {
+        history.subList(0, findPlaceInHistory(end)).clear();
+    }
+    
+    /**
+     * Exports to a XML file all events that took place before the provided
+     * date. Events that happened exactly at the provided date are not
+     * exported. This method complements the <code>purgeHistory</code> method,
+     * providing a way to save events before purging them. <p>
      * 
      * The format of the exported file is the same used by the
-     * <code>EventsXMLHelper</code> class. <p>
+     * <code>EventsXMLHelper</code> class. This class may also be used to
+     * export any event list obtained from the other historian methods. <p>
      * 
      * @param end the limit date for event removal.
      * @param file the name of the file.
+     * @see Historian#purgeHistory(Date)
      * @see com.bigbross.bossa.notify.EventsXMLHelper
      */
-    public void purgeAndExportHistory(Date end, String file)
+    public void exportHistory(Date end, String file)
         throws DataTransferException {
-        List purged = filterHistory(null, end, null, -1, null);
-        EventsXMLHelper.export(purged, file);
-        purgeHistory(end);
+        EventsXMLHelper.export(filterHistory(null, end, null, -1, null), file);
     }
 }

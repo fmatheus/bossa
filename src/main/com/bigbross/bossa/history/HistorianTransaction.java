@@ -24,37 +24,30 @@
 
 package com.bigbross.bossa.history;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaTransaction;
+
 
 /**
- * Tests using History package testcases.
- *
+ * This class represents all transactions applied to the <code>Historian</code>
+ * object. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class HistoryTestSuite extends TestCase {
+abstract class HistorianTransaction extends BossaTransaction {
 
     /**
-     * Constructor.
-     *
-     * @param name the name.
+     * @see BossaTransaction#execute(Bossa)
      */
-    public HistoryTestSuite(String name) {
-	super(name);
+    public Object execute(Bossa bossa) {
+        return execute(bossa.getHistorian());
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * Executes a transaction in a historian. <p>
+     * 
+     * @param historian the historian.
+     * @return the value returned by the transaction.
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("History Test Suite");
-        /* All tests should be added here. */
-        suite.addTest(new TestSuite(HistorianTest.class));
-        suite.addTest(new TestSuite(HistoryTest.class));
-        suite.addTest(new TestSuite(TransactionsTest.class));
-	return suite;
-    }
+    protected abstract Object execute(Historian historian);
 }
