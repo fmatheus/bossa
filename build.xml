@@ -5,7 +5,7 @@
 
  $Id$
 
- Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
 
  This file is part of Bossa.
 
@@ -154,7 +154,7 @@
              version="true"
              windowtitle="${Name} API"
              doctitle="${Name} API">
-      <bottom><![CDATA[<i>Copyright &#169; 2003 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
+      <bottom><![CDATA[<i>Copyright &#169; 2003,2004 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
     </javadoc>
   </target>
 
@@ -173,7 +173,7 @@
              windowtitle="${Name} Test Utilities"
              doctitle="${Name} Test Utilities">
       <group title="Bossa Core" packages="com.bigbross.bossa*"/>
-      <bottom><![CDATA[<i>Copyright &#169; 2003 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
+      <bottom><![CDATA[<i>Copyright &#169; 2003,2004 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
     </javadoc>
   </target>
 

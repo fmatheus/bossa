@@ -1,5 +1,5 @@
 
-Bossa 0.6.0 "Self Referential Integrity", 2004-01-XX
+Bossa 0.6.0 "Self Referential Integrity", 2004-01-19
 ----------------------------------------------------
 
 * Simplified the case type creation API. No more need of calling buildMap()
