@@ -38,11 +38,18 @@ class RemoveCaseType extends WFNetCommand {
 
     private String caseTypeId;
     
+    /**
+     * Creates a new remove case type operation. <p>
+     * 
+     * @param id the id of the case type to be removed.
+     */    
     RemoveCaseType(String id) {
         this.caseTypeId = id;
     }
 
     /**
+     * Executes the operation. <p>
+     * 
      * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
     protected Serializable execute(CaseTypeManager caseTypeManager) {

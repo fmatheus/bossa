@@ -34,6 +34,8 @@ import java.util.StringTokenizer;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.Bossa;
+
 public class CaseTypeManagerTest extends TestCase {
 
     public CaseTypeManagerTest(String name) {
@@ -88,7 +90,8 @@ public class CaseTypeManagerTest extends TestCase {
     
     public static void main(String[] args) throws Exception {
   
-        CaseTypeManager caseTypeManager = CaseTypeManager.getInstance();
+        Bossa bossa = Bossa.createBossa("build/BossaState");
+        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         HashMap cases = new HashMap();
 
@@ -230,7 +233,7 @@ public class CaseTypeManagerTest extends TestCase {
                     }
                 }
             } else if (operation.equals("s")) {
-                caseTypeManager.takeSnapshot();
+                bossa.takeSnapshot();
                 System.out.println("ok.");
             } else if (operation.equals("")) {
             } else {

@@ -24,22 +24,13 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import org.prevayler.Command;
-import org.prevayler.Prevayler;
-import org.prevayler.implementation.AbstractPrevalentSystem;
-import org.prevayler.implementation.SnapshotPrevayler;
-
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
 
 /**
@@ -49,108 +40,36 @@ import com.bigbross.bossa.BossaException;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class CaseTypeManager extends AbstractPrevalentSystem {
-    
-    /*
-     * Static part of class, responsible for singleton behavior.
-     */
+public class CaseTypeManager implements Serializable {
 
-    /**
-     * The instance of this singleton object. <p>
-     */
-    private static CaseTypeManager instance = null;
-
-    /**
-     * Gets the instance of this singleton object. If there isn't an
-     * instance allocated yet, one is created. <p>
-     *
-     * @return The instance of this singleton object.
-     */
-    public static CaseTypeManager getInstance() {
-
-        if (instance == null) {
-            try {
-                /* Set up a simple configuration that logs on the console. */
-                BasicConfigurator.configure();
-
-                logger.info("Starting prevalent system.");
-                Prevayler prevayler = new SnapshotPrevayler(new CaseTypeManager(),
-                                                            "build/WFNet", 1);
-                instance = (CaseTypeManager) prevayler.system();
-                instance.setPrevayler(prevayler);
-                logger.info("Starting prevalent system. Done.");
-            } catch (IOException e) {
-                /* FIXME: Throw an exception here. */
-                logger.error("Prevayler error!", e);
-            } catch (ClassNotFoundException e) {
-                /* FIXME: Throw an exception here. */
-                logger.error("Prevayler error!", e);
-            } 
-        }
-        return instance;
-    }
-
-    /*
-     * Other static variables.
-     */
-
-    /**
-     * The logger object used by this class. <p>
-     *
-     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
-     *      target=_top>Log4J HomePage</a>
-     */
-    private static Logger logger =
-        Logger.getLogger(CaseTypeManager.class.getName());
-
-
-    /*
-     * Instance part of class.
-     */
+    private Bossa engine;
 
     private Map caseTypes;
 
-    private transient Prevayler prevayler;
-    
-    public CaseTypeManager() {
-        caseTypes = new HashMap();
-        prevayler = null;
-    }
-
-    private void setPrevayler(Prevayler prevayler) {
-        this.prevayler = prevayler;
-    }
-    
     /**
-     * Executes a command using the current <code>Prevayler</code>. <p>
+     * Creates a new empty case type manager. <p>
      * 
-     * @param command the command to be executed.
-     * @return The value returned by the command.
-     * @exception PersistenceException if an error occours when making the
-     *            execution of this command persistent.
-     * @exception BossaException if the command throws an exception.
+     * @param engine the bossa engine this case type manager is part.
      */
-    Serializable executeCommand(Command command) throws BossaException {
-        try {
-            return prevayler.executeCommand(command);
-        } catch (IOException e) {
-            throw new PersistenceException("I/O error in prevayler.", e);
-        } catch (BossaException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new BossaException("Unexpected exception.", e);
-        }
-    }    
+    public CaseTypeManager(Bossa engine) {
+        this.engine = engine;
+        this.caseTypes = new HashMap();
+    }
 
     /**
-     * Writes to disk the complete object tree rooted at this case type
-     * manager. This method only works if the <code>Prevayler</code> used
-     * is a <code>SnapshotPrevayler</code>. <p>
+     * Creates a new empty case type manager. <p>
      */
-    void takeSnapshot() throws IOException {
-        if (prevayler instanceof SnapshotPrevayler) {
-            ((SnapshotPrevayler) prevayler).takeSnapshot();
-        }
+    public CaseTypeManager() {
+        this(null);
+    }
+
+    /**
+     * Returns the bossa engine this resorce manager is part. <p>
+     * 
+     * @return The bossa engine this resorce manager is part.
+     */
+    Bossa getBossa() {
+        return engine;
     }
 
     /**
@@ -160,19 +79,17 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */    
-    public boolean registerCaseType(CaseType caseType) {
+    public boolean registerCaseType(CaseType caseType)
+        throws BossaException {
         /* FIXME: Where is the place of this validation code? */
         if (caseTypes.containsKey(caseType.getId())) {
             return false;
         }
         WFNetCommand registerCommand = new RegisterCaseType(caseType);
-        try {
-          executeCommand(registerCommand);
-        } catch (Exception e) {
-            /* FIXME: Exceptions, please. */
-            logger.error("Prevayler error!", e);
-        }
+        getBossa().executeCommand(registerCommand);
         return true;
     }
 
@@ -193,6 +110,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
             return false;
         }
         caseTypes.put(caseType.getId(), caseType);
+        caseType.setCaseTypeManager(this);
         return true;
     }
     
@@ -201,15 +119,12 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
      * <emph>all</emph> cases of this case type.
      * 
      * @param id the id of the case type.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */
-    public void removeCaseType(String id) {
+    public void removeCaseType(String id) throws BossaException {
         WFNetCommand removeCommand = new RemoveCaseType(id);
-        try {
-          executeCommand(removeCommand);
-        } catch (Exception e) {
-            /* FIXME: Exceptions, please. */
-            logger.error("Prevayler error!", e);
-        }
+        getBossa().executeCommand(removeCommand);
     }
 
     /**

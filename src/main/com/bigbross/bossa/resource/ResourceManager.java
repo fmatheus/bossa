@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +43,7 @@ import com.bigbross.bossa.Bossa;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class ResourceManager {
+public class ResourceManager implements Serializable {
 
     private Bossa engine;
 

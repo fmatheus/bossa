@@ -38,15 +38,22 @@ class RegisterCaseType extends WFNetCommand {
 
     private CaseType caseType;
     
+    /**
+     * Creates a new register case type operation. <p>
+     * 
+     * @param caseType the case type to be registered.
+     */    
     RegisterCaseType(CaseType caseType) {
         this.caseType = caseType;
     }
 
     /**
+     * Executes the operation. <p>
+     * 
      * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
     protected Serializable execute(CaseTypeManager caseTypeManager) {
-        caseTypeManager.registerCaseTypeImpl(caseType);
-        return null;
+        boolean result = caseTypeManager.registerCaseTypeImpl(caseType);
+        return new Boolean(result);
     }
 }

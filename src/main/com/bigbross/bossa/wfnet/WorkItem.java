@@ -132,6 +132,7 @@ public class WorkItem implements Serializable {
      */
     public Activity open(String resource) throws BossaException {
         WFNetCommand openCommand = new OpenWorkItem(this, resource);
-        return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
+        return (Activity) getCaseType().getCaseTypeManager().
+            getBossa().executeCommand(openCommand);
     }
 }

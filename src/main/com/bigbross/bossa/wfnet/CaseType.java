@@ -54,6 +54,8 @@ public class CaseType implements Serializable {
     private Case template;
 
     private int caseSequence;
+    
+    private CaseTypeManager caseTypeManager;
 
     /**
      * Creates a new case type, without any places or transitions. <p>
@@ -66,6 +68,7 @@ public class CaseType implements Serializable {
         this.places = new HashMap();
         this.cases = new HashMap();
         this.caseSequence = 0;
+        this.caseTypeManager = null;
     }
 
     /**
@@ -204,6 +207,25 @@ public class CaseType implements Serializable {
      */
     Case getTemplate() {
         return template;
+    }
+
+    /**
+     * Returns the case type manager this case type is registered into. <p>
+     * 
+     * @return The case type manager this case type is registered into.
+     */
+    CaseTypeManager getCaseTypeManager() {
+        return caseTypeManager;
+    }
+
+    /**
+     * Sets the case type manager this case type is registered into. <p>
+     * 
+     * @param caseTypeManager The case type manager this case type is
+     *        registered into.
+     */
+    void setCaseTypeManager(CaseTypeManager caseTypeManager) {
+        this.caseTypeManager = caseTypeManager;
     }
 
     /**

@@ -29,6 +29,8 @@ import java.io.Serializable;
 import org.prevayler.Command;
 import org.prevayler.PrevalentSystem;
 
+import com.bigbross.bossa.Bossa;
+
 
 /**
  * This class represents all commands applied to the WFNet persistent
@@ -44,7 +46,7 @@ abstract class WFNetCommand implements Command {
      * @see org.prevayler.Command#execute(PrevalentSystem)
      */
     public Serializable execute(PrevalentSystem system) throws Exception {
-        return execute((CaseTypeManager) system);
+        return execute(((Bossa) system).getCaseTypeManager());
     }
 
     /**

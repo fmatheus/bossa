@@ -164,8 +164,8 @@ public class Activity implements Serializable {
      */
     private boolean dispatchCommand(WFNetCommand command)
         throws BossaException {
-        Boolean result = 
-          (Boolean) CaseTypeManager.getInstance().executeCommand(command);
+        Boolean result = (Boolean) getCaseType().getCaseTypeManager().
+            getBossa().executeCommand(command);
         return result.booleanValue();
     }
 

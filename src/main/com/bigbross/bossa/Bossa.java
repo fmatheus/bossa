@@ -53,13 +53,25 @@ public class Bossa extends AbstractPrevalentSystem {
      * 
      * @param persistDir the directory that holds or will hold the state
      *        of the created engine.
+     * @return The newly created bossa engine.
+     * @exception PersistenceException if an error occours starting the
+     *            persistence mechanism.
      */
-    public static Bossa createBossa(String persistDir) throws Exception {
-        Prevayler prevayler =
-            new SnapshotPrevayler(new Bossa(), persistDir, 1);
-        Bossa instance = (Bossa) prevayler.system();
-        instance.setPrevayler(prevayler);
-        return instance;
+    public static Bossa createBossa(String persistDir)
+        throws PersistenceException {
+        try {
+            Prevayler prevayler =
+                new SnapshotPrevayler(new Bossa(), persistDir, 1);
+            Bossa instance = (Bossa) prevayler.system();
+            instance.setPrevayler(prevayler);
+            return instance;
+        } catch (IOException e) {
+            throw new PersistenceException("I/O error starting prevayler.",
+                                           e);
+        } catch (ClassNotFoundException e) {
+            throw new PersistenceException("Reflection error in prevayler.",
+                                           e);
+        }
     }
 
     private CaseTypeManager caseTypeManager;
@@ -72,7 +84,7 @@ public class Bossa extends AbstractPrevalentSystem {
      * Creates an empty Bossa workflow engine. <p>
      */
     Bossa() {
-        caseTypeManager = new CaseTypeManager();
+        caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
     }
 
@@ -94,7 +106,7 @@ public class Bossa extends AbstractPrevalentSystem {
      *            execution of this command persistent.
      * @exception BossaException if the command throws an exception.
      */
-    Serializable executeCommand(Command command) throws BossaException {
+    public Serializable executeCommand(Command command) throws BossaException {
         try {
             return prevayler.executeCommand(command);
         } catch (IOException e) {
@@ -111,7 +123,7 @@ public class Bossa extends AbstractPrevalentSystem {
      * This method only works if the prevayler used
      * is a <code>SnapshotPrevayler</code>. <p>
      */
-    void takeSnapshot() throws IOException {
+    public void takeSnapshot() throws IOException {
         if (prevayler instanceof SnapshotPrevayler) {
             ((SnapshotPrevayler) prevayler).takeSnapshot();
         }
