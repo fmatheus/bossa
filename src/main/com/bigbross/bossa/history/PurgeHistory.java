@@ -33,7 +33,6 @@ import java.util.Date;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Historian#purgeHistory(Date)
- * @see Historian#purgeHistoryImpl(Date)
  */
 class PurgeHistory extends HistorianTransaction {
 

@@ -50,6 +50,29 @@ import com.bigbross.bossa.DataTransferException;
  * This class provides a static method to convert an event list to a
  * XML encoded file. <p>
  *
+ * The XML encoding is as follows:
+ * <pre>&lt;events>
+ *  &lt;event>
+ *   &lt;id>open_work_item&lt;/id>
+ *   &lt;time>1071696763305&lt;/time>
+ *   &lt;attribute id="case_type_id">purchase&lt;/attribute>
+ *   &lt;attribute id="resource_id">joedoe&lt;/attribute>
+ *   &lt;attribute id="case_id">1&lt;/attribute>
+ *   &lt;attribute id="work_item_id">check_price&lt;/attribute>
+ *  &lt;/event>
+ * &lt;/events></pre>
+ * 
+ * The <code>events</code> element is used to group a list of events.
+ * The <code>event</code> element represents a single event and it is
+ * composed by a single <code>id</code> element, a single <code>time</code>
+ * element and zero or more <code>attribute</code> elements. <p>
+ * 
+ * The <code>id</code> element contains the id of the event. The
+ * <code>time</code> element contains the time of the event as the
+ * number of milliseconds since January 1, 1970, 00:00:00 GMT. Each
+ * <code>attribute</code> element represents one attribute mapping of
+ * the event. <p> 
+ *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class EventsXMLHelper {
@@ -77,10 +100,11 @@ public class EventsXMLHelper {
         
             AttributesImpl atb = new AttributesImpl();
             handler.startDocument();
+            handler.startElement("", "", "events", atb);
             for (Iterator i = events.iterator(); i.hasNext(); ) {
                 Event e = (Event) i.next();
                 String id = e.getId();
-                String time = e.getTime().toString();
+                String time = Long.toString(e.getTime().getTime());
                 atb.clear();
                 handler.startElement("", "", "event", atb);
                 handler.startElement("", "", "id", atb);
@@ -103,6 +127,7 @@ public class EventsXMLHelper {
                 }
                 handler.endElement("", "", "event");
             }
+            handler.endElement("", "", "events");
             handler.endDocument();
             out.close();
         } catch (FileNotFoundException e) {
