@@ -41,6 +41,7 @@ import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.CaseTypeTest;
 import com.bigbross.bossa.wfnet.WorkItem;
+import com.bigbross.bossa.work.WorkManager;
 
 public class BossaBrowser {
 
@@ -53,6 +54,7 @@ public class BossaBrowser {
         Bossa bossa = Bossa.createBossa("build/BossaState");
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         ResourceManager resourceManager = bossa.getResourceManager();
+        WorkManager workManager = bossa.getWorkManager();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         HashMap cases = new HashMap();
         List lastWorkItemList = null;
@@ -94,6 +96,8 @@ public class BossaBrowser {
                 System.out.println("er <listId> <listId> Exclude a resource.");
                 System.out.println("cr <listId> <listId> Cancel include or exclude.");
                 System.out.println("ct <listId> <listId> Contains resource?");
+                System.out.println("-------------------------------------");
+                System.out.println("wr <listId>\t\tList work itens of a resource.");
                 System.out.println("-------------------------------------");
                 System.out.println("o <listId>\t\tOpen a work item.");
                 System.out.println("cl <listId>\tClose an activity.");
@@ -211,6 +215,20 @@ public class BossaBrowser {
                 Resource r = (Resource) lastResourceList.get(resId);
                 System.out.println(host.contains(r) ?
                                    "contains." : "NOT contains.");
+            } else if (operation.equals("wr")) {
+                System.out.println("\tctID\tcID\twiID");
+                System.out.println("-------------------------------------");
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                String removeMe =
+                    ((Resource) lastResourceList.get(resId)).getId();
+                lastWorkItemList = 
+                    workManager.getWorkItems(removeMe, true);
+                for (int i = 0; i < lastWorkItemList.size(); i++) {
+                    WorkItem wi = (WorkItem) lastWorkItemList.get(i);
+                    System.out.println(i + ":\t" + wi.getCaseType().getId() +
+                                       "\t\t" + wi.getCase().getId() +
+                                       "\t\t" + wi.getId());
+                }    
             } else if (operation.equals("o")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
