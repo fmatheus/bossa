@@ -221,7 +221,7 @@ public class CaseType implements Serializable {
     /**
      * Returns all cases of this case type. <p>
      * 
-     * @return An <code>Iterator</code> to all active cases.
+     * @return A list of all active cases.
      */
     public List getCases() {
         ArrayList caseList = new ArrayList();

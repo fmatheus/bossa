@@ -67,12 +67,12 @@ public class CaseTypeManagerTest extends TestCase {
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
         
-        Iterator i = caseTypeManager.getCaseTypes();
-        String id = ((CaseType) i.next()).getId();
+        List l = caseTypeManager.getCaseTypes();
+        assertEquals(2, l.size());
+        String id = ((CaseType) l.get(0)).getId();
         assertTrue(id.equals("test1") || id.equals("test2"));
-        id = ((CaseType) i.next()).getId();
+        id = ((CaseType) l.get(1)).getId();
         assertTrue(id.equals("test1") || id.equals("test2"));
-        assertFalse(i.hasNext());
     }
     
     public void testRemoveCaseType() {
@@ -120,11 +120,10 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("s\t\t\t\tTakes a snapshot.");
                 System.out.println("q\t\t\t\tQuits the browser.");
             } else if (operation.equals("l")) {
-                Iterator i = caseTypeManager.getCaseTypes();
-                int count = 1;
-                while (i.hasNext()) {
-                    System.out.println(" " + count++ + " " +
-                                       ((CaseType) i.next()).getId());
+                List l = caseTypeManager.getCaseTypes();
+                for (int i = 0; i < l.size(); i++) {
+                    System.out.println(" " + i + " " +
+                                       ((CaseType) l.get(i)).getId());
                 }    
             } else if (operation.equals("g")) {
                 String id = tokenizer.nextToken();

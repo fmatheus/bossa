@@ -26,9 +26,11 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.prevayler.Command;
@@ -202,9 +204,11 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
     /**
      * Returns all registered case types. <p>
      * 
-     * @return An <code>Iterator</code> to all case types registered.
+     * @return A list of all case types registered.
      */
-    public Iterator getCaseTypes() {
-        return Collections.unmodifiableCollection(caseTypes.values()).iterator();
+    public List getCaseTypes() {
+        ArrayList caseTypeList = new ArrayList();
+        caseTypeList.addAll(caseTypes.values());
+        return caseTypeList;
     }
 }
