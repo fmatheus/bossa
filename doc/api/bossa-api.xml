@@ -106,7 +106,7 @@
 
   <para>
     Before we can start managing case types, it is necessary to create
-    a case type. In Bossa a case type is represented by a object of
+    a case type. In Bossa a case type is represented by an object of
     the <classname>CaseType</classname> class. <xref
     linkend="create-case-type"/> shows how to create the "supplies
     purchase" case type presented in the <ulink
@@ -118,7 +118,7 @@
     <programlisting> <![CDATA[
     CaseType caseType = new CaseType("TestCaseType");
 
-    Place A = caseType.registerPlace("A");
+    Place A = caseType.registerPlace("A", 1);
     Place B = caseType.registerPlace("B");
     Place C = caseType.registerPlace("C");
     Place D = caseType.registerPlace("D");
@@ -133,8 +133,6 @@
     Transition d = caseType.registerTransition("d", "sales");
     Transition e = caseType.registerTransition("e", "sales");
     Transition f = caseType.registerTransition("f", "$a");
-
-    caseType.buildMap();
 
     a.input(A,  "1");
     a.output(B, "1");
@@ -160,7 +158,7 @@
     attributes.put("ADIR", "");
     attributes.put("OK", new Boolean(false));
 
-    caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0}, attributes);
+    caseType.buildTemplate(attributes);
     ]]> </programlisting>
   </example>
 
@@ -170,19 +168,25 @@
     create all places and transitions of this case type using the
     methods <methodname>registerPlace</methodname> and
     <methodname>registerTransition</methodname> of the newly created
-    case type. Both methods receive an id as parameter and
-    <methodname>registerTransition</methodname> receives also a
-    resource expression, indicating what resources can perform work
+    case type.
+  </para>
+
+  <para>
+    Both methods receive an id as parameter, this id can be used to
+    later recover the just created places and transitions. The
+    <methodname>registerPlace</methodname> method receives also an
+    optional initial state, indicating how many tokens are present in
+    this place when a new case begins. If the initial state is not
+    indicated, the place will start with zero tokens. Additionally, the
+    <methodname>registerTransition</methodname> method receives a
+    resource expression, indicating which resources can perform work
     items reflecting this transition.
   </para>
 
   <para>
-    After creating the places and transitions, we call the
-    <methodname>buildMap</methodname> method to inform the case that
-    all places and transitions were created and that it can create its
-    internal structures. Now we must connect the places and
-    transitions. For each transition we add inputs and outputs using
-    the methods <methodname>input</methodname> and
+    After creating the places and transitions, we must connect
+    them. For each transition we add inputs and outputs using the
+    methods <methodname>input</methodname> and
     <methodname>output</methodname>, respectively. Each of these
     methods receives the place that stands on the other side of the
     edge and the edge weight. The edge weight is given as a JavaScript
@@ -192,13 +196,12 @@
   <para>
     The last step in the creation of a case type involves the creation
     of the template case. This case represents the starting state of
-    all cases created from this case type. To create the template we
-    must initialize all of its case variables and set the initial
-    token placement. The case variables are set in a
-    <classname>Map</classname> where a basic java type is indexed by
-    the variable name. The token placement, the marking, is
-    represented by an integer array with the number of tokens in each
-    place. The places are indexed by their order of creation.
+    all cases created from this case type. The main part of this state
+    is already set by the initial token placement made when the places
+    were created. But, to create the template, we need also to
+    initialize all of its case variables. The case variables are set
+    in a <classname>Map</classname> where a basic java type is indexed
+    by the variable name.
   </para>
 
   <para>
