@@ -25,6 +25,7 @@
 package com.bigbross.bossa.resource;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -90,6 +91,24 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Returns the includes list of this resource. <p>
+     * 
+     * @return the includes list of this resource.
+     */
+    public Set getIncludes() {
+        return Collections.unmodifiableSet(includes);
+    }
+
+    /**
+     * Returns the excludes list of this resource. <p>
+     * 
+     * @return the excludes list of this resource.
+     */
+    public Set getExcludes() {
+        return Collections.unmodifiableSet(excludes);
+    }
+
+    /**
      * Includes a resource in this resource. Removes the resource from
      * the excludes list if needed. <p>
      *
@@ -118,7 +137,7 @@ public class Resource implements Serializable {
      * @return <code>false</code> if resource includes this resource,
      *         <code>true</code> otherwise.
      */
-    public boolean includeImpl(Resource resource) {
+    boolean includeImpl(Resource resource) {
         if (resource.depends(this)) {
             return false;
         }
@@ -156,7 +175,7 @@ public class Resource implements Serializable {
      * @return <code>false</code> if resource excludes this resource,
      *         <code>true</code> otherwise.
      */
-    public boolean excludeImpl(Resource resource) {
+    boolean excludeImpl(Resource resource) {
         if (resource.depends(this)) {
             return false;
         }
@@ -189,52 +208,9 @@ public class Resource implements Serializable {
      * 
      * @param resource the resource to be removed.
      */
-    public void removeImpl(Resource resource) {
+    void removeImpl(Resource resource) {
         includes.remove(resource);
         excludes.remove(resource);
-    }
-
-    /**
-     * Checks if this resource depends on the given resource.
-     * Specifically, checks if it is necessary to call
-     * <code>contains()</code> in the given resource to check
-     * <code>contains()</code> in this resource. <p>
-     *
-     * @param resource the resource to be checked.
-     * @return <code>true</code> if this resource depends,
-     *         <code>false</code> otherwise.
-     */
-    private boolean depends(Resource resource) {
-
-        if (this.equals(resource)) {
-            return true;
-        }
-
-        if (includes.contains(resource)) {
-            return true;
-        }
-
-        Iterator it = includes.iterator();
-        while (it.hasNext()) {
-            Resource curr = (Resource) it.next();
-            if (curr.depends(resource)) {
-                return true;
-            }
-        }
-
-        if (excludes.contains(resource)) {
-            return true;
-        }
-
-        it = excludes.iterator();
-        while (it.hasNext()) {
-            Resource curr = (Resource) it.next();
-            if (curr.depends(resource)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -274,6 +250,49 @@ public class Resource implements Serializable {
         while (it.hasNext()) {
             Resource curr = (Resource) it.next();
             if (curr.contains(resource)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if this resource depends on the given resource.
+     * Specifically, checks if it is necessary to call
+     * <code>contains()</code> in the given resource to check
+     * <code>contains()</code> in this resource. <p>
+     *
+     * @param resource the resource to be checked.
+     * @return <code>true</code> if this resource depends,
+     *         <code>false</code> otherwise.
+     */
+    private boolean depends(Resource resource) {
+
+        if (this.equals(resource)) {
+            return true;
+        }
+
+        if (includes.contains(resource)) {
+            return true;
+        }
+
+        Iterator it = includes.iterator();
+        while (it.hasNext()) {
+            Resource curr = (Resource) it.next();
+            if (curr.depends(resource)) {
+                return true;
+            }
+        }
+
+        if (excludes.contains(resource)) {
+            return true;
+        }
+
+        it = excludes.iterator();
+        while (it.hasNext()) {
+            Resource curr = (Resource) it.next();
+            if (curr.depends(resource)) {
                 return true;
             }
         }

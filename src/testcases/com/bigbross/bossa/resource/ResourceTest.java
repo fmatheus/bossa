@@ -27,6 +27,7 @@ package com.bigbross.bossa.resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -113,4 +114,17 @@ public class ResourceTest extends TestCase {
         assertFalse(r0.contains(r2));
     }
 
+    public void testLists() {
+        assertTrue(r0.includeImpl(r1));
+        assertTrue(r0.includeImpl(r2));
+        Set includes = r0.getIncludes();
+        assertEquals(2, includes.size());
+
+        assertTrue(r0.excludeImpl(r1));
+        assertTrue(r0.excludeImpl(r2));
+        includes = r0.getIncludes();
+        Set excludes = r0.getExcludes();
+        assertEquals(0, includes.size());
+        assertEquals(2, excludes.size());
+    }
 }
