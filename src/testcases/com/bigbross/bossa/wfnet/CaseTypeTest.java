@@ -132,6 +132,6 @@ public class CaseTypeTest extends TestCase {
     public void testGetCase() {
         CaseType caseType = createTestCaseType();
         Case caze = caseType.newCase();
-        assertSame(caze, caseType.getCase(caze.id));
+        assertSame(caze, caseType.getCase(caze.getId()));
     }        
 }

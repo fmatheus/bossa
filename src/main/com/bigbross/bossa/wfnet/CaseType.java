@@ -165,7 +165,7 @@ public class CaseType {
      */
     Case newCase(int[] marking) {
         Case caze = new Case(this, marking);
-        cases.put(new Integer(caze.id), caze);
+        cases.put(new Integer(caze.getId()), caze);
         return caze;
     }
     

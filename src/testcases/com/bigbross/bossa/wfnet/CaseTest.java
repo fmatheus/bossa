@@ -41,8 +41,8 @@ public class CaseTest extends TestCase {
                 newCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
-    private boolean fire(Case caze, Transition t) {
-	Activity act = caze.workItems[t.index].open();
+    private boolean fire(Case caze, String workItemId) {
+	Activity act = caze.getWorkItem(workItemId).open();
 	if (act != null) {
 	    return act.close();
 	}
@@ -64,9 +64,9 @@ public class CaseTest extends TestCase {
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
 
-        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
+        assertTrue(fire(caze, "a"));
 
-        int[] actual = (int[])caze.marking.clone();
+        int[] actual = caze.getMarking();
 
         assertTrue(sameState(expected, actual));
     }
@@ -76,11 +76,11 @@ public class CaseTest extends TestCase {
 
         Case caze = newTestCase();
         
-        int[] start = (int[])caze.marking.clone();
+        int[] start = caze.getMarking();
         
-        assertFalse(fire(caze, caze.getCaseType().getTransition("b")));
+        assertFalse(fire(caze, "b"));
 
-        int[] end = (int[])caze.marking.clone();
+        int[] end = caze.getMarking();
 
         assertTrue(sameState(start, end));
     }
@@ -90,14 +90,13 @@ public class CaseTest extends TestCase {
 
         Case caze = newTestCase();
         
-        int[] start = (int[])caze.marking.clone();
+        int[] start = caze.getMarking();
 
-        int index = caze.getCaseType().getTransition("a").index;
-        Activity act = caze.workItems[index].open();
+        Activity act = caze.getWorkItem("a").open();
         assertNotNull(act);
         assertTrue(act.cancel());
 
-        int[] end = (int[])caze.marking.clone();
+        int[] end = caze.getMarking();
 
         assertTrue(sameState(start, end));
     }
@@ -109,14 +108,14 @@ public class CaseTest extends TestCase {
 
         int[] expected = new int[] {0,2,0,0,1,0,1,2};
 
-        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("b")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("c")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("d")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("e")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("f")));
+        assertTrue(fire(caze, "a"));
+        assertTrue(fire(caze, "b"));
+        assertTrue(fire(caze, "c"));
+        assertTrue(fire(caze, "d"));
+        assertTrue(fire(caze, "e"));
+        assertTrue(fire(caze, "f"));
 
-        int[] actual = (int[])caze.marking.clone();
+        int[] actual = caze.getMarking();
 
         assertTrue(sameState(expected, actual));
     }
@@ -128,8 +127,8 @@ public class CaseTest extends TestCase {
 
         Case caze = newTestCase();
 
-        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
-        assertTrue(fire(caze, caze.getCaseType().getTransition("b")));
+        assertTrue(fire(caze, "a"));
+        assertTrue(fire(caze, "b"));
 
         WorkItem[] workItens = caze.getWorkItems();
         

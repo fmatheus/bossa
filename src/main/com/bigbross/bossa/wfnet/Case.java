@@ -35,23 +35,25 @@ import java.util.List;
  */
 public class Case {
 
-    int id = 0;
+    private int id;
 
-    CaseType caseType;
+    private CaseType caseType;
 
-    int[] marking;
+    private int[] marking;
 
-    WorkItem[] workItems;
+    private WorkItem[] workItems;
 
-    List activities = new ArrayList();
+    private List activities;
 
-    int workSequence = 0;
+    private int workSequence;
 
     Case(CaseType caseType, int[] marking) {
 
 	this.id = caseType.nextCaseId();
 	this.caseType = caseType;
 	this.marking = marking;
+        this.activities = new ArrayList();
+        this.workSequence = 0;
 
 	Transition[] ts = caseType.getTransitions();
 	workItems = new WorkItem[ts.length];
@@ -60,11 +62,34 @@ public class Case {
 	}
 
 	deactivate();
-
     }
 
+    /**
+     * Returns the id of this case.
+     * 
+     * @return the id of this case.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Returns the case type of this case.
+     * 
+     * @return the case type of this case.
+     */
     public CaseType getCaseType() {
 	return caseType;
+    }
+
+    /**
+     * Returns a copy of the internal state of the case, that is, how many
+     * tokens are in each place.
+     * 
+     * @return the marking.
+     */
+    int[] getMarking() {
+        return (int[]) marking.clone();
     }
 
     /**
@@ -84,18 +109,19 @@ public class Case {
 	return (WorkItem[]) items.toArray(new WorkItem[items.size()]);
     }
 
-    public String toString() {
-
-	StringBuffer string = new StringBuffer();
-
-	string.append("\t");
-	for (int i = 0; i < marking.length; ++i) {
-	    string.append(marking[i]);
-	    string.append("\t");
-	}
-
-	return string.toString();
-
+    /**
+     * Return a specific work item, selected by its id. <p>
+     * 
+     * FIXME: Maybe we should return null if the work item is not
+     * fireable.
+     * 
+     * @param id the work item id.
+     * @return the work item, <code>null</code> if there is no work item
+     *         with this id.
+     */
+    WorkItem getWorkItem(String id) {
+        int index = caseType.getTransition(id).index;
+        return workItems[index];
     }
 
     int nextWorkItemId() {
@@ -176,4 +202,17 @@ public class Case {
 	return true;
     }
 
+    public String toString() {
+
+    StringBuffer string = new StringBuffer();
+
+    string.append("\t");
+    for (int i = 0; i < marking.length; ++i) {
+        string.append(marking[i]);
+        string.append("\t");
+    }
+
+    return string.toString();
+
+    }
 }
