@@ -285,9 +285,9 @@
     // Find resources named requesters, sales and directors in l.
     // Your user will probably "find" the resources for you in an GUI.
 
-    requesters.insert(people);
-    sales.insert(managers);
-    directors.insert(ana);
+    requesters.include(people);
+    sales.include(managers);
+    directors.include(ana);
     ]]> </programlisting>
   </example>
 
