@@ -28,8 +28,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
+import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.resource.ResourceRegistry;
 import com.bigbross.bossa.resource.ResourceUtil;
 
 public class CaseTypeManagerTest extends TestCase {
@@ -81,6 +86,7 @@ public class CaseTypeManagerTest extends TestCase {
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         caseTypeManager.removeCaseTypeImpl("test1");
         assertNull(caseTypeManager.getCaseType("test1"));
+        assertNull(expected.getCaseTypeManager());
     }
     
     public void testGetWorkItems() throws Exception {
@@ -102,5 +108,18 @@ public class CaseTypeManagerTest extends TestCase {
         wi.getCase().open(wi, joe);
         
         assertEquals(1, caseTypeManager.getActivities().size());
+    }
+    
+    public void testResourceRegistryManagement() throws Exception {
+        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        ResourceManager rm = bossa.getResourceManager();
+        CaseTypeManager ctm = bossa.getCaseTypeManager();
+        CaseType ct = BossaTestUtil.createCaseType("test");
+        ResourceRegistry testRegistry = new ResourceRegistry(ct.getId());
+
+        ctm.registerCaseTypeImpl(ct);        
+        assertFalse(rm.registerSubContext(testRegistry));
+        ctm.removeCaseTypeImpl(ct.getId());
+        assertTrue(rm.registerSubContext(testRegistry));
     }
 }

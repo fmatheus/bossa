@@ -110,7 +110,7 @@ public class CaseTypeManager implements Serializable {
         }
         caseTypes.put(caseType.getId(), caseType);
         caseType.setCaseTypeManager(this);
-        if (getBossa() !=null) {
+        if (getBossa() != null) {
             getBossa().getResourceManager().
                 registerSubContext(caseType.getResourceRegistry());
         }
@@ -146,6 +146,11 @@ public class CaseTypeManager implements Serializable {
     public void removeCaseTypeImpl(String id) {
         CaseType caseType = (CaseType) caseTypes.remove(id);
         if (caseType != null) {
+            caseType.setCaseTypeManager(null);
+            if (getBossa() != null) {
+                getBossa().getResourceManager().
+                    removeSubContext(caseType.getResourceRegistry());
+            }
             WFNetEvents.notifyCaseType(getBossa(),
                                        WFNetEvents.ID_REMOVE_CASE_TYPE,
                                        caseType);
