@@ -166,8 +166,11 @@ public class CaseType implements Serializable {
         return caze;
     }
     
-    public void buildMap(int[] marking) {
-
+    /**
+     * Builds the transition map. Call this method after you have created
+     * all places and transitions and before you start creating edges. <p>
+     */
+    public void buildMap() {
 	if (edges == null) {
 	    Edge edge = new Edge();
 	    edges = new Edge[transitions.size()][places.size()];
@@ -175,10 +178,18 @@ public class CaseType implements Serializable {
 		Arrays.fill(edges[i], edge);
 	    }
 	}
+    }
 
-	if (template == null) {
-	    template = newCase(marking);
-	}
+    /**
+     * Builds the template case that will spaw all other cases. Call this
+     * method after you have finished building the case type. <p>
+     * 
+     * @param marking The marking of the template case.
+     */ 
+    public void buildTemplate(int[] marking) {
+        if (template == null) {
+            template = newCase(marking);
+        }
     }
 
     /**
@@ -200,7 +211,11 @@ public class CaseType implements Serializable {
      *         this case does not exists.
      */
     public Case getCase(int id) {
-        return (Case) cases.get(new Integer(id));
+        if (id == 0) {
+            return template;
+        } else {
+            return (Case) cases.get(new Integer(id));
+        }
     }
 
     /**
@@ -218,15 +233,28 @@ public class CaseType implements Serializable {
      * @return The list of work itens of this case type.
      */
     public List getWorkItems() {
+        return getWorkItems(false);
+    }
+
+    /**
+     * Returns the list of all work items of the cases of this case type.
+     * If desired, the initial work item(s) can be returned. Opening an
+     * initial work item will create a new case. <p>
+     * 
+     * @return The list of work itens of this case type.
+     */
+    public List getWorkItems(boolean getInitial) {
        
         ArrayList items = new ArrayList();
+        if (getInitial) {
+            items.addAll(template.getWorkItems());
+        }
         Iterator i = cases.values().iterator();   
         while (i.hasNext()) {
             items.addAll(((Case) i.next()).getWorkItems());
         }
         return items;
     }
-    
 
     public String toString() {
 

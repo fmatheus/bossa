@@ -63,7 +63,7 @@ public class CaseTypeTest extends TestCase {
         Transition e = caseType.registerTransition("e", "y");
         Transition f = caseType.registerTransition("f", "x");
 
-	caseType.buildMap(new int[] {1,0,0,0,0,0,0,0});
+	caseType.buildMap();
 
         a.input(A,  "1");
         a.output(B, "1");
@@ -88,26 +88,15 @@ public class CaseTypeTest extends TestCase {
         f.output(B, "1");
         f.output(H, "1");
         
+        caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
+
         return caseType;
     }
 
     public void testCreation() {
-        assertNotNull(createTestCaseType());
-    }
-
-    public void testToString() {
+        CaseType caseType = createTestCaseType();
+        assertNotNull(caseType);
         
-        String expected = "\tA\tB\tC\tD\tE\tF\tG\tH\t\n" +
-                          "a\t-1\t1\t0\t0\t0\t0\t0\t0\tx\n" +
-                          "b\t0\t-1\t1\t1\t1\t0\t0\t0\ty\n" +
-                          "c\t0\t1\t0\t-1\t1\t0\t0\t1\tz\n" +
-                          "d\t0\t0\t0\t0\t-1\t1\t0\t0\ty\n" +
-                          "e\t0\t0\t0\t0\t0\t-1\t1\t0\ty\n" +
-                          "f\t0\t1\t-1\t0\t0\t0\t0\t1\tx\n";
-
-        String result = createTestCaseType().toString();
-
-        assertEquals(expected, result);
     }
 
     public void testWeights() {
@@ -128,6 +117,16 @@ public class CaseTypeTest extends TestCase {
         assertEquals( 1, b.getEdge(C).weight());
         assertEquals( 1, b.getEdge(D).weight());
         assertEquals( 1, b.getEdge(E).weight());
+    }
+
+    public void testTemplate() {
+        CaseType caseType = createTestCaseType();
+        Case template = caseType.getTemplate();
+        assertNotNull(template);
+        assertEquals(0, template.getId());
+        assertEquals(1, template.getWorkItems().size());
+        assertEquals("a", 
+                     ((WorkItem) template.getWorkItems().get(0)).getId());
     }
 
     public void testNewCase() {
@@ -171,5 +170,20 @@ public class CaseTypeTest extends TestCase {
                    c1.getId() == wi2.getCase().getId());
         assertTrue(c2.getId() == wi1.getCase().getId() ||
                    c2.getId() == wi2.getCase().getId());
+    }
+
+    public void testToString() {
+        
+        String expected = "\tA\tB\tC\tD\tE\tF\tG\tH\t\n" +
+                          "a\t-1\t1\t0\t0\t0\t0\t0\t0\tx\n" +
+                          "b\t0\t-1\t1\t1\t1\t0\t0\t0\ty\n" +
+                          "c\t0\t1\t0\t-1\t1\t0\t0\t1\tz\n" +
+                          "d\t0\t0\t0\t0\t-1\t1\t0\t0\ty\n" +
+                          "e\t0\t0\t0\t0\t0\t-1\t1\t0\ty\n" +
+                          "f\t0\t1\t-1\t0\t0\t0\t0\t1\tx\n";
+
+        String result = createTestCaseType().toString();
+
+        assertEquals(expected, result);
     }
 }

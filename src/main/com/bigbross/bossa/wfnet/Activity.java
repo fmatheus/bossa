@@ -42,6 +42,15 @@ public class Activity implements Serializable {
 	this.id = getCase().nextWorkItemId();
     }
 
+    /**
+     * Returns the id of this activity. <p>
+     * 
+     * @return the id of thi activity.
+     */
+    public int getId() {
+        return id;
+    }
+
     public CaseType getCaseType() {
 	return workItem.getCaseType();
     }
