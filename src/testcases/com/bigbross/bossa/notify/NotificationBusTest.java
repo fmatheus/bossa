@@ -144,5 +144,7 @@ public class NotificationBusTest extends TestCase {
                                  new HashMap(), new Date()));
         queue.notifyAll(bossa);
         assertEquals(2, theGood.runs());
+        queue.notifyAll(bossa);
+        assertEquals(2, theGood.runs());
     }
 }

@@ -69,6 +69,7 @@ public abstract class NotificationQueue implements Serializable {
         for (Iterator i = queue.iterator(); i.hasNext(); ){
             Event e = (Event) i.next();
             bus.notifyEvent(e);
+            i.remove();
         }
     }
 }
