@@ -72,26 +72,24 @@ public class WorkManager implements Serializable {
      * Returns a list of all work items in the engine that can be opened
      * by the provided resource. <p>
      * 
-     * @param resourceId the resource id.
+     * @param resource the resource.
      * @return the list of work items.
      */
-    public List getWorkItems(String resourceId) {
-        return getWorkItems(resourceId, false);
+    public List getWorkItems(Resource resource) {
+        return getWorkItems(resource, false);
     }
 
     /**
      * Returns a list of all work items in the engine that can be opened
      * by the provided resource, including the initial work items. <p>
      * 
-     * @param resourceId the resource id.
+     * @param resource the resource.
      * @param getInitial set to <code>true</code> to get the initial work
      *                   items and to <code>false</code> to only get the
      *                   standard work items. 
      * @return the list of work items.
      */
-    public List getWorkItems(String resourceId, boolean getInitial) {
-        Resource resource =
-            getBossa().getResourceManager().getResource(resourceId);
+    public List getWorkItems(Resource resource, boolean getInitial) {
         List workItems =
             getBossa().getCaseTypeManager().getWorkItems(getInitial);
         Iterator i = workItems.iterator();
@@ -107,12 +105,10 @@ public class WorkManager implements Serializable {
      * Returns a list of all activities in the engine that are under the
      * responsability of the provided resource. <p>
      * 
-     * @param resourceId the resource id.
+     * @param resource the resource.
      * @return the list of activities.
      */
-    public List getActivities(String resourceId) {
-        Resource resource =
-            getBossa().getResourceManager().getResource(resourceId);
+    public List getActivities(Resource resource) {
         List activities =
             getBossa().getCaseTypeManager().getActivities();
         Iterator i = activities.iterator();

@@ -298,9 +298,8 @@ public class BossaBrowser {
                 System.out.println("\tctID\tcID\twiID");
                 System.out.println("-------------------------------------");
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                String removeMe =
-                    ((Resource) lastResourceList.get(resId)).getId();
-                lastWorkItemList = workManager.getWorkItems(removeMe, true);
+                Resource resource = (Resource) lastResourceList.get(resId);
+                lastWorkItemList = workManager.getWorkItems(resource, true);
                 for (int i = 0; i < lastWorkItemList.size(); i++) {
                     WorkItem wi = (WorkItem) lastWorkItemList.get(i);
                     System.out.println(
@@ -316,9 +315,8 @@ public class BossaBrowser {
                 System.out.println("\tctID\tcID\taID\ttransition");
                 System.out.println("-------------------------------------");
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                String removeMe =
-                    ((Resource) lastResourceList.get(resId)).getId();
-                lastActivitiesList = workManager.getActivities(removeMe);
+                Resource resource = (Resource) lastResourceList.get(resId);
+                lastActivitiesList = workManager.getActivities(resource);
                 for (int i = 0; i < lastActivitiesList.size(); i++) {
                     Activity a = (Activity) lastActivitiesList.get(i);
                     System.out.println(
