@@ -112,13 +112,16 @@ build          <-- this is where all compiled files (.class) go into when
  |                 you build the package.
  +-classes     <-- the classes for the Bossa library will appear here.
  +-testcases   <-- the classes for the tests will appear here.
+ +-examples    <-- the classes for the examples will appear here.
 dist           <-- the JAR files and javadocs will be put here. 
  | 
  +-doc         <-- the generated docbooks will appear here.
  +-javadocs    <-- the generated javadocs will appear here.
-lib            <-- you may put needed JARs here.
 doc            <-- the documentation sources.
+etc            <-- support files that are neither source or documentation.
+lib            <-- you may put needed JARs here.
 src            <-- the source code.
  | 
  +-main        <-- the source code for the Bossa library is here.
  +-testcases   <-- the source code for the tests is here.
+ +-examples    <-- the source code for the examples is here.

@@ -1,8 +1,8 @@
 
-Bossa 0.8.0 "XML Rated", 2004-03-XX
+Bossa 0.8.0 "XML Rated", 2004-03-19
 -----------------------------------
 
-* Added a method to read a case type as a PNML XML file generated
+* Added the ability to read a case type as a PNML XML file generated
   by the PNK (http://www.informatik.hu-berlin.de/top/pnk/).
 
 * Made the method to open a case public for administrative purposes
