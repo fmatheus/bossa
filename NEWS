@@ -2,11 +2,15 @@
 Bossa 0.6.0 "Self Referential Integrity", 2004-01-XX
 ----------------------------------------------------
 
-* 
+* Simplified the case type creation API. No more need of calling buildMap()
+  before creating edges and the initial marking is set when creating the
+  places.
 
 * Added support to self loops in the case type definition Petri net.
   Now it is possible for a transition to use a place as source and sink
   at the same time.
+  
+* Two new notification events: activation and deactivation of a work item.
 
 * Added the ability to export old history events to a XML file and
   purge them.

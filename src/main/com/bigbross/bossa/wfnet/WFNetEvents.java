@@ -81,6 +81,30 @@ public abstract class WFNetEvents {
     public static final String ID_CLOSE_CASE  = "close_case";
 
     /**
+     * Constant to indicate the activation of an inactive work item. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
+     * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_WORK_ITEM_ID
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_WORK_ITEM_ACTIVE  = "work_item_active";
+
+    /**
+     * Constant to indicate the deactivation of an active work item. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
+     * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_WORK_ITEM_ID
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_WORK_ITEM_INACTIVE  = "work_item_inactive";
+
+    /**
      * Constant to indicate the event of opening a work item. <p>
      * 
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
@@ -205,7 +229,9 @@ public abstract class WFNetEvents {
             attrib.put(ATTRIB_WORK_ITEM_ID, wi.getId());
             attrib.put(ATTRIB_CASE_ID, Integer.toString(wi.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, wi.getCaseType().getId());
-            attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
+            if (resource != null) {
+                attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
+            } 
             Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
                                     bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);

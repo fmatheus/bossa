@@ -87,7 +87,6 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(4, events.size());
         Event event = (Event) events.get(0);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_CASE, event.getId());
@@ -108,8 +107,7 @@ public class EventsNotificationTest extends TestCase {
         
 
         List events = listener.getNotifications();
-        assertEquals(14, events.size());
-        Event event = (Event) events.get(13);
+        Event event = (Event) events.get(events.size() - 1);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_CASE, event.getId());
         assertEquals(Integer.toString(wi.getCase().getId()),
@@ -123,8 +121,7 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(4, events.size());
-        Event event = (Event) events.get(3);
+        Event event = (Event) events.get(events.size() - 1);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
         assertEquals(wi.getId(),
@@ -144,8 +141,7 @@ public class EventsNotificationTest extends TestCase {
         act.close();
 
         List events = listener.getNotifications();
-        assertEquals(5, events.size());
-        Event event = (Event) events.get(4);
+        Event event = (Event) events.get(events.size() - 2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(Integer.toString(act.getId()),
@@ -166,8 +162,7 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        assertEquals(6, events.size());
-        Event event = (Event) events.get(5);
+        Event event = (Event) events.get(events.size() - 3);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(Integer.toString(act.getId()),
@@ -181,6 +176,34 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(frank.getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
     }
+
+    public void testLogActivateDeactivate() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).cancel();
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 1);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_WORK_ITEM_ACTIVE, event.getId());
+        assertEquals(wi.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_WORK_ITEM_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+        event = (Event) events.get(events.size() - 7);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_WORK_ITEM_INACTIVE, event.getId());
+        assertEquals(wi.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_WORK_ITEM_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
     
     public void testLogCreateRemoveResource() throws Exception {
         Resource joe = resourceManager.createResource("joedoe");

@@ -344,7 +344,13 @@ public class Case implements Serializable {
         for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
             WorkItem wi = (WorkItem) i.next();
             if (!wi.isFireable()) {
-                actives -= wi.update() ? 0 : 1;
+                if (wi.update()) {
+                   WFNetEvents.notifyWorkItem(getBossa(),
+                                              WFNetEvents.ID_WORK_ITEM_ACTIVE,
+                                              wi, null);
+                } else {
+                    actives -= 1;
+                }
             }
         }
         return actives;
@@ -360,7 +366,11 @@ public class Case implements Serializable {
         for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
             WorkItem wi = (WorkItem) i.next();
             if (wi.isFireable()) {
-                wi.update();
+                if (!wi.update()) {
+                   WFNetEvents.notifyWorkItem(getBossa(),
+                                              WFNetEvents.ID_WORK_ITEM_INACTIVE,
+                                              wi, null);
+                }
             }
         }
     }
@@ -480,12 +490,13 @@ public class Case implements Serializable {
             /* An EvaluationException can be inconsistently thrown here. */
             this.marking[e.getPlace().getIndex()] += e.output(this);
         }
-        /* An EvaluationException can be inconsistently thrown here. */
-	int actives = activate();
-        activities.remove(new Integer(activity.getId()));
 
         WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
                                    activity);
+
+        /* An EvaluationException can be inconsistently thrown here. */
+	int actives = activate();
+        activities.remove(new Integer(activity.getId()));
 
         if (actives == 0 && activities.size() == 0) {
             caseType.closeCase(this);
@@ -521,18 +532,18 @@ public class Case implements Serializable {
             /* An EvaluationException can be inconsistently thrown here. */
             this.marking[e.getPlace().getIndex()] += e.input(this);
         }
-        /* An EvaluationException can be inconsistently thrown here. */
-	activate();
+
+        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
+                                   activity);
 
         Resource resource = activity.getResource();
         Resource group =
             getResourceRegistry().getResource(activity.getWorkItemId());
         group.removeImpl(resource);
 
+        /* An EvaluationException can be inconsistently thrown here. */
+	activate();
         activities.remove(new Integer(activity.getId()));
-
-        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
-                                   activity);
 
 	return true;
     }
