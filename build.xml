@@ -71,9 +71,14 @@
     </fileset>
   </path>
 
-  <path id="tests-classpath">
+  <path id="project.class.path">
     <pathelement location="${build.classes}"/>
+    <path refid="lib.class.path"/>
+  </path>
+
+  <path id="tests.class.path">
     <pathelement location="${build.tests}"/>
+    <path refid="project.class.path"/>
   </path>
 
   <!-- Tasks -->
@@ -92,6 +97,7 @@
     <mkdir dir="${build.classes}"/>
     <javac srcdir="${src.dir}"
            destdir="${build.classes}"
+	   classpathref="project.class.path"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}">
@@ -169,10 +175,10 @@
     <mkdir dir="${build.tests}"/>
     <javac srcdir="${tests.dir}"
            destdir="${build.tests}"
+	   classpathref="tests.class.path"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}">
-      <classpath refid="tests-classpath"/>
     </javac>
   </target>
 
@@ -182,7 +188,7 @@
     <junit printsummary="${junit.summary}" haltonfailure="yes"
            filtertrace="${junit.filtertrace}"
            fork="${junit.fork}">
-      <classpath refid="tests-classpath"/>
+      <classpath refid="tests.class.path"/>
       <formatter type="plain" usefile="false"/>
       <test name="${testcase}"/>
     </junit>
