@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,7 @@ public class CaseType {
 
     private Map places;
 
-    private int[][] map;
+    private Edge[][] edges;
 
     private List cases;
 
@@ -118,31 +119,35 @@ public class CaseType {
 	return trans;
     }
 
-    public int[] getMapping(Transition t) {
-	return (int[]) map[t.index].clone();
+    public Edge[] getEdges(Transition t) {
+	return edges[t.index];
     }
 
-    public int getWeight(int t, int p) {
+    public Edge getEdge(int t, int p) {
 	sync();
-	return map[t][p];
+	return edges[t][p];
     }
 
-    public int getWeight(Transition t, Place p) {
-	return getWeight(t.index, p.index);
+    public Edge getEdge(Transition t, Place p) {
+	return getEdge(t.index, p.index);
     }
 
-    public void setWeight(int t, int p, int w) {
+    public void setEdge(int t, int p, Edge edge) {
 	sync();
-	map[t][p] = w;
+	edges[t][p] = edge;
     }
 
-    public void setWeight(Transition t, Place p, int weight) {
-	setWeight(t.index, p.index, weight);
+    public void setEdge(Transition t, Place p, Edge edge) {
+	setEdge(t.index, p.index, edge);
     }
 
     private void sync() {
-	if (map == null) {
-	    map = new int[transitions.size()][places.size()];
+	if (edges == null) {
+	    Edge edge = new Edge();
+	    edges = new Edge[transitions.size()][places.size()];
+	    for (int i = 0; i < edges.length; ++i) {
+		Arrays.fill(edges[i], edge);
+	    }
 	}
     }
 

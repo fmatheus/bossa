@@ -60,28 +60,28 @@ public class CaseTypeTest extends TestCase {
         Transition e = caseType.registerTransition("e", "y");
         Transition f = caseType.registerTransition("f", "x");
 
-        a.input(A, 1);
-        a.output(B, 1);
+        a.input(A,  "1");
+        a.output(B, "1");
 
-        b.input(B, 1);
-        b.output(C, 1);
-        b.output(D, 1);
-        b.output(E, 1);
+        b.input(B,  "1");
+        b.output(C, "1");
+        b.output(D, "1");
+        b.output(E, "1");
 
-        c.input(D, 1);
-        c.output(B, 1);
-        c.output(E, 1);
-        c.output(H, 1);
+        c.input(D,  "1");
+        c.output(B, "1");
+        c.output(E, "1");
+        c.output(H, "1");
 
-        d.input(E, 1);
-        d.output(F, 1);
+        d.input(E,  "1");
+        d.output(F, "1");
 
-        e.input(F, 1);
-        e.output(G, 1);
+        e.input(F,  "1");
+        e.output(G, "1");
 
-        f.input(C, 1);
-        f.output(B, 1);
-        f.output(H, 1);
+        f.input(C,  "1");
+        f.output(B, "1");
+        f.output(H, "1");
         
         return caseType;
     }
@@ -116,13 +116,13 @@ public class CaseTypeTest extends TestCase {
         Place D = caseType.getPlace("D");
         Place E = caseType.getPlace("E");
 
-        assertEquals(caseType.getWeight(a, A), -1);
-        assertEquals(caseType.getWeight(a, B), 1);
-        
-        assertEquals(caseType.getWeight(b, B), -1);
-        assertEquals(caseType.getWeight(b, C), 1);
-        assertEquals(caseType.getWeight(b, D), 1);
-        assertEquals(caseType.getWeight(b, E), 1);
+        assertEquals(-1, a.getEdge(A).weight());
+        assertEquals( 1, a.getEdge(B).weight());
+
+        assertEquals(-1, b.getEdge(B).weight());
+        assertEquals( 1, b.getEdge(C).weight());
+        assertEquals( 1, b.getEdge(D).weight());
+        assertEquals( 1, b.getEdge(E).weight());
     }
 
     public void testNewCase() {

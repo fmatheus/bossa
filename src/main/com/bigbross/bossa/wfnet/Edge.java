@@ -25,26 +25,72 @@
 package com.bigbross.bossa.wfnet;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
- * This class represents a place.
+ * This class represents one edge of one transition.
+ * It may be a input or output edge.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Place {
+public class Edge {
+    
+    protected String expression = "0";
 
-    CaseType ct;
+    Edge() {}
 
-    int index;
+    Edge(String expression) {
+	this.expression = expression;
+    }
 
-    String id;
+    static Edge newInput(String expression) {
+	return new Edge(expression) {
 
-    Place(CaseType ct, int index, String id) {
-	this.ct = ct;
-	this.index = index;
-	this.id = id;
+		int weight() {
+		    return -eval();
+		}
+
+		int input() {
+		    return eval();
+		}
+
+		public String toString() {
+		    return "-" + expression;
+		}
+	    };
+    }
+
+    static Edge newOutput(String expression) {
+	return new Edge(expression) {
+
+		int weight() {
+		    return eval();
+		}
+
+		int output() {
+		    return eval();
+		}
+	    };
+    }
+
+    int weight() {
+	return 0;
+    }
+
+    int input() {
+	return 0;
+    }
+
+    int output() {
+	return 0;
+    }
+
+    int eval() {
+	return Integer.parseInt(expression);
+    }
+
+    public String toString() {
+	return expression;
     }
 
 }

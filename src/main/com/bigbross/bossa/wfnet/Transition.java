@@ -57,42 +57,20 @@ public class Transition {
 	this.resource = resource;
     }
 
-    int weight(Place p) {
-	return caseType.getWeight(index, p.index);
+    Edge getEdge(Place p) {
+	return caseType.getEdge(this, p);
     }
 
-    void input(Place p, int weight) {
-	caseType.setWeight(index, p.index, -weight);
+    Edge[] getEdges() {
+	return caseType.getEdges(this);
     }
 
-    void output(Place p, int weight) {
-	caseType.setWeight(index, p.index, weight);
+    void input(Place p, String expression) {
+	caseType.setEdge(index, p.index, Edge.newInput(expression));
     }
 
-    int[] input() {
-
-	int[] input = caseType.getMapping(this);
-
-	for(int i = 0; i < input.length; ++i) {
-	    if (input[i] > 0) {
-		input[i] = 0;
-	    }
-	}
-
-	return input;
-    }
-
-    int[] output() {
-
-	int[] output = caseType.getMapping(this);
-
-	for(int i = 0; i < output.length; ++i) {
-	    if (output[i] < 0) {
-		output[i] = 0;
-	    }
-	}
-
-	return output;
+    void output(Place p, String expression) {
+	caseType.setEdge(index, p.index, Edge.newOutput(expression));
     }
 
     public String toString() {
@@ -103,7 +81,7 @@ public class Transition {
 	string.append(this.id);
 	string.append("\t");
 	for (int j = 0; j < p.length; ++j) {
-	    string.append(this.weight(p[j]));
+	    string.append(getEdge(p[j]).weight());
 	    string.append("\t");
 	}
 	string.append(this.resource);

@@ -102,18 +102,6 @@ public class Case {
 	return ++workSequence;
     }
 
-    private void add(int[] marking) {
-	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] += marking[i];
-	}
-    }
-
-    private void sub(int[] marking) {
-	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] -= marking[i];
-	}
-    }
-
     private void activate() {
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (!workItems[i].isFireable()) {
@@ -132,7 +120,7 @@ public class Case {
 
     boolean isFireable(Transition t) {
 	for(int i = 0; i < marking.length; ++i) {
-	    if (marking[i] + caseType.getWeight(t.index, i) < 0) {
+	    if (marking[i] < caseType.getEdge(t.index, i).input()) {
 		return false;
 	    }
 	}
@@ -147,7 +135,10 @@ public class Case {
 
 	Activity activity = new Activity(wi);
 	activities.add(activity);
-	add(activity.getTransition().input());
+	Edge[] edges = activity.getTransition().getEdges();
+	for(int i = 0; i < marking.length; ++i) {
+	    this.marking[i] -= edges[i].input();
+	}
 	deactivate();
 
 	return activity;
@@ -160,7 +151,10 @@ public class Case {
 	}
 
 	activities.remove(activity);
-	add(activity.getTransition().output());
+	Edge[] edges = activity.getTransition().getEdges();
+	for(int i = 0; i < marking.length; ++i) {
+	    this.marking[i] += edges[i].output();
+	}
 	activate();
 
 	return true;
@@ -173,7 +167,10 @@ public class Case {
 	}
 
 	activities.remove(activity);
-	sub(activity.getTransition().input());
+	Edge[] edges = activity.getTransition().getEdges();
+	for(int i = 0; i < marking.length; ++i) {
+	    this.marking[i] += edges[i].input();
+	}
 	activate();
 
 	return true;
