@@ -44,20 +44,13 @@ public class ExpressionTest extends TestCase {
     protected void setUp() {
 	System.out.println("Setting up an expression test.");
         registry = new ResourceRegistry("null");
-        A = new Resource(null, "A");
-        B = new Resource(null, "B");
-        C = new Resource(null, "C");
-        a = new Resource(null, "a");
-        b = new Resource(null, "b");
-        c = new Resource(null, "c");
-        x = new Resource(null, "x");
-        registry.addResource(A);
-        registry.addResource(B);
-        registry.addResource(C);
-        registry.addResource(a);
-        registry.addResource(b);
-        registry.addResource(c);
-        registry.addResource(x);
+        A = registry.createResourceImpl("A");
+        B = registry.createResourceImpl("B");
+        C = registry.createResourceImpl("C");
+        a = registry.createResourceImpl("a");
+        b = registry.createResourceImpl("b");
+        c = registry.createResourceImpl("c");
+        x = registry.createResourceImpl("x");
         A.includeImpl(a);
         A.includeImpl(x);
         B.includeImpl(b);
@@ -70,9 +63,8 @@ public class ExpressionTest extends TestCase {
         assertTrue(resource.contains(C));
 
         ResourceRegistry context = new ResourceRegistry("null");
-        Resource C = new Resource(null, "C");
-        context.addResource(C);
-        C.includeImpl(x);
+        Resource newC = context.createResourceImpl("C");
+        newC.includeImpl(x);
 
         assertTrue(resource.contains(c));
         assertTrue(resource.contains(context, c));
@@ -81,18 +73,23 @@ public class ExpressionTest extends TestCase {
         assertFalse(resource.contains(context, x));
     }
 
+    public void testReferenceCreation() {
+        Expression resource = registry.compile("new");
+        Resource r = registry.getResource("new");
+        assertNotNull(r);
+        assertTrue(resource.contains(r));
+    }
+
     public void testLazyReference() {
         Expression resource = registry.compile("$C");
         assertTrue(resource.contains(C));
 
         ResourceRegistry context = new ResourceRegistry("null");
+        Resource newC = context.createResourceImpl("C");
+        newC.includeImpl(x);
+
         assertFalse(resource.contains(context, C));
-
-        Resource C = new Resource(null, "C");
-        C.includeImpl(x);
-
-        context.addResource(C);
-        assertTrue(resource.contains(context, C));
+        assertTrue(resource.contains(context, newC));
 
         assertTrue(resource.contains(c));
         assertFalse(resource.contains(context, c));

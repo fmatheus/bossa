@@ -25,7 +25,9 @@
 package com.bigbross.bossa.resource;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
@@ -37,11 +39,11 @@ import com.bigbross.bossa.BossaException;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class ResourceManager implements Serializable {
+public class ResourceManager extends ResourceRegistry {
 
     private Bossa engine;
-
-    private ResourceRegistry resources;
+    
+    private Map allRegistries;
 
     /**
      * Creates a new empty resource manager. <p>
@@ -49,8 +51,10 @@ public class ResourceManager implements Serializable {
      * @param engine the bossa engine this resorce manager is part.
      */
     public ResourceManager(Bossa engine) {
+        super("root");
         this.engine = engine;
-        this.resources = new ResourceRegistry("root");
+        this.allRegistries = new HashMap();
+        addRegistry(this);
     }
 
     /**
@@ -70,97 +74,54 @@ public class ResourceManager implements Serializable {
     }
 
     /**
-     * Returns the main context of this resource manager. The context,
-     * represented by a <code>ResourceRegistry</code> object should not
-     * be manipulated directly, use the methods of this class instead. <p>
+     * Adds a resource registry to the global registry index. <p>
      * 
-     * @return the registry representing the main resource context.
+     * @param registry the resource registry.
+     * @return <code>true</code> if the registry was added,
+     *         <code>false</code> if the registry was already present.
+     * @see com.bigbross.bossa.resource.ResourceManager#getRegistry(String)
+     * @see com.bigbross.bossa.resource.ResourceManager#removeRegistry(
+     *      ResourceRegistry)
      */
-    public ResourceRegistry getMainContext() {
-        return resources;
-    }
-
-    /**
-     * Returns the resource with the given id. <p>
-     *
-     * @param id the resource id.
-     * @return a <code>Resource</code>, <code>null</code> if there
-     *         is no resource with this id.
-     */
-    public Resource getResource(String id) {
-        return resources.getResource(id);
-    }
-
-    /**
-     * Returns all registered resources. <p>
-     * 
-     * @return A list of all resources registered.
-     */
-    public List getResources() {
-        return resources.getResources();
-    }
-
-    /**
-     * Creates a new resource in the manager. <p>
-     * 
-     * @param id the id of the resource to be created.
-     * @return a <code>Resource</code>, <code>null</code> if there is
-     *         already a resource with this id.
-     * @exception PersistenceException if an error occours when making the
-     *            execution of this method persistent.
-     */    
-    public Resource createResource(String id) throws BossaException {
-        ResourceCommand createCommand = new CreateResource(id);
-        return (Resource) getBossa().executeCommand(createCommand);
-    }
-
-    /**
-     * Creates a new resource in the manager. <p>
-     * 
-     * This method does not creates a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
-     * 
-     * @param id the id of the resource to be created.
-     * @return a <code>Resource</code>, <code>null</code> if there is
-     *         already a resource with this id.
-     */    
-    Resource createResourceImpl(String id) {
-        Resource resource = new Resource(this, id);
-        if (resources.addResource(resource)) {
-            return resource;
+    boolean addRegistry(ResourceRegistry registry) {
+        String id = registry.getGlobalId();
+        if (!allRegistries.containsKey(id)) {
+            allRegistries.put(id, registry);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
-
+    
     /**
-     * Removes a resource from the manager. <p>
-     *
-     * @param resource a <code>Resource</code> to be removed.
-     * @return <code>true</code> if the resource was removed,
-     *         <code>false</code> if the resource was not found.
-     * @exception PersistenceException if an error occours when making the
-     *            execution of this method persistent.
-     */
-    public boolean removeResource(Resource resource) throws BossaException {
-        ResourceCommand removeCommand = new RemoveResource(resource);
-        return ((Boolean) getBossa().executeCommand(removeCommand)).
-                booleanValue();
-    }
-
-    /**
-     * Removes a resource from the manager. <p>
-     *
-     * This method does not creates a command to the prevalent system. The
-     * execution of this method will not be persistent unless it is called by
-     * an appropriate command. <p>
+     * Returns the resource registry indexed by its global id. Using this
+     * method it is possible to retrieve any resource registry in the
+     * system.
      * 
-     * @param resource a <code>Resource</code> to be removed.
-     * @return <code>true</code> if the resource was removed,
-     *         <code>false</code> if the resource was not found.
+     * @param globalId the global id of the registry.
+     * @return the resource registry,
+     *         <code>null</code> if the registry was not found.
+     * @see com.bigbross.bossa.resource.ResourceManager#addRegistry(
+     *      ResourceRegistry)
+     * @see com.bigbross.bossa.resource.ResourceManager#removeRegistry(
+     *      ResourceRegistry)
      */
-    public boolean removeResourceImpl(Resource resource) {
-        return resources.removeResource(resource);
+    ResourceRegistry getRegistry(String globalId) {
+        return (ResourceRegistry) allRegistries.get(globalId);
+    }
+    
+    /**
+     * Removes a resource registry from the global registry index. <p>
+     * 
+     * @param registry the resource registry.
+     * @return <code>true</code> if the registry was removed,
+     *         <code>false</code> if the registry was not found.
+     * @see com.bigbross.bossa.resource.ResourceManager#addRegistry(
+     *      ResourceRegistry)
+     * @see com.bigbross.bossa.resource.ResourceManager#getRegistry(String)
+     */
+    boolean removeRegistry(ResourceRegistry registry) {
+        String id = registry.getGlobalId();
+        return (allRegistries.remove(id) != null);
     }
 }

@@ -40,7 +40,7 @@ import com.bigbross.bossa.BossaException;
  */
 public class Resource implements Container, Serializable {
 
-    private ResourceManager resourceManager;
+    private ResourceRegistry resourceRegistry;
 
     private String id;
 
@@ -52,22 +52,22 @@ public class Resource implements Container, Serializable {
      * Creates a new <code>Resource</code> instance with the given
      * identifier. <p>
      *
-     * @param resourceManager the resource manager this resource is
+     * @param resourceRegistry the resource registry this resource is
      *        registered into.
      * @param id the resource id.
      */
-    Resource(ResourceManager resourceManager, String id) {
-        this.resourceManager = resourceManager;
+    Resource(ResourceRegistry resourceRegistry, String id) {
+        this.resourceRegistry = resourceRegistry;
         this.id = id;
     }
 
     /**
-     * Returns the resource manager this resource is registered into. <p>
+     * Returns the resource registry this resource is registered into. <p>
      * 
-     * @return the resource manager this resource is registered into.
+     * @return the resource registry this resource is registered into.
      */
-    ResourceManager getResourceManager() {
-        return resourceManager;
+    ResourceRegistry getResourceRegistry() {
+        return resourceRegistry;
     }
 
     /**
@@ -121,8 +121,9 @@ public class Resource implements Container, Serializable {
     public boolean include(Resource resource) throws BossaException {
         ResourceCommand includeCommand = 
             new IncludeInResource(this, resource);
-        return ((Boolean) getResourceManager().getBossa().
-                          executeCommand(includeCommand)).booleanValue();
+        return ((Boolean) getResourceRegistry().getResourceManager().
+                          getBossa().executeCommand(includeCommand)).
+                          booleanValue();
     }
 
     /**
@@ -159,8 +160,9 @@ public class Resource implements Container, Serializable {
     public boolean exclude(Resource resource) throws BossaException {
         ResourceCommand excludeCommand =
             new ExcludeInResource(this, resource);
-        return ((Boolean) getResourceManager().getBossa().
-                          executeCommand(excludeCommand)).booleanValue();
+        return ((Boolean) getResourceRegistry().getResourceManager().
+                          getBossa().executeCommand(excludeCommand)).
+                          booleanValue();
     }
 
     /**
@@ -195,7 +197,8 @@ public class Resource implements Container, Serializable {
     public void remove(Resource resource) throws BossaException {
         ResourceCommand removeCommand =
             new RemoveFromResource(this, resource);
-        getResourceManager().getBossa().executeCommand(removeCommand);
+        getResourceRegistry().getResourceManager().getBossa().
+            executeCommand(removeCommand);
     }
 
     /**

@@ -27,11 +27,9 @@ package com.bigbross.bossa.resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.bigbross.bossa.BossaException;
 
@@ -90,11 +88,96 @@ public class ResourceRegistry implements Serializable {
     }
 
     /**
+     * Returns the top level resource registry, the resource manager. <p>
+     * 
+     * @return the resource manager, <code>null</code> if the root registry
+     *         is not a resource manager.
+     */
+    ResourceManager getResourceManager() {
+        if (superContext == null) {
+            return this instanceof ResourceManager ? 
+                    (ResourceManager) this : null;
+        } else {
+            return superContext.getResourceManager();
+        }
+    }
+
+    /**
+     * Returns the global id of this registry. This is the id that allows
+     * the retrieval of this registry from the resource manager. <p>
+     * 
+     * @return the resource manager.
+     */
+    String getGlobalId() {
+        if (superContext == null) {
+            return getId();
+        } else {
+            return superContext.getGlobalId() + "." + getId();
+        }
+    }
+
+    /**
+     * Registers this resource registry in the resource manager, if it
+     * exists. If this registry contains sub contexts, they will be
+     * registered also. <p>
+     * 
+     * @return <code>true</code> if there is a resource manager and this
+     *         registry was succesfully registered or if there is no
+     *         resource manager,
+     *         <code>false</code> if there is already a registry with the
+     *         same global id in the resource manager.
+     */
+    private boolean registerInResourceManager() {
+        ResourceManager resourceManager = getResourceManager();
+        if (resourceManager == null) {
+            return true;
+        }
+        if (!resourceManager.addRegistry(this)) {
+            return false;
+        }
+        Iterator i = contexts.values().iterator();
+        while (i.hasNext()) {
+            if (!((ResourceRegistry) i.next()).registerInResourceManager()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Unregisters this resource registry in the resource manager, if it
+     * exists. If this registry contains sub contexts, they will be
+     * unregistered also. <p>
+     * 
+     * @return <code>true</code> if there is a resource manager and this
+     *         registry was succesfully unregistered or if there is no
+     *         resource manager,
+     *         <code>false</code> if the global id of this registry was
+     *         not found in the resource manager.
+     */
+    private boolean unregisterInResourceManager() {
+        ResourceManager resourceManager = getResourceManager();
+        if (resourceManager == null) {
+            return true;
+        }
+        if (!resourceManager.removeRegistry(this)) {
+            return false;
+        }
+        Iterator i = contexts.values().iterator();
+        while (i.hasNext()) {
+           if (!((ResourceRegistry) i.next()).unregisterInResourceManager()) {
+               return false;
+           }
+        }
+        return true;
+    }
+
+    /**
      * Returns the resource with the given id. <p>
      *
      * @param id the resource id.
-     * @return a <code>Resource</code>, <code>null</code> if there
-     *         is no resource with this id.
+     * @return the <code>Resource</code> object,
+     *         <code>null</code> if there is no resource with this id.
      */
     public Resource getResource(String id) {
         return (Resource) resources.get(id);
@@ -112,31 +195,68 @@ public class ResourceRegistry implements Serializable {
     }
 
     /**
-     * Adds a resource to this registry. <p>
+     * Creates a new resource in this registry. <p>
      * 
-     * @param resource the resource to be added.
-     * @return <code>true</code> if the resource was added,
-     *         <code>false</code> if there was already a resource
-     *         with the same id.
+     * @param id the id of the resource to be created.
+     * @return the created <code>Resource</code> object,
+     *         <code>null</code> if there is already a resource with this id.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
      */    
-    public boolean addResource(Resource resource) {
-        String id = resource.getId();
+    public Resource createResource(String id) throws BossaException {
+        ResourceCommand createCommand = new CreateResource(id);
+        return (Resource) getResourceManager().getBossa().
+            executeCommand(createCommand);
+    }
+
+    /**
+     * Creates a new resource in this registry. <p>
+     * 
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
+     * 
+     * @param id the id of the resource to be created.
+     * @return the created <code>Resource</code> object,
+     *         <code>null</code> if there is already a resource with this id.
+     */    
+    Resource createResourceImpl(String id) {
         if (!resources.containsKey(id)) {
+            Resource resource = new Resource(this, id);
             resources.put(id, resource);
-            return true;
+            return resource;
         } else {
-            return false;
+            return null;
         }
     }
 
     /**
      * Removes a resource from this registry. <p>
+     *
+     * @param resource the resource to be removed.
+     * @return <code>true</code> if the resource was removed,
+     *         <code>false</code> if the resource was not found.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
+     */
+    public boolean removeResource(Resource resource) throws BossaException {
+        ResourceCommand removeCommand = new RemoveResource(resource);
+        return ((Boolean) getResourceManager().getBossa().
+            executeCommand(removeCommand)).booleanValue();
+    }
+
+    /**
+     * Removes a resource from this registry. <p>
+     * 
+     * This method does not creates a command to the prevalent system. The
+     * execution of this method will not be persistent unless it is called by
+     * an appropriate command. <p>
      * 
      * @param resource the resource to be removed.
      * @return <code>true</code> if the resource was removed,
      *         <code>false</code> if the resource was not found.
      */
-    public boolean removeResource(Resource resource) {
+    public boolean removeResourceImpl(Resource resource) {
         if (resources.remove(resource.getId()) != null) {
             clearReferences(resource);
             return true;
@@ -168,6 +288,10 @@ public class ResourceRegistry implements Serializable {
      * depend on the entries of this registry, and are notified of resource
      * removals. <p>
      * 
+     * Also, if this registry tree is rooted at a resource manager, the
+     * registry tree being registered is put in the global registry index.
+     * <p>
+     * 
      * @param context the sub context.
      * @return <code>true</code> if the sub context was added,
      *         <code>false</code> if the sub context was already present.
@@ -175,11 +299,14 @@ public class ResourceRegistry implements Serializable {
     public boolean registerSubContext(ResourceRegistry context) {
         if (!contexts.containsKey(context.getId())) {
             context.setSuperContext(this);
-            contexts.put(context.getId(), context);
-            return true;
-        } else {
-            return false;
+            if (context.registerInResourceManager()) {
+                contexts.put(context.getId(), context);
+                return true;
+            } else {
+                context.setSuperContext(null);
+            }
         }
+        return false;
     }
 
     /**
@@ -197,6 +324,10 @@ public class ResourceRegistry implements Serializable {
      * Remove the provided registry from the list of registered sub contexts
      * of this registry. <p>
      * 
+     * Also, if this registry tree is rooted at a resource manager, the
+     * registry tree being removed is removed from the global registry index.
+     * <p>
+     * 
      * @param context the sub context.
      * @return <code>true</code> if the sub context was removed,
      *         <code>false</code> if the sub context was not found.
@@ -205,12 +336,13 @@ public class ResourceRegistry implements Serializable {
         ResourceRegistry myContext =
             (ResourceRegistry) contexts.get(context.getId());
         if (myContext != null) {
+            myContext.unregisterInResourceManager();
             myContext.setSuperContext(null);
             return true;
         } else {
             return false;
         }
-    } 
+    }
 
     /**
      * Compiles a resource expression. <p>

@@ -193,8 +193,7 @@ class Reference extends Expression {
     Reference(ResourceRegistry registry, String resource) {
         this.group = registry.getResource(resource);
         if (group == null) {
-            this.group = new Resource(null, resource);
-            registry.addResource(group);
+            this.group = registry.createResourceImpl(resource);
         }
     }
 

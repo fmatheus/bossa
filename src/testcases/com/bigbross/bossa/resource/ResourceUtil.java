@@ -41,7 +41,7 @@ public class ResourceUtil {
         Resource mar = resourceManager.createResourceImpl("mary");
         Resource pan = resourceManager.createResourceImpl("pan");
 
-        ResourceRegistry registry = resourceManager.getMainContext().getSubContext("test");
+        ResourceRegistry registry = resourceManager.getSubContext("test");
         Resource sol = registry.getResource("requesters");
         Resource com = registry.getResource("sales");
         Resource dir = registry.getResource("directors");

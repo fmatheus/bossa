@@ -38,29 +38,58 @@ public class ResourceManagerTest extends TestCase {
 	super(name);
     }
 
-
     protected void setUp() {
 	System.out.println("Setting up a resource manager test.");
         resourceManager = new ResourceManager();
     }
 
-    public void testCreateResource() {
-        assertNotNull(resourceManager.createResourceImpl("testResource"));
-        assertNull(resourceManager.createResourceImpl("testResource"));
-    }
-    
-    public void testGetResource() {
-        assertNull(resourceManager.getResource("testResource"));
-        Resource test = resourceManager.createResourceImpl("testResource");
-        assertNotNull(test);
-        assertSame(test, resourceManager.getResource("testResource"));
-        assertSame(resourceManager, test.getResourceManager());
+    public void testAddRemoveRegistries() {
+        ResourceRegistry context1 = new ResourceRegistry("c1");
+        assertFalse(resourceManager.removeRegistry(context1));
+        assertTrue(resourceManager.addRegistry(context1));
+        assertFalse(resourceManager.addRegistry(context1));
+        assertTrue(resourceManager.removeRegistry(context1));
     }
 
-    public void testRemoveResource() {
-        Resource test = resourceManager.createResourceImpl("testResource");
-        assertNotNull(test);
-        assertTrue(resourceManager.removeResourceImpl(test));
-        assertNotNull(resourceManager.createResourceImpl("testResource"));
+    public void testFindSelf() {
+        String globalId = resourceManager.getGlobalId();
+        assertSame(resourceManager, resourceManager.getRegistry(globalId));
+    }
+
+    public void testFindRegistry() {
+        ResourceRegistry context1 = new ResourceRegistry("c1");
+        ResourceRegistry context2 = new ResourceRegistry("c2");
+        resourceManager.registerSubContext(context1);
+        context1.registerSubContext(context2);
+
+        assertSame(context1,
+                   resourceManager.getRegistry(context1.getGlobalId()));        
+        assertSame(context2,
+                   resourceManager.getRegistry(context2.getGlobalId()));
+    }
+
+    public void testFindRegistryTree() {
+        ResourceRegistry context1 = new ResourceRegistry("c1");
+        ResourceRegistry context2 = new ResourceRegistry("c2");
+        context1.registerSubContext(context2);
+        resourceManager.registerSubContext(context1);
+
+        assertSame(context1,
+                   resourceManager.getRegistry(context1.getGlobalId()));        
+        assertSame(context2,
+                   resourceManager.getRegistry(context2.getGlobalId()));
+    }
+
+    public void testRemoveRegistry() {
+        ResourceRegistry context1 = new ResourceRegistry("c1");
+        ResourceRegistry context2 = new ResourceRegistry("c2");
+        resourceManager.registerSubContext(context1);
+        context1.registerSubContext(context2);
+        String id1 = context1.getGlobalId();
+        String id2 = context2.getGlobalId();
+        resourceManager.removeSubContext(context1);
+
+        assertNull(resourceManager.getRegistry(id1));
+        assertNull(resourceManager.getRegistry(id2));
     }
 }
