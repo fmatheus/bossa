@@ -142,8 +142,8 @@ public class Historian implements Serializable {
      */
     private boolean hasCase(Event event, int caseId) {
         if (event.getType() == Event.WFNET_EVENT) {
-            return new Integer(caseId).equals(event.getAttributes().get(
-                                                  WFNetEvents.ATTRIB_CASE_ID)); 
+            return Integer.toString(caseId).equals(event.getAttributes().get(
+                                                   WFNetEvents.ATTRIB_CASE_ID)); 
         }
         return false;
     }

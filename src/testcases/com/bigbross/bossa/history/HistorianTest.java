@@ -51,14 +51,14 @@ public class HistorianTest extends TestCase {
         historian = new Historian(null);
         HashMap attributes = new HashMap();
         attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype1");
-        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(1));
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, "1");
         attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource1");
         Date aTime = new Date();
         aTime.setTime(t1);
         e0 = new Event("teste0", Event.WFNET_EVENT, attributes, aTime);
         attributes = new HashMap();
         attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype2");
-        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(1));
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, "1");
         attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource2");
         aTime = new Date();
         aTime.setTime(t2);
@@ -71,7 +71,7 @@ public class HistorianTest extends TestCase {
         e2 = new Event("teste2", Event.RESOURCE_EVENT, attributes, aTime);
         attributes = new HashMap();
         attributes.put(WFNetEvents.ATTRIB_CASE_TYPE_ID, "casetype1");
-        attributes.put(WFNetEvents.ATTRIB_CASE_ID, new Integer(2));
+        attributes.put(WFNetEvents.ATTRIB_CASE_ID, "2");
         attributes.put(WFNetEvents.ATTRIB_RESOURCE_ID, "resource3");
         aTime = new Date();
         aTime.setTime(t4);
