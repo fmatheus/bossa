@@ -16,6 +16,10 @@
         an application is designed to use Bossa's workflow services.
       </para>
     </abstract>
+    <copyright>
+      <year>2003</year>
+      <holder>OpenBR Sistemas S/C Ltda.</holder>
+    </copyright>
   </articleinfo>
 
 <sect1 id="intro">
@@ -134,7 +138,27 @@
 <sect1 id="petri-nets">
   <title>Petri Nets and Workflow</title>
 
-  <para>a</para>
+  <para>workflow definition</para>
+  <para>petri nets</para>
+  <para>workflow as petri nets.  <xref linkend="purchase"/></para>
+
+  <figure id="purchase">
+    <title>A purchase department case type.</title>
+    <mediaobject>
+     <imageobject>
+      <imagedata align="center" fileref="purchase.png"/>
+     </imageobject>
+     <textobject>
+      <phrase>The Petri net diagram of the purchase case type.</phrase>
+     </textobject>
+    </mediaobject>
+  </figure>
+
+  <para>high level petri nets</para>
+  <para>colored</para>
+  <para>weighted edges</para>
+  <para>details: resources</para>
+  <para>An example: a task of the IC process</para>
 </sect1>
 
 <sect1 id="bossa">
@@ -148,27 +172,6 @@
 <sect1 id="overview">
   <title>Overview</title>
 
-  <para>
-    Workflow and application separation.
-
-
-    The workflow engine in <xref linkend="fig"/>.
-  </para>
-
-  <figure id="fig">
-    <title>Bossa</title>
-    <mediaobject>
-<!--     <imageobject>
-      <imagedata scale="60" align="center" fileref="fig.eps"/>
-     </imageobject>
-     <imageobject>
-      <imagedata scale="120" align="center" fileref="fig.png"/>
-     </imageobject> -->
-     <textobject>
-      <phrase>A textual description.</phrase>
-     </textobject>
-    </mediaobject>
-  </figure>
 
   <para>
     We will present a brief description:
