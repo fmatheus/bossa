@@ -38,10 +38,11 @@ public abstract class Expression implements Container, Serializable {
     public final static char SUB = '-';
     public final static char AND = '^';
     public final static char VAR = '$';
+    public final static char SPC = ' ';
     public final static char LP  = '(';
     public final static char RP  = ')';
 
-    protected final static String DELIM = "" + OR + SUB + AND + VAR + LP + RP;
+    protected final static String DELIM = "" + OR + SUB + AND + VAR + SPC + LP + RP;
 
     /**
      * Compiles a resource expression. <p>
@@ -73,6 +74,10 @@ public abstract class Expression implements Container, Serializable {
         }
 
         String tok = expression.nextToken();
+
+        while (tok.charAt(0) == SPC) {
+            tok = expression.nextToken();
+        }
 
         switch (tok.charAt(0)) {
 
@@ -119,10 +124,10 @@ public abstract class Expression implements Container, Serializable {
             return node;
 
         case VAR: // Resource weak reference
-            return new LazyReference(registry, expression.nextToken().trim());
+            return new LazyReference(registry, expression.nextToken());
 
         default: // Resource reference
-            return new Reference(registry, tok.trim());
+            return new Reference(registry, tok);
 
         }
 
