@@ -112,26 +112,26 @@ public class BossaBrowser {
                     System.out.println(" " + caze.getId() + "\t" + caze);
                 }    
             } else if (operation.equals("w")) {
-                System.out.println(" ctID\tcID\twiID");
+                System.out.println("\tctID\tcID\twiID");
                 System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
                 lastWorkItemList = 
                     caseTypeManager.getCaseType(id).getWorkItems(true);
                 for (int i = 0; i < lastWorkItemList.size(); i++) {
                     WorkItem wi = (WorkItem) lastWorkItemList.get(i);
-                    System.out.println(i + "> " + id + "\t\t" +
+                    System.out.println(i + ":\t" + id + "\t\t" +
                                        wi.getCase().getId() +
                                        "\t\t" + wi.getId());
                 }    
             } else if (operation.equals("a")) {
-                System.out.println(" ctID\tcID\taID\ttransition");
+                System.out.println("\tctID\tcID\taID\ttransition");
                 System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
                 lastActivitiesList =
                     caseTypeManager.getCaseType(id).getActivities();
                 for (int i = 0; i < lastActivitiesList.size(); i++) {
                     Activity a = (Activity) lastActivitiesList.get(i);
-                    System.out.println(i + "> " + id + "\t\t" + 
+                    System.out.println(i + ":\t" + id + "\t\t" + 
                                        a.getCase().getId() + "\t\t" +
                                        a.getId() + "\t\t" +
                                        a.getTransition().getId());
