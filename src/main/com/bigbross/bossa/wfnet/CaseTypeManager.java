@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.prevayler.Command;
 import org.prevayler.Prevayler;
 import org.prevayler.implementation.AbstractPrevalentSystem;
@@ -66,20 +68,38 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
 
         if (instance == null) {
             try {
+                /* Set up a simple configuration that logs on the console. */
+                BasicConfigurator.configure();
+
+                logger.info("Starting prevalent system.");
                 Prevayler prevayler = new SnapshotPrevayler(new CaseTypeManager(),
                                                             "build/WFNet", 1);
                 instance = (CaseTypeManager) prevayler.system();
                 instance.setPrevayler(prevayler);
+                logger.info("Starting prevalent system. Done.");
             } catch (IOException e) {
                 /* FIXME: Throw an exception here. */
-                System.out.println("Prevayler error!"); e.printStackTrace();
+                logger.error("Prevayler error!", e);
             } catch (ClassNotFoundException e) {
                 /* FIXME: Throw an exception here. */
-                System.out.println("Prevayler error!"); e.printStackTrace();
+                logger.error("Prevayler error!", e);
             } 
         }
         return instance;
     }
+
+    /*
+     * Other static variables.
+     */
+
+    /**
+     * The logger object used by this class. <p>
+     *
+     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
+     *      target=_top>Log4J HomePage</a>
+     */
+    private static Logger logger =
+        Logger.getLogger(CaseTypeManager.class.getName());
 
 
     /*
@@ -136,7 +156,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
           executeCommand(registerCommand);
         } catch (Exception e) {
             /* FIXME: Exceptions, please. */
-            System.out.println("Prevayler error!"); e.printStackTrace();
+            logger.error("Prevayler error!", e);
         }
         return true;
     }
@@ -173,7 +193,7 @@ public class CaseTypeManager extends AbstractPrevalentSystem {
           executeCommand(removeCommand);
         } catch (Exception e) {
             /* FIXME: Exceptions, please. */
-            System.out.println("Prevayler error!"); e.printStackTrace();
+            logger.error("Prevayler error!", e);
         }
     }
 

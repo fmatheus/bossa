@@ -26,12 +26,23 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class represents a transition of a specific case instance.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class WorkItem implements Serializable {
+
+    /**
+     * The logger object used by this class. <p>
+     *
+     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
+     *      target=_top>Log4J HomePage</a>
+     */
+    private static Logger logger =
+        Logger.getLogger(Activity.class.getName());
 
     private Case caze;
 
@@ -75,7 +86,7 @@ public class WorkItem implements Serializable {
           return (Activity) CaseTypeManager.getInstance().executeCommand(openCommand);
         } catch (Exception e) {
             /* FIXME: Exceptions, please. */
-            System.out.println("Prevayler error!"); e.printStackTrace();
+            logger.error("Prevayler error!", e);
         }
         return null;
     }

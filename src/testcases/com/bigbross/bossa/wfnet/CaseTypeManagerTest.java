@@ -86,12 +86,10 @@ public class CaseTypeManagerTest extends TestCase {
     
     public static void main(String[] args) throws Exception {
   
-        System.out.println("Starting system...");
         CaseTypeManager caseTypeManager = CaseTypeManager.getInstance();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("ok.");
+
         System.out.println();
- 
         System.out.println("## WFNet Browser ##");
         System.out.println("Enter command (q to quit, h or help):");
         System.out.print("> ");
