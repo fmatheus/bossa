@@ -223,8 +223,10 @@ public class CaseType implements Serializable {
      * 
      * @return An <code>Iterator</code> to all active cases.
      */
-    public Iterator getCases() {
-        return Collections.unmodifiableCollection(cases.values()).iterator();
+    public List getCases() {
+        ArrayList caseList = new ArrayList();
+        caseList.addAll(cases.values());
+        return caseList;
     }
 
     /**

@@ -137,11 +137,10 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("ok.");
             } else if (operation.equals("c")) {
                 String id = tokenizer.nextToken();
-                Iterator i = caseTypeManager.getCaseType(id).getCases();
-                int count = 1;
-                while (i.hasNext()) {
-                    Case caze = (Case) i.next();
-                    System.out.println(" " + count++ + " " + caze.getId() +
+                List l = caseTypeManager.getCaseType(id).getCases();
+                for (int i = 0; i < l.size(); i++) {
+                    Case caze = (Case) l.get(i);
+                    System.out.println(" " + i + " " + caze.getId() +
                                        " " + caze);
                 }    
             } else if (operation.equals("w")) {

@@ -103,13 +103,13 @@ public class Case implements Serializable {
      */
     public List getWorkItems() {
         ArrayList items = new ArrayList(workItems.length);
-        
+
         for (int i = 0; i < workItems.length; i++) {
             if (workItems[i].isFireable()) {
                 items.add(workItems[i]);
             }
         }        
-        
+
 	return items;
     }
 
@@ -135,10 +135,7 @@ public class Case implements Serializable {
      */
     public List getActivities() {
         List acts = new ArrayList(activities.size());
-        Iterator i = activities.values().iterator();
-        while (i.hasNext()) {
-            acts.add(i.next()); 
-        }
+        acts.addAll(activities.values());
         return acts;
     }
 

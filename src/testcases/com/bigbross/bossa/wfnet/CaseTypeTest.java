@@ -144,12 +144,12 @@ public class CaseTypeTest extends TestCase {
         Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         
-        Iterator i = caseType.getCases();
-        int id = ((Case) i.next()).getId();
+        List l = caseType.getCases();
+        assertEquals(2, l.size());
+        int id = ((Case) l.get(0)).getId();
         assertTrue(id == 1 || id == 2);
-        id = ((Case) i.next()).getId();
+        id = ((Case) l.get(1)).getId();
         assertTrue(id == 1 || id == 2);
-        assertFalse(i.hasNext());
     }
     
     public void testGetWorkItems() {
