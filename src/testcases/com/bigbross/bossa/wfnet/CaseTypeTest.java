@@ -37,8 +37,12 @@ public class CaseTypeTest extends TestCase {
     }
 
     CaseType createTestCaseType() {
+        return createTestCaseType("Testing 1,2,3...");
+    }
+
+    CaseType createTestCaseType(String id) {
      
-        CaseType caseType = new CaseType();
+        CaseType caseType = new CaseType(id);
 
         Place A = caseType.registerPlace("A");
         Place B = caseType.registerPlace("B");

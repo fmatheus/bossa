@@ -32,23 +32,46 @@ import java.util.Map;
 
 /**
  * This class represents the definition of a process (case type). It
- * also keeps track of all current cases of this case type and acts as
- * a proxy to their operations. <p>
+ * also keeps track of all current cases of this case type. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class CaseType {
+    
+    private String id;
 
-    private Map transitions = new HashMap();
+    private Map transitions;
 
-    private Map places = new HashMap();
+    private Map places;
 
     private int[][] map;
 
-    private List cases = new ArrayList();
+    private List cases;
 
-    private int caseSequence = 0;
+    private int caseSequence;
 
+    /**
+     * Creates a new case type, without any places or transitions. <p>
+     * 
+     * @param id The id of the new case type.
+     */
+    public CaseType(String id) {
+        this.id = id;
+        this.transitions = new HashMap();
+        this.places = new HashMap();
+        this.cases = new ArrayList();
+        this.caseSequence = 0;
+    }
+
+    /**
+     * Returns the id of this case type. <p>
+     * 
+     * @return The id of this case type.
+     */
+    public String getId() {
+        return id;
+    }
+    
     public Place getPlace(String id) {
 	return (Place) places.get(id);
     }
