@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -114,9 +114,11 @@ public class CaseTypeManager implements Serializable {
             getBossa().getResourceManager().
                 registerSubContext(caseType.getResourceRegistry());
         }
-        WFNetEvents.notifyCaseType(getBossa(),
-                                   WFNetEvents.ID_REGISTER_CASE_TYPE,
-                                   caseType);
+        WFNetEvents queue = new WFNetEvents();
+        queue.newCaseTypeEvent(getBossa(),
+                               WFNetEvents.ID_REGISTER_CASE_TYPE,
+                               caseType);
+        queue.notifyAll(getBossa());
         return true;
     }
     
@@ -151,9 +153,11 @@ public class CaseTypeManager implements Serializable {
                 getBossa().getResourceManager().
                     removeSubContext(caseType.getResourceRegistry());
             }
-            WFNetEvents.notifyCaseType(getBossa(),
-                                       WFNetEvents.ID_REMOVE_CASE_TYPE,
-                                       caseType);
+            WFNetEvents queue = new WFNetEvents();
+            queue.newCaseTypeEvent(getBossa(),
+                                   WFNetEvents.ID_REMOVE_CASE_TYPE,
+                                   caseType);
+            queue.notifyAll(getBossa());
         }
     }
     

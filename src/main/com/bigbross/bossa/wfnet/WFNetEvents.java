@@ -29,16 +29,17 @@ import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.notify.Event;
+import com.bigbross.bossa.notify.NotificationQueue;
 import com.bigbross.bossa.resource.Resource;
 
 /**
  * This class holds as static constants all ids of WFNet events. It also
- * provides static methods used by the WFNet classes to create these
+ * provides methods used by the WFNet classes to create and notify these
  * events. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public abstract class WFNetEvents {
+public class WFNetEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of a case type registration. <p>
@@ -179,51 +180,49 @@ public abstract class WFNetEvents {
 
 
     /**
-     * Notify a case type related event. <p>
+     * Creates a case type related event and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param caseType the case type involved.
      */
-    static void notifyCaseType(Bossa bossa, String notificationId,
+    void newCaseTypeEvent(Bossa bossa, String notificationId,
                                CaseType caseType) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_CASE_TYPE_ID, caseType.getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
-                                    bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
 
     /**
-     * Notify a case related event. <p>
+     * Creates a case related event and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param caze the case involved.
      */
-    static void notifyCase(Bossa bossa, String notificationId, Case caze) {
+    void newCaseEvent(Bossa bossa, String notificationId, Case caze) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_CASE_ID, Integer.toString(caze.getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
-                                    bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
 
     /**
-     * Notify a work item related event. <p>
+     * Creates a work item related event and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param wi the work item involved.
      * @param resource the resource involved.
      */
-    static void notifyWorkItem(Bossa bossa, String notificationId,
-                               WorkItem wi, Resource resource) {
+    void newWorkItemEvent(Bossa bossa, String notificationId,
+                          WorkItem wi, Resource resource) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_WORK_ITEM_ID, wi.getId());
@@ -232,21 +231,20 @@ public abstract class WFNetEvents {
             if (resource != null) {
                 attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
             } 
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
-                                    bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
 
     /**
-     * Notify an activity related event. <p>
+     * Creates an activity related event and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param act the activity involved.
      */
-    static void notifyActivity(Bossa bossa, String notificationId,
-                               Activity act) {
+    void newActivityEvent(Bossa bossa, String notificationId,
+                          Activity act) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_ACTIVITY_ID, Integer.toString(act.getId()));
@@ -254,9 +252,8 @@ public abstract class WFNetEvents {
             attrib.put(ATTRIB_CASE_ID, Integer.toString(act.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, act.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, act.getResource().getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
-                                    bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
 }

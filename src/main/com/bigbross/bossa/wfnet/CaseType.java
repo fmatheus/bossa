@@ -200,7 +200,9 @@ public class CaseType implements Serializable {
         Case caze = new Case(template);
         cases.put(new Integer(caze.getId()), caze);
         resources.registerSubContext(caze.getResourceRegistry());
-        WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_OPEN_CASE, caze);
+        WFNetEvents queue = new WFNetEvents();
+        queue.newCaseEvent(getBossa(), WFNetEvents.ID_OPEN_CASE, caze);
+        queue.notifyAll(getBossa());
         return caze;
     }
 
@@ -214,7 +216,9 @@ public class CaseType implements Serializable {
     boolean closeCase(Case caze) {
         if (cases.remove(new Integer(caze.getId())) != null) {
             resources.removeSubContext(caze.getResourceRegistry());
-            WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_CLOSE_CASE, caze);
+            WFNetEvents queue = new WFNetEvents();
+            queue.newCaseEvent(getBossa(), WFNetEvents.ID_CLOSE_CASE, caze);
+            queue.notifyAll(getBossa());
             return true;
         } else {
             return false;

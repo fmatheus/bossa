@@ -67,6 +67,8 @@ public class Case implements Serializable {
     private Map attributes;
 
     private transient BSFManager bsf;
+    
+    private WFNetEvents eventQueue;
 
     /**
      * Creates a new case, using the provided marking. An initial scan of
@@ -88,6 +90,7 @@ public class Case implements Serializable {
 	this.marking = marking;
         this.activities = new HashMap();
         this.activitySequence = 1;
+        this.eventQueue = new WFNetEvents();
 
         this.attributes = new HashMap();
 	this.bsf = new BSFManager();
@@ -119,6 +122,7 @@ public class Case implements Serializable {
 	this.marking = (int[]) template.marking.clone();
         this.activities = new HashMap();
         this.activitySequence = template.activitySequence;
+        this.eventQueue = new WFNetEvents();
 
         this.attributes = new HashMap();
 	this.bsf = new BSFManager();
@@ -345,7 +349,7 @@ public class Case implements Serializable {
             WorkItem wi = (WorkItem) i.next();
             if (!wi.isFireable()) {
                 if (wi.update()) {
-                   WFNetEvents.notifyWorkItem(getBossa(),
+                  eventQueue.newWorkItemEvent(getBossa(),
                                               WFNetEvents.ID_WORK_ITEM_ACTIVE,
                                               wi, null);
                 } else {
@@ -367,7 +371,7 @@ public class Case implements Serializable {
             WorkItem wi = (WorkItem) i.next();
             if (wi.isFireable()) {
                 if (!wi.update()) {
-                   WFNetEvents.notifyWorkItem(getBossa(),
+                  eventQueue.newWorkItemEvent(getBossa(),
                                               WFNetEvents.ID_WORK_ITEM_INACTIVE,
                                               wi, null);
                 }
@@ -436,15 +440,16 @@ public class Case implements Serializable {
         Resource group =
             getResourceRegistry().getResource(wi.getId());
         if (group == null) {
-            group = getResourceRegistry().createResourceImpl(wi.getId());
+            group = getResourceRegistry().createResourceImpl(wi.getId(), false);
         }
-        group.includeImpl(resource);
+        group.includeImpl(resource, false);
 
         Activity activity = new Activity(wi, resource);
         activities.put(new Integer(activity.getId()), activity);
 
-        WFNetEvents.notifyWorkItem(getBossa(), WFNetEvents.ID_OPEN_WORK_ITEM,
-                                   wi, resource);
+        eventQueue.newWorkItemEvent(getBossa(), WFNetEvents.ID_OPEN_WORK_ITEM,
+                                    wi, resource);
+        eventQueue.notifyAll(getBossa());
 
 	return activity;
     }
@@ -491,12 +496,14 @@ public class Case implements Serializable {
             this.marking[e.getPlace().getIndex()] += e.output(this);
         }
 
-        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
+        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
                                    activity);
 
         /* An EvaluationException can be inconsistently thrown here. */
 	int actives = activate();
         activities.remove(new Integer(activity.getId()));
+
+        eventQueue.notifyAll(getBossa());
 
         if (actives == 0 && activities.size() == 0) {
             caseType.closeCase(this);
@@ -533,17 +540,19 @@ public class Case implements Serializable {
             this.marking[e.getPlace().getIndex()] += e.input(this);
         }
 
-        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
+        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
                                    activity);
 
         Resource resource = activity.getResource();
         Resource group =
             getResourceRegistry().getResource(activity.getWorkItemId());
-        group.removeImpl(resource);
+        group.removeImpl(resource, false);
 
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();
         activities.remove(new Integer(activity.getId()));
+
+        eventQueue.notifyAll(getBossa());
 
 	return true;
     }
