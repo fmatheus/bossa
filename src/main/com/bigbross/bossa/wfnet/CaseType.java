@@ -150,15 +150,6 @@ public class CaseType {
     }
 
     /**
-     * Creates a new case with no tokens. <p>
-     * 
-     * @return the newly created case.
-     */
-    Case newCase() {
-        return newCase(new int[places.size()]);
-    }
-
-    /**
      * Creates a new case with the provided tokens. <p>
      * 
      * @return the newly created case.
