@@ -58,10 +58,9 @@ More elaborate instructions:
 
 1) Setup your local ant build system. Bossa uses ant to build.
 
-2) Check if Bossa dependencies (see below) are in the CLASSPATH or, if
-   you are in a Unix like environment, create soft links to the
-   appropriate JARs in a lib directory under the main tree (create
-   it).
+2) Check if Bossa dependencies (see below) are in the CLASSPATH or put
+   the appropriate JARs or, if you are in a Unix like environment,
+   create soft links to them in the lib directory under the main tree.
 
 3) Run:
    # ant dist
@@ -76,43 +75,9 @@ More elaborate instructions:
 Dependencies
 ============
 
-Bossa requires the following software to compile:
-(If specified the version number indicates minimum requirements.)
-
-* J2SE 1.2 SDK
-  Notes: The newer the better, 1.4 works fine (and fast).
-  URL: http://java.sun.com/
-
-* Ant
-  Notes: We use 1.5.1, older versions may work.
-  URL: http://ant.apache.org/
-
-* JUnit 3.8.1
-  Notes: For the tests only.
-  URL: http://www.junit.org/
-
-* Prevayler 1.03.003
-  Notes: Binaries not available at the site, get from our download page.
-  URL: http://www.prevayler.org/
-
-* BSF CVS
-  Notes: We need the current cvs version of BSF, get binaries from our
-  download page.
-  URL: http://jakarta.apache.org/bsf/
-
-* Rhino
-  Notes: We use 1.5R3.
-  URL: http://www.mozilla.org/rhino/
-
-Bossa requires the following software to run:
-
-* J2SE 1.2 JRE
-
-* Prevayler 1.03.003
-
-* BSF CVS
-
-* Rhino
+For a list of Bossa dependencies see the lib/README file. For
+convenience, we provide an archive with binaries of the runtime
+dependencies in our download page.
 
 
 And Now What?
@@ -156,7 +121,7 @@ build          <-- this is where all compiled files (.class) go into when
 dist           <-- the JAR files and javadocs will be put here. 
  | 
  +-javadocs    <-- the generated javadocs will appear here.
-lib            <-- create this directory and put needed JARs.
+lib            <-- you may put needed JARs here.
 src            <-- the source code.
  | 
  +-main        <-- the source code for the Bossa library is here.
