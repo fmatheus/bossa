@@ -1,11 +1,14 @@
 
-Bossa 0.X.X "XXX", 200X-XX-XX
------------------------------
-
-* 
+Bossa 0.5.1 "The History Is Written by The Victors", 2004-01-XX
+---------------------------------------------------------------
 
 * Added the ability to export old history events to a XML file and
   purge them.
+
+* 
+
+* Made some small adjustments to our chained exceptions so that they work
+  nicely with J2SE 1.4.
 
 
 Bossa 0.5.0 "3.500 BC", 2003-12-03

@@ -39,10 +39,9 @@ import java.io.PrintWriter;
  */
 public class BossaException extends Exception {
 
-    /**
-     * The nested throwable. <p>
-     */
     private Throwable cause;
+
+    private boolean causeRead;
 
     /**
      * Constructs a new <code>BossaException</code> object with
@@ -93,24 +92,11 @@ public class BossaException extends Exception {
      * cause is the throwable that caused this
      * <code>BossaException</code> object to get thrown. <p>
      *
-     * @return The cause.
+     * @return the cause.
      */
     public Throwable getCause() {
-        return cause;
-    }
-
-    /**
-     * Initializes the cause of this <code>BossaException</code>
-     * object to the specified value. The cause is the throwable that
-     * caused this <code>BossaException</code> object to get
-     * thrown. <p>
-     *
-     * @param cause the cause.
-     * @return A reference to this <code>BossaException</code>.
-     */
-    public Throwable initCause(Throwable cause) {
-        this.cause = cause;
-        return this;
+        this.causeRead = true;
+        return this.cause;
     }
 
     /**
@@ -118,11 +104,7 @@ public class BossaException extends Exception {
      * backtrace to the standard error stream. <p>
      */
     public void printStackTrace() {
-        super.printStackTrace();
-        if (cause != null) {
-            System.err.print("Caused by:");
-            cause.printStackTrace();
-        }
+        printStackTrace(System.err);
     }
 
     /**
@@ -132,9 +114,10 @@ public class BossaException extends Exception {
      * @param ps <code>PrintStream</code> object to use for output.
      */
     public void printStackTrace(PrintStream ps) {
+        this.causeRead = false;
         super.printStackTrace(ps);
-        if (cause != null) {
-            ps.print("Caused by:");
+        if (cause != null && this.causeRead == false) {
+            ps.print("Caused by: ");
             cause.printStackTrace(ps);
         }
     }
@@ -146,9 +129,10 @@ public class BossaException extends Exception {
      * @param pw <code>PrintWriter</code> object to use for output.
      */
     public void printStackTrace(PrintWriter pw) {
+        this.causeRead = false;
         super.printStackTrace(pw);
-        if (cause != null) {
-            pw.print("Caused by:");
+        if (cause != null && this.causeRead == false) {
+            pw.print("Caused by: ");
             cause.printStackTrace(pw);
         }
     }
