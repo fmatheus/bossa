@@ -56,9 +56,20 @@ public class WorkItem implements Serializable {
      * @param transition the transition.
      */ 
     WorkItem(Case caze, Transition transition) {
+        this(caze, transition, true);
+    }
+
+    /**
+     * Creates a new work item. <p>
+     * 
+     * @param caze the case.
+     * @param transition the transition.
+     * @param fireable the work item fireable status.
+     */ 
+    WorkItem(Case caze, Transition transition, boolean fireable) {
 	this.caze = caze;
 	this.transition = transition;
-        this.fireable = true;
+        this.fireable = fireable;
     }
 
     /**

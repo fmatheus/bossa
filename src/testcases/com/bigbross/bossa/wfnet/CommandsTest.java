@@ -52,7 +52,7 @@ public class CommandsTest extends TestCase {
         caseTypeManager.registerCaseTypeImpl(
             WFNetUtil.createCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
-        caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+        caseType.openCase();
     }
 
     public void testRegisterCaseType() throws Exception {

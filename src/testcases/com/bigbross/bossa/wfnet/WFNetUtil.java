@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.util.Map;
+import java.util.HashMap;
 
 import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
@@ -33,6 +34,10 @@ import com.bigbross.bossa.resource.ResourceUtil;
 public class WFNetUtil {
 
     public static CaseType createCaseType(String id) throws Exception {
+        return createCaseType(id, new int[] {1,0,0,0,0,0,0,0});
+    }
+
+    public static CaseType createCaseType(String id, int[] marking) throws Exception {
      
         CaseType caseType = new CaseType(id);
 
@@ -77,21 +82,20 @@ public class WFNetUtil {
         f.output(B, "OK");
         f.output(H, "!OK");
 
-        caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
+        caseType.buildTemplate(marking, null);
 
         return caseType;
     }
 
     public static Case createCase() throws Exception {
-        return createCase(new int[] {1,0,0,0,0,0,0,0});
+        return createCaseType("test").openCase();
     }
 
     public static Case createCase(int[] marking) throws Exception {
-        return createCaseType("test").openCase(marking);
+        return createCaseType("test", marking).openCase();
     }
 
-    public static boolean fire(Case caze, String workItemId, Map attributes)
-        throws Exception  {
+    public static boolean fire(Case caze, String workItemId, Map attributes) throws Exception  {
         return fire(caze, workItemId, attributes, ResourceUtil.createResource("jdoe"));
     }
 

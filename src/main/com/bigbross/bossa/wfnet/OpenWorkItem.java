@@ -26,6 +26,7 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
 
 /**
@@ -59,13 +60,14 @@ class OpenWorkItem extends WFNetCommand {
     /**
      * Executes the operation. <p>
      * 
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
      * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager)
-        throws EvaluationException {
+    protected Serializable execute(CaseTypeManager caseTypeManager) throws BossaException {
 
         Resource resource = caseTypeManager.getBossa().getResourceManager().getResource(resourceId);
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);

@@ -45,11 +45,6 @@ public class CaseTest extends TestCase {
 	System.out.println("Setting up a case test.");
     }
 
-    Case newTestCase() throws Exception {
-        return WFNetUtil.createCaseType("test").
-            openCase(new int[] {1,0,0,0,0,0,0,0});
-    }
-
     static boolean sameState(int[] s1, int[] s2) {
         assertEquals(s1.length, s2.length);
         for (int i = 0; i < s1.length; i++) {
@@ -68,7 +63,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testGetWorkItem() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         
         WorkItem wi = caze.getWorkItem("a");
         assertNotNull(wi);
@@ -77,7 +72,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testFirstShot() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
 
@@ -89,7 +84,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testInvalidShot() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         
         int[] start = caze.getMarking();
         
@@ -101,7 +96,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testRollback() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         
         int[] start = caze.getMarking();
 
@@ -115,7 +110,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testMachineGun() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         HashMap attributes = new HashMap();
 	attributes.put("SOK", new Boolean(true));
         attributes.put("DIR", new Boolean(true));
@@ -148,9 +143,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testWorkItensList() throws Exception {
-        Case caze = null;
-        caze = WFNetUtil.createCaseType("test").
-            openCase(new int[] {1,1,0,0,0,0,0,0});
+        Case caze = WFNetUtil.createCase(new int[] {1,1,0,0,0,0,0,0});
         List workItens = caze.getWorkItems();
         assertEquals(2, workItens.size());
 
@@ -162,7 +155,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testGetActivity() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         WorkItem wi = caze.getWorkItem("a");
         caze.open(wi, jdoe);
 
@@ -173,9 +166,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testActivitiesList() throws Exception {
-        Case caze = null;
-        caze = WFNetUtil.createCaseType("test").
-            openCase(new int[] {2,0,0,0,0,0,0,0});
+        Case caze = WFNetUtil.createCase(new int[] {2,0,0,0,0,0,0,0});
         WorkItem wi = caze.getWorkItem("a");
 
         caze.open(wi, jdoe);
@@ -193,7 +184,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testEdgeEvaluation() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
         caze.declare("SOK", new Boolean(true));
 	caze.declare("DIR", new Boolean(false));
 	caze.declare("AVL", new Integer(3));
@@ -213,7 +204,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testEdgeOrientation() throws Exception {
-        Case caze = newTestCase();
+        Case caze = WFNetUtil.createCase();
 
         Edge output = Edge.newOutput("1");
         Edge input = Edge.newInput("2");
@@ -228,7 +219,7 @@ public class CaseTest extends TestCase {
 
         String expected = "\t1\t0\t0\t0\t0\t0\t0\t0\t";
         
-        String result = newTestCase().toString();
+        String result = WFNetUtil.createCase().toString();
 
         assertEquals(expected, result);
     }

@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.ResourceRegistry;
 
 /**
@@ -187,11 +188,13 @@ public class CaseType implements Serializable {
      * 
      * @param marking the initial marking.
      * @return the newly created case.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    Case openCase(int[] marking) throws EvaluationException {
-        Case caze = new Case(this, marking);
+    Case openCase() throws BossaException {
+        Case caze = new Case(template);
         cases.put(new Integer(caze.getId()), caze);
         return caze;
     }
@@ -224,13 +227,16 @@ public class CaseType implements Serializable {
      * Builds the template case that will spawn all other cases. Call this
      * method after you have finished building the case type. <p>
      * 
-     * @param marking The marking of the template case.
+     * @param marking the marking of the template case.
+     * @param attributes the attributes of the template case.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */ 
-    public void buildTemplate(int[] marking) throws EvaluationException {
+    public void buildTemplate(int[] marking, Map attributes) throws BossaException {
         if (template == null) {
-            template = new Case(this, marking);
+            template = new Case(this, marking, attributes);
         }
     }
 

@@ -27,6 +27,8 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.bigbross.bossa.BossaException;
+
 /**
  * This class implements the close operation of <code>Activity</code>
  * through the prevalence subsystem. <p>
@@ -65,8 +67,7 @@ class CloseActivity extends WFNetCommand {
      *            may be left inconsistent.
      * @see com.bigbross.bossa.wfnet.WFNetCommand#execute(CaseTypeManager)
      */
-    protected Serializable execute(CaseTypeManager caseTypeManager) 
-        throws SetAttributeException, EvaluationException {
+    protected Serializable execute(CaseTypeManager caseTypeManager) throws BossaException {
     
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);

@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceRegistry;
 import org.apache.bsf.BSFException;
@@ -71,17 +72,23 @@ public class Case implements Serializable {
      * 
      * @param caseType the case type of this case.
      * @param marking the initial marking (tokens).
+     * @param attributes the initial attributes.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    Case(CaseType caseType, int[] marking) throws EvaluationException {
+    Case(CaseType caseType, int[] marking, Map attributes) throws BossaException {
 
 	this.caseType = caseType;
 	this.marking = marking;
         this.activities = new HashMap();
-        this.attributes = new HashMap();
         this.activitySequence = 1;
+
+        this.attributes = new HashMap();
 	this.bsf = new BSFManager();
+        /* An SetAttributeException can be thrown here. */
+        declare(attributes);
 
 	Transition[] ts = caseType.getTransitions();
 	workItems = new WorkItem[ts.length];
@@ -91,6 +98,36 @@ public class Case implements Serializable {
 
         /* An EvaluationException can be thrown here. */
 	deactivate();
+
+        this.id = caseType.nextCaseId();
+        this.resources = new ResourceRegistry(Integer.toString(id));
+        caseType.getResourceRegistry().registerSubContext(resources);
+    }
+
+    /**
+     * Creates a new case, using the provided template.
+     * 
+     * @param template the <code>Case</code> to be used as template.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
+     */
+    Case(Case template) throws BossaException {
+
+	this.caseType = template.caseType;
+	this.marking = (int[]) template.marking.clone();
+        this.activities = new HashMap();
+        this.activitySequence = template.activitySequence;
+
+        this.attributes = new HashMap();
+	this.bsf = new BSFManager();
+        /* An SetAttributeException can be thrown here. */
+        declare(template.attributes);
+
+	workItems = new WorkItem[template.workItems.length];
+	for (int i = 0; i < workItems.length; ++i) {
+            WorkItem wi = template.workItems[i];
+	    workItems[i] = new WorkItem(this, wi.getTransition(), wi.isFireable());
+	}
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));
@@ -241,6 +278,23 @@ public class Case implements Serializable {
     }
 
     /**
+     * Declares all the attributes to be used at expression evaluation.
+     *
+     * @param attributes a <code>Map</code> of attributes to be declared.
+     * @exception SetAttributeException if the underling expression
+     *            evaluation system has problems setting an attribute.
+     */
+    void declare(Map attributes) throws SetAttributeException {
+        if (attributes != null) {
+            Iterator it = attributes.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry attribute = (Map.Entry) it.next();
+                declare((String) attribute.getKey(), attribute.getValue());
+            }
+        }
+    }
+
+    /**
      * Evaluates an integer expression using the local attributes of this
      * case. <p>
      * 
@@ -332,7 +386,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    Activity open(WorkItem wi, Resource resource) throws EvaluationException {
+    Activity open(WorkItem wi, Resource resource) throws BossaException {
 
 	if (!wi.isFireable()) {
 	    return null;
@@ -340,7 +394,7 @@ public class Case implements Serializable {
 
 	if (isTemplate()) {
             /* An EvaluationException can be consistently thrown here. */
-            Case caze = caseType.openCase(getMarking());
+            Case caze = caseType.openCase();
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
@@ -390,20 +444,13 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    boolean close(Activity activity, Map newAttributes) 
-        throws SetAttributeException, EvaluationException {
+    boolean close(Activity activity, Map newAttributes) throws BossaException {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
 	}
 
-        if (newAttributes != null) {
-            Iterator it = newAttributes.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry attribute = (Map.Entry) it.next();
-                declare((String) attribute.getKey(), attribute.getValue());
-            }
-        }
+        declare(newAttributes);
 
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
