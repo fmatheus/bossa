@@ -81,13 +81,32 @@ public class CaseTypeXMLLoader {
      *            occurs.
      */
     public CaseType createCaseType() throws BossaException {
-        
+        return setupCaseType(null);
+    }
+
+    /**
+     * Fills an empty case type with rules from the PNML file loaded. <p>
+     * 
+     * If no case type is passed as parameter a new one is created using
+     * the case type id defined into PNML file. Otherwise it is ignored
+     * since it should be already defined.
+     *
+     * @param caseType an empty case type or null to create a new one.
+     * @return the case type filled.
+     * @exception SetAttributeException if the underlying expression
+     *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    public CaseType setupCaseType(CaseType caseType) throws BossaException {
         HashMap places = new HashMap();
         HashMap transitions = new HashMap();
         Element wfnet = document.getRootElement().getChild("net");
 
-        String caseTypeId = wfnet.getChild("id").getChildText("value");
-        CaseType caseType = new CaseType(caseTypeId);
+        if (caseType == null) {
+            String caseTypeId = wfnet.getChild("id").getChildText("value");
+            caseType = new CaseType(caseTypeId);
+        }
         
         Iterator i = wfnet.getChildren("place").iterator();
         while (i.hasNext()) {
