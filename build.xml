@@ -34,7 +34,7 @@
   <!-- Name of project and version, used to create filenames -->
   <property name="Name"    value="Bossa Workflow Management System"/>
   <property name="name"    value="bossa"/>
-  <property name="version" value="0.8.0"/>
+  <property name="version" value="0.8.1"/>
   <property name="fullname" value="${name}-${version}" />
 
   <!-- Set global properties for this build -->
