@@ -149,7 +149,9 @@ public class Resource {
 
         if (this.equals(resource)) {
             return true;
-        } else if (!isGroup()) {
+        }
+
+        if (!isGroup()) {
             return false;
         }
 
@@ -160,7 +162,7 @@ public class Resource {
         Iterator it = excludes.iterator();
         while (it.hasNext()) {
             Resource curr = (Resource) it.next();
-            if (curr.isGroup() && curr.contains(resource)) {
+            if (curr.contains(resource)) {
                 return false;
             }
         }
@@ -172,7 +174,7 @@ public class Resource {
         it = includes.iterator();
         while (it.hasNext()) {
             Resource curr = (Resource) it.next();
-            if (curr.isGroup() && curr.contains(resource)) {
+            if (curr.contains(resource)) {
                 return true;
             }
         }

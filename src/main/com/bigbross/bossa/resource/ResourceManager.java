@@ -47,7 +47,7 @@ public class ResourceManager implements Serializable {
 
     private Bossa engine;
 
-    private Map groups;
+    private Map resources;
 
     /**
      * Creates a new empty resource manager. <p>
@@ -56,7 +56,7 @@ public class ResourceManager implements Serializable {
      */
     public ResourceManager(Bossa engine) {
         this.engine = engine;
-        this.groups = new HashMap();
+        this.resources = new HashMap();
     }
 
     /**
@@ -69,96 +69,46 @@ public class ResourceManager implements Serializable {
     /**
      * Returns the bossa engine this resorce manager is part. <p>
      * 
-     * @return The bossa engine this resorce manager is part.
+     * @return the bossa engine this resorce manager is part.
      */
     Bossa getBossa() {
         return engine;
     }
 
     /**
-     * Creates a new empty group in the manager. A group is a collection
-     * of resources. <p>
-     * 
-     * @param the id of the group to be created.
-     * @return <code>true</code> if the group was created,
-     *         <code>false</code> if there is already a group
-     *         with the same id.
-     */    
-    public boolean createGroup(String id) {
-        if (groups.containsKey(id)) {
-            return false;
-        } else {
-            groups.put(id, new HashSet());
-            return true;
-        }
+     * Returns the resorce with the given id. <p>
+     *
+     * @param id the resource id.
+     * @return a <code>Resource</code>, <code>null</code> if there is no resource with this id.
+     */
+    public Resource getResource(String id) {
+        return (Resource) resources.get(id);
     }
 
     /**
-     * Removes a group from the manager. <p>
+     * Creates a new resource in the manager. <p>
      * 
-     * @param the id of the group to be removed.
-     * @return <code>true</code> if the group was removed,
-     *         <code>false</code> if the group was not found.
+     * @param id the id of the resource to be created.
+     * @return a <code>Resource</code>, <code>null</code> if there is already a resource with this id.
      */    
-    public boolean removeGroup(String id) {
-        if (groups.remove(id) == null) {
-            return false;
-        } else {
-            return true;
+    public Resource createResource(String id) {
+        Resource resource = null;
+        if (!resources.containsKey(id)) {
+            resource = new Resource(id);
+            resources.put(id, resource);
         }
-    }
-   
-    /**
-     * Adds a resource to a group. <p>
-     * 
-     * @param groupId the id of the group to add the resource.
-     * @param resource the resource to be added.
-     */
-    public void addResource(String groupId, String resource) {
-        Set group = (Set) groups.get(groupId);
-        group.add(resource);
+        return resource;
     }
 
     /**
-     * Removes a resource from a group. <p>
-     * 
-     * @param groupId the id of the group to remove the resource.
-     * @param resource the resource to be removed.
-     * @return <code>true</code> if the resource was successfully
-     *         removed, <code>false</code> if the resource was not
-     *         found in the indicated group.
+     * Removes a resource from the manager. <p>
+     *
+     * @param resource a <code>Resource</code> to be removed.
+     * @return <code>true</code> if the resource was removed,
+     *         <code>false</code> if the resource was not found.
      */
-    public boolean removeResource(String groupId, String resource) {
-        Set group = (Set) groups.get(groupId);
-        return group.remove(resource);
+    public boolean removeResource(Resource resource) {
+        return resources.remove(resource.getId()) != null;
     }
-    
-    /**
-     * Lists all resources of a group. <p>
-     * 
-     * @param groupId the id of the group.
-     * @return The list of all resources in the indicated group.
-     */
-    public List getAllResources(String groupId) {
-        Set group = (Set) groups.get(groupId);
-        ArrayList resources = new ArrayList();
-        Iterator i = group.iterator();
-        while (i.hasNext()) {
-            resources.add(i.next());
-        }
-        return resources;
-    }
-    
-    /**
-     * Indicates if a resource is contained in a group. <p>
-     * 
-     * @param groupId the id of the group.
-     * @param resource the resource.
-     * @return <code>true</code> if the resource is in the group, 
-     *         <code>false</code> otherwise.
-     */
-    public boolean groupContains(String groupId, String resource) {
-        Set group = (Set) groups.get(groupId);
-        return group.contains(resource);
-    }
+
 }

@@ -40,56 +40,33 @@ public class ResourceManagerTest extends TestCase {
 	System.out.println("Setting up a resource manager test.");
     }
 
-    public void testCreateGroup() {
+    public void testCreateResource() {
         ResourceManager resourceManager = new ResourceManager();
-        
-        assertTrue(resourceManager.createGroup("testGroup"));
-        assertFalse(resourceManager.createGroup("testGroup"));
+
+        assertNotNull(resourceManager.createResource("testResource"));
+        assertNull(resourceManager.createResource("testResource"));
     }
     
-    public void testRemoveGroup() {
+    public void testGetResource() {
         ResourceManager resourceManager = new ResourceManager();
-        
-        assertTrue(resourceManager.createGroup("testGroup"));
-        assertTrue(resourceManager.removeGroup("testGroup"));
-        assertTrue(resourceManager.createGroup("testGroup"));
+        assertNull(resourceManager.getResource("testResource"));
+
+        Resource test = resourceManager.createResource("testResource");
+        assertNotNull(test);
+
+        assertSame(test, resourceManager.getResource("testResource"));
     }
 
-    public void testAddRemoveResource() {
+    public void testRemoveResource() {
         ResourceManager resourceManager = new ResourceManager();
-        assertTrue(resourceManager.createGroup("testGroup"));
-        
-        resourceManager.addResource("testGroup", "jdoe");
-        assertTrue(resourceManager.removeResource("testGroup", "jdoe"));
-        assertFalse(resourceManager.removeResource("testGroup", "jdoe"));
-    }
-    
-    public void testGetAllResources() {
-        ResourceManager resourceManager = new ResourceManager();
-        assertTrue(resourceManager.createGroup("testGroup"));
-        resourceManager.addResource("testGroup", "jdoe");
-        resourceManager.addResource("testGroup", "mdoe");
-        resourceManager.addResource("testGroup", "adoe");
-        
-        List resources = resourceManager.getAllResources("testGroup");
-        assertEquals(3, resources.size());
-        String r0 = (String) resources.get(0);
-        String r1 = (String) resources.get(1);
-        String r2 = (String) resources.get(2);
-        assertFalse(r0.equals(r1));
-        assertFalse(r0.equals(r2));
-        assertFalse(r1.equals(r2));
-        assertTrue(r0.equals("jdoe") || r0.equals("mdoe") || r0.equals("adoe"));
-        assertTrue(r1.equals("jdoe") || r1.equals("mdoe") || r1.equals("adoe"));
-        assertTrue(r2.equals("jdoe") || r2.equals("mdoe") || r2.equals("adoe"));
-    }
-    
-    public void testGroupContains() {
-        ResourceManager resourceManager = new ResourceManager();
-        assertTrue(resourceManager.createGroup("testGroup"));
-        resourceManager.addResource("testGroup", "jdoe");
 
-        assertTrue(resourceManager.groupContains("testGroup", "jdoe"));
-        assertFalse(resourceManager.groupContains("testGroup", "mdoe"));
+        assertNotNull(resourceManager.createResource("testResource"));
+
+        Resource test = resourceManager.getResource("testResource");
+        assertNotNull(test);
+        assertTrue(resourceManager.removeResource(test));
+
+        assertNotNull(resourceManager.createResource("testResource"));
     }
+
 }
