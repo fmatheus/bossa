@@ -65,11 +65,13 @@ public abstract class NotificationQueue implements Serializable {
      * @param bossa the root of the bossa system.
      */
     public void notifyAll(Bossa bossa) {
-        NotificationBus bus = bossa.getNotificationBus();
-        for (Iterator i = queue.iterator(); i.hasNext(); ){
-            Event e = (Event) i.next();
-            bus.notifyEvent(e);
-            i.remove();
+        if (bossa != null) {
+            NotificationBus bus = bossa.getNotificationBus();
+            for (Iterator i = queue.iterator(); i.hasNext(); ){
+                Event e = (Event) i.next();
+                bus.notifyEvent(e);
+                i.remove();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -237,8 +237,11 @@ public class ResourceRegistry implements Serializable {
         if ((id != null) && !resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
             resources.put(id, resource);
-            ResourceEvents.notifySingleResource(
-                getBossa(), ResourceEvents.ID_CREATE_RESOURCE, resource);
+            ResourceEvents queue = new ResourceEvents();
+            queue.newSingleResourceEvent(getBossa(),
+                                         ResourceEvents.ID_CREATE_RESOURCE,
+                                         resource);
+            queue.notifyAll(getBossa());
             return resource;
         } else {
             return null;
@@ -273,8 +276,11 @@ public class ResourceRegistry implements Serializable {
     public boolean removeResourceImpl(Resource resource) {
         if (resources.remove(resource.getId()) != null) {
             clearReferences(resource);
-            ResourceEvents.notifySingleResource(
-                getBossa(), ResourceEvents.ID_REMOVE_RESOURCE, resource);
+            ResourceEvents queue = new ResourceEvents();
+            queue.newSingleResourceEvent(getBossa(),
+                                         ResourceEvents.ID_REMOVE_RESOURCE,
+                                         resource);
+            queue.notifyAll(getBossa());
             return true;
         } else {
             return false;

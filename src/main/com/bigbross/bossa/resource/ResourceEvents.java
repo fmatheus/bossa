@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -29,16 +29,16 @@ import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.notify.Event;
-import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.notify.NotificationQueue;
 
 /**
  * This class holds as static constants all ids of resource events. It also
- * provides static methods used by the resource classes to create these
+ * provides methods used by the resource classes to create and notify these
  * events. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public abstract class ResourceEvents {
+public class ResourceEvents extends NotificationQueue {
 
     /**
      * Constant to indicate the event of a resource creation in the
@@ -108,42 +108,39 @@ public abstract class ResourceEvents {
 
 
     /**
-     * Notify a single resource event. <p>
+     * Creates a single resource event and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param resource the resource involved.
      */
-    static void notifySingleResource(Bossa bossa, String notificationId,
-                                     Resource resource) {
+    void newSingleResourceEvent(Bossa bossa, String notificationId,
+                                Resource resource) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
-            Event event =
-                new Event(notificationId, Event.RESOURCE_EVENT, attrib,
-                          bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.RESOURCE_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
+                              
 
     /**
-     * Notify an event with two resources. <p>
+     * Creates an event with two resources and puts it in the queue. <p>
      * 
      * @param bossa the root of the bossa system.
      * @param notificationId the id of this event.
      * @param resource the resource being added or removed.
      * @param host the resource being manipulated.
      */
-    static void notifyTwoResources(Bossa bossa, String notificationId,
-                                   Resource resource, Resource host) {
+    void newTwoResourcesEvent(Bossa bossa, String notificationId,
+                              Resource resource, Resource host) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
             attrib.put(ATTRIB_HOST_RESOURCE_ID, host.getId());
-            Event event =
-                new Event(notificationId, Event.RESOURCE_EVENT, attrib,
-                          bossa.getTimeSource().getTime());
-            bossa.getNotificationBus().notifyEvent(event);
+            addEvent(new Event(notificationId, Event.RESOURCE_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
         }
     }
 }

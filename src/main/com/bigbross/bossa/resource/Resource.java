@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -159,9 +159,11 @@ public class Resource implements Container, Serializable {
         }
         excludes.remove(resource);
         includes.add(resource);
-        ResourceEvents.notifyTwoResources(getBossa(),
-                                          ResourceEvents.ID_INCLUDE_IN_RESOURCE,
-                                          resource, this);
+        ResourceEvents queue = new ResourceEvents();
+        queue.newTwoResourcesEvent(getBossa(),
+                                   ResourceEvents.ID_INCLUDE_IN_RESOURCE,
+                                   resource, this);
+        queue.notifyAll(getBossa());
         return true;
     }
 
@@ -200,9 +202,11 @@ public class Resource implements Container, Serializable {
         }
         includes.remove(resource);
         excludes.add(resource);
-        ResourceEvents.notifyTwoResources(getBossa(),
-                                          ResourceEvents.ID_EXCLUDE_IN_RESOURCE,
-                                          resource, this);
+        ResourceEvents queue = new ResourceEvents();
+        queue.newTwoResourcesEvent(getBossa(),
+                                   ResourceEvents.ID_EXCLUDE_IN_RESOURCE,
+                                   resource, this);
+        queue.notifyAll(getBossa());
         return true;
     }
 
@@ -234,9 +238,11 @@ public class Resource implements Container, Serializable {
         boolean inc = includes.remove(resource);
         boolean exc = excludes.remove(resource);
         if (inc || exc) {
-            ResourceEvents.notifyTwoResources(getBossa(),
+            ResourceEvents queue = new ResourceEvents();
+            queue.newTwoResourcesEvent(getBossa(),
                                        ResourceEvents.ID_REMOVE_FROM_RESOURCE,
                                        resource, this);
+            queue.notifyAll(getBossa());
         }
     }
 
