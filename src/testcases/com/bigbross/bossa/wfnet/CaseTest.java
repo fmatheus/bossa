@@ -145,7 +145,7 @@ public class CaseTest extends TestCase {
         CaseType caseType = new CaseType("selfloop");
         Place A = caseType.registerPlace("A", 1);
         Place B = caseType.registerPlace("B");
-        Transition a = caseType.registerTransition("a", "boss", -1);
+        Transition a = caseType.registerTransition("a", "boss");
         a.input(A,  "1");
         a.output(B, "1");
         a.output(A, "1");
@@ -156,8 +156,23 @@ public class CaseTest extends TestCase {
         assertTrue(sameState(new int[] {1,1}, caze.getMarking()));
     }
 
-    public void testZeroTimeout() {
-        //FIXME
+    public void testZeroTimeout() throws Exception {
+/*        CaseType caseType = new CaseType("auto-fire");
+        Place A = caseType.registerPlace("A", 1);
+        Place B = caseType.registerPlace("B");
+        Place C = caseType.registerPlace("C");
+        Transition a = caseType.registerTransition("a", "boss");
+        Transition b = caseType.registerTransition("b", "boss", 0);
+        a.input(A,  "1");
+        a.output(B, "1");
+        b.input(B, "1");
+        b.output(C, "1");
+        caseType.buildTemplate(null);
+        Case caze = caseType.openCase();
+
+        assertTrue(sameState(new int[] {1,0,0}, caze.getMarking()));
+        assertTrue(WFNetUtil.fire(caze, "a", null));
+        assertTrue(sameState(new int[] {0,0,1}, caze.getMarking()));*/
     }
 
     public void testAutomaticCreation() throws Exception {
@@ -190,9 +205,9 @@ public class CaseTest extends TestCase {
     public void testCanPerformWorkItem() throws BossaException {
         CaseType caseType = new CaseType("canPerform");
         Place A = caseType.registerPlace("A", 1);
-        Transition a = caseType.registerTransition("a", "bosses", -1);
-        Transition b = caseType.registerTransition("b", "", -1);
-        Transition c = caseType.registerTransition("c", null, -1);
+        Transition a = caseType.registerTransition("a", "bosses");
+        Transition b = caseType.registerTransition("b", "");
+        Transition c = caseType.registerTransition("c", null);
         a.input(A,  "1");
         b.input(A,  "1");
         c.input(A,  "1");

@@ -123,15 +123,17 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a transition with the specified id in this case type. <p>
+     * Creates a transition with the specified id, resource expression and
+     * timeout in this case type. <p>
      * 
-     * If the resource expression is <code>null</code> or an empty string,
-     * every resource can perform work items associated with this
-     * transition. <p>
+     * The resource expression defines which resources can perform work
+     * items associated with this transition. If it is <code>null</code> or
+     * an empty string, every resource can do it. <p>
      * 
-     * If the timeout is negative, the transition will never fire
-     * automatically. If it is zero, this transition will fire
-     * immediately. <p>
+     * The timeout sets a number of milliseconds this transition will wait
+     * before it fires automatically. If the timeout is negative, the
+     * transition will never fire automatically. If it is zero, this
+     * transition will fire immediately. <p>
      *
      * @param id the transition id.
      * @param resource the expression to select the resource responsible by
@@ -146,6 +148,20 @@ public class CaseType implements Serializable {
         Transition trans = new Transition(this, id, resource, timeout);
         transitions.put(id, trans);
         return trans;
+    }
+
+    /**
+     * Creates a transition with the specified id and resource expression,
+     * but with no timeout, in this case type. <p>
+     *
+     * @param id the transition id.
+     * @param resource the expression to select the resource responsible by
+     *        this transition.
+     * @return the created transition.
+     * @see com.bigbross.bossa.resource.Expression
+     */
+    public Transition registerTransition(String id, String resource) {
+        return registerTransition(id, resource, -1);
     }
 
     /**

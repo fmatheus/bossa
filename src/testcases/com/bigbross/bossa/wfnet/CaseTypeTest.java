@@ -59,7 +59,7 @@ public class CaseTypeTest extends TestCase {
 
     public void testTransition() throws BossaException {
         CaseType caseType = new CaseType("transitions");
-        caseType.registerTransition("a", "bosses", -1);
+        caseType.registerTransition("a", "bosses");
         caseType.registerTransition("b", "", 0);
         caseType.registerTransition("c", null, 1);
         caseType.buildTemplate(null);
@@ -108,7 +108,7 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = new CaseType("missing");
         Place A = caseType.registerPlace("A", 1);
         Place B = caseType.registerPlace("B");
-        Transition a = caseType.registerTransition("a", "boss", -1);
+        Transition a = caseType.registerTransition("a", "boss");
         a.input(A,  "1");
         a.output(B, "FOO");
     
