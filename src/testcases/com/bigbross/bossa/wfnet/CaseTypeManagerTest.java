@@ -26,8 +26,10 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import junit.framework.TestCase;
@@ -88,6 +90,7 @@ public class CaseTypeManagerTest extends TestCase {
   
         CaseTypeManager caseTypeManager = CaseTypeManager.getInstance();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        HashMap cases = new HashMap();
 
         System.out.println();
         System.out.println("## WFNet Browser ##");
@@ -117,6 +120,7 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("ca <caseType> <case> <a>\tCancel an activity.");
                 System.out.println("f <caseType> <case> <wi>\tFire a work item.");
                 System.out.println("vs <caseType> <case> <id> <int>\tDeclare a case attribute.");
+                System.out.println("vl <caseType> <case>\tList case attributes.");
                 System.out.println("s\t\t\t\tTakes a snapshot.");
                 System.out.println("q\t\t\t\tQuits the browser.");
             } else if (operation.equals("l")) {
@@ -178,9 +182,10 @@ public class CaseTypeManagerTest extends TestCase {
                 String caseTypeId = tokenizer.nextToken();
                 int caseId = Integer.parseInt(tokenizer.nextToken());
                 int actId = Integer.parseInt(tokenizer.nextToken());
+                HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
                 Activity a = caseTypeManager.getCaseType(caseTypeId).
                                getCase(caseId).getActivity(actId);
-                boolean result = a.close();
+                boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("ca")) {
                 String caseTypeId = tokenizer.nextToken();
@@ -194,18 +199,36 @@ public class CaseTypeManagerTest extends TestCase {
                 String caseTypeId = tokenizer.nextToken();
                 int caseId = Integer.parseInt(tokenizer.nextToken());
                 String wiId = tokenizer.nextToken();
+                HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
                 WorkItem wi = caseTypeManager.getCaseType(caseTypeId).
                                getCase(caseId).getWorkItem(wiId);
                 Activity a = wi.open();
-                boolean result = a.close();
+                boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("vs")) {
                 String caseTypeId = tokenizer.nextToken();
-                int caseId = Integer.parseInt(tokenizer.nextToken());
+                String caseId = tokenizer.nextToken();
                 String id = tokenizer.nextToken();
                 Integer value = new Integer(tokenizer.nextToken());
-		caseTypeManager.getCaseType(caseTypeId).getCase(caseId).declare(id, value);
+                HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
+                if (attributes == null) {
+                    attributes = new HashMap();
+                    cases.put(caseTypeId + caseId, attributes);
+                }
+                attributes.put(id, value);
                 System.out.println("ok.");
+            } else if (operation.equals("vl")) {
+                String caseTypeId = tokenizer.nextToken();
+                String caseId = tokenizer.nextToken();
+                HashMap attributes = (HashMap) cases.get(caseTypeId + caseId);
+                if (attributes != null) {
+                    Iterator it = attributes.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry attribute = (Map.Entry) it.next();
+                        System.out.println(attribute.getKey().toString() + 
+                                           " == " + attribute.getValue());
+                    }
+                }
             } else if (operation.equals("s")) {
                 caseTypeManager.takeSnapshot();
                 System.out.println("ok.");
