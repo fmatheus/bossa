@@ -45,7 +45,7 @@ public class WorkManagerTest extends TestCase {
 	super(name);
     }
 
-    protected void setUp() {
+    protected void setUp() throws Exception {
 	System.out.println("Setting up a work manager test.");
         Bossa bossa = BossaTestSuite.createTestBossa();
         workManager = bossa.getWorkManager();
@@ -60,7 +60,7 @@ public class WorkManagerTest extends TestCase {
         assertEquals(1, workManager.getWorkItems("joe", true).size());
     }
     
-    public void testActivitiesList() {
+    public void testActivitiesList() throws Exception {
         WFNetUtil.createActWorkTest(caseTypeManager);
         assertEquals(1, workManager.getActivities("joe").size());
     }

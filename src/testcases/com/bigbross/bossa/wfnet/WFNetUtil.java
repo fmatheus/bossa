@@ -32,7 +32,7 @@ import com.bigbross.bossa.resource.ResourceUtil;
 
 public class WFNetUtil {
 
-    public static CaseType createCaseType(String id) {
+    public static CaseType createCaseType(String id) throws Exception {
      
         CaseType caseType = new CaseType(id);
 
@@ -77,57 +77,44 @@ public class WFNetUtil {
         f.output(B, "1");
         f.output(H, "1");
 
-        try {        
-            caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException exception) {
-            exception.printStackTrace();
-        }
+        caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
 
         return caseType;
     }
 
-    public static Case createCase() {
+    public static Case createCase() throws Exception {
         return createCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
-    public static Case createCase(int[] marking) {
-        try {
-            return createCaseType("test").openCase(marking);
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-        }
-        return null;    
+    public static Case createCase(int[] marking) throws Exception {
+        return createCaseType("test").openCase(marking);
     }
 
-    public static boolean fire(Case caze, String workItemId, Map attributes) {
+    public static boolean fire(Case caze, String workItemId, Map attributes)
+        throws Exception  {
         return fire(caze, workItemId, attributes, ResourceUtil.createResource("jdoe"));
     }
 
-    public static boolean fire(Case caze, String workItemId, Map attributes, Resource resource) {
-        try {
-            Activity act = caze.open(caze.getWorkItem(workItemId), resource);
-            if (act != null) {
-                return caze.close(act, attributes);
-            }
-        } catch (BossaException e) {
-            e.printStackTrace();
+    public static boolean fire(Case caze, String workItemId, Map attributes,
+                               Resource resource) throws Exception {
+        Activity act = caze.open(caze.getWorkItem(workItemId), resource);
+        if (act != null) {
+            return caze.close(act, attributes);
         }
 	return false;
     }
 
-    public static void prepareWorkTest(CaseTypeManager caseTypeManager) {
+    public static void prepareWorkTest(CaseTypeManager caseTypeManager)
+        throws Exception {
         CaseType caseType = createCaseType("test");
         caseTypeManager.registerCaseTypeImpl(caseType);
     }
 
-    public static void createActWorkTest(CaseTypeManager caseTypeManager) {
+    public static void createActWorkTest(CaseTypeManager caseTypeManager)
+        throws Exception  {
         WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
         Resource joe = caseTypeManager.getBossa().getResourceManager().getResource("joe");
-        try {
-            wi.getCase().open(wi, joe);
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-        }
+        wi.getCase().open(wi, joe);
     }
 
 }

@@ -41,13 +41,12 @@ public class CaseTypeTest extends TestCase {
     	System.out.println("Setting up a case type test.");
     }
 
-    public void testCreation() {
+    public void testCreation() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         assertNotNull(caseType);
     }
 
-    public void testWeights() {
-
+    public void testWeights() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Transition a = caseType.getTransition("a");
         Transition b = caseType.getTransition("b");
@@ -66,7 +65,7 @@ public class CaseTypeTest extends TestCase {
         assertEquals( "SOK && !DIR", b.getEdge(E).toString());
     }
 
-    public void testTemplate() {
+    public void testTemplate() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Case template = caseType.getTemplate();
         assertNotNull(template);
@@ -76,7 +75,7 @@ public class CaseTypeTest extends TestCase {
                      ((WorkItem) template.getWorkItems().get(0)).getId());
     }
 
-    public void testOpenCase() {
+    public void testOpenCase() throws Exception {
         Case caze = WFNetUtil.createCase();
         assertNotNull(caze);
 
@@ -84,7 +83,7 @@ public class CaseTypeTest extends TestCase {
         assertSame(caze, caseType.getCase(1));
     }
 
-    public void testCloseCase() {
+    public void testCloseCase() throws Exception {
         Case caze = WFNetUtil.createCase(new int[] {0,0,0,0,1,0,0,0});
         CaseType caseType = caze.getCaseType();
         assertSame(caze, caseType.getCase(1));
@@ -94,27 +93,17 @@ public class CaseTypeTest extends TestCase {
         assertNull(caseType.getCase(1));
     }
     
-    public void testGetCase() {
+    public void testGetCase() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Case caze = null;
-        try {
-            caze = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+        caze = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         assertSame(caze, caseType.getCase(caze.getId()));
     }        
 
-    public void testGetAllCases() {
+    public void testGetAllCases() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
-        try {
-            caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-            caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+        caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+        caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         
         List l = caseType.getCases();
         assertEquals(2, l.size());
@@ -124,17 +113,12 @@ public class CaseTypeTest extends TestCase {
         assertTrue(id == 1 || id == 2);
     }
     
-    public void testGetWorkItems() {
+    public void testGetWorkItems() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Case c1 = null;
         Case c2 = null;
-        try {
-            c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-            c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+        c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+        c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         
         List wi = caseType.getWorkItems();
         assertEquals(2, wi.size());
@@ -147,20 +131,15 @@ public class CaseTypeTest extends TestCase {
                    c2.getId() == wi2.getCase().getId());
     }
 
-    public void testGetActivities() {
+    public void testGetActivities() throws Exception {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Resource jdoe = ResourceUtil.createResource("jdoe");
         Case c1 = null;
         Case c2 = null;
-        try {
-            c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-            c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
-            c1.open(c1.getWorkItem("a"), jdoe);
-            c2.open(c2.getWorkItem("a"), jdoe);
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+        c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+        c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+        c1.open(c1.getWorkItem("a"), jdoe);
+        c2.open(c2.getWorkItem("a"), jdoe);
 
         List activities = caseType.getActivities();
         assertEquals(2, activities.size());

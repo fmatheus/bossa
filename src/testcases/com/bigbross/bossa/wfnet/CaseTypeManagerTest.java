@@ -46,21 +46,21 @@ public class CaseTypeManagerTest extends TestCase {
         caseTypeManager = new CaseTypeManager();
     }
 
-    public void testRegisterCaseType() {
+    public void testRegisterCaseType() throws Exception {
         assertTrue(caseTypeManager.registerCaseTypeImpl(
                         WFNetUtil.createCaseType("test1")));
         assertFalse(caseTypeManager.registerCaseTypeImpl(
                         WFNetUtil.createCaseType("test1")));
     }
     
-    public void testQueryCaseType() {
+    public void testQueryCaseType() throws Exception {
         CaseType expected = WFNetUtil.createCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         assertSame(expected, caseTypeManager.getCaseType("test1"));
     }
 
-    public void testQueryAllCaseTypes() {
+    public void testQueryAllCaseTypes() throws Exception {
         CaseType ct1 = WFNetUtil.createCaseType("test1");
         CaseType ct2 = WFNetUtil.createCaseType("test2");
 
@@ -75,7 +75,7 @@ public class CaseTypeManagerTest extends TestCase {
         assertTrue(id.equals("test1") || id.equals("test2"));
     }
     
-    public void testRemoveCaseType() {
+    public void testRemoveCaseType() throws Exception {
         CaseType expected = WFNetUtil.createCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
@@ -83,7 +83,7 @@ public class CaseTypeManagerTest extends TestCase {
         assertNull(caseTypeManager.getCaseType("test1"));
     }
     
-    public void testGetWorkItems() {
+    public void testGetWorkItems() throws Exception {
         CaseType ct1 = WFNetUtil.createCaseType("test1");
         CaseType ct2 = WFNetUtil.createCaseType("test2");
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
@@ -93,18 +93,13 @@ public class CaseTypeManagerTest extends TestCase {
         assertEquals(2, caseTypeManager.getWorkItems(true).size());
     }
 
-    public void testGetActivities() {
+    public void testGetActivities() throws Exception {
         CaseType ct1 = WFNetUtil.createCaseType("test1");
         CaseType ct2 = WFNetUtil.createCaseType("test2");
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
         WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
-        try {
-            wi.getCase().open(wi, joe);
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
+        wi.getCase().open(wi, joe);
         
         assertEquals(1, caseTypeManager.getActivities().size());
     }
