@@ -116,6 +116,7 @@ public class CaseTypeManagerTest extends TestCase {
                 System.out.println("cl <caseType> <case> <a>\tClose an activity.");
                 System.out.println("ca <caseType> <case> <a>\tCancel an activity.");
                 System.out.println("f <caseType> <case> <wi>\tFire a work item.");
+                System.out.println("vs <caseType> <case> <id> <int>\tDeclare a case attribute.");
                 System.out.println("s\t\t\t\tTakes a snapshot.");
                 System.out.println("q\t\t\t\tQuits the browser.");
             } else if (operation.equals("l")) {
@@ -198,6 +199,13 @@ public class CaseTypeManagerTest extends TestCase {
                 Activity a = wi.open();
                 boolean result = a.close();
                 System.out.println("ok. Success=" + result);
+            } else if (operation.equals("vs")) {
+                String caseTypeId = tokenizer.nextToken();
+                int caseId = Integer.parseInt(tokenizer.nextToken());
+                String id = tokenizer.nextToken();
+                Integer value = new Integer(tokenizer.nextToken());
+		caseTypeManager.getCaseType(caseTypeId).getCase(caseId).declare(id, value);
+                System.out.println("ok.");
             } else if (operation.equals("s")) {
                 caseTypeManager.takeSnapshot();
                 System.out.println("ok.");

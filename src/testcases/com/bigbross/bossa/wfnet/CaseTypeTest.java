@@ -70,8 +70,8 @@ public class CaseTypeTest extends TestCase {
 
         b.input(B,  "1");
         b.output(C, "!SOK");
-        b.output(D, "1");
-        b.output(E, "1");
+        b.output(D, "SOK && DIR");
+        b.output(E, "SOK && !DIR");
 
         c.input(D,  "1");
         c.output(B, "1");
@@ -114,8 +114,8 @@ public class CaseTypeTest extends TestCase {
 
         assertEquals("-1", b.getEdge(B).toString());
 	assertEquals("!SOK", b.getEdge(C).toString());
-        assertEquals( "1", b.getEdge(D).toString());
-        assertEquals( "1", b.getEdge(E).toString());
+        assertEquals( "SOK && DIR", b.getEdge(D).toString());
+        assertEquals( "SOK && !DIR", b.getEdge(E).toString());
     }
 
     public void testTemplate() {
