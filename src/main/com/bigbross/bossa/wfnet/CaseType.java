@@ -27,11 +27,12 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.bigbross.bossa.resource.ResourceRegistry;
 
 /**
  * This class represents the definition of a process (case type). It
@@ -48,6 +49,8 @@ public class CaseType implements Serializable {
     private Map places;
 
     private Edge[][] edges;
+
+    private ResourceRegistry resources;
 
     private Map cases;
 
@@ -66,6 +69,7 @@ public class CaseType implements Serializable {
         this.id = id;
         this.transitions = new HashMap();
         this.places = new HashMap();
+        this.resources = new ResourceRegistry();
         this.cases = new HashMap();
         this.caseSequence = 0;
         this.caseTypeManager = null;
@@ -144,6 +148,17 @@ public class CaseType implements Serializable {
 
     public void setEdge(Transition t, Place p, Edge edge) {
 	setEdge(t.getIndex(), p.index, edge);
+    }
+
+    /**
+     * Returns the resource registry with the local resources of this
+     * case type. <p>
+     * 
+     * @return the resource registry with the local resources of this
+     * case type.
+     */
+    ResourceRegistry getResourceRegistry() {
+        return resources;
     }
 
     /**

@@ -36,6 +36,8 @@ import java.util.Map;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 
+import com.bigbross.bossa.resource.ResourceRegistry;
+
 /**
  * This class represents a specific instance of a case type. It
  * holds the current state of a case. <p>
@@ -49,6 +51,8 @@ public class Case implements Serializable {
     private CaseType caseType;
 
     private int[] marking;
+
+    private ResourceRegistry resources;
 
     private WorkItem[] workItems;
 
@@ -74,6 +78,7 @@ public class Case implements Serializable {
 
 	this.caseType = caseType;
 	this.marking = marking;
+        this.resources = new ResourceRegistry();
         this.activities = new HashMap();
         this.attributes = new HashMap();
         this.activitySequence = 1;
@@ -117,6 +122,17 @@ public class Case implements Serializable {
      */
     int[] getMarking() {
         return (int[]) marking.clone();
+    }
+
+    /**
+     * Returns the resource registry with the local resources of this
+     * case. <p>
+     * 
+     * @return the resource registry with the local resources of this
+     * case.
+     */
+    ResourceRegistry getResourceRegistry() {
+        return resources;
     }
 
     /**
