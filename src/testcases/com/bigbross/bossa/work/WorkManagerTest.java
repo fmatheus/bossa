@@ -37,22 +37,31 @@ import junit.framework.TestCase;
 
 public class WorkManagerTest extends TestCase {
 
+    private WorkManager workManager;
+    private CaseTypeManager caseTypeManager;
+    private ResourceManager resourceManager;
+
     public WorkManagerTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
 	System.out.println("Setting up a work manager test.");
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        workManager = bossa.getWorkManager();
+        caseTypeManager = bossa.getCaseTypeManager();
+        resourceManager = bossa.getResourceManager();
+        CaseTypeManagerTest.prepareWorkTest(caseTypeManager);
+        ResourceManagerTest.prepareWorkTest(resourceManager);
     }
 
     public void testWorkItemList() {
-        Bossa bossa = BossaTestSuite.createTestBossa();
-        WorkManager workManager = bossa.getWorkManager();
-        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
-        ResourceManager resourceManager = bossa.getResourceManager();
-        CaseTypeManagerTest.prepareWorkTest(caseTypeManager);
-        ResourceManagerTest.prepareWorkTest(resourceManager);
         assertEquals(0, workManager.getWorkItems("joe").size());
         assertEquals(1, workManager.getWorkItems("joe", true).size());
+    }
+    
+    public void testActivitiesList() {
+        CaseTypeManagerTest.createActWorkTest(caseTypeManager);
+        assertEquals(1, workManager.getActivities("joe").size());
     }
 }

@@ -30,6 +30,7 @@ import java.util.List;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.WorkItem;
 
 /**
@@ -103,5 +104,29 @@ public class WorkManager implements Serializable {
             }
         }
         return workItems;
+    }
+
+    /**
+     * Returns a list of all activities in the engine that are under the
+     * responsability of the provided resource. <p>
+     * 
+     * @param resourceId the resource id.
+     * @return the list of activities.
+     */
+    public List getActivities(String resourceId) {
+        Resource resource =
+            getBossa().getResourceManager().getResource(resourceId);
+        List activities =
+            getBossa().getCaseTypeManager().getActivities();
+        Iterator i = activities.iterator();
+        while (i.hasNext()) {
+            String respId = ((Activity) i.next()).getResource();
+            Resource responsible = 
+                getBossa().getResourceManager().getResource(respId);
+            if (!responsible.contains(resource)) {
+                i.remove();
+            }
+        }
+        return activities;
     }
 }

@@ -43,6 +43,16 @@ public class CaseTypeManagerTest extends TestCase {
             CaseTypeTest.createTestCaseType("theCaseType"));
     }
 
+    public static void createActWorkTest(CaseTypeManager caseTypeManager) {
+        WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
+        try {
+            wi.getCase().open(wi, "joe");
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+    }
+
     protected void setUp() {
     	System.out.println("Setting up a case type manager test.");
         caseTypeManager = new CaseTypeManager();
