@@ -26,6 +26,7 @@ package com.bigbross.bossa.examples;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,8 @@ import java.util.StringTokenizer;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
+import com.bigbross.bossa.history.Historian;
+import com.bigbross.bossa.notify.Event;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
@@ -54,6 +57,7 @@ public class BossaBrowser {
     CaseTypeManager caseTypeManager;
     ResourceManager resourceManager;
     WorkManager workManager;
+    Historian historian;
     HashMap cases;
     List lastCaseList;
     List lastWorkItemList;
@@ -68,6 +72,7 @@ public class BossaBrowser {
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();
         workManager = bossa.getWorkManager();
+        historian = bossa.getHistorian();
 
         cases = new HashMap();
         lastCaseList = null;
@@ -77,7 +82,7 @@ public class BossaBrowser {
         lastCaseTypeResourceList = null;
     }
 
-    public Resource retrieveResource(int listId) {
+    private Resource retrieveResource(int listId) {
         Resource r;
         if (listId < 100) {
             r = (Resource) lastResourceList.get(listId);
@@ -85,6 +90,20 @@ public class BossaBrowser {
             r = (Resource) lastCaseTypeResourceList.get(listId - 100);
         }
         return r;
+    }
+    
+    private void printHistory(List l) {
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, 
+                                                       DateFormat.SHORT);
+        System.out.println(" Date     Time  T Id {Attributes}");
+        System.out.println("-------------------------------------");
+        for (int i = 0; i < l.size(); i++) {
+            Event e = (Event) l.get(i);
+            System.out.println(" " + df.format(e.getTime()) + " " + 
+                               e.getType() + " " + 
+                               e.getId() + " " + 
+                               e.getAttributes());
+        }
     }
 
     public void run() throws Exception {
@@ -94,7 +113,7 @@ public class BossaBrowser {
 
         System.out.println();
         System.out.println("## WFNet Browser ##");
-        System.out.println("Enter command (q to quit, h or help):");
+        System.out.println("Enter command (q to quit, ? for help):");
         System.out.print("> ");
         System.out.flush();
 
@@ -108,38 +127,45 @@ public class BossaBrowser {
             } else {
                 operation = "";
             }
-            if (operation.equals("h")) {
-                System.out.println("h\t\t\t\tThis help message.");
-                System.out.println("s\t\t\t\tTakes a snapshot.");
-                System.out.println("q\t\t\t\tQuits the browser.");
-                System.out.println("-------------------------------------");
-                System.out.println("l\t\t\t\tList case types.");
-                System.out.println("g <id>\t\tRegister the test case type.");
-                System.out.println("r <id>\t\tRemove a case type.");
-                System.out.println("c <id>\t\tList cases of a case type.");
-                System.out.println("w <id>\t\tList work itens of a case type.");
-                System.out.println("a <id>\t\tList activities of a case type.");
-                System.out.println("t <id>\t\tList resources of a case type.");
-                System.out.println("y <listId>\t\tList resources of a case.");
-                System.out.println("-------------------------------------");
-                System.out.println("lr\t\t\t\tList all resources.");
-                System.out.println("gr <id>\t\tRegister a resource.");
-                System.out.println("rr <listId>\t\tRemove a resource.");
-                System.out.println("dr <listId>\t\tDetail a resource.");
-                System.out.println("ir <listId> <listId> Include a resource.");
-                System.out.println("er <listId> <listId> Exclude a resource.");
-                System.out.println("cr <listId> <listId> Cancel include or exclude.");
-                System.out.println("ct <listId> <listId> Contains resource?");
-                System.out.println("-------------------------------------");
-                System.out.println("wr <listId>\t\tList work itens of a resource.");
-                System.out.println("ar <listId>\t\tList activities of a resource.");
-                System.out.println("-------------------------------------");
-                System.out.println("o <listId> <resListId> Open a work item.");
-                System.out.println("cl <listId>\tClose an activity.");
-                System.out.println("ca <listId>\tCancel an activity.");
-                System.out.println("f <listId> <resListId>\t\tFire a work item.");
-                System.out.println("vs <caseType> <case> <id> <int>\tDeclare a case attribute.");
-                System.out.println("vl <caseType> <case>\tList case attributes.");
+            if (operation.equals("?")) {
+              String options =
+               "?                           This help message.\n" +
+               "s                           Takes a snapshot.\n" +
+               "q                           Quits the browser.\n" +
+               "-----------------------------------------------------------\n" +
+               "l                           List case types.\n" +
+               "g <id>                      Register the test case type.\n" +
+               "r <id>                      Remove a case type.\n" +
+               "c <id>                      List cases of a case type.\n" +
+               "w <id>                      List work itens of a case type.\n" +
+               "a <id>                      List activities of a case type.\n" +
+               "t <id>                      List resources of a case type.\n" +
+               "y <listId>                  List resources of a case.\n" +
+               "-----------------------------------------------------------\n" +
+               "lr                          List all resources.\n" +
+               "gr <id>                     Register a resource.\n" +
+               "rr <listId>                 Remove a resource.\n" +
+               "dr <listId>                 Detail a resource.\n" +
+               "ir <listId> <listId>        Include a resource.\n" +
+               "er <listId> <listId>        Exclude a resource.\n" +
+               "cr <listId> <listId>        Cancel include or exclude.\n" +
+               "ct <listId> <listId>        Contains resource?\n" +
+               "-----------------------------------------------------------\n" +
+               "wr <listId>                 List work itens of a resource.\n" +
+               "ar <listId>                 List activities of a resource.\n" +
+               "-----------------------------------------------------------\n" +
+               "o  <listId> <resListId>          Open a work item.\n" +
+               "cl <listId>                      Close an activity.\n" +
+               "ca <listId>                      Cancel an activity.\n" +
+               "f  <listId> <resListId>          Fire a work item.\n" +
+               "vs <caseType> <case> <id> <int>  Declare a case attribute.\n" +
+               "vl <caseType> <case>             List case attributes.\n" +
+               "-----------------------------------------------------------\n" +
+               "h                           Display all history.\n" +
+               "ht <id>                     Display a case type history.\n" +
+               "hc <listId>                 Display a case history.\n" +
+               "hr <listId>                 Display a resource history.\n";
+              System.out.print(options);
             } else if (operation.equals("s")) {
                 bossa.takeSnapshot();
                 System.out.println("ok.");
@@ -396,6 +422,24 @@ public class BossaBrowser {
                                 + attribute.getValue());
                     }
                 }
+            } else if (operation.equals("h")) {
+                List l = historian.getHistory();
+                printHistory(l);
+            } else if (operation.equals("ht")) {
+                String id = tokenizer.nextToken();
+                List l = historian.getCaseTypeHistory(id);
+                printHistory(l);
+            } else if (operation.equals("hc")) {
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                Case caze = (Case) lastCaseList.get(listId);
+                List l = historian.getCaseHistory(caze.getCaseType().getId(),
+                                                  caze.getId());
+                printHistory(l);
+            } else if (operation.equals("hr")) {
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                Resource resource = retrieveResource(listId);
+                List l = historian.getResourceHistory(resource.getId());
+                printHistory(l);
             } else if (operation.equals("")) {
             } else {
                 System.out.println("Invalid command.");
