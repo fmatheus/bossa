@@ -66,7 +66,6 @@ public class BossaTestSuite extends TestCase {
         suite.addTest(NotifyTestSuite.suite());
         suite.addTest(HistoryTestSuite.suite());
         suite.addTest(IOTestSuite.suite());
-        suite.addTest(new TestSuite(SlowFileTests.class));
 	return suite;
     }
 }

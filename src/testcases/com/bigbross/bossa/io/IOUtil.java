@@ -24,36 +24,31 @@
 
 package com.bigbross.bossa.io;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.File;
 
-/**
- * Tests using IO package testcases.
- *
- * @author <a href="http://www.bigbross.com">BigBross Team</a>
- */
-public class IOTestSuite extends TestCase {
+public class IOUtil {
 
-    /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public IOTestSuite(String name) {
-	super(name);
+    private static final File testDir = new File("build/TestDir");
+
+    public static String testDirName() {
+        return testDir.getPath();
     }
 
-    /**
-     * Makes the test suite.
-     *
-     * @return the suite.
-     */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("IO Test Suite");
-        /* All tests should be added here. */
-        suite.addTest(new TestSuite(ImportTest.class));
-        suite.addTest(new TestSuite(PersistentBossaTest.class));
-	return suite;
+    public static boolean createTestDir() {
+        return testDir.mkdir();
+    }
+    
+    public static boolean removeTestDir() {
+        if (testDir.exists()) {
+            File[] contents = testDir.listFiles();
+            for (int i = 0; i < contents.length; i++) {
+                if (!contents[i].delete()) {
+                    return false;
+                }
+            }
+            return testDir.delete();
+        } else {
+            return true;
+        }
     }
 }

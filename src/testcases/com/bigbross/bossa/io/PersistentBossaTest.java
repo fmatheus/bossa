@@ -22,56 +22,34 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
-
-import java.io.File;
+package com.bigbross.bossa.io;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaFactory;
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.wfnet.WorkItem;
 
-public class SlowFileTests extends TestCase {
+public class PersistentBossaTest extends TestCase {
 
-    private String testDirName;
-    private File testDir;
-
-    public SlowFileTests(String name) {
+    public PersistentBossaTest(String name) {
 	super(name);
-        testDirName = "build/TestDir";
-        testDir = new File(testDirName);
-    }
-
-    private boolean createTestDir() {
-        return testDir.mkdir();
-    }
-    
-    private boolean removeTestDir() {
-        if (testDir.exists()) {
-            File[] contents = testDir.listFiles();
-            for (int i = 0; i < contents.length; i++) {
-                if (!contents[i].delete()) {
-                    return false;
-                }
-            }
-            return testDir.delete();
-        } else {
-            return true;
-        }
     }
 
     protected void setUp() {
-        assertTrue(removeTestDir());
-        assertTrue(createTestDir());
+        assertTrue(IOUtil.removeTestDir());
+        assertTrue(IOUtil.createTestDir());
     }
     
     protected void tearDown() {
-        assertTrue(removeTestDir());
+        assertTrue(IOUtil.removeTestDir());
     }
 
     public void testPersistentBossa() throws Exception {
         BossaFactory factory = new BossaFactory();
-        factory.setStateDir(testDirName);
+        factory.setStateDir(IOUtil.testDirName());
         Bossa bossa = factory.createBossa();
         BossaTestUtil.setupTestBossa(bossa);        
 
