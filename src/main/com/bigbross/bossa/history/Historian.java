@@ -383,7 +383,7 @@ public class Historian implements Serializable {
      * @param end the limit date for event removal.
      * @param file the name of the file.
      * @see Historian#purgeHistory(Date)
-     * @see com.bigbross.bossa.notify.EventsXMLHelper
+     * @see com.bigbross.bossa.io.EventsXMLHelper
      */
     public void exportHistory(Date end, String file)
         throws DataTransferException {
