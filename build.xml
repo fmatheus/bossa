@@ -27,14 +27,14 @@
 <project name="Bossa" default="dist" basedir=".">
 
   <!-- Give user a chance to override without editing this file
-       (and without typing -D each time it compiles it) -->
+       (and without typing -D each time he compiles it) -->
   <property file="build.properties" />
   <property file="${user.home}/.ant.properties" />
 
   <!-- Name of project and version, used to create filenames -->
   <property name="Name"    value="Bossa Workflow Management System"/>
   <property name="name"    value="bossa"/>
-  <property name="version" value="0.2.0"/>
+  <property name="version" value="0.2.1"/>
 
   <!-- Set global properties for this build -->
   <property name="debug" value="true"/>
