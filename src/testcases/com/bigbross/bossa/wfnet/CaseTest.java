@@ -80,7 +80,7 @@ public class CaseTest extends TestCase {
     protected void setUp() {
 	System.out.println("Setting up a case type test.");
 
-	caze = caseType.getCase(new int[] {1,0,0,0,0,0,0,0});
+	caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
     protected boolean fire(Case caze, Transition t) {

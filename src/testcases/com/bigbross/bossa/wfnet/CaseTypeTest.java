@@ -122,6 +122,6 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testNewCase() {
-        assertNotNull(createTestCaseType().getCase());
+        assertNotNull(createTestCaseType().newCase());
     }
 }

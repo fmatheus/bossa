@@ -148,11 +148,11 @@ public class CaseType {
 	return ++caseSequence;
     }
 
-    public Case getCase() {
+    public Case newCase() {
 	return new Case(this, new int[places.size()]);
     }
 
-    public Case getCase(int[] marking) {
+    public Case newCase(int[] marking) {
 	return new Case(this, marking);
     }
 
