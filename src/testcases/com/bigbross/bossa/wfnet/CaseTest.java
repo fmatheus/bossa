@@ -48,7 +48,7 @@ public class CaseTest extends TestCase {
     Case newTestCase() {
         try {
             return WFNetUtil.createCaseType("test").
-	       newCase(new int[] {1,0,0,0,0,0,0,0});
+	       openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -171,7 +171,7 @@ public class CaseTest extends TestCase {
         Case caze = null;
         try {
             caze = WFNetUtil.createCaseType("test").
-                newCase(new int[] {1,1,0,0,0,0,0,0});
+                openCase(new int[] {1,1,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -206,7 +206,7 @@ public class CaseTest extends TestCase {
         Case caze = null;
         try {
             caze = WFNetUtil.createCaseType("test").
-                newCase(new int[] {2,0,0,0,0,0,0,0});
+                openCase(new int[] {2,0,0,0,0,0,0,0});
             WorkItem wi = caze.getWorkItem("a");
 
             caze.open(wi, jdoe);

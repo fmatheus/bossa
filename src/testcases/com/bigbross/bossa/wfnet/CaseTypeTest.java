@@ -79,7 +79,8 @@ public class CaseTypeTest extends TestCase {
     public void testNewCase() {
         Case caze = null;
         try {
-            caze = WFNetUtil.createCaseType("test").newCase(new int[] {1,0,0,0,0,0,0,0});
+            caze = WFNetUtil.createCaseType("test").
+                openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -91,7 +92,7 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = WFNetUtil.createCaseType("test");
         Case caze = null;
         try {
-            caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            caze = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -102,8 +103,8 @@ public class CaseTypeTest extends TestCase {
     public void testGetAllCases() {
         CaseType caseType = WFNetUtil.createCaseType("test");
         try {
-            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+            caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -122,8 +123,8 @@ public class CaseTypeTest extends TestCase {
         Case c1 = null;
         Case c2 = null;
         try {
-            c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-            c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+            c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -146,8 +147,8 @@ public class CaseTypeTest extends TestCase {
         Case c1 = null;
         Case c2 = null;
         try {
-            c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-            c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            c1 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
+            c2 = caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
             c1.open(c1.getWorkItem("a"), jdoe);
             c2.open(c2.getWorkItem("a"), jdoe);
         } catch (EvaluationException e) {

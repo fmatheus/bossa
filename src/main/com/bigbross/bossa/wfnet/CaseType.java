@@ -175,11 +175,11 @@ public class CaseType implements Serializable {
      * Creates a new case with the provided marking (tokens). <p>
      * 
      * @param marking the initial marking.
-     * @return The newly created case.
+     * @return the newly created case.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    Case newCase(int[] marking) throws EvaluationException {
+    Case openCase(int[] marking) throws EvaluationException {
         Case caze = new Case(this, marking);
         cases.put(new Integer(caze.getId()), caze);
         return caze;

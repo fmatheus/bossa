@@ -53,7 +53,7 @@ public class CommandsTest extends TestCase {
             WFNetUtil.createCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
         try {
-            caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+            caseType.openCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());

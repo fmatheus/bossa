@@ -328,7 +328,7 @@ public class Case implements Serializable {
 
 	if (isTemplate()) {
             /* An EvaluationException can be consistently thrown here. */
-            Case caze = caseType.newCase(getMarking());
+            Case caze = caseType.openCase(getMarking());
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
