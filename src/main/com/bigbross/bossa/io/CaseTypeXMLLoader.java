@@ -26,15 +26,21 @@ package com.bigbross.bossa.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.wfnet.CaseType;
+import com.bigbross.bossa.wfnet.Place;
+import com.bigbross.bossa.wfnet.Transition;
 
 /**
- * This class wraps an external XML case type definition. <p>
+ * This class loads an external XML case type definition. <p>
  * 
  * The XML representation of a case type is a PNML file, as created
  * by the PNK using the WFNet net type. <p>
@@ -47,6 +53,13 @@ public class CaseTypeXMLLoader {
     
     private Document document;
 
+    /**
+     * Creates a new loader for the provided PNML file. <p>
+     * 
+     * @param file the PNML file to open.
+     * @throws DataTransferException if an error happens reading or parsing
+     *                               the PNML file.
+     */
     public CaseTypeXMLLoader(String file) throws DataTransferException {
         try {
             SAXBuilder builder = new SAXBuilder();
@@ -58,20 +71,74 @@ public class CaseTypeXMLLoader {
         }
     }
     
-    public CaseType createCaseType() {
+    /**
+     * Creates the case type from the PNML file loaded. <p>
+     * 
+     * FIXME: Add behaviour??? At least attributes.
+     * 
+     * @return the case type created.
+     * @exception SetAttributeException if the underlying expression
+     *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     */
+    public CaseType createCaseType() throws BossaException {
         
-        // Get id, new case type.
+        HashMap places = new HashMap();
+        HashMap transitions = new HashMap();
+        Element wfnet = document.getRootElement().getChild("net");
+
+        String caseTypeId = wfnet.getChild("id").getChildText("value");
+        CaseType caseType = new CaseType(caseTypeId);
         
-        // Get places and create them.
+        Iterator i = wfnet.getChildren("place").iterator();
+        while (i.hasNext()) {
+            Element place = (Element) i.next();
+            String pnmlId = place.getAttributeValue("id");
+            String id = place.getChild("id").getChildText("value");
+            String initialMarking = 
+                place.getChild("initialMarking").getChildText("value");
+            initialMarking = "".equals(initialMarking) ? "0" : initialMarking;
+            
+            places.put(pnmlId, 
+                caseType.registerPlace(id, Integer.parseInt(initialMarking)));
+        }
         
-        // Get transitions and create them.
+        i = wfnet.getChildren("transition").iterator();
+        while (i.hasNext()) {
+            Element transition = (Element) i.next();
+            String pnmlId = transition.getAttributeValue("id");
+            String id = transition.getChild("id").getChildText("value");
+            String resource =
+                transition.getChild("resource").getChildText("value");
+            String timeout =
+                transition.getChild("timeout").getChildText("value");
+            timeout = "".equals(timeout) ? "-1" : timeout;
+            
+            transitions.put(pnmlId, caseType.registerTransition(id,
+                resource, Long.parseLong(timeout)));
+        }
         
-        // Get arcs and create them.
+        i = wfnet.getChildren("arc").iterator();
+        while (i.hasNext()) {
+            Element arc = (Element) i.next();
+            String source = arc.getAttributeValue("source");
+            String target = arc.getAttributeValue("target");
+            String weight = arc.getChild("weight").getChildText("value");
+
+            if (source.charAt(0) == 'p') {
+                Transition t = (Transition) transitions.get(target);
+                t.input((Place) places.get(source), weight);
+            } else {
+                Transition t = (Transition) transitions.get(source);
+                t.output((Place) places.get(target), weight);
+            }
+        }
         
         // Create attributes.
         
-        // buildTemplate
+        //caseType.buildTemplate(new HashMap());
         
-        return null;
+        return caseType;
     }
 }

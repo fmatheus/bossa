@@ -26,6 +26,10 @@ package com.bigbross.bossa.io;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.wfnet.CaseType;
+import com.bigbross.bossa.wfnet.WFNetCoverage;
+
 public class ImportTest extends TestCase {
 
     public ImportTest(String name) {
@@ -35,7 +39,10 @@ public class ImportTest extends TestCase {
     protected void setUp() {
     }
 
-    public void testCaseTypeLoad() throws DataTransferException {
-        new CaseTypeXMLLoader("etc/test-data/purchase.pnml");
+    public void testCaseTypeLoad() throws BossaException {
+        CaseTypeXMLLoader loader =
+            new CaseTypeXMLLoader("etc/test-data/wfnet-coverage.pnml");
+        CaseType caseType = loader.createCaseType();
+        new WFNetCoverage().check(caseType);        
     }
 }

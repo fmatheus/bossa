@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<pnml>
+  <net id="n1" type="WFNet">
+    <place id="p1">
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>place1</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Start</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </initialMarking>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="39" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </place>
+    <place id="p2">
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>place2.2</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Branch 2</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>0</value>
+      </initialMarking>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="188" y="263" />
+      
+      
+      
+      
+      </graphics>
+    </place>
+    <place id="p3">
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>place3</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>And Join</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="339" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </place>
+    <place id="p4">
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>place4</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>End</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="488" y="214" />
+      
+      
+      
+      
+      </graphics>
+    </place>
+    <transition id="t1">
+      <resource>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>starters</value>
+      </resource>
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="69" />
+        
+        
+        
+        
+        </graphics>
+        <value>workitem1</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Initial Work Item</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="113" y="214" />
+      
+      
+      
+      
+      </graphics>
+    </transition>
+    <transition id="t2">
+      <resource>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </resource>
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="69" />
+        
+        
+        
+        
+        </graphics>
+        <value>workitem2.1</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Automatic Work Item</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>0</value>
+      </timeout>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="262" y="163" />
+      
+      
+      
+      
+      </graphics>
+    </transition>
+    <transition id="t3">
+      <resource>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>workers</value>
+      </resource>
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="69" />
+        
+        
+        
+        
+        </graphics>
+        <value>workitem2.2</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Manual Work Item 1</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="263" y="263" />
+      
+      
+      
+      
+      </graphics>
+    </transition>
+    <place id="p5">
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>place2.1</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Branch 1</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="187" y="162" />
+      
+      
+      
+      
+      </graphics>
+    </place>
+    <transition id="t4">
+      <resource>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="46" />
+        
+        
+        
+        
+        </graphics>
+        <value>workers - $workitem2.2</value>
+      </resource>
+      <id>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="69" />
+        
+        
+        
+        
+        </graphics>
+        <value>workitem3</value>
+      </id>
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value>Manual Work Item 2</value>
+      </name>
+      <timeout>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="20" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="413" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </transition>
+    <place id="p6">
+      <id>
+        <graphics>
+          <offset page="1" x="20" y="46" />
+        </graphics>
+        <value>place5</value>
+      </id>
+      <name>
+        <graphics>
+          <offset page="1" x="20" y="0" />
+        </graphics>
+        <value>Optional Branch</value>
+      </name>
+      <initialMarking>
+        <graphics>
+          <offset page="1" x="20" y="23" />
+        </graphics>
+        <value></value>
+      </initialMarking>
+      <graphics>
+        <position page="1" x="413" y="138" />
+      </graphics>
+    </place>
+    <transition id="t5">
+      <resource>
+        <graphics>
+          <offset page="1" x="20" y="46" />
+        </graphics>
+        <value>workers</value>
+      </resource>
+      <id>
+        <graphics>
+          <offset page="1" x="20" y="69" />
+        </graphics>
+        <value>workitem4</value>
+      </id>
+      <name>
+        <graphics>
+          <offset page="1" x="20" y="0" />
+        </graphics>
+        <value>Optional Work Item</value>
+      </name>
+      <timeout>
+        <graphics>
+          <offset page="1" x="20" y="23" />
+        </graphics>
+        <value></value>
+      </timeout>
+      <graphics>
+        <position page="1" x="489" y="140" />
+      </graphics>
+    </transition>
+    <arc id="a1" source="p1" target="t1">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="76" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a2" source="t1" target="p5">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="150" y="188" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a3" source="t1" target="p2">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="150" y="238" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a4" source="p5" target="t2">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="224" y="162" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a5" source="p2" target="t3">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="225" y="263" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a6" source="t3" target="p3">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="301" y="238" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a7" source="t2" target="p3">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="300" y="188" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a8" source="p3" target="t4">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>2</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="376" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a9" source="t4" target="p4">
+      <name>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="0" />
+        
+        
+        
+        
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          
+          
+          
+          
+          <offset page="1" x="10" y="23" />
+        
+        
+        
+        
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        
+        
+        
+        
+        <position page="1" x="450" y="213" />
+      
+      
+      
+      
+      </graphics>
+    </arc>
+    <arc id="a10" source="t4" target="p6">
+      <name>
+        <graphics>
+          <offset page="1" x="10" y="0" />
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          <offset page="1" x="2" y="-9" />
+        </graphics>
+        <value>optional</value>
+      </weight>
+      <graphics>
+        <position page="1" x="413" y="175" />
+      </graphics>
+    </arc>
+    <arc id="a11" source="p6" target="t5">
+      <name>
+        <graphics>
+          <offset page="1" x="10" y="0" />
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          <offset page="1" x="10" y="23" />
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        <position page="1" x="451" y="139" />
+      </graphics>
+    </arc>
+    <arc id="a12" source="t5" target="p4">
+      <name>
+        <graphics>
+          <offset page="1" x="10" y="0" />
+        </graphics>
+        <value></value>
+      </name>
+      <weight>
+        <graphics>
+          <offset page="1" x="10" y="23" />
+        </graphics>
+        <value>1</value>
+      </weight>
+      <graphics>
+        <position page="1" x="488" y="177" />
+      </graphics>
+    </arc>
+    <id>
+      <value>wfnet-coverage</value>
+    </id>
+    <name>
+      <value>All Modelling Structures</value>
+    </name>
+  </net>
+</pnml>
+
