@@ -188,7 +188,7 @@ public abstract class WFNetEvents {
     static void notifyCase(Bossa bossa, String notificationId, Case caze) {
         if (bossa != null) {
             Map attrib = new HashMap();
-            attrib.put(ATTRIB_CASE_ID, new Integer(caze.getId()));
+            attrib.put(ATTRIB_CASE_ID, Integer.toString(caze.getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
             Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
                                     bossa.getTimeSource().getTime());
@@ -209,7 +209,7 @@ public abstract class WFNetEvents {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_WORK_ITEM_ID, wi.getId());
-            attrib.put(ATTRIB_CASE_ID, new Integer(wi.getCase().getId()));
+            attrib.put(ATTRIB_CASE_ID, Integer.toString(wi.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, wi.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
             Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
@@ -229,9 +229,9 @@ public abstract class WFNetEvents {
                                Activity act, Map caseAttributes) {
         if (bossa != null) {
             Map attrib = new HashMap();
-            attrib.put(ATTRIB_ACTIVITY_ID, new Integer(act.getId()));
+            attrib.put(ATTRIB_ACTIVITY_ID, Integer.toString(act.getId()));
             attrib.put(ATTRIB_ACTIVITY_WI_ID, act.getWorkItemId());
-            attrib.put(ATTRIB_CASE_ID, new Integer(act.getCase().getId()));
+            attrib.put(ATTRIB_CASE_ID, Integer.toString(act.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, act.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, act.getResource().getId());
             attrib.put(ATTRIB_NEW_CASE_ATTRIBUTES, caseAttributes);

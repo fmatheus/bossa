@@ -62,7 +62,8 @@ public class Event implements Comparable, Serializable {
      * defined by the generator of the event. The only exception is that a
      * event with type <code>WFNET_EVENT</code> <i>should</i> contain an
      * attribute named <code>WFNetEvents.ATTRIB_RESOURCE_ID</code>,
-     * indicating the resource this event affects. <p>
+     * indicating the resource this event affects. Also all attribute
+     * mappings are <code>String</code> id to <code>String</code> value. <p>
      * 
      * @param id the id of this event.
      * @param type the type os this event.

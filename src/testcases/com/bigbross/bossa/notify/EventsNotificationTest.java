@@ -93,7 +93,7 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_CASE, event.getId());
         /* Starting work item will create a new case, so we have "+ 1". */
-        assertEquals(new Integer(wi.getCase().getId() + 1),
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
@@ -113,7 +113,7 @@ public class EventsNotificationTest extends TestCase {
         Event event = (Event) events.get(13);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_CASE, event.getId());
-        assertEquals(new Integer(wi.getCase().getId()),
+        assertEquals(Integer.toString(wi.getCase().getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
@@ -131,7 +131,7 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(wi.getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_WORK_ITEM_ID));
         /* Starting work item will create a new case, so we have "+ 1". */
-        assertEquals(new Integer(wi.getCase().getId() + 1),
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
@@ -150,11 +150,11 @@ public class EventsNotificationTest extends TestCase {
         Event event = (Event) events.get(4);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
-        assertEquals(new Integer(act.getId()),
+        assertEquals(Integer.toString(act.getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
         assertEquals(act.getWorkItemId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
-        assertEquals(new Integer(act.getCase().getId()),
+        assertEquals(Integer.toString(act.getCase().getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(act.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
@@ -174,11 +174,11 @@ public class EventsNotificationTest extends TestCase {
         Event event = (Event) events.get(5);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
-        assertEquals(new Integer(act.getId()),
+        assertEquals(Integer.toString(act.getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
         assertEquals(act.getWorkItemId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
-        assertEquals(new Integer(act.getCase().getId()),
+        assertEquals(Integer.toString(act.getCase().getId()),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(act.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
