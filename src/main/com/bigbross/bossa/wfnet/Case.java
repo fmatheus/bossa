@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ import java.util.List;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Case {
+public class Case implements Serializable {
 
     private int id;
 
@@ -120,7 +121,7 @@ public class Case {
      *         with this id.
      */
     WorkItem getWorkItem(String id) {
-        int index = caseType.getTransition(id).index;
+        int index = caseType.getTransition(id).getIndex();
         return workItems[index];
     }
 
@@ -150,7 +151,7 @@ public class Case {
 
     boolean isFireable(Transition t) {
 	for(int i = 0; i < marking.length; ++i) {
-	    if (marking[i] < caseType.getEdge(t.index, i).input()) {
+	    if (marking[i] < caseType.getEdge(t.getIndex(), i).input()) {
 		return false;
 	    }
 	}

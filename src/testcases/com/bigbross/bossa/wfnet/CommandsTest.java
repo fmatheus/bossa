@@ -70,7 +70,7 @@ public class CommandsTest extends TestCase {
 
         Activity act = (Activity) command.execute(caseTypeManager);
         assertNotNull(act);
-        assertEquals(wi.getTransition().id, act.getTransition().id);
+        assertEquals(wi.getTransition().getId(), act.getTransition().getId());
 
         int[] expected = new int[] {0,0,0,0,0,0,0,0};
         int[] actual = caze.getMarking();

@@ -141,12 +141,18 @@ public class CaseTest extends TestCase {
         Transition t0 = workItens[0].getTransition();
         Transition t1 = workItens[1].getTransition();
         Transition t2 = workItens[2].getTransition();
-        assertFalse(t0.id.equals(t1.id));
-        assertFalse(t0.id.equals(t2.id));
-        assertFalse(t1.id.equals(t2.id));
-        assertTrue(t0.id.equals("c") || t0.id.equals("d") || t0.id.equals("f"));
-        assertTrue(t1.id.equals("c") || t1.id.equals("d") || t1.id.equals("f"));
-        assertTrue(t2.id.equals("c") || t2.id.equals("d") || t2.id.equals("f"));
+        assertFalse(t0.getId().equals(t1.getId()));
+        assertFalse(t0.getId().equals(t2.getId()));
+        assertFalse(t1.getId().equals(t2.getId()));
+        assertTrue(t0.getId().equals("c") || 
+                   t0.getId().equals("d") ||
+                   t0.getId().equals("f"));
+        assertTrue(t1.getId().equals("c") || 
+                   t1.getId().equals("d") ||
+                   t1.getId().equals("f"));
+        assertTrue(t2.getId().equals("c") || 
+                   t2.getId().equals("d") ||
+                   t2.getId().equals("f"));
     }
 
     public void testToString() {

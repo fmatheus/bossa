@@ -24,12 +24,14 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
+
 /**
  * This class represents a transition of a specific case instance.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class WorkItem {
+public class WorkItem implements Serializable {
 
     private Case caze;
 
@@ -60,7 +62,7 @@ public class WorkItem {
     }
 
     public String getId() {
-        return getTransition().id;
+        return getTransition().getId();
     }
 
     public boolean isFireable() {

@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +36,7 @@ import java.util.Map;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class CaseType {
+public class CaseType implements Serializable {
     
     private String id;
 
@@ -107,7 +108,7 @@ public class CaseType {
 
 	while (it.hasNext()) {
 	    Transition curr = (Transition) it.next();
-	    array[curr.index] = curr;
+	    array[curr.getIndex()] = curr;
 	}
 
 	return array;
@@ -120,7 +121,7 @@ public class CaseType {
     }
 
     public Edge[] getEdges(Transition t) {
-	return edges[t.index];
+	return edges[t.getIndex()];
     }
 
     public Edge getEdge(int t, int p) {
@@ -128,7 +129,7 @@ public class CaseType {
     }
 
     public Edge getEdge(Transition t, Place p) {
-	return getEdge(t.index, p.index);
+	return getEdge(t.getIndex(), p.index);
     }
 
     public void setEdge(int t, int p, Edge edge) {
@@ -136,7 +137,7 @@ public class CaseType {
     }
 
     public void setEdge(Transition t, Place p, Edge edge) {
-	setEdge(t.index, p.index, edge);
+	setEdge(t.getIndex(), p.index, edge);
     }
 
     /**

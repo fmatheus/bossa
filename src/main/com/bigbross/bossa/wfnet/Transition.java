@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,28 +34,40 @@ import java.util.Map;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Transition {
+public class Transition implements Serializable {
 
-    CaseType caseType;
+    private CaseType caseType;
 
-    int index;
+    private int index;
 
-    String id;
+    private String id;
 
-    String resource;
-
-    Transition(Transition t) {
-	this.caseType = t.caseType;
-	this.index = t.index;
-	this.id = t.id;
-	this.resource = t.resource;
-    }
+    private String resource;
 
     Transition(CaseType caseType, int index, String id, String resource) {
 	this.caseType = caseType;
 	this.index = index;
 	this.id = id;
 	this.resource = resource;
+    }
+
+    /**
+     * Returns the id of this transition. <p>
+     * 
+     * @return the id of this transition.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Returns the index of this transition. The index indicates the line
+     * that represents this transition in the transition map. <p>
+     * 
+     * @return the index of this transition.
+     */
+    int getIndex() {
+        return index;
     }
 
     Edge getEdge(Place p) {
@@ -88,5 +101,4 @@ public class Transition {
 
 	return string.toString();
     }
-
 }
