@@ -74,6 +74,16 @@ public class ResourceManager extends ResourceRegistry {
     }
 
     /**
+     * Returns the top level resource registry, the resource manager. <p>
+     * 
+     * @return the resource manager, <code>null</code> if the root registry
+     *         is not a resource manager.
+     */
+    ResourceManager getResourceManager() {
+        return this;
+    }
+
+    /**
      * Adds a resource registry to the global registry index. <p>
      * 
      * @param registry the resource registry.

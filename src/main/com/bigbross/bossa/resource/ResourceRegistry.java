@@ -95,8 +95,7 @@ public class ResourceRegistry implements Serializable {
      */
     ResourceManager getResourceManager() {
         if (superContext == null) {
-            return this instanceof ResourceManager ? 
-                    (ResourceManager) this : null;
+            return null;
         } else {
             return superContext.getResourceManager();
         }
