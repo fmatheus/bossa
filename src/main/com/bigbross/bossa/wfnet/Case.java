@@ -104,7 +104,6 @@ public class Case implements Serializable {
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));
-        caseType.getResourceRegistry().registerSubContext(resources);
     }
 
     /**
@@ -135,7 +134,6 @@ public class Case implements Serializable {
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));
-        caseType.getResourceRegistry().registerSubContext(resources);
     }
 
     /**

@@ -277,6 +277,7 @@ public class CaseType implements Serializable {
     Case openCase() throws BossaException {
         Case caze = new Case(template);
         cases.put(new Integer(caze.getId()), caze);
+        resources.registerSubContext(caze.getResourceRegistry());
         WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_OPEN_CASE, caze);
         return caze;
     }
