@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.notify;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,7 +46,7 @@ import com.bigbross.bossa.resource.Resource;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class NotificationBus {
+public class NotificationBus implements Serializable {
 
     private List persistentListeners;
 

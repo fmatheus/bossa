@@ -26,6 +26,7 @@ package com.bigbross.bossa;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -46,31 +47,44 @@ import com.bigbross.bossa.work.WorkManager;
 public class Bossa implements Serializable {
 
     /**
-     * This factory method creates a Bossa workflow engine. The engine
-     * created can be a new one, if the persistence directory is empty,
-     * or it can incarnate an already running one, if present in the
-     * persistence directory. <p>
+     * This factory method creates a Bossa workflow engine. <p>
+     * 
+     * The engine created is persistent if a valid persistence directory is
+     * provided. If the persistence directory is empty, a new Bossa
+     * engine will be created. If the persistence directory contains data
+     * of an already running Bossa engine, it will be restarted. <p>
+     * 
+     * The engine created is transient if <code>null</code> is passed as
+     * the persistence directory. A transient Bossa engine can be embeded in
+     * a prevalent system, being persisted with it, otherwise all operations
+     * will be lost in case of system shutdown. <p>
      * 
      * @param persistDir the directory that holds or will hold the state
      *        of the created engine.
-     * @return The newly created bossa engine.
+     * @return the newly created bossa engine.
      * @exception PersistenceException if an error occours starting the
      *            persistence mechanism.
      */
     public static Bossa createBossa(String persistDir)
         throws PersistenceException {
-        try {
-            Prevayler prevayler =
-                PrevaylerFactory.createPrevayler(new Bossa(), persistDir);
-            Bossa instance = (Bossa) prevayler.prevalentSystem();
-            instance.setPrevayler(prevayler);
-            return instance;
-        } catch (IOException e) {
-            throw new PersistenceException("I/O error starting prevayler.",
-                                            e);
-        } catch (ClassNotFoundException e) {
-            throw new PersistenceException("Reflection error in prevayler.",
-                                            e);
+        Bossa newBossa = new Bossa();
+        newBossa.setNotificationBus(new NotificationBus());
+        if (persistDir != null) {
+            try {
+                Prevayler prevayler =
+                    PrevaylerFactory.createPrevayler(newBossa, persistDir);
+                newBossa = (Bossa) prevayler.prevalentSystem();
+                newBossa.setPrevayler(prevayler);
+                return newBossa;
+            } catch (IOException e) {
+                throw new PersistenceException("I/O error starting prevayler.",
+                                                e);
+            } catch (ClassNotFoundException e) {
+                throw new PersistenceException("Reflection error in prevayler.",
+                                                e);
+            }
+        } else {
+            return newBossa;
         }
     }
 
@@ -91,8 +105,17 @@ public class Bossa implements Serializable {
         caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
         workManager = new WorkManager(this);
-        notificationBus = new NotificationBus();
+        notificationBus = null;
         prevayler = null;
+    }
+
+    /**
+     * Associates a notification bus with this engine instance. <p>
+     * 
+     * @param notificationBus the notification bus.
+     */ 
+    private void setNotificationBus(NotificationBus notificationBus) {
+        this.notificationBus = notificationBus;
     }
 
     /**
@@ -114,7 +137,15 @@ public class Bossa implements Serializable {
     public Object execute(TransactionWithQuery transaction)
         throws BossaException {
         try {
-            return prevayler.execute(transaction);
+            if (prevayler != null) {
+                return prevayler.execute(transaction);
+            } else {
+                /* 
+                 * FIXME: This is not deterministic if we are inside another
+                 * prevalent system.
+                 */
+                return transaction.executeAndQuery(this, new Date());
+            }
         } catch (BossaException e) {
             throw e;
         } catch (Exception e) {
