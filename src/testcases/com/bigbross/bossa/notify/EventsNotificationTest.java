@@ -45,7 +45,7 @@ public class EventsNotificationTest extends TestCase {
     private CaseTypeManager caseTypeManager;
     private ResourceManager resourceManager;
     private WorkManager workManager;
-    private Resource frank;
+    private Resource frank, sally;
     private MemoryListener listener;
     
     public EventsNotificationTest(String name) {
@@ -57,6 +57,7 @@ public class EventsNotificationTest extends TestCase {
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();
         frank = resourceManager.getResource("frank");
+        sally = resourceManager.getResource("sally");
         workManager = bossa.getWorkManager();
         
         listener = new MemoryListener("test", 0, null);
@@ -82,13 +83,49 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
     }
 
+    public void testLogOpenCase() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank);
+
+        List events = listener.getNotifications();
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(0);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_OPEN_CASE, event.getId());
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(new Integer(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
+    public void testLogCloseCase() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).close();
+        wi = (WorkItem) workManager.getWorkItems(sally).get(0);
+        wi.open(sally).close();
+        wi = (WorkItem) workManager.getWorkItems(frank).get(0);
+        wi.open(frank).close();
+        
+
+        List events = listener.getNotifications();
+        assertEquals(8, events.size());
+        Event event = (Event) events.get(7);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_CLOSE_CASE, event.getId());
+        assertEquals(new Integer(wi.getCase().getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
     public void testLogOpenWorkItem() throws Exception {
         WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(1, events.size());
-        Event event = (Event) events.get(0);
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(1);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
         assertEquals(wi.getId(),
@@ -109,8 +146,8 @@ public class EventsNotificationTest extends TestCase {
         act.close(newAttrib);
 
         List events = listener.getNotifications();
-        assertEquals(2, events.size());
-        Event event = (Event) events.get(1);
+        assertEquals(3, events.size());
+        Event event = (Event) events.get(2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
@@ -133,8 +170,8 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        assertEquals(2, events.size());
-        Event event = (Event) events.get(1);
+        assertEquals(3, events.size());
+        Event event = (Event) events.get(2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),

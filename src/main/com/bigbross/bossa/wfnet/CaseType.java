@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.ResourceRegistry;
 
@@ -276,18 +277,24 @@ public class CaseType implements Serializable {
     Case openCase() throws BossaException {
         Case caze = new Case(template);
         cases.put(new Integer(caze.getId()), caze);
+        WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_OPEN_CASE, caze);
         return caze;
     }
 
     /**
      * Closes an open case. <p>
      *
-     * @param caze the <code>Case</code> to be closed.
-     * @return <code>true</code> if the case was open,
+     * @param caze the case to be closed.
+     * @return <code>true</code> if the case was open and could be closed,
      *         <code>false</code> otherwise.
      */
     boolean closeCase(Case caze) {
-        return cases.remove(new Integer(caze.getId())) != null;
+        if (cases.remove(new Integer(caze.getId())) != null) {
+            WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_CLOSE_CASE, caze);
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -331,7 +338,7 @@ public class CaseType implements Serializable {
     /**
      * Returns the case type manager this case type is registered into. <p>
      * 
-     * @return The case type manager this case type is registered into.
+     * @return the case type manager this case type is registered into.
      */
     CaseTypeManager getCaseTypeManager() {
         return caseTypeManager;
@@ -340,11 +347,25 @@ public class CaseType implements Serializable {
     /**
      * Sets the case type manager this case type is registered into. <p>
      * 
-     * @param caseTypeManager The case type manager this case type is
+     * @param caseTypeManager the case type manager this case type is
      *        registered into.
      */
     void setCaseTypeManager(CaseTypeManager caseTypeManager) {
         this.caseTypeManager = caseTypeManager;
+    }
+
+    /**
+     * Returns the bossa engine this case type is part, if any. <p>
+     * 
+     * @return the bossa engine this case type is part, <code>null</code> if
+     *         not part of a bossa engine.
+     */
+    Bossa getBossa() {
+        if (getCaseTypeManager() != null) {
+            return getCaseTypeManager().getBossa();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -365,7 +386,7 @@ public class CaseType implements Serializable {
     /**
      * Returns all cases of this case type. <p>
      * 
-     * @return A list of all active cases.
+     * @return a list of all active cases.
      */
     public List getCases() {
         ArrayList caseList = new ArrayList();
@@ -376,7 +397,7 @@ public class CaseType implements Serializable {
     /**
      * Returns the list of all work items of the cases of this case type. <p>
      * 
-     * @return The list of work itens of this case type.
+     * @return the list of work itens of this case type.
      */
     public List getWorkItems() {
         return getWorkItems(false);
@@ -390,7 +411,7 @@ public class CaseType implements Serializable {
      * @param getInitial set to <code>true</code> to get the initial work
      *                   items and to <code>false</code> to only get the
      *                   standard work items. 
-     * @return The list of work itens of this case type.
+     * @return the list of work itens of this case type.
      */
     public List getWorkItems(boolean getInitial) {
         ArrayList items = new ArrayList();
@@ -407,7 +428,7 @@ public class CaseType implements Serializable {
     /**
      * Returns the list of all activities of the cases of this case type. <p>
      * 
-     * @return The list of activities of this case type.
+     * @return the list of activities of this case type.
      */
     public List getActivities() {
         ArrayList acts = new ArrayList();

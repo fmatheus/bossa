@@ -59,6 +59,28 @@ public abstract class WFNetEvents {
     public static final String ID_REMOVE_CASE_TYPE = "remove_case_type";
 
     /**
+     * Constant to indicate the event of opening a case. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_CASE_ID and
+     * ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_OPEN_CASE  = "open_case";
+
+    /**
+     * Constant to indicate the event of closing a case. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_CASE_ID and
+     * ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_CLOSE_CASE  = "close_case";
+
+    /**
      * Constant to indicate the event of opening a work item. <p>
      * 
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
@@ -85,14 +107,14 @@ public abstract class WFNetEvents {
      * @see WFNetEvents#ATTRIB_RESOURCE_ID
      * @see WFNetEvents#ATTRIB_NEW_CASE_ATTRIBUTES
      */
-    public static final String ID_CLOSE_ACTIVITY  = "cancel_activity";
+    public static final String ID_CLOSE_ACTIVITY  = "close_activity";
 
     /**
      * Constant to indicate the event of canceling an activity. <p>
      * 
      * This event contains the following attributes: ATTRIB_ACTIVITY_ID,
      * ATTRIB_ACTIVITY_WI_ID, ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID and
-     * ATTRIB_RESOURCE_ID<p>
+     * ATTRIB_RESOURCE_ID <p>
      * 
      * @see WFNetEvents#ATTRIB_ACTIVITY_ID
      * @see WFNetEvents#ATTRIB_ACTIVITY_WI_ID
@@ -150,6 +172,23 @@ public abstract class WFNetEvents {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_CASE_TYPE_ID, caseType.getId());
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            bossa.getNotificationBus().notifyEvent(event);
+        }
+    }
+
+    /**
+     * Notify a case related event. <p>
+     * 
+     * @param bossa the root of the bossa system.
+     * @param notificationId the id of this event.
+     * @param caze the case involved.
+     */
+    static void notifyCase(Bossa bossa, String notificationId, Case caze) {
+        if (bossa != null) {
+            Map attrib = new HashMap();
+            attrib.put(ATTRIB_CASE_ID, new Integer(caze.getId()));
+            attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
             Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
             bossa.getNotificationBus().notifyEvent(event);
         }
