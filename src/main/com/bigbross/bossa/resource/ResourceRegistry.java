@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bigbross.bossa.BossaException;
+
 /**
  * This class stores registered resources. <p>
  *
@@ -41,6 +43,8 @@ import java.util.Set;
 public class ResourceRegistry implements Serializable {
 
     private String id;
+    
+    private ResourceRegistry superContext;
 
     private Map resources;
     
@@ -53,6 +57,7 @@ public class ResourceRegistry implements Serializable {
      */
     public ResourceRegistry(String id) {
         this.id = id;
+        this.superContext = null;
         this.resources = new HashMap();
         this.contexts = new HashMap();
     }
@@ -64,6 +69,24 @@ public class ResourceRegistry implements Serializable {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * Sets a context as the super context of this registry. <p>
+     * 
+     * @param context the super context.
+     */
+    public void setSuperContext(ResourceRegistry context) {
+        this.superContext = context;
+    }
+
+    /**
+     * Returns the super context of this registry. <p>
+     * 
+     * @return the super context of this registry.
+     */
+    public ResourceRegistry getSuperContext() {
+        return superContext;
     }
 
     /**
@@ -80,7 +103,7 @@ public class ResourceRegistry implements Serializable {
     /**
      * Returns all registered resources. <p>
      * 
-     * @return A list of all resources registered.
+     * @return a list of all resources registered.
      */
     public List getResources() {
         ArrayList resourceList = new ArrayList();
@@ -151,6 +174,7 @@ public class ResourceRegistry implements Serializable {
      */
     public boolean registerSubContext(ResourceRegistry context) {
         if (!contexts.containsKey(context.getId())) {
+            context.setSuperContext(this);
             contexts.put(context.getId(), context);
             return true;
         } else {
@@ -178,7 +202,14 @@ public class ResourceRegistry implements Serializable {
      *         <code>false</code> if the sub context was not found.
      */
     public boolean removeSubContext(ResourceRegistry context) {
-        return (contexts.remove(context.getId()) != null);
+        ResourceRegistry myContext =
+            (ResourceRegistry) contexts.get(context.getId());
+        if (myContext != null) {
+            myContext.setSuperContext(null);
+            return true;
+        } else {
+            return false;
+        }
     } 
 
     /**
