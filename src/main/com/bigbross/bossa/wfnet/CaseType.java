@@ -162,6 +162,17 @@ public class CaseType implements Serializable {
     }
 
     /**
+     * Returns all resource groups of this case type. Use these resources to
+     * associate (by includes and excludes) system resources with case type
+     * resources. <p>
+     * 
+     * @return a list of all resource groups of this case type.
+     */
+    public List getResources() {
+        return resources.getResources();
+    }
+
+    /**
      * Returns the next case id for this case type. The case id is a
      * positive integer. <p>
      * 
