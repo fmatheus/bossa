@@ -119,10 +119,10 @@ public abstract class Expression implements Container, Serializable {
             return node;
 
         case VAR: // Resource weak reference
-            return compile(registry, expression, new LazyReference(registry, expression.nextToken().trim()));
+            return new LazyReference(registry, expression.nextToken().trim());
 
         default: // Resource reference
-            return new Reference(registry.getResource(tok.trim()));
+            return new Reference(registry, tok.trim());
 
         }
 
@@ -190,8 +190,12 @@ class Reference extends Expression {
 
     Resource group;
 
-    Reference(Resource group) {
-        this.group = group;
+    Reference(ResourceRegistry registry, String resource) {
+        this.group = registry.getResource(resource);
+        if (group == null) {
+            this.group = new Resource(null, resource);
+            registry.addResource(group);
+        }
     }
 
     public boolean contains(ResourceRegistry registry, Resource resource) {
