@@ -121,8 +121,8 @@ public class Resource implements Container, Serializable {
     public boolean include(Resource resource) throws BossaException {
         ResourceTransaction includeTransaction = 
             new IncludeInResource(this, resource);
-        return ((Boolean) getResourceRegistry().getResourceManager().
-            getBossa().execute(includeTransaction)).booleanValue();
+        return ((Boolean) getResourceRegistry().getBossa().
+            execute(includeTransaction)).booleanValue();
     }
 
     /**
@@ -159,8 +159,8 @@ public class Resource implements Container, Serializable {
     public boolean exclude(Resource resource) throws BossaException {
         ResourceTransaction excludeTransaction =
             new ExcludeInResource(this, resource);
-        return ((Boolean) getResourceRegistry().getResourceManager().
-            getBossa().execute(excludeTransaction)).booleanValue();
+        return ((Boolean) getResourceRegistry().getBossa().
+            execute(excludeTransaction)).booleanValue();
     }
 
     /**
@@ -195,8 +195,7 @@ public class Resource implements Container, Serializable {
     public void remove(Resource resource) throws BossaException {
         ResourceTransaction removeTransaction =
             new RemoveFromResource(this, resource);
-        getResourceRegistry().getResourceManager().getBossa().
-            execute(removeTransaction);
+        getResourceRegistry().getBossa().execute(removeTransaction);
     }
 
     /**

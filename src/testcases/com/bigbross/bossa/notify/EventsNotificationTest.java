@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceEvents;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
@@ -88,7 +89,7 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(2, events.size());
+        assertEquals(3, events.size());
         Event event = (Event) events.get(0);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_CASE, event.getId());
@@ -109,8 +110,8 @@ public class EventsNotificationTest extends TestCase {
         
 
         List events = listener.getNotifications();
-        assertEquals(8, events.size());
-        Event event = (Event) events.get(7);
+        assertEquals(11, events.size());
+        Event event = (Event) events.get(10);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_CASE, event.getId());
         assertEquals(new Integer(wi.getCase().getId()),
@@ -124,8 +125,8 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(2, events.size());
-        Event event = (Event) events.get(1);
+        assertEquals(3, events.size());
+        Event event = (Event) events.get(2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
         assertEquals(wi.getId(),
@@ -146,8 +147,8 @@ public class EventsNotificationTest extends TestCase {
         act.close(newAttrib);
 
         List events = listener.getNotifications();
-        assertEquals(3, events.size());
-        Event event = (Event) events.get(2);
+        assertEquals(4, events.size());
+        Event event = (Event) events.get(3);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
@@ -170,8 +171,8 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        assertEquals(3, events.size());
-        Event event = (Event) events.get(2);
+        assertEquals(4, events.size());
+        Event event = (Event) events.get(3);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
@@ -184,5 +185,18 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
         assertEquals(frank.getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
+    }
+    
+    public void testLogCreateRemoveResource() throws Exception {
+        Resource joe = resourceManager.createResource("joedoe");
+        resourceManager.removeResource(joe);
+
+        List events = listener.getNotifications();
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(0);
+        assertEquals(Event.RESOURCE_EVENT, event.getType());
+        assertEquals(ResourceEvents.ID_CREATE_RESOURCE, event.getId());
+        assertEquals(joe.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
     }
 }

@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
 
 /**
@@ -98,6 +99,20 @@ public class ResourceRegistry implements Serializable {
             return null;
         } else {
             return superContext.getResourceManager();
+        }
+    }
+
+    /**
+     * Returns the bossa engine this resource registry is part, if any. <p>
+     * 
+     * @return the bossa engine this resource registry is part,
+     *         <code>null</code> if not part of a bossa engine.
+     */
+    Bossa getBossa() {
+        if (getResourceManager() != null) {
+            return getResourceManager().getBossa();
+        } else {
+            return null;
         }
     }
 
@@ -204,8 +219,7 @@ public class ResourceRegistry implements Serializable {
      */    
     public Resource createResource(String id) throws BossaException {
         ResourceTransaction createTransaction = new CreateResource(id);
-        return (Resource) getResourceManager().getBossa().
-            execute(createTransaction);
+        return (Resource) getBossa().execute(createTransaction);
     }
 
     /**
@@ -223,6 +237,8 @@ public class ResourceRegistry implements Serializable {
         if (!resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
             resources.put(id, resource);
+            ResourceEvents.notifySingleResource(
+                getBossa(), ResourceEvents.ID_CREATE_RESOURCE, resource);
             return resource;
         } else {
             return null;
@@ -240,8 +256,7 @@ public class ResourceRegistry implements Serializable {
      */
     public boolean removeResource(Resource resource) throws BossaException {
         ResourceTransaction removeTransaction = new RemoveResource(resource);
-        return ((Boolean) getResourceManager().getBossa().
-            execute(removeTransaction)).booleanValue();
+        return ((Boolean) getBossa().execute(removeTransaction)).booleanValue();
     }
 
     /**
@@ -258,6 +273,8 @@ public class ResourceRegistry implements Serializable {
     public boolean removeResourceImpl(Resource resource) {
         if (resources.remove(resource.getId()) != null) {
             clearReferences(resource);
+            ResourceEvents.notifySingleResource(
+                getBossa(), ResourceEvents.ID_REMOVE_RESOURCE, resource);
             return true;
         } else {
             return false;
