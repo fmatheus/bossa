@@ -78,10 +78,11 @@
   </para>
 
   <para>
-    <emphasis>Workflow</emphasis> is the name of the total or partial
-    automation of a process, that is, a set of rules that govern the
+    <emphasis>Workflow</emphasis> is a set of rules that govern the
     sequence of activities to get a bigger and collaborative work
-    done, involving several participants.
+    done, involving several participants. <emphasis>Workflow
+    management systems</emphasis> automate fully or partially a
+    workflow.
   </para>
 
   <para>
@@ -161,15 +162,15 @@
     A case type defines all possible executions or instances of a
     process. A individual instance of a case type is a
     <emphasis>case</emphasis>. For example, the purchase of a box of
-    staples is a case of the "supplies purchase" case type. The tasks
-    of the case type have two different names in a case, depending on
-    their state. If the routing constructs and the execution of the
-    case activate a task, it is called a <emphasis>work
-    item</emphasis>. For example, after a new purchase request is made
-    the "initial analysis" task becomes a work item, that is, it can
-    be performed by some user of the system. If an user actually
-    performs a work item, a non-instantaneous action, the task is an
-    <emphasis>activity</emphasis> until it is completed.
+    staples is a case of the "supplies purchase" case type. In a case
+    the tasks of the case type have two different states: an activated
+    task is a <emphasis>work item</emphasis>, a task in progress is an
+    <emphasis>activity</emphasis>. For example, after the "purchase
+    request" task is completed the "initial analysis" task becomes a
+    work item, that is, it can be performed by some user of the
+    system. If an user actually performs a work item, a
+    non-instantaneous action, the task is an activity until it is
+    completed.
   </para>
 
   <para>
@@ -255,14 +256,14 @@
   </para>
 
   <para>
-    The tasks (transitions) in a case type don't fire at
-    random as in classic Petri nets, but they are performed by a
-    resource. Task "b" can be performed by the resource "sales - $a",
-    this means that only the users of the "sales" group minus the
-    users that performed task "a" can perform (fire) this task once it
-    is activated. Resources are defined by set expressions (with "-",
-    "+" and "^" operators) using user groups and the "$" special
-    groups of users that performed a task.
+    The tasks (transitions) in a case type don't fire at random as in
+    classic Petri nets, but they are performed by a resource. Task "b"
+    can be performed by the resource "sales - $a", this means that
+    only the users of the "sales" group minus the users that performed
+    task "a" can perform (fire) this task once it is
+    activated. Resources are defined by set expressions (with
+    exclusion, union and intersection operators) using user groups and
+    the "$" special groups of users that performed a task.
   </para>
 
   <para>
@@ -273,18 +274,19 @@
     purchase" place and has output weight "SOK &amp;&amp; !DIR". Here
     we start exploring the specific way Bossa defines a case
     type. Each of the output expression is a JavaScript expression
-    that will be evaluated as an integer using case variables set
-    during the case execution. We can use boolean expressions also,
-    they will yield 1 if true and 0 if false.
+    that will be evaluated to an integer using case variables set
+    during the case execution.
   </para>
 
   <para>
-    In task "b" if the purchase request does not pass the initial
-    analysis the variable SOK will be set to false. If it passes the
-    initial analysis SOK will be true and DIR will be set to true or
-    false if the director approval is necessary or not. So, when the
-    task "b" fires <emphasis>one</emphasis> token will be removed from
-    the place "B" and <emphasis>one</emphasis> token will be placed in
+    According to actions performed by the resource, the application
+    will set appropriate values of the case variables. After task "b" if
+    the purchase request does not pass the initial analysis the
+    variable SOK will be set to false. If it passes the initial
+    analysis SOK will be true and DIR will be set to true or false if
+    the director approval is necessary or not. So, when the task "b"
+    fires <emphasis>one</emphasis> token will be removed from the
+    place "B" and <emphasis>one</emphasis> token will be placed in
     either places "C", "D" or "E" depending on the values of the case
     variables.
   </para>
@@ -316,24 +318,24 @@
     Bossa does not concerns itself with several problems server
     processes must deal with, such as: connections, sessions,
     authentication, etc. It relies on the application to handle these
-    problems. The application in turn will probably use some other
+    problems. The application in turn will probably use some
     framework, such as an J2EE application server, to help in
-    providing these services.
+    providing these services. This gives the designer greater freedom
+    to build its application with any technology he has available or
+    enjoys using.
   </para>
 
   <para>
-    There are two situations where Bossa philosophy will be very
-    different from other workflow servers/frameworks: resource (user)
-    management and task execution. To Bossa users are known as
-    resources and are only identified by a string id. Bossa uses this
-    id to place the resource in resource groups and to test if a
-    resource is present in a resource expression. Bossa does not
-    registers users, authenticate users or store any information, such
-    as name or address, about the users. Bossa will present the work
-    items a resource can perform, but will not check if the resource
-    really can perform the work item. It is the responsibility of the
-    application to authenticate its users and map them to Bossa's
-    resources.
+    To the Bossa engine, users are known as resources and are only
+    identified by a string id. Bossa uses this id to place the
+    resource in resource groups and to test if a resource is present
+    in a resource expression. Bossa does not registers users,
+    authenticate users or store any information, such as name or
+    address, about the users. Bossa will present the work items a
+    resource can perform, but will not check if the resource really
+    can perform the work item. It is the responsibility of the
+    application to authenticate and authorize its users and map them
+    to Bossa's resources.
   </para>
 
   <para>
@@ -344,23 +346,23 @@
     present information relevant to the work item execution, it will
     not execute the work item's business rules and it will not persist
     its execution. The application is responsible for these
-    activities. It must choose what to do using the work item data
-    and, after completion, it notifies Bossa the work item is
-    complete.
+    activities, using the best tools available. It must choose what to
+    do using the work item data and, after completion, it notifies
+    Bossa the work item is complete.
   </para>
 
   <para>
     The expected way an application that uses Bossa should work is
     similar to this: the application will create a Bossa instance, it
     will register case types and resources if necessary. After this
-    setup work, the application will receive and authenticate its
-    users as it desires, then it may ask Bossa the work items
-    available to a user, the application will choose one among the
-    possible work items (possibly asking the user) and will inform
-    Bossa the user will work on it. Only the application knows how to
-    assist the user in the completion of this work item and, after the
-    work item is completed (or canceled), the application will inform
-    Bossa of the outcome, setting any case variable if necessary.
+    setup, the application will receive and authenticate its users as
+    it desires, then it may ask Bossa the work items available to a
+    user, the application will choose one among the possible work
+    items (possibly asking the user) and will inform Bossa the user
+    will work on it. Only the application knows how to assist the user
+    in the completion of this work item and, after the work item is
+    completed (or canceled), the application will notify Bossa of the
+    outcome, setting case variables if necessary.
   </para>
 
 </sect1>

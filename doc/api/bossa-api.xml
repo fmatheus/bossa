@@ -52,11 +52,11 @@
     Starting the Bossa engine is very simple, it is only necessary to
     create an object of class <classname>Bossa</classname> using the
     static method <methodname>createBossa</methodname>. The Bossa
-    library is organized in a way that you can access all methods from
-    a single object. You can have more than one instance of this
-    object, each one represent a <emphasis>different</emphasis> Bossa
-    engine. <xref linkend="create"/> shows how to create a new Bossa
-    engine.
+    library is organized in a way that you can access all methods
+    starting from the <classname>Bossa</classname> object. You can
+    have more than one instance of this object, each one represents a
+    <emphasis>different</emphasis> Bossa engine. <xref
+    linkend="create"/> shows how to create a new Bossa engine.
   </para>
 
   <example id="create"><title>Creating a new Bossa engine.</title>
@@ -99,7 +99,7 @@
 
   <example id="create-case-type"><title>Creating a new case type.</title>
     <programlisting> <![CDATA[
-    CaseType caseType = new CaseType("Test Case Type");
+    CaseType caseType = new CaseType("TestCaseType");
 
     Place A = caseType.registerPlace("A");
     Place B = caseType.registerPlace("B");
@@ -248,8 +248,14 @@
     and must use an id that allows you to retrieve the resource later
     with the <methodname>getResource</methodname> method.  Resources
     can be nested, an empty resource is an user and a resource that
-    contains other resources is a group. You add a resource to another
-    with the method <methodname>include</methodname> of
+    contains other resources is a group. To Bossa there is
+    no difference between a single resource or a group, they are all
+    resources.
+  </para>
+
+  <para>
+    You add a resource to another with the method
+    <methodname>include</methodname> of
     <classname>Resource</classname>. The
     <classname>Resource</classname> class provides other methods that
     make it possible to create advanced access control lists, see its
@@ -274,7 +280,7 @@
   <example id="case-type-resources"><title>Associating system and case
     type resources.</title>
     <programlisting> <![CDATA[
-    List l = caseTypeManager.getCaseType("Test Case Type").getResources();
+    List l = caseTypeManager.getCaseType("TestCaseType").getResources();
 
     // Find resources named requesters, sales and directors in l.
     // Your user will probably "find" the resources for you in an GUI.
@@ -284,13 +290,6 @@
     directors.insert(ana);
     ]]> </programlisting>
   </example>
-
-  <para>
-    As the example shows, we can add single resources into the case
-    type resource groups or we can add other groups. To Bossa there is
-    no difference between a single resource or a group, they are all
-    resources.
-  </para>
 
 </sect1>
 
