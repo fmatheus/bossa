@@ -8,7 +8,7 @@ Bossa 0.3.0 "Document It and They Will Come", 2003-03-13
 * Added an optimization in the edge weight evaluation. If the
   expression is an integer it won't go to BSF.
 
-* Added documentation: the overview Bossa Manifesto and a API HOWTO.
+* Added documentation: the overview Bossa Manifesto and an API HOWTO.
 
 
 Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-25
