@@ -98,8 +98,9 @@ public class BossaBrowser {
                 System.out.println("ct <listId> <listId> Contains resource?");
                 System.out.println("-------------------------------------");
                 System.out.println("wr <listId>\t\tList work itens of a resource.");
+                System.out.println("ar <listId>\t\tList activities of a resource.");
                 System.out.println("-------------------------------------");
-                System.out.println("o <listId>\t\tOpen a work item.");
+                System.out.println("o <listId> <resListId> Open a work item.");
                 System.out.println("cl <listId>\tClose an activity.");
                 System.out.println("ca <listId>\tCancel an activity.");
                 System.out.println("f <listId>\t\tFire a work item.");
@@ -229,10 +230,28 @@ public class BossaBrowser {
                                        "\t\t" + wi.getCase().getId() +
                                        "\t\t" + wi.getId());
                 }    
+            } else if (operation.equals("ar")) {
+                System.out.println("\tctID\tcID\taID\ttransition");
+                System.out.println("-------------------------------------");
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                String removeMe =
+                    ((Resource) lastResourceList.get(resId)).getId();
+                lastActivitiesList =
+                    workManager.getActivities(removeMe);
+                for (int i = 0; i < lastActivitiesList.size(); i++) {
+                    Activity a = (Activity) lastActivitiesList.get(i);
+                    System.out.println(i + ":\t" + a.getCaseType().getId() +
+                                       "\t\t" + 
+                                       a.getCase().getId() + "\t\t" +
+                                       a.getId() + "\t\t" +
+                                       a.getTransition().getId());
+                }
             } else if (operation.equals("o")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
-                Activity a = wi.open("jdoe");
+                Resource res = (Resource) lastResourceList.get(resId);
+                Activity a = wi.open(res.getId());
                 System.out.println("ok. Activity: " + a.getId());
             } else if (operation.equals("cl")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
