@@ -138,7 +138,7 @@ public class Resource implements Container, Serializable {
      * @return <code>false</code> if resource includes this resource,
      *         <code>true</code> otherwise.
      */
-    boolean includeImpl(Resource resource) {
+    public boolean includeImpl(Resource resource) {
         if (resource.depends(this)) {
             return false;
         }
@@ -177,7 +177,7 @@ public class Resource implements Container, Serializable {
      * @return <code>false</code> if resource excludes this resource,
      *         <code>true</code> otherwise.
      */
-    boolean excludeImpl(Resource resource) {
+    public boolean excludeImpl(Resource resource) {
         if (resource.depends(this)) {
             return false;
         }

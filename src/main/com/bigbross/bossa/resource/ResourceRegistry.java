@@ -219,7 +219,7 @@ public class ResourceRegistry implements Serializable {
      * @return the created <code>Resource</code> object,
      *         <code>null</code> if there is already a resource with this id.
      */    
-    Resource createResourceImpl(String id) {
+    public Resource createResourceImpl(String id) {
         if (!resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
             resources.put(id, resource);
