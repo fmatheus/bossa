@@ -25,7 +25,8 @@ Bossa requires the following software to run:
    URL: http://www.mozilla.org/rhino/
 
 For convenience, we provide an archive with the binaries marked with a +
-in our download page.
+in our download page. Look for the bossa-dep package with the highest release
+number that is smaller or equal the desired bossa release number.
 
 Bossa requires the aditional software to compile:
 
