@@ -63,16 +63,35 @@ public class Activity implements Serializable {
 	return workItem.getTransition();
     }
 
-    public boolean close() {
-	return getCase().close(this);
+    private boolean dispatchCommand(WFNetCommand command) {
+        Boolean result = null;
+        try {
+         result = 
+          (Boolean) CaseTypeManager.getInstance().executeCommand(command);
+        } catch (Exception e) {
+            /* FIXME: Exceptions, please. */
+            System.out.println("Prevayler error!"); e.printStackTrace();
+        }
+        return result.booleanValue();
     }
 
+    /**
+     * Closes and finishes this activity. Call this method when the
+     * activity is successfuly completed. <p>
+     */
+    public boolean close() {
+        return dispatchCommand(new CloseActivity(this));
+    }
+
+    /**
+     * Cancel this activity. Call this method if the activity could not
+     * be completed. The related work item will return to the list. <p>
+     */
     public boolean cancel() {
-	return getCase().cancel(this);
+        return dispatchCommand(new CancelActivity(this));
     }
 
     public String toString() {
-
 	StringBuffer string = new StringBuffer();
 
 	string.append(id);
