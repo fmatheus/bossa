@@ -297,7 +297,7 @@ public class Case implements Serializable {
      * 
      * @param wi the work item to be opened.
      * @param resource the resource that is opening the work item.
-     * @return The activity created the opening of this work item,
+     * @return The activity created by the opening of this work item,
      *         <code>null</code> if the work item could not be opened.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of this case
@@ -315,8 +315,6 @@ public class Case implements Serializable {
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 
-        Activity activity = new Activity(wi, resource);
-        activities.put(new Integer(activity.getId()), activity);
 	Edge[] edges = wi.getTransition().getEdges();
         for(int i = 0; i < marking.length; ++i) {
             /* An EvaluationException can be inconsistently thrown here. */
@@ -324,6 +322,8 @@ public class Case implements Serializable {
         }
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
+        Activity activity = new Activity(wi, resource);
+        activities.put(new Integer(activity.getId()), activity);
 
 	return activity;
     }
@@ -343,7 +343,7 @@ public class Case implements Serializable {
      * 
      * @param activity the activity to be closed.
      * @param newAttributes the attributes mapping.
-     * @return <code>true</code> is the activity is succesfuly opened,
+     * @return <code>true</code> if the activity is succesfully opened,
      *         <code>false</code> otherwise.
      * @exception SetAttributeException if the underling expression
      *            evaluation system has problems setting an attribute.
@@ -366,7 +366,6 @@ public class Case implements Serializable {
             }
         }
 
-	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
             /* An EvaluationException can be inconsistently thrown here. */
@@ -374,6 +373,7 @@ public class Case implements Serializable {
 	}
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();
+        activities.remove(new Integer(activity.getId()));
 
 	return true;
     }
@@ -387,7 +387,7 @@ public class Case implements Serializable {
      * be used only internally as a part of a persistent transaction. <p>
      * 
      * @param activity the activity to be canceled.
-     * @return <code>true</code> is the activity is succesfuly canceled,
+     * @return <code>true</code> if the activity is succesfully canceled,
      *         <code>false</code> otherwise.
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of this case
@@ -399,7 +399,6 @@ public class Case implements Serializable {
 	    return false;
 	}
 
-	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
             /* An EvaluationException can be inconsistently thrown here. */
@@ -407,6 +406,7 @@ public class Case implements Serializable {
 	}
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();
+        activities.remove(new Integer(activity.getId()));
 
 	return true;
     }
