@@ -202,9 +202,10 @@ public class Case implements Serializable {
     }
 
     /**
-     * Returns the list of work items associated with this case. <p>
+     * Returns the list of currently fireable work items associated
+     * with this case. <p>
      *  
-     * @return A list with the work items of this case.
+     * @return A list with the fireable work items of this case.
      */
     public List getWorkItems() {
         ArrayList items = new ArrayList(workItems.length);
@@ -220,9 +221,6 @@ public class Case implements Serializable {
 
     /**
      * Returns a specific work item, selected by its id. <p>
-     * 
-     * FIXME: Maybe we should return null also if the work item is not
-     * fireable. <p>
      * 
      * @param id the work item id.
      * @return the work item, <code>null</code> if there is no work item
