@@ -26,7 +26,6 @@ package com.bigbross.bossa.wfnet;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -53,16 +52,6 @@ public class CaseTest extends TestCase {
         return true;
     } 
 
-    // FIXME: Duplicate?
-    private boolean fire(Case caze, String workItemId, Map attributes) 
-        throws Exception {
-        Activity act = caze.open(caze.getWorkItem(workItemId), jdoe);
-        if (act != null) {
-            return caze.close(act, attributes);
-        }
-        return false;
-    }
-
     public void testGetWorkItem() throws Exception {
         Case caze = WFNetUtil.createCase();
         
@@ -75,9 +64,9 @@ public class CaseTest extends TestCase {
     public void testOpenClose() throws Exception {
         Case caze = WFNetUtil.createCase();
 
-        int[] expected = new int[] {0,1,0,0,0,0,0,0};
+        int[] expected = {0,1,0,0,0,0,0,0};
 
-        assertTrue(fire(caze, "a", null));
+        assertTrue(WFNetUtil.fire(caze, "a", null));
 
         int[] actual = caze.getMarking();
 
@@ -89,7 +78,7 @@ public class CaseTest extends TestCase {
         
         int[] start = caze.getMarking();
         
-        assertFalse(fire(caze, "b", null));
+        assertFalse(WFNetUtil.fire(caze, "b", null));
 
         int[] end = caze.getMarking();
 
@@ -113,7 +102,7 @@ public class CaseTest extends TestCase {
     public void testInvalidCloseCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
         
-        int[] expected = new int[] {0,1,0,0,0,0,0,0};
+        int[] expected = {0,1,0,0,0,0,0,0};
         Activity act = caze.open(caze.getWorkItem("a"), jdoe);
         assertNotNull(act);
         assertTrue(caze.close(act, null));
@@ -137,13 +126,13 @@ public class CaseTest extends TestCase {
         attributes.put("DIR", new Boolean(true));
         attributes.put("ADIR", "OK");
 
-        int[] expected = new int[] {0,0,0,0,0,0,1,0};
+        int[] expected = {0,0,0,0,0,0,1,0};
 
-        assertTrue(fire(caze, "a", attributes));
-        assertTrue(fire(caze, "b", null));
-        assertTrue(fire(caze, "c", null));
-        assertTrue(fire(caze, "d", null));
-        assertTrue(fire(caze, "e", null));
+        assertTrue(WFNetUtil.fire(caze, "a", attributes));
+        assertTrue(WFNetUtil.fire(caze, "b", null));
+        assertTrue(WFNetUtil.fire(caze, "c", null));
+        assertTrue(WFNetUtil.fire(caze, "d", null));
+        assertTrue(WFNetUtil.fire(caze, "e", null));
 
         int[] actual = caze.getMarking();
 
@@ -162,7 +151,7 @@ public class CaseTest extends TestCase {
         caseType.buildTemplate(new int[] {1,0}, null);
         Case caze = caseType.openCase();
         
-        assertTrue(fire(caze, "a", null));
+        assertTrue(WFNetUtil.fire(caze, "a", null));
         assertTrue(sameState(new int[] {1,1}, caze.getMarking()));
     }
 
