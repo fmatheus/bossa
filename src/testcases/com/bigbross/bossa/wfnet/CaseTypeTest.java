@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceRegistry;
 import com.bigbross.bossa.resource.ResourceUtil;
 
 public class CaseTypeTest extends TestCase {
@@ -155,5 +156,18 @@ public class CaseTypeTest extends TestCase {
                    c2.getId() == a2.getCase().getId());
         assertEquals("a", a1.getWorkItemId());
         assertEquals("a", a2.getWorkItemId());
+    }
+    
+    public void testResourceRegistryManagement() throws Exception {
+        Case caze = WFNetUtil.createCase(new int[] {0,0,0,0,1,0,0,0});
+        ResourceRegistry caseTypeRegistry =
+            caze.getCaseType().getResourceRegistry();
+        ResourceRegistry testRegistry =
+            new ResourceRegistry(Integer.toString(caze.getId()));
+        
+        assertFalse(caseTypeRegistry.registerSubContext(testRegistry));
+        assertTrue(WFNetUtil.fire(caze, "d", null));
+        assertTrue(WFNetUtil.fire(caze, "e", null));
+        assertTrue(caseTypeRegistry.registerSubContext(testRegistry));
     }
 }

@@ -291,6 +291,7 @@ public class CaseType implements Serializable {
      */
     boolean closeCase(Case caze) {
         if (cases.remove(new Integer(caze.getId())) != null) {
+            resources.removeSubContext(caze.getResourceRegistry());
             WFNetEvents.notifyCase(getBossa(), WFNetEvents.ID_CLOSE_CASE, caze);
             return true;
         } else {
