@@ -91,4 +91,19 @@ public class CommandsTest extends TestCase {
         int[] actual = caze.getMarking();
         assertTrue(CaseTest.sameState(expected, actual));
     }
+
+    public void testCancelActivity() {
+        Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
+        WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
+        Activity activity = caze.open(wi);
+        CancelActivity command = new CancelActivity(activity);
+        
+        assertEquals(1, caze.getActivities().size());
+        command.execute(caseTypeManager);        
+        assertEquals(0, caze.getActivities().size());
+
+        int[] expected = new int[] {1,0,0,0,0,0,0,0};
+        int[] actual = caze.getMarking();
+        assertTrue(CaseTest.sameState(expected, actual));
+    }
 }
