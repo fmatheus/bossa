@@ -32,7 +32,7 @@ public class ResourceUtil {
         return createResource(null, id);
     }
 
-    public static Resource createResource(ResourceManager manager, String id) {
+    public static Resource createResource(ResourceRegistry manager, String id) {
         return new Resource(manager, id);
     }
 
