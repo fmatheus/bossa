@@ -552,12 +552,14 @@ public class Case implements Serializable {
     }
 
     /**
-     * Restores the state of the not serializable object
-     * <code>BSFManager</code> after this case state is restored. <p>
+     * @see java.io.Serializable
      */
     private void readObject(java.io.ObjectInputStream in)
 	throws IOException, ClassNotFoundException {
 	in.defaultReadObject();
+        /*
+         * Restores the state of the non serializable BSFManager object.
+         */
 	bsf = new BSFManager();
 	Iterator it = attributes.entrySet().iterator();
 	while (it.hasNext()) {

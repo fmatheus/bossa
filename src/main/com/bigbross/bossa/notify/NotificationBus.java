@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.notify;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,5 +141,15 @@ public class NotificationBus implements Serializable {
                 /* We ignore listeners exceptions. */
             }
         }
+    }
+    
+    /**
+     * @see java.io.Serializable
+     */
+    private void readObject(java.io.ObjectInputStream in)
+        throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        /* Initializes the transient listeners map to a blank map. */
+        transientListeners = new HashMap();
     }
 }

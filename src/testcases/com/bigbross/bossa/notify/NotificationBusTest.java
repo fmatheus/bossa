@@ -103,4 +103,12 @@ public class NotificationBusTest extends TestCase {
         bus.notifyEvent(new Event("event3", Event.WFNET_EVENT, attrib));
         assertEquals("ok", attrib.get("status"));
     }
+    
+    public void testNotifyEmpty() {
+        NotificationBus emptyBus = new NotificationBus();
+        HashMap attrib = new HashMap();
+
+        emptyBus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
+        assertNull(attrib.get("status"));
+    }
 }
