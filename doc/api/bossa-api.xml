@@ -61,7 +61,7 @@
 
   <example id="create"><title>Creating a new Bossa engine.</title>
     <programlisting>
-    Bossa bossa = Bossa.createBossa("build/BossaState");
+    Bossa bossa = Bossa.createBossa("/var/lib/bossa");
     </programlisting>
   </example>
 
@@ -69,7 +69,7 @@
      The method <methodname>createBossa</methodname> receives as a
      parameter the name of a directory where Bossa will store its
      state. Bossa only needs a writable directory to persist its data,
-     check the application has the appropriate permissions. If the
+     check if the application has the appropriate permissions. If the
      provided directory is empty, Bossa will start a new engine
      instance, otherwise it will automatically reload the state of the
      last execution.
@@ -79,7 +79,8 @@
      Keep the reference to the just created Bossa engine and pass it
      to the objects that will need to interact with it. <emphasis>Do
      not</emphasis> create more the one engine instance pointing to
-     the same state directory.  </para>
+     the same state directory.
+  </para>
 
 </sect1>
 
@@ -87,29 +88,317 @@
   <title>Case Types Management</title>
 
   <para>
-    The case type management operation of the Bossa engine are
-    accessed throw the a <classname>CaseTypeManager</classname> object
-    that is part of the engine.
+    Before we can start managing case types, it is necessary to create
+    a case type. In Bossa a case type is represented by a object of
+    the <classname>CaseType</classname> class. <xref
+    linkend="create-case-type"/> shows how to create the "supplies
+    purchase" case type presented in the <ulink
+    url="http://www.bigbross.com/bossa/doc/manifesto/bossa-manifesto.html">
+    Bossa Manifesto</ulink>.
   </para>
 
-  <para>how it creates and registers a case type</para>
+  <example id="create-case-type"><title>Creating a new case type.</title>
+    <programlisting> <![CDATA[
+    CaseType caseType = new CaseType("Test Case Type");
+
+    Place A = caseType.registerPlace("A");
+    Place B = caseType.registerPlace("B");
+    Place C = caseType.registerPlace("C");
+    Place D = caseType.registerPlace("D");
+    Place E = caseType.registerPlace("E");
+    Place F = caseType.registerPlace("F");
+    Place G = caseType.registerPlace("G");
+    Place H = caseType.registerPlace("H");
+
+    Transition a = caseType.registerTransition("a", "requesters");
+    Transition b = caseType.registerTransition("b", "sales-$a");
+    Transition c = caseType.registerTransition("c", "directors");
+    Transition d = caseType.registerTransition("d", "sales");
+    Transition e = caseType.registerTransition("e", "sales");
+    Transition f = caseType.registerTransition("f", "$a");
+
+    caseType.buildMap();
+
+    a.input(A,  "1");
+    a.output(B, "1");
+    b.input(B,  "1");
+    b.output(C, "!SOK");
+    b.output(D, "SOK && DIR");
+    b.output(E, "SOK && !DIR");
+    c.input(D,  "1");
+    c.output(B, "ADIR == 'BACK'");
+    c.output(E, "ADIR == 'OK'");
+    c.output(H, "ADIR == 'CANCEL'");
+    d.input(E,  "1");
+    d.output(F, "1");
+    e.input(F,  "1");
+    e.output(G, "1");
+    f.input(C,  "1");
+    f.output(B, "OK");
+    f.output(H, "!OK");
+
+    HashMap attributes = new HashMap();
+    attributes.put("SOK", new Boolean(false));
+    attributes.put("DIR", new Boolean(false));
+    attributes.put("ADIR", "");
+    attributes.put("OK", new Boolean(false));
+
+    caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0}, attributes);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    First we create an empty case type, passing to the
+    <classname>CaseType</classname> constructor a string id. Then we
+    create all places and transitions of this case type using the
+    methods <methodname>registerPlace</methodname> and
+    <methodname>registerTransition</methodname> of the newly created
+    case type. Both methods receive an id as parameter and
+    <methodname>registerTransition</methodname> receives also a
+    resource expression, indicating what resources can perform work
+    items reflecting this transition.
+  </para>
+
+  <para>
+    After creating the places and transitions, we call the
+    <methodname>buildMap</methodname> method to inform the case that
+    all places and transitions were created and that it can create its
+    internal structures. Now we must connect the places and
+    transitions. For each transition we add inputs and outputs using
+    the methods <methodname>input</methodname> and
+    <methodname>output</methodname>, respectively. Each of these
+    methods receives the place that stands on the other side of the
+    edge and the edge weight. The edge weight is given as a JavaScript
+    integer or boolean expression.
+  </para>
+
+  <para>
+    The last step in the creation of a case type involves the creation
+    of the template case. This case represents the starting state of
+    all cases created from this case type. To create the template we
+    must initialize all of its case variables and set the initial
+    token placement. The case variables are set in a
+    <classname>Map</classname> where a basic java type is indexed by
+    the variable name. The token placement, the marking, is
+    represented by an integer array with the number of tokens in each
+    place. The places are indexed by their order of creation.
+  </para>
+
+  <para>
+    Now that we have a case type, we can register it. The case type
+    management operations of the Bossa engine are accessed though the
+    <classname>CaseTypeManager</classname> object that is part of the
+    engine. <xref linkend="register-case-type"/> shows how to get the
+    <classname>CaseTypeManager</classname> object and how to register
+    a case type.
+  </para>
+
+  <example id="register-case-type"><title>Registering a case type.</title>
+    <programlisting> <![CDATA[
+    CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+
+    caseTypeManager.registerCaseType(caseType);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    After a case type is registered, it is possible to retrieve it
+    from the case type manager using the method
+    <methodname>getCaseType</methodname>, this will be useful when we
+    associate local resources with case type resources.
+  </para>
 
 </sect1>
 
 <sect1 id="resource">
   <title>Resources Management</title>
 
-  <para>how it creates resources and add then to case type
-  groups</para>
+  <para>
+    In Bossa, resource management has two aspects: system resource
+    maintenance and case type resource association. All resource
+    management operations of the Bossa engine are accessed though the
+    <classname>ResourceManager</classname> object that is part of the
+    engine. We will start by showing how to get a resource manager an
+    how to create and manage system resources in <xref
+    linkend="create-resource"/>.
+  </para>
+
+  <example id="create-resource"><title>Managing system resources.</title>
+    <programlisting> <![CDATA[
+    ResourceManager resourceManager = bossa.getResourceManager();
+
+    Resource joe = resourceManager.createResource("joe");
+    Resource mary = resourceManager.createResource("mary");
+    Resource ana = resourceManager.createResource("ana");
+    Resource people = resourceManager.createResource("people");
+    Resource managers = resourceManager.createResource("managers");
+
+    people.include(joe);
+    people.include(mary);
+    people.include(ana);
+    managers.include(mary);
+    managers.include(ana);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    To the Bossa engine resources are no more than the string id that
+    identifies them. You must create one resource for each user of the
+    system using the <methodname>createResource</methodname> method
+    and must use an id that allows you to retrieve the resource later
+    with the <methodname>getResource</methodname> method.  Resources
+    can be nested, an empty resource is an user and a resource that
+    contains other resources is a group. You add a resource to another
+    with the method <methodname>include</methodname> of
+    <classname>Resource</classname>. The
+    <classname>Resource</classname> class provides other methods that
+    make it possible to create advanced access control lists, see its
+    documentation. Finally, you can remove a resource from the
+    resource manager using the <methodname>removeResource</methodname>
+    method.
+  </para>
+
+  <para>
+    Besides the system resources, each case type has a set of private
+    resources. These resources are extracted from the resource
+    expressions and are meant to represent groups, even though they
+    start empty. For example, the resource expression "sales +
+    support" in a transition will create the resources "sales" and
+    "support" in the case type. To allow any system resource to be
+    able to perform the work item represented by this transaction, you
+    must add system resources into the case type resources. You do
+    this the same way as you handle nested system resources, as <xref
+    linkend="case-type-resources"/> shows.
+  </para>
+
+  <example id="case-type-resources"><title>Associating system and case
+    type resources.</title>
+    <programlisting> <![CDATA[
+    List l = caseTypeManager.getCaseType("Test Case Type").getResources();
+
+    // Find resources named requesters, sales and directors in l.
+    // Your user will probably "find" the resources for you in an GUI.
+
+    requesters.insert(people);
+    sales.insert(managers);
+    directors.insert(ana);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    As the example shows, we can add single resources into the case
+    type resource groups or we can add other groups. To Bossa there is
+    no difference between a single resource or a group, they are all
+    resources.
+  </para>
 
 </sect1>
 
 <sect1 id="task">
   <title>Work Items Handling</title>
 
-  <para>how it lists the work items.</para>
+  <para>
+    Now that we have all set up, it possible to get work item lists
+    for users and to perform these work items. The component of the
+    Bossa engine that handles work item lists is the
+    <classname>WorkManager</classname> object. <xref
+    linkend="work-list"/> shows how to get the work manager and a list
+    of work items.  </para>
 
-  <para>how a work item is processed.</para>
+  <example id="work-list"><title>Getting a work item list.</title>
+    <programlisting> <![CDATA[
+    WorkManager workManager = bossa.getWorkManager();
+
+    Resource resource = resourceManager.getResource("joe");
+    List l = workManager.getWorkItems(resource, true);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    The second argument of the <methodname>getWorkItems</methodname>
+    method is a boolean value that allows initial work items to be
+    included in the list. Initial work items are special work items
+    that, if performed, will create a new case. In Bossa we don't
+    create a case explicitly, but only through initial work
+    items. Despite being special, initial work items work the same way
+    as normal work items.
+  </para>
+
+  <para>
+    With the list of <classname>WorkItem</classname> objects we can
+    present them to the user or use some form of automatic selection
+    and pick a work item. We can now start the work item by opening
+    it, as <xref linkend="open-work-item"/> shows. 
+  </para>
+
+  <example id="open-work-item"><title>Opening a work item.</title>
+    <programlisting> <![CDATA[
+    // Find the desired work item in l and put it in workItem.
+
+    Activity activity = workItem.open(resource);
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    The <methodname>open</methodname> method of
+    <classname>WorkItem</classname> receives the resource opening the
+    work item and returns an <classname>Activity</classname>
+    object. That is, an open work item is an activity. Now the resource
+    has an activity locked to him and he can now finish it, by either
+    closing or canceling this activity. <xref
+    linkend="finish-activity"/> shows the two possibilities.
+  </para>
+
+  <example id="finish-activity"><title>Finishing an activity.</title>
+    <programlisting> <![CDATA[
+    if (/* Do I want to close it? */) {
+        HashMap attributes = new HashMap();
+        attributes.put("SOK", new Boolean(true));
+        attributes.put("DIR", new Boolean(false));
+        activity.close(attributes);
+    } else {
+        activity.cancel();
+    }
+    ]]> </programlisting>
+  </example>
+
+  <para>
+    When an activity is effectively closed, we have the option of
+    updating the case variables. This is done the same way as when
+    creating the case type, and the <classname>Map</classname> is
+    passed as a parameter to the <methodname>close</methodname>
+    method. If an activity is closed the Bossa engine will register
+    that by moving the tokens of the effected case, this will
+    eventually activate other work items and the case will
+    progress. If the activity is canceled, the case will return to the
+    state it was before the work item was opened.
+  </para>
+
+</sect1>
+
+<sect1 id="more">
+  <title>I Want to Know More</title>
+
+  <para>
+    The comprehensive Bossa API reference can be found in the <ulink
+    url="http://www.bigbross.com/bossa/doc/javadocs">javadocs</ulink>.
+    Also, there is in the source distribution a demo class that
+    implements a crude text based interface. It is found in the
+    <filename>testcases</filename> source directory and is called
+    <classname>BossaBrowser</classname>. The source code of this demo
+    shows how you can structure an application using Bossa, but
+    beware, the code is not of the same high standard as the library.
+  </para>
+
+  <para>
+    However, the real place to get unambiguous, direct and clear
+    information about Bossa is the source code. We hope the source is
+    sufficiently well structured and commented to be of some use. If
+    not ;), please ask us at <ulink
+    url="http://lists.bigbross.com/lists">the project mailing
+    list</ulink>.
+  </para>
+
 </sect1>
 
 </article>
