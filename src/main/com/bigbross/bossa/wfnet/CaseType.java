@@ -244,7 +244,7 @@ public class CaseType implements Serializable {
      * @return The list of work itens of this case type.
      */
     public List getWorkItems(boolean getInitial) {
-       
+
         ArrayList items = new ArrayList();
         if (getInitial) {
             items.addAll(template.getWorkItems());
@@ -254,6 +254,21 @@ public class CaseType implements Serializable {
             items.addAll(((Case) i.next()).getWorkItems());
         }
         return items;
+    }
+
+    /**
+     * Returns the list of all activities of the cases of this case type. <p>
+     * 
+     * @return The list of activities of this case type.
+     */
+    public List getActivities() {
+
+        ArrayList acts = new ArrayList();
+        Iterator i = cases.values().iterator();   
+        while (i.hasNext()) {
+            acts.addAll(((Case) i.next()).getActivities());
+        }
+        return acts;
     }
 
     public String toString() {

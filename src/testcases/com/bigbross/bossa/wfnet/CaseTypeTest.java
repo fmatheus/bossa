@@ -143,8 +143,6 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = createTestCaseType();
         Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        assertNotNull(c1);
-        assertNotNull(c2);
         
         Iterator i = caseType.getCases();
         int id = ((Case) i.next()).getId();
@@ -158,8 +156,6 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = createTestCaseType();
         Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
         Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-        assertNotNull(c1);
-        assertNotNull(c2);
         
         List wi = caseType.getWorkItems();
         assertEquals(2, wi.size());
@@ -170,6 +166,26 @@ public class CaseTypeTest extends TestCase {
                    c1.getId() == wi2.getCase().getId());
         assertTrue(c2.getId() == wi1.getCase().getId() ||
                    c2.getId() == wi2.getCase().getId());
+    }
+
+    public void testGetActivities() {
+        CaseType caseType = createTestCaseType();
+        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        c1.open(c1.getWorkItem("a"));
+        c2.open(c2.getWorkItem("a"));
+
+        List activities = caseType.getActivities();
+        assertEquals(2, activities.size());
+        Activity a1 = (Activity) activities.get(0);
+        Activity a2 = (Activity) activities.get(1);
+        assertFalse(a1.getCase().getId() == a2.getCase().getId());
+        assertTrue(c1.getId() == a1.getCase().getId() ||
+                   c1.getId() == a2.getCase().getId());
+        assertTrue(c2.getId() == a1.getCase().getId() ||
+                   c2.getId() == a2.getCase().getId());
+        assertEquals("a", a1.getTransition().getId());
+        assertEquals("a", a2.getTransition().getId());
     }
 
     public void testToString() {
