@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Date;
 
 /**
  * This class implements the register case type operation of
  * <code>CaseTypeManager</code> through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseType(CaseType)
- * @see com.bigbross.bossa.wfnet.CaseTypeManager#registerCaseTypeImpl(CaseType)
+ * @see CaseTypeManager#registerCaseType(CaseType)
+ * @see CaseTypeManager#registerCaseTypeImpl(CaseType)
  */
 class RegisterCaseType extends WFNetTransaction {
 
@@ -50,10 +49,9 @@ class RegisterCaseType extends WFNetTransaction {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
-     *      CaseTypeManager, Date)
+     * @see WFNetTransaction#execute(CaseTypeManager)
      */
-    protected Object execute(CaseTypeManager caseTypeManager, Date time) {
+    protected Object execute(CaseTypeManager caseTypeManager) {
         boolean result = caseTypeManager.registerCaseTypeImpl(caseType);
         return new Boolean(result);
     }

@@ -24,8 +24,6 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Date;
-
 import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
 
@@ -34,8 +32,8 @@ import com.bigbross.bossa.resource.Resource;
  * through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.WorkItem#open(Resource)
- * @see com.bigbross.bossa.wfnet.Case#open(WorkItem, Resource)
+ * @see WorkItem#open(Resource)
+ * @see Case#open(WorkItem, Resource)
  */
 class OpenWorkItem extends WFNetTransaction {
 
@@ -65,12 +63,12 @@ class OpenWorkItem extends WFNetTransaction {
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
-     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
-     *      CaseTypeManager, Date)
+     * @see WFNetTransaction#execute(CaseTypeManager)
      */
-    protected Object execute(CaseTypeManager caseTypeManager, Date time)
+    protected Object execute(CaseTypeManager caseTypeManager)
         throws BossaException {
-        Resource resource = caseTypeManager.getBossa().getResourceManager().getResource(resourceId);
+        Resource resource = caseTypeManager.getBossa().
+                                getResourceManager().getResource(resourceId);
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         WorkItem workItem = caze.getWorkItem(workItemId);
         

@@ -24,11 +24,8 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
-
-import org.prevayler.TransactionWithQuery;
-
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaTransaction;
 
 
 /**
@@ -37,22 +34,20 @@ import com.bigbross.bossa.Bossa;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-abstract class ResourceTransaction implements TransactionWithQuery {
+abstract class ResourceTransaction extends BossaTransaction {
 
     /**
-     * Executes a transaction in a prevalent system. <p>
-     * 
-     * @see org.prevayler.TransactionWithQuery#executeAndQuery(Object, Date)
+     * @see BossaTransaction#execute(Bossa)
      */
-    public Object executeAndQuery(Object system, Date time)
-        throws Exception {
-        return execute(((Bossa) system).getResourceManager(), time);
+    public Object execute(Bossa bossa) {
+        return execute(bossa.getResourceManager());
     }
 
     /**
-     * Executes a command in the object tree rooted at ResourceManager. <p>
+     * Executes a transaction in a resource manager. <p>
+     * 
+     * @param resourceManager the resource manager.
+     * @return the result of the transaction execution.
      */
-    protected abstract Object execute(ResourceManager resourceManager,
-                                        Date time)
-        throws Exception;
+    protected abstract Object execute(ResourceManager resourceManager);
 }

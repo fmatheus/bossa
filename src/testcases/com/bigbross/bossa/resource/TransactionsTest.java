@@ -24,8 +24,6 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
-
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
@@ -36,7 +34,6 @@ import com.bigbross.bossa.wfnet.CaseTypeManager;
 public class TransactionsTest extends TestCase {
 
     private ResourceManager resourceManager;
-    private Date now;
 
     public TransactionsTest(String name) {
 	super(name);
@@ -44,13 +41,12 @@ public class TransactionsTest extends TestCase {
 
     protected void setUp() {
         resourceManager = new ResourceManager();
-        now = new Date();
     }
 
     public void testCreateResource() {
         CreateResource transaction = new CreateResource("joe");
         Resource resource =
-            (Resource) transaction.execute(resourceManager, now);
+            (Resource) transaction.execute(resourceManager);
         assertSame(resource, resourceManager.getResource("joe"));
     }
 
@@ -59,7 +55,7 @@ public class TransactionsTest extends TestCase {
         assertNotNull(resource);
         
         RemoveResource transaction = new RemoveResource(resource);
-        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
+        assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertNull(resourceManager.getResource("joe"));
     }
@@ -69,7 +65,7 @@ public class TransactionsTest extends TestCase {
         Resource element = resourceManager.createResourceImpl("joe");
 
         IncludeInResource transaction = new IncludeInResource(group, element);        
-        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
+        assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertTrue(group.contains(element));
     }
@@ -85,7 +81,7 @@ public class TransactionsTest extends TestCase {
         Resource element = myResourceManager.createResourceImpl("joe");
 
         IncludeInResource transaction = new IncludeInResource(group, element);        
-        assertTrue(((Boolean) transaction.execute(myResourceManager, now)).
+        assertTrue(((Boolean) transaction.execute(myResourceManager)).
                    booleanValue());
         assertTrue(group.contains(element));
     }
@@ -99,7 +95,7 @@ public class TransactionsTest extends TestCase {
         assertTrue(group1.contains(element));
         
         ExcludeInResource transaction = new ExcludeInResource(group1, element);        
-        assertTrue(((Boolean) transaction.execute(resourceManager, now)).
+        assertTrue(((Boolean) transaction.execute(resourceManager)).
                    booleanValue());
         assertFalse(group1.contains(element));
     }
@@ -119,7 +115,7 @@ public class TransactionsTest extends TestCase {
         assertTrue(group1.contains(element));
         
         ExcludeInResource transaction = new ExcludeInResource(group1, element);        
-        assertTrue(((Boolean) transaction.execute(myResourceManager, now)).
+        assertTrue(((Boolean) transaction.execute(myResourceManager)).
                    booleanValue());
         assertFalse(group1.contains(element));
     }
@@ -131,7 +127,7 @@ public class TransactionsTest extends TestCase {
         assertTrue(group.contains(element));
 
         RemoveFromResource transaction = new RemoveFromResource(group, element);        
-        transaction.execute(resourceManager, now);
+        transaction.execute(resourceManager);
         assertFalse(group.contains(element));
     }
 
@@ -148,7 +144,7 @@ public class TransactionsTest extends TestCase {
         assertTrue(group.contains(element));
 
         RemoveFromResource transaction = new RemoveFromResource(group, element);        
-        transaction.execute(myResourceManager, now);
+        transaction.execute(myResourceManager);
         assertFalse(group.contains(element));
     }
 }

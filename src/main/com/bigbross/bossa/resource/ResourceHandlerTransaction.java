@@ -24,7 +24,6 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
 
 /**
  * This class implements a generic operation of the <code>Resource</code>
@@ -44,7 +43,7 @@ abstract class ResourceHandlerTransaction extends ResourceTransaction {
      * Creates a new resource operation. <p>
      *
      * @param host the resource that will perform the operation. 
-     * @param resource the resource that manipulated.
+     * @param resource the resource that will be manipulated.
      */    
     ResourceHandlerTransaction(Resource host, Resource resource) {
         this.hostRegistryId =
@@ -56,26 +55,24 @@ abstract class ResourceHandlerTransaction extends ResourceTransaction {
     }
 
     /**
-     * Locates the resources and calls the specific operation. <p>
-     * 
-     * @see com.bigbross.bossa.resource.ResourceTransaction#execute(
-     *      ResourceManager, Date)
+     * @see ResourceTransaction#execute(ResourceManager)
      */
-    protected Object execute(ResourceManager resourceManager, Date time) 
-        throws Exception {
+    protected Object execute(ResourceManager resourceManager) {
         ResourceRegistry hostRegistry =
             resourceManager.getRegistry(hostRegistryId);
         Resource host = hostRegistry.getResource(hostId);
         ResourceRegistry resourceRegistry =
             resourceManager.getRegistry(resourceRegistryId);
         Resource resource = resourceRegistry.getResource(resourceId);
-        return execute(host, resource, time);
+        return execute(host, resource);
     }
 
     /**
      * Executes a transaction using the two provided resources. <p>
+     * 
+     * @param host the resource that will perform the operation. 
+     * @param resource the resource that will be manipulated.
+     * @return the result of the transaction execution.
      */
-    protected abstract Object execute(Resource host, Resource resource,
-                                        Date time)
-        throws Exception;
+    protected abstract Object execute(Resource host, Resource resource);
 }

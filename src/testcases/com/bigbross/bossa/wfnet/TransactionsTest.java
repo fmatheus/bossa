@@ -24,8 +24,6 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Date;
-
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
@@ -36,7 +34,6 @@ import com.bigbross.bossa.resource.Resource;
 public class TransactionsTest extends TestCase {
 
     private CaseTypeManager caseTypeManager;
-    private Date now;
     private Resource jdoe;
 
     public TransactionsTest(String name) {
@@ -46,8 +43,6 @@ public class TransactionsTest extends TestCase {
     protected void setUp() throws Exception {
         Bossa bossa = BossaFactory.transientBossa();
         caseTypeManager = bossa.getCaseTypeManager();
-
-        now = new Date();
 
         jdoe = bossa.getResourceManager().createResource("jdoe");
 
@@ -61,7 +56,7 @@ public class TransactionsTest extends TestCase {
         CaseType caseType = BossaTestUtil.createCaseType("anotherTestCaseType");
         RegisterCaseType transaction = new RegisterCaseType(caseType);
         
-        transaction.execute(caseTypeManager, now);
+        transaction.execute(caseTypeManager);
         
         CaseType stored = caseTypeManager.getCaseType("anotherTestCaseType");
         assertNotNull(stored);
@@ -71,7 +66,7 @@ public class TransactionsTest extends TestCase {
     public void testRemoveCaseType() {
         RemoveCaseType transaction = new RemoveCaseType("theTestCaseType");
         
-        transaction.execute(caseTypeManager, now);
+        transaction.execute(caseTypeManager);
         
         assertNull(caseTypeManager.getCaseType("theTestCaseType"));
     }
@@ -81,7 +76,7 @@ public class TransactionsTest extends TestCase {
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         OpenWorkItem transaction = new OpenWorkItem(wi, jdoe);
 
-        Activity act = (Activity) transaction.execute(caseTypeManager, now);
+        Activity act = (Activity) transaction.execute(caseTypeManager);
         assertNotNull(act);
         assertEquals(wi.getId(), act.getWorkItemId());
 
@@ -97,7 +92,7 @@ public class TransactionsTest extends TestCase {
         CloseActivity transaction = new CloseActivity(activity, null);
         
         assertEquals(1, caze.getActivities().size());
-        transaction.execute(caseTypeManager, now);
+        transaction.execute(caseTypeManager);
         assertEquals(0, caze.getActivities().size());
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
@@ -112,7 +107,7 @@ public class TransactionsTest extends TestCase {
         CancelActivity transaction = new CancelActivity(activity);
         
         assertEquals(1, caze.getActivities().size());
-        transaction.execute(caseTypeManager, now);
+        transaction.execute(caseTypeManager);
         assertEquals(0, caze.getActivities().size());
 
         int[] expected = new int[] {1,0,0,0,0,0,0,0};

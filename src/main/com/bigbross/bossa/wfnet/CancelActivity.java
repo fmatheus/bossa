@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Date;
 
 /**
  * This class implements the cancel operation of <code>Activity</code>
  * through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.Activity#cancel()
- * @see com.bigbross.bossa.wfnet.Case#cancel(Activity)
+ * @see Activity#cancel()
+ * @see Case#cancel(Activity)
  */
 class CancelActivity extends WFNetTransaction {
 
@@ -57,10 +56,9 @@ class CancelActivity extends WFNetTransaction {
      * @exception EvaluationException if an expression evaluation error
      *            occurs. If this exception is thrown the state of the case
      *            may be left inconsistent.
-     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
-     *      CaseTypeManager, Date)
+     * @see WFNetTransaction#execute(CaseTypeManager)
      */
-    protected Object execute(CaseTypeManager caseTypeManager, Date time) 
+    protected Object execute(CaseTypeManager caseTypeManager) 
         throws EvaluationException {
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);

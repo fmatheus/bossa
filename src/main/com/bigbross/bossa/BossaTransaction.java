@@ -22,35 +22,45 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa.wfnet;
+package com.bigbross.bossa;
+
+import java.util.Date;
+
+import org.prevayler.TransactionWithQuery;
 
 import com.bigbross.bossa.Bossa;
-import com.bigbross.bossa.BossaException;
-import com.bigbross.bossa.BossaTransaction;
 
 
 /**
- * This class represents all transactions applied to the WFNet persistent
- * objects. <p>
+ * This class represents all transactions applied to a Bossa engine. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-abstract class WFNetTransaction extends BossaTransaction {
+public abstract class BossaTransaction implements TransactionWithQuery {
 
     /**
-     * @see BossaTransaction#execute(Bossa)
+     * Executes a transaction in a prevalent system. <p>
+     * 
+     * This method sets the engine time source to the time
+     * provided. It should only be called by the prevayler instance
+     * providing persistence to the engine. <p>
+     * 
+     * @see org.prevayler.TransactionWithQuery#executeAndQuery(Object, Date)
      */
-    public Object execute(Bossa bossa) throws BossaException {
-        return execute(bossa.getCaseTypeManager());
+    public Object executeAndQuery(Object system, Date time) throws Exception {
+        Bossa bossa = (Bossa) system;
+        ((DeterministicTimeSource) bossa.getTimeSource()).setTime(time);
+        return execute(bossa);
     }
 
     /**
-     * Executes a transaction in a case type manager. <p>
+     * Executes a transaction in a Bossa engine. <p>
      * 
-     * @param caseTypeManager the case type manager.
+     * This method uses the time currently set in the engine time source. <p>
+     * 
+     * @param bossa the Bossa engine.
      * @return the result of the transaction execution.
      * @exception BossaException if a Bossa error occurs. 
      */
-    protected abstract Object execute(CaseTypeManager caseTypeManager)
-        throws BossaException;
+    public abstract Object execute(Bossa bossa) throws BossaException;
 }

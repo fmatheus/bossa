@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
 
 /**
  * This class implements the remove resource operation of
  * <code>ResourceManager</code> through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.resource.ResourceManager#removeResource(Resource)
- * @see com.bigbross.bossa.resource.ResourceManager#removeResourceImpl(Resource)
+ * @see ResourceManager#removeResource(Resource)
+ * @see ResourceManager#removeResourceImpl(Resource)
  */
 class RemoveResource extends ResourceTransaction {
 
@@ -48,12 +47,9 @@ class RemoveResource extends ResourceTransaction {
     }
 
     /**
-     * Executes the operation. <p>
-     * 
-     * @see com.bigbross.bossa.resource.ResourceTransaction#execute(
-     *      ResourceManager, Date)
+     * @see ResourceTransaction#execute(ResourceManager)
      */
-    protected Object execute(ResourceManager resourceManager, Date time) {
+    protected Object execute(ResourceManager resourceManager) {
         Resource resource = resourceManager.getResource(id);
         return new Boolean(resourceManager.removeResourceImpl(resource));
     }

@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.Date;
 
 /**
  * This class implements the remove case type operation of
  * <code>CaseTypeManager</code> through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.wfnet.CaseTypeManager#removeCaseType(String)
- * @see com.bigbross.bossa.wfnet.CaseTypeManager#removeCaseTypeImpl(String)
+ * @see CaseTypeManager#removeCaseType(String)
+ * @see CaseTypeManager#removeCaseTypeImpl(String)
  */
 class RemoveCaseType extends WFNetTransaction {
 
@@ -50,10 +49,9 @@ class RemoveCaseType extends WFNetTransaction {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.wfnet.WFNetTransaction#execute(
-     *      CaseTypeManager, Date)
+     * @see WFNetTransaction#execute(CaseTypeManager)
      */
-    protected Object execute(CaseTypeManager caseTypeManager, Date time) {
+    protected Object execute(CaseTypeManager caseTypeManager) {
         caseTypeManager.removeCaseTypeImpl(caseTypeId);
         return null;
     }

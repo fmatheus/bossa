@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
 
 /**
  * This class implements the include operation of <code>Resource</code>
  * through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.resource.Resource#include(Resource)
- * @see com.bigbross.bossa.resource.Resource#includeImpl(Resource)
+ * @see Resource#include(Resource)
+ * @see Resource#includeImpl(Resource)
  */
 class IncludeInResource extends ResourceHandlerTransaction {
 
@@ -47,12 +46,9 @@ class IncludeInResource extends ResourceHandlerTransaction {
     }
 
     /**
-     * Executes the operation. <p>
-     * 
-     * @see com.bigbross.bossa.resource.ResourceHandlerTransaction#execute(
-     *      Resource, Resource, Date)
+     * @see ResourceHandlerTransaction#execute(Resource, Resource)
      */
-    protected Object execute(Resource host, Resource resource, Date time) {
+    protected Object execute(Resource host, Resource resource) {
         return new Boolean(host.includeImpl(resource));
     }
 }

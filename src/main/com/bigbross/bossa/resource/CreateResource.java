@@ -24,15 +24,14 @@
 
 package com.bigbross.bossa.resource;
 
-import java.util.Date;
 
 /**
  * This class implements the create resource operation of
  * <code>ResourceManager</code> through the prevalence subsystem. <p>
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- * @see com.bigbross.bossa.resource.ResourceManager#createResource(String)
- * @see com.bigbross.bossa.resource.ResourceManager#createResourceImpl(String)
+ * @see ResourceManager#createResource(String)
+ * @see ResourceManager#createResourceImpl(String)
  */
 class CreateResource extends ResourceTransaction {
 
@@ -48,12 +47,9 @@ class CreateResource extends ResourceTransaction {
     }
 
     /**
-     * Executes the operation. <p>
-     * 
-     * @see com.bigbross.bossa.resource.ResourceTransaction#execute(
-     *      ResourceManager, Date)
+     * @see ResourceTransaction#execute(ResourceManager)
      */
-    protected Object execute(ResourceManager resourceManager, Date time) {
+    protected Object execute(ResourceManager resourceManager) {
         return resourceManager.createResourceImpl(id);
     }
 }
