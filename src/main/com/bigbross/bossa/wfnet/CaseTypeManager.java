@@ -33,6 +33,7 @@ import java.util.Map;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.io.CaseTypeXMLLoader;
 
 /**
  * This class manages all registered case types of the workflow
@@ -76,19 +77,38 @@ public class CaseTypeManager implements Serializable {
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * @param caseType the <code>CaseType</code> object containing the
-     *                 case type.
+     * @param caseType the case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
      */    
-    public boolean registerCaseType(CaseType caseType)
-        throws BossaException {
+    public boolean registerCaseType(CaseType caseType) throws BossaException {
         WFNetTransaction registerTransaction = new RegisterCaseType(caseType);
         return ((Boolean) getBossa().execute(registerTransaction)).
             booleanValue();
+    }
+
+    /**
+     * Registers a new case type read from a PNML file in the manager. <p>
+     * 
+     * @param file the PNML file.
+     * @return <code>true</code> if the case type is registered,
+     *         <code>false</code> if there is already a case type
+     *         registered with the same id.
+     * @exception DataTransferException if an error happens reading or parsing
+     *                                  the PNML file.
+     * @exception SetAttributeException if the underlying expression
+     *            evaluation system has problems setting an attribute.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs.
+     * @exception PersistenceException if an error occours when making the
+     *            execution of this method persistent.
+     */    
+    public boolean registerCaseType(String file) throws BossaException {
+        CaseType caseType = new CaseTypeXMLLoader(file).createCaseType();
+        return registerCaseType(caseType);
     }
 
     /**

@@ -36,7 +36,6 @@ import java.util.StringTokenizer;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
-import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.history.Historian;
 import com.bigbross.bossa.notify.Event;
 import com.bigbross.bossa.resource.Resource;
@@ -135,7 +134,7 @@ public class BossaBrowser {
                "q                           Quits the browser.\n" +
                "-----------------------------------------------------------\n" +
                "l                           List case types.\n" +
-               "g <id>                      Register the test case type.\n" +
+               "g <file>                    Register a case type.\n" +
                "r <id>                      Remove a case type.\n" +
                "c <id>                      List cases of a case type.\n" +
                "w <id>                      List work itens of a case type.\n" +
@@ -180,9 +179,8 @@ public class BossaBrowser {
                     System.out.println(" " + ((CaseType) l.get(i)).getId());
                 }
             } else if (operation.equals("g")) {
-                String id = tokenizer.nextToken();
-                CaseType caseType = BossaTestUtil.createCaseType(id);
-                caseTypeManager.registerCaseType(caseType);
+                String file = tokenizer.nextToken();
+                caseTypeManager.registerCaseType(file);
                 System.out.println("ok.");
             } else if (operation.equals("r")) {
                 String id = tokenizer.nextToken();

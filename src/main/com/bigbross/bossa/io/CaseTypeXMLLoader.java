@@ -57,8 +57,8 @@ public class CaseTypeXMLLoader {
      * Creates a new loader for the provided PNML file. <p>
      * 
      * @param file the PNML file to open.
-     * @throws DataTransferException if an error happens reading or parsing
-     *                               the PNML file.
+     * @exception DataTransferException if an error happens reading or parsing
+     *                                  the PNML file.
      */
     public CaseTypeXMLLoader(String file) throws DataTransferException {
         try {
