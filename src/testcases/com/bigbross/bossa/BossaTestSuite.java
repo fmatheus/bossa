@@ -58,6 +58,7 @@ public class BossaTestSuite extends TestCase {
     public static Test suite() {
 	TestSuite suite = new TestSuite("Bossa Test Suite");
         /* All tests should be added here. */
+        suite.addTest(new TestSuite(TimeSourceTest.class));
 	suite.addTest(WFNetTestSuite.suite());
         suite.addTest(ResourceTestSuite.suite());
         suite.addTest(WorkTestSuite.suite());

@@ -56,6 +56,8 @@ public class Bossa implements Serializable {
     private Historian historian;
 
     private NotificationBus notificationBus;
+    
+    private TimeSource timeSource;
 
     private transient Prevayler prevayler;
 
@@ -68,6 +70,7 @@ public class Bossa implements Serializable {
         workManager = new WorkManager(this);
         historian = new Historian();
         notificationBus = null;
+        timeSource = new DeterministicTimeSource();
         prevayler = null;
     }
 
@@ -80,6 +83,15 @@ public class Bossa implements Serializable {
         this.notificationBus = notificationBus;
     }
 
+    /**
+     * Associates a time source with this engine instance. <p>
+     * 
+     * @param timeSource the time source.
+     */ 
+    void setTimeSource(TimeSource timeSource) {
+        this.timeSource = timeSource;
+    }
+    
     /**
      * Associates a prevayler with this engine instance. <p>
      * 
@@ -156,6 +168,15 @@ public class Bossa implements Serializable {
      */
     public Historian getHistorian() {
         return historian;
+    }
+
+    /**
+     * Returns the time source of this engine. <p>
+     * 
+     * @return the time source of this engine.
+     */
+    public TimeSource getTimeSource() {
+        return timeSource;
     }
 
     /**

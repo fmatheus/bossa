@@ -50,6 +50,8 @@ public class BossaFactory {
 
     private boolean transientBossa;
     
+    private TimeSource timeSource;
+    
     private String stateDir;
     
     /**
@@ -57,6 +59,7 @@ public class BossaFactory {
      */
     public BossaFactory() {
         transientBossa = false;
+        timeSource =  null;
         stateDir = "BossaState";
     }
 
@@ -65,15 +68,39 @@ public class BossaFactory {
      * 
      * A transient Bossa won't save its state, all operations
      * will be lost in case of system shutdown. However, it is still
-     * serializable, so it can be included in a larger prevalent system. <p>
+     * serializable, so it can be included in a larger prevalent system
+     * (if this is the case, look the <code>setTimeSource</code> method). <p>
      * 
-     * Default: <code>false</code>.
+     * Default: <code>false</code>. <p>
      * 
      * @param transientBossa <code>true</code> to create a transient Bossa,
-     *                       <code>false</code> to create a persistent Bossa. 
+     *                       <code>false</code> to create a persistent Bossa.
+     * @see BossaFactory#setTimeSource(TimeSource) 
      */
     public void setTransientBossa(boolean transientBossa) {
         this.transientBossa = transientBossa;
+    }
+
+    /**
+     * Configures the time source of a transient Bossa engine. See the
+     * documentation of the <code>TimeSource</code> interface for more
+     * information on time sources. <p>
+     * 
+     * If you are trying to embed a transient Bossa engine in a larger
+     * prevalent system, use an instance of the
+     * <code>DeterministicTimeSource</code> class. Keep a reference to the
+     * time source and set the time in it every time a transaction is
+     * executed, all Bossa actions will happen using the time set. <p>
+     * 
+     * Default: <code>null</code>. <p>
+     * 
+     * @param timeSource the time source.
+     * @see BossaFactory#setTransientBossa(boolean)
+     * @see TimeSource
+     * @see DeterministicTimeSource
+     */
+    public void setTimeSource(TimeSource timeSource) {
+        this.timeSource = timeSource;
     }
 
     /**
@@ -110,8 +137,12 @@ public class BossaFactory {
         internalListners.add(new HistoryListener(newBossa.getHistorian()));
         newBossa.setNotificationBus(new NotificationBus(newBossa,
                                                         internalListners));
-                                                        
-        if (!this.transientBossa && (this.stateDir != null)) {
+
+        if (this.transientBossa) {
+            if (this.timeSource != null) {
+                newBossa.setTimeSource(this.timeSource);                   
+            }
+        } else if (this.stateDir != null) {
             try {
                 PrevaylerFactory factory = new PrevaylerFactory();
                 factory.configurePrevalentSystem(newBossa);
@@ -128,7 +159,7 @@ public class BossaFactory {
                                                 e);
             }
         }
-        
+
         return newBossa;
     }
     
