@@ -52,7 +52,8 @@ public class HistoryTestSuite extends TestCase {
     public static Test suite() {
 	TestSuite suite = new TestSuite("History Test Suite");
         /* All tests should be added here. */
-	suite.addTest(new TestSuite(HistorianTest.class));
+        suite.addTest(new TestSuite(HistorianTest.class));
+        suite.addTest(new TestSuite(HistoryTest.class));
 	return suite;
     }
 }

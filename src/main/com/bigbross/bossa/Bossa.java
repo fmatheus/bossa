@@ -31,6 +31,7 @@ import java.util.Date;
 import org.prevayler.Prevayler;
 import org.prevayler.TransactionWithQuery;
 
+import com.bigbross.bossa.history.Historian;
 import com.bigbross.bossa.notify.NotificationBus;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
@@ -52,6 +53,8 @@ public class Bossa implements Serializable {
     
     private WorkManager workManager;
     
+    private Historian historian;
+
     private NotificationBus notificationBus;
 
     private transient Prevayler prevayler;
@@ -63,6 +66,7 @@ public class Bossa implements Serializable {
         caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
         workManager = new WorkManager(this);
+        historian = new Historian();
         notificationBus = null;
         prevayler = null;
     }
@@ -89,7 +93,7 @@ public class Bossa implements Serializable {
      * Executes a transaction using the current prevayler. <p>
      * 
      * @param transaction the transaction to be executed.
-     * @return The value returned by the transaction.
+     * @return the value returned by the transaction.
      * @exception BossaException if the transaction throws an exception.
      */
     public Object execute(TransactionWithQuery transaction)
@@ -121,7 +125,7 @@ public class Bossa implements Serializable {
     /**
      * Returns the case type manager of this engine. <p>
      * 
-     * @return The case type manager of this engine.
+     * @return the case type manager of this engine.
      */
     public CaseTypeManager getCaseTypeManager() {
         return caseTypeManager;
@@ -130,7 +134,7 @@ public class Bossa implements Serializable {
     /**
      * Returns the resource manager of this engine. <p>
      * 
-     * @return The resource manager of this engine.
+     * @return the resource manager of this engine.
      */
     public ResourceManager getResourceManager() {
         return resourceManager;
@@ -139,16 +143,25 @@ public class Bossa implements Serializable {
     /**
      * Returns the work manager of this engine. <p>
      * 
-     * @return The work manager of this engine.
+     * @return the work manager of this engine.
      */
     public WorkManager getWorkManager() {
         return workManager;
     }
 
     /**
+     * Returns the historian of this engine. <p>
+     * 
+     * @return the historian of this engine.
+     */
+    public Historian getHistorian() {
+        return historian;
+    }
+
+    /**
      * Returns the notification bus of this engine. <p>
      * 
-     * @return The notification bus of this engine.
+     * @return the notification bus of this engine.
      */
     public NotificationBus getNotificationBus() {
         return notificationBus;

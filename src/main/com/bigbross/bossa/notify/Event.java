@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.notify;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Event implements Comparable {
+public class Event implements Comparable, Serializable {
 
     private String id;
     

@@ -25,10 +25,13 @@
 package com.bigbross.bossa;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
+import com.bigbross.bossa.history.HistoryListener;
 import com.bigbross.bossa.notify.NotificationBus;
 
 /**
@@ -102,7 +105,12 @@ public class BossaFactory {
      */
     public Bossa createBossa() throws PersistenceException {
         Bossa newBossa = new Bossa();
-        newBossa.setNotificationBus(new NotificationBus(newBossa));
+        
+        List internalListners = new ArrayList();
+        internalListners.add(new HistoryListener(newBossa.getHistorian()));
+        newBossa.setNotificationBus(new NotificationBus(newBossa,
+                                                        internalListners));
+                                                        
         if (!this.transientBossa && (this.stateDir != null)) {
             try {
                 PrevaylerFactory factory = new PrevaylerFactory();
@@ -120,6 +128,7 @@ public class BossaFactory {
                                                 e);
             }
         }
+        
         return newBossa;
     }
     
