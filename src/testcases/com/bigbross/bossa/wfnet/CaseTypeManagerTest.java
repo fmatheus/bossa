@@ -47,7 +47,7 @@ public class CaseTypeManagerTest extends TestCase {
     
     public void testQueryCaseType() {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
-        CaseType expected = new CaseTypeTest("hohoho").createTestCaseType("test1");
+        CaseType expected = CaseTypeTest.createTestCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseType(expected));
         assertSame(expected, caseTypeManager.getCaseType("test1"));
@@ -55,7 +55,7 @@ public class CaseTypeManagerTest extends TestCase {
     
     public void testRemoveCaseType() {
         CaseTypeManager caseTypeManager = new CaseTypeManager();
-        CaseType expected = new CaseTypeTest("hohoho").createTestCaseType("test1");
+        CaseType expected = CaseTypeTest.createTestCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseType(expected));
         caseTypeManager.removeCaseType("test1");
