@@ -123,11 +123,30 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testOpenCase() throws Exception {
-        Case caze = WFNetUtil.createCase();
+        CaseType caseType = BossaTestUtil.createCaseType("test_open");
+        Case caze = caseType.openCaseImpl(null);
         assertNotNull(caze);
-
-        CaseType caseType = caze.getCaseType();
         assertSame(caze, caseType.getCase(1));
+        CaseTest.sameState(caseType.getCase(0).getState(), caze.getState());
+        assertEquals(caseType.getCase(0).getAttributes(), caze.getAttributes());
+    }
+
+    public void testOpenCaseState() throws Exception {
+        CaseType caseType = BossaTestUtil.createCaseType("test_open");
+        Map state = new HashMap();
+        state.put("A", new Integer(0));
+        state.put("B", new Integer(0));
+        state.put("C", new Integer(1));
+        state.put("D", new Integer(0));
+        state.put("E", new Integer(1));
+        state.put("F", new Integer(0));
+        state.put("G", new Integer(2));
+        state.put("H", new Integer(0));
+        Case caze = caseType.openCaseImpl(state);
+        assertNotNull(caze);
+        assertSame(caze, caseType.getCase(1));
+        CaseTest.sameState(state, caze.getState());
+        assertEquals(caseType.getCase(0).getAttributes(), caze.getAttributes());
     }
 
     public void testCloseCase() throws Exception {

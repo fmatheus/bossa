@@ -242,20 +242,22 @@ public class CaseType implements Serializable {
      */
 
     /**
-     * Creates a new case using the provided state as initial marking. 
+     * Creates a new case using the provided state as initial token count. 
      * If the state is <code>null</code>, the state of the case type
      * template is used instead. <p>
      * 
-     * FIXME
-     * 
-     * @param state the state of the created case.
+     * @param state the initial token count as a map (<code>String</code>, 
+     *              <code>Integer</code>), indexed by the place id.
+     *              This state map must have a token count for every place.
      * @return the newly created case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
     Case openCaseImpl(Map state) throws BossaException {
-        Case caze =
-            new Case(this, template.getState(), template.getAttributes());
+        if (state == null) {
+            state = template.getState();
+        }
+        Case caze = new Case(this, state, template.getAttributes());
         cases.put(new Integer(caze.getId()), caze);
         resources.registerSubContext(caze.getResourceRegistry());
         WFNetEvents queue = new WFNetEvents();
