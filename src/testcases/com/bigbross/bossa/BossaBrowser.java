@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.Case;
 import com.bigbross.bossa.wfnet.CaseType;
@@ -50,10 +52,12 @@ public class BossaBrowser {
   
         Bossa bossa = Bossa.createBossa("build/BossaState");
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+        ResourceManager resourceManager = bossa.getResourceManager();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         HashMap cases = new HashMap();
         List lastWorkItemList = null;
         List lastActivitiesList = null;
+        List lastResourceList = null;
 
         System.out.println();
         System.out.println("## WFNet Browser ##");
@@ -72,20 +76,34 @@ public class BossaBrowser {
             }
             if (operation.equals("h")) {
                 System.out.println("h\t\t\t\tThis help message.");
+                System.out.println("s\t\t\t\tTakes a snapshot.");
+                System.out.println("q\t\t\t\tQuits the browser.");
+                System.out.println("-------------------------------------");
                 System.out.println("l\t\t\t\tList case types.");
                 System.out.println("g <id>\t\tRegister the test case type.");
                 System.out.println("r <id>\t\tRemove a case type.");
                 System.out.println("c <id>\t\tList cases of a case type.");
                 System.out.println("w <id>\t\tList work itens of a case type.");
                 System.out.println("a <id>\t\tList activities of a case type.");
+                System.out.println("-------------------------------------");
+                System.out.println("lr\t\t\t\tList all resources.");
+                System.out.println("gr <id>\t\tRegister a resource.");
+                System.out.println("rr <listId>\t\tRemove a resource.");
+                System.out.println("dr <listId>\t\tDetail a resource.");
+                System.out.println("ir <listId> <listId> Include a resource.");
+                System.out.println("er <listId> <listId> Exclude a resource.");
+                System.out.println("cr <listId> <listId> Cancel include or exclude.");
+                System.out.println("ct <listId> <listId> Contains resource?");
+                System.out.println("-------------------------------------");
                 System.out.println("o <listId>\t\tOpen a work item.");
                 System.out.println("cl <listId>\tClose an activity.");
                 System.out.println("ca <listId>\tCancel an activity.");
                 System.out.println("f <listId>\t\tFire a work item.");
                 System.out.println("vs <caseType> <case> <id> <int>\tDeclare a case attribute.");
                 System.out.println("vl <caseType> <case>\tList case attributes.");
-                System.out.println("s\t\t\t\tTakes a snapshot.");
-                System.out.println("q\t\t\t\tQuits the browser.");
+            } else if (operation.equals("s")) {
+                bossa.takeSnapshot();
+                System.out.println("ok.");
             } else if (operation.equals("l")) {
                 System.out.println(" ctID");
                 System.out.println("-------------------------------------");
@@ -136,6 +154,63 @@ public class BossaBrowser {
                                        a.getId() + "\t\t" +
                                        a.getTransition().getId());
                 }
+            } else if (operation.equals("lr")) {
+                System.out.println("\trID\tgroup?");
+                System.out.println("-------------------------------------");
+                lastResourceList = resourceManager.getResources();
+                for (int i = 0; i < lastResourceList.size(); i++) {
+                    Resource r = (Resource) lastResourceList.get(i);
+                    System.out.println(i + ":\t" + r.getId() + "\t" +
+                                       (r.isGroup() ? "yes" : "no"));
+                }    
+            } else if (operation.equals("gr")) {
+                String id = tokenizer.nextToken();
+                resourceManager.createResource(id);
+                System.out.println("ok.");
+            } else if (operation.equals("rr")) {
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                Resource r = (Resource) lastResourceList.get(listId);
+                resourceManager.removeResource(r);
+                System.out.println("ok.");
+            } else if (operation.equals("dr")) {
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                Resource r = (Resource) lastResourceList.get(listId);
+                System.out.println("Includes:");
+                Iterator i = r.getIncludes().iterator();
+                while (i.hasNext()) {
+                     System.out.println("  " + ((Resource) i.next()).getId());
+                }
+                System.out.println("Excludes:");
+                i = r.getExcludes().iterator();
+                while (i.hasNext()) {
+                     System.out.println("  " + ((Resource) i.next()).getId());
+                }
+            } else if (operation.equals("ir")) {
+                int hostId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                Resource host = (Resource) lastResourceList.get(hostId);
+                Resource r = (Resource) lastResourceList.get(resId);
+                System.out.println(host.include(r) ? "ok." : "NOT ok.");
+            } else if (operation.equals("er")) {
+                int hostId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                Resource host = (Resource) lastResourceList.get(hostId);
+                Resource r = (Resource) lastResourceList.get(resId);
+                System.out.println(host.exclude(r) ? "ok." : "NOT ok.");
+            } else if (operation.equals("cr")) {
+                int hostId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                Resource host = (Resource) lastResourceList.get(hostId);
+                Resource r = (Resource) lastResourceList.get(resId);
+                host.remove(r);
+                System.out.println("ok.");
+            } else if (operation.equals("ct")) {
+                int hostId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
+                Resource host = (Resource) lastResourceList.get(hostId);
+                Resource r = (Resource) lastResourceList.get(resId);
+                System.out.println(host.contains(r) ?
+                                   "contains." : "NOT contains.");
             } else if (operation.equals("o")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
@@ -187,9 +262,6 @@ public class BossaBrowser {
                                            " == " + attribute.getValue());
                     }
                 }
-            } else if (operation.equals("s")) {
-                bossa.takeSnapshot();
-                System.out.println("ok.");
             } else if (operation.equals("")) {
             } else {
                 System.out.println("Invalid command.");
