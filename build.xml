@@ -253,8 +253,8 @@
     <delete dir="${dist.dir}/${fullname}"/>
   </target>
 
-  <target name="dist" depends="jar, javadoc"
-	  description="Creates distribution .jar files">
+  <target name="dist" depends="jar, javadoc, docbook"
+	  description="Creates binary and documentation tar.gz and zip files">
     <copy todir="${build.dir}/${fullname}" preservelastmodified="yes">
       <fileset dir="${dist.dir}" excludes="*.tar.gz, *.zip"/>
     </copy>
@@ -265,11 +265,10 @@
     <zip zipfile="${dist.dir}/${fullname}.zip"
          basedir="${build.dir}"
 	 includes="${fullname}/"/>
-    <delete dir="${dist.dir}/${fullname}"/>
   </target>
 
   <target name="release" depends="source, dist"
-	  description="Creates distribution .jar files">
+	  description="Creates all distribution files">
     <tar tarfile="${dist.dir}/${fullname}-dep.tar.gz"
          basedir="${basedir}"
          compression="gzip"
@@ -277,7 +276,6 @@
     <zip zipfile="${dist.dir}/${fullname}-dep.zip"
          basedir="${basedir}"
 	 includes="${lib.dir}/"/>
-    <delete dir="${dist.dir}/${fullname}"/>
   </target>
 
 </project>
