@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
-import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.resource.ResourceRegistry;
@@ -111,7 +110,7 @@ public class CaseTypeManagerTest extends TestCase {
     }
     
     public void testResourceRegistryManagement() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         ResourceManager rm = bossa.getResourceManager();
         CaseTypeManager ctm = bossa.getCaseTypeManager();
         CaseType ct = BossaTestUtil.createCaseType("test");

@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
-import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 
 public class TransactionsTest extends TestCase {
@@ -72,7 +71,7 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testIncludeInCaseTypeResource()  throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
@@ -102,7 +101,7 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testExcludeInCaseTypeResource() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();
@@ -133,7 +132,7 @@ public class TransactionsTest extends TestCase {
     }
 
     public void testRemoveFromCaseTypeResource() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         caseTypeManager.registerCaseType(BossaTestUtil.createCaseType("test"));
         ResourceManager myResourceManager = bossa.getResourceManager();

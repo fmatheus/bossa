@@ -34,7 +34,6 @@ import junit.framework.TestCase;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.PersistenceException;
-import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.WFNetEvents;
@@ -101,7 +100,7 @@ public class NotificationBusTest extends TestCase {
     }
     
     public void testFilterByResource() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         NotificationBus bus = bossa.getNotificationBus(); 
         ResourceManager resourceManager = bossa.getResourceManager();
         
@@ -132,7 +131,7 @@ public class NotificationBusTest extends TestCase {
     }
     
     public void testNotificationQueue() throws PersistenceException {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         TestListener theGood = new GoodListener("test", 0, null);
         assertTrue(bossa.getNotificationBus().registerListener(theGood));
 

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
-import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
 
 public class TransactionsTest extends TestCase {
@@ -42,7 +41,7 @@ public class TransactionsTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         caseTypeManager = bossa.getCaseTypeManager();
 
         jdoe = bossa.getResourceManager().createResource("jdoe");

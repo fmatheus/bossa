@@ -1,8 +1,14 @@
 
-Bossa 0.X.X "XXX", 2004-0X-XX
------------------------------
+Bossa 0.X.X "50cm Of Snow", 2004-02-XX
+--------------------------------------
 
-* 
+* Improved the notification system. Listeners can always expect a
+  consistent system state to work on.
+
+* Removed notification for some internal resource events and added
+  notification for tokens arriving or leaving a place.
+
+* Added a real time source as the transient Bossa default time source.
 
 
 Bossa 0.6.0 "Self Referential Integrity", 2004-01-19

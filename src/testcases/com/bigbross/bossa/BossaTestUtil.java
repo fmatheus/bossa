@@ -96,7 +96,7 @@ public class BossaTestUtil {
     }
 
     public static Bossa createCompleteTestBossa() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        Bossa bossa = BossaFactory.transientBossa();
         setupTestBossa(bossa);
         return bossa;
     }

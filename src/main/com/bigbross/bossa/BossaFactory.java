@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -86,17 +86,21 @@ public class BossaFactory {
      * documentation of the <code>TimeSource</code> interface for more
      * information on time sources. <p>
      * 
+     * If you don't care about how time is handled by the Bossa engine,
+     * usa an instance of the <code>RealTimeSource</code> class. <p>
+     * 
      * If you are trying to embed a transient Bossa engine in a larger
      * prevalent system, use an instance of the
      * <code>DeterministicTimeSource</code> class. Keep a reference to the
      * time source and set the time in it every time a transaction is
      * executed, all Bossa actions will happen using the time set. <p>
      * 
-     * Default: <code>null</code>. <p>
+     * Default: <code>new RealTimeSource()</code>. <p>
      * 
      * @param timeSource the time source.
      * @see BossaFactory#setTransientBossa(boolean)
      * @see TimeSource
+     * @see RealTimeSource
      * @see DeterministicTimeSource
      */
     public void setTimeSource(TimeSource timeSource) {
@@ -141,6 +145,8 @@ public class BossaFactory {
         if (this.transientBossa) {
             if (this.timeSource != null) {
                 newBossa.setTimeSource(this.timeSource);                   
+            } else {
+                newBossa.setTimeSource(new RealTimeSource());
             }
         } else if (this.stateDir != null) {
             try {
@@ -176,19 +182,17 @@ public class BossaFactory {
     }
 
     /**
-     * Creates a transient Bossa engine instance using the provided time
-     * source and keeping all other default configuration values. <p>
+     * Creates a transient Bossa engine instance, keeping all other default
+     * configuration values. <p>
      * 
-     * @param timeSource the time source of the transient bossa.
      * @return the newly created bossa engine.
      * @exception PersistenceException if an error occours starting the
      *            persistence mechanism.
      */
-    public static Bossa transientBossa(TimeSource timeSource)
+    public static Bossa transientBossa()
         throws PersistenceException {
         BossaFactory factory = new BossaFactory();
         factory.setTransientBossa(true);
-        factory.setTimeSource(timeSource);
         return factory.createBossa();
     }
 }

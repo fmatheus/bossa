@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -27,7 +27,8 @@ package com.bigbross.bossa;
 import java.util.Date;
 
 /**
- * This class implements a real time time source. <p>
+ * This class implements a real time time source. Use it if you want a
+ * transient Bossa that gets the time from the system clock. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
