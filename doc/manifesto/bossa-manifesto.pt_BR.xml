@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+          "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<article id="bossa-manifesto" class="whitepaper">
+  <articleinfo>
+    <title>Bossa Manifesto</title>
+    <corpauthor>O Time BigBross</corpauthor>
+    <abstract> 
+      <title>Resumo</title>
+      <para>
+        Neste artigo nós descrevemos a filosofia por trás do Bossa, a
+	poderosa, leve e livre (como em liberdade) máquina de workflow
+	escrita em Java. Nós brevemente explicamos nossa visão de
+	workflow, como representar workflows usando redes de Petri e
+	como uma aplicação é construída usando os serviços de workflow
+	do bossa.
+      </para>
+    </abstract>
+    <copyright>
+      <year>2003</year>
+      <holder>OpenBR Sistemas S/C Ltda.</holder>
+    </copyright>
+  </articleinfo>
+
+<sect1 id="intro">
+  <title>Introdução</title>
+  
+  <para>
+    Bossa é uma máquina de workflow escrita em Java.  A máquina é
+    muito rápida e leve, sem sacrificar a funcionalidade.  Seus pontos
+    fortes são a grande expressividade baseada na notação de rede
+    Petri para definir workflows e um poderoso mecanismo para seleção
+    de recursos.  Além disso, ela é software livre licenciado sob a
+    GNU GPL.
+  </para>
+
+  <para>
+    Bossa não requer um SGBDR e é muito simples de usar e integrar com
+    aplicações java. Na verdade, foi <emphasis>projetado</emphasis>
+    para ser reutilizado. Para tanto, o Bossa é organizado como uma
+    biblioteca para ser usada por servidores de aplicação
+    (especialmente web) que precisam de serviços de workflow.
+  </para>
+
+  <para>
+    A característica que faz do Bossa ao mesmo tempo simples e
+    poderoso é a clara separação entre <emphasis>lógica de workflow
+    </emphasis> e <emphasis>lógica de aplicação</emphasis>. Nós
+    acreditamos que a lógica de workflow deve ser abstraida da
+    aplicação da mesma maneira que os SGBDRs abstraem os aspectos de
+    armazenamento e recuperação de dados.
+  </para>
+
+  <para>
+    Neste artigo nós descrevemos a filosofia por trás do Bossa.  Nós
+    começamos explicando nossa visão de workflow em <xref
+    linkend="workflow"/>. Em seguida, mostramos como representar
+    workflows usando redes de Petri em <xref linkend="petri-nets"/>. E
+    finalmente, descrevemos como uma aplicação é construída usando os
+    serviços de workflow do bossa em <xref linkend="bossa"/>.
+  </para>
+
+</sect1>
+
+
+<sect1 id="workflow">
+  <title>Workflow</title>
+
+  <para>
+    Dentro de uma organização, pessoas interagem entre si para
+    executar um trabalho. Cada uma tem sua própria lista de tarefas à
+    cumprir. Jorge deve encontrar clientes em potencial e dar entrada
+    na base de dados. Então, Natália entrará em contato com o
+    cliente. Mais tarde, Paulo escreverá um projeto para o cliente e
+    Alice fará a revisão. Nós podemos ver aqui que o trabalho deles
+    está fluindo. Cada pessoa realiza seu trabalho e passa algo
+    adiante para que os outros possam prosseguir com sua parte.
+  </para>
+
+  <para>
+    <emphasis>Workflow</emphasis> é um conjunto de regras que governam
+    a seqüência de atividades para completar um trabalho que envolve
+    diversos participantes. <emphasis>Sistemas de Gerenciamento de
+    Workflow</emphasis> automatizam total ou parcialmente um workflow.
+  </para>
+
+  <para>
+    É comum o termo "workflow" ser usado com significados mais
+    abrangentes.  O significado alternativo mais comum está
+    relacionado a troca de informações entre os participantes de um
+    trabalho colaborativo. <emphasis>Sistemas de Gerenciamento de
+    Documentos</emphasis> são usualmente chamados de sistema de
+    workflow, principalmente porque possibilitam a troca de
+    informações em geral de maneira ordenada. <emphasis>Sistemas
+    Colaborativos</emphasis> as vezes são chamados de sistema de
+    workflow pelas mesmas razões, troca organizada de informações.
+  </para>
+
+  <para>
+    Não estamos dizendo que gerenciamento de documentos ou sistemas
+    colaborativos não sejam <emphasis>capazes</emphasis> de realizar
+    workflow, mas acreditamos que processar documentos ou mensagens
+    entre usuários não seja necessariamente uma responsabilidade de
+    sistemas de workflow. Sistemas de workflow rastreiam atividades e
+    ajudam a pessoa certa executar a atividade certa na hora certa,
+    sem interferir nas informações sendo trocadas.
+  </para>
+
+  <para>
+    Certamente, a troca de informação <emphasis>é</emphasis>
+    necessária para toda aplicação colaborativa, mas nós vemos isso
+    como um assunto separado, assim como o workflow em si. Aplicações
+    devem deixar que o SGBD armazene os dados, servlets façam a
+    apresentação, o sistema de gerenciamento de workflow organize as
+    atividades e o gerenciamento de documentos cuide da troca de
+    informação.
+  </para>
+
+  <para>
+    O Bossa objetiva prover serviços de workflow da maneira mais
+    simples possível, sem sacrificar qualquer funcionalidade. Para
+    tanto, o Bossa é totalmente alheio ao tipo de dado sendo
+    processado, manipulado ou trocado pela aplicação. O Bossa se
+    preocupa apenas com a seqüência das atividades e com a pessoa
+    certa para realiza-las.
+  </para>
+
+  <para>
+    Pela nossa definição de workflow, virtualmente toda aplicação
+    colaborativa, e mesmo algumas não colaborativas, precisam de
+    serviços de workflow. Uma vez que o Bossa provê estes serviços de
+    maneira leve e sem interferência, nós criamos a possibilidade de
+    workflow <emphasis>em toda parte</emphasis>.
+  </para>
+
+</sect1>
+
+
+<sect1 id="petri-nets">
+  <title>Redes de Petri e Workflow</title>
+
+  <para>
+    Antes de nos aprofundarmos no modelamento de workflows usando
+    redes de Petri, nós precisamos de uma breve explicação sobre como
+    um workflow é normalmente visto por um sistema de gerenciamento de
+    workflow e o que são redes de Petri.
+  </para>
+
+  <para>
+    A definição abstrata de um workflow é chamada <emphasis>tipo de
+    caso</emphasis>. Por exemplo, um processo de compra de suprimentos
+    que define como todas as compras serão realizadas em um
+    departamento é um tipo de caso. Tipos de caso são compostos por
+    <emphasis>tarefas</emphasis> conectadas por
+    <emphasis>condições</emphasis>. Por exemplo, uma "análise inicial"
+    é uma tarefa do tipo de caso "compra de suprimentos". Após essa
+    tarefa ser executada, outras tarefas serão ativadas dependendo do
+    resultado da "análise inicial", essas tarefas são conectadas
+    usando pré e pós condições.
+  </para>
+
+  <para>
+    Um tipo de caso define todas as possíveis execuções ou instâncias
+    de um processo. Uma instância individual de um tipo de caso é um
+    <emphasis>caso</emphasis>. Por exemplo, a compra de uma caixa de
+    clips é um caso de "compra de suprimentos". Em um caso as tarefas
+    de um tipo de caso tem dois estados diferentes: uma tarefa ativa é
+    um <emphasis>ítem de trabalho</emphasis>, uma tarefa em andamento
+    é uma <emphasis>atividade</emphasis>. Por exemplo, após a tarefa
+    de "solicitação de compra" ser completada a "análise inicial"
+    torna-se um ítem de trabalho, isso é, pode ser executada por algum
+    usuário do sistema. Quando um usuário realmente executa um ítem de
+    trabalho, uma ação não-instantânea, a tarefa é uma atividade até
+    ser completada.
+  </para>
+
+  <para>
+    Redes de Petri são uma ferramenta para modelar e analisar
+    processos dinâmicos. Uma rede de Petri é composta por
+    <emphasis>lugares</emphasis> e <emphasis>transições</emphasis> e
+    tem uma representação gráfica padrão onde lugares são círculos e
+    transições são quadrados. Lugares e transições são conectados por
+    arestas dirigidas, formando um grafo bipartido dirigido, isso é,
+    seguindo a direção de uma aresta só é possível ir de um lugar para
+    uma transição ou de uma transição para um lugar. <xref
+    linkend="petri"/> mostra a representação gráfica de uma rede de
+    Petri simples.
+  </para>
+
+  <figure id="petri">
+    <title>Uma rede de Petri simples.</title>
+    <mediaobject>
+     <imageobject>
+      <imagedata align="center" fileref="petri.png"/>
+     </imageobject>
+     <textobject>
+      <phrase>Diagrama de uma rede de Petri simples.</phrase>
+     </textobject>
+    </mediaobject>
+  </figure>
+
+  <para>
+    Lugares e transições representam o aspecto estático de uma rede de
+    Petri, o aspecto dinâmico é representado por
+    <emphasis>fichas</emphasis>. Uma ficha é uma marca que só pode
+    ocupar lugares e que muda de lugar de acordo com o
+    <emphasis>disparo</emphasis> das transições. Na rede de Petri
+    clássica, quando uma transição dispara ela consome uma ficha de
+    cada entrada (lugares com arestas chegando na transição) e produz
+    exatamente uma ficha em cada saída (lugares com arestas deixando a
+    transição).
+  </para>
+
+  <para>
+    Redes de Petri clássicas não são suficientes para modelar os
+    roteamentos mais sofisticados que um tipo de caso demanda, então
+    nós usamos rede de Petri <emphasis>colorida</emphasis>. A
+    discussão de redes de Petri clássica e colorida vai além do escopo
+    desse documento. Em resumo, em uma rede de Petri colorida, cada
+    ficha tem uma cor e o disparo de uma transição consome e produz um
+    número de fichas que é uma função da cor da ficha, enquanto em uma
+    rede de Petri clássica é consumida e produzida exatamente uma
+    ficha para cada aresta. Para representar quantas fichas uma
+    transição consome e produz nós usamos arestas com
+    <emphasis>peso</emphasis>, onde o peso é uma expressão
+    inteira. Então, quando uma transição dispara ela consome um número
+    de fichas igual ao peso da aresta de cada entrada e produz um
+    número de fichas igual ao peso da aresta de cada saída.
+  </para>
+
+  <para>
+    Uma representação de workflow em rede de Petri mapeia lugares aos
+    possíveis estados da execução de um caso, transições às tarefas e
+    fichas ao estado atual do caso. <xref linkend="purchase"/> mostra
+    o tipo de caso "compra de suprimentos" como uma rede de Petri.
+  </para>
+
+  <figure id="purchase">
+    <title>Tipo de caso de um departamento de compras.</title>
+    <mediaobject>
+     <imageobject>
+      <imagedata align="center" fileref="purchase.png"/>
+     </imageobject>
+     <textobject>
+      <phrase>Diagrama em rede de Petri da compra de suprimentos.</phrase>
+     </textobject>
+    </mediaobject>
+  </figure>
+
+  <para>
+    Vamos analisar uma tarefa do tipo de caso "compra de
+    suprimentos". A tarefa "b" é a "análise inicial". Sua entrada vem
+    do lugar "B", "aguardando análise inicial", com peso constante de
+    1. Isso significa que sempre que houver uma ou mais fichas no
+    lugar "B" a tarefa "b" é um ítem de trabalho pronto para ser
+    disparado.
+  </para>
+
+  <para>
+    As tarefas (transições) em um tipo de caso não disparam
+    aleatoriamente como na rede de Petri clássica, mas elas são
+    acionadas por um recurso. A tarefa "b" deve ser executada pelo
+    recurso "compras - $a", isso significa que somente os usuários do
+    grupo "compras" menos os usuários que executaram a tarefa "a"
+    podem acionar (disparar) essa tarefa estando ela ativa. Recursos
+    são definidos por expressões de conjunto (com operações de
+    exclusão, união e intersecção) usando grupos de usuários e grupos
+    especiais "$" dos usuários que executaram uma tarefa.
+  </para>
+
+  <para>
+    A tarefa "b" tem como saída os lugares "C", "D" e "E". O lugar
+    "C", "aguardando revisão", tem como peso de saída "!SOK". O lugar
+    "D", "aguardando aprovação do diretor", tem como peso de saída
+    "SOK &amp;&amp; DIR". O lugar "E", "aguardando execução de
+    compra", tem como peso de saída "SOK &amp;&amp; !DIR". Aqui nós
+    começamos a explorar a maneira específica como o Bossa define um
+    tipo de caso. Cada peso é uma expressão JavaScript que será
+    resolvida para um inteiro usando as variáveis definidas durante a
+    execução do caso.
+  </para>
+
+  <para>
+    De acordo com as ações realizadas pelos recursos, a aplicação
+    atribuirá valores apropriados para as variáveis do caso. Depois da
+    tarefa "b", se a solicitação de compra não passar pela análise
+    inicial, a variável SOK conterá falso. Se passar pela análise
+    inicial, SOK conterá verdadeiro e DIR será verdadeiro ou falso se
+    a aprovação do diretor for necessária ou não. Então, quando a
+    tarefa "b" dispara <emphasis>uma</emphasis> ficha será removida do
+    lugar "B" e <emphasis>uma</emphasis> ficha será colocada no lugar
+    "C", "D" ou "E" dependendo dos valores das variáveis do caso.
+  </para>
+ 
+  <para>
+    A tarefa "b" representa o que em modelamento de workflow é
+    usualmente conhecido como <emphasis>and-split</emphasis>. O Bossa
+    não está restrito aos elementos básicos de roteamento de
+    workflow. O uso de expressões no peso das arestas e variáveis nos
+    casos permite rotear as fichas de um caso com grande poder e
+    flexibilidade.
+  </para>
+
+</sect1>
+
+<sect1 id="bossa">
+  <title>Bossa</title>
+
+  <para>
+    Agora que nós apresentamos o que é workflow e como modelar tipos
+    de caso usando a notação de rede de Petri do Bossa, nós podemos
+    falar um pouco mais sobre o que <emphasis>é</emphasis> o Bossa e
+    como usá-lo.
+  </para>
+
+  <para>
+    Bossa é uma máquina de workflow organizada como uma biblioteca em
+    Java. Isso significa que o Bossa não é um servidor por si só, mas
+    um conjunto de classes que podem ser usadas para criar uma máquina
+    de workflow particular <emphasis>embutida</emphasis> em aplicações
+    Java. Logo, o Bossa não se preocupa com vários problemas que
+    processos servidores devem lidar, como: conexões, sessões,
+    autenticação, etc. Ele confia na aplicação para lidar com esse
+    problemas. A aplicação por sua vez provavelmente usará algum
+    ambiente, como um servidor de aplicação J2EE, para ajudar prover
+    esses serviços. Isso permite ao desenvolvedor maior liberdade para
+    construir sua aplicação com qualquer tecnologia que ele tenha
+    disponível ou prefira utilizar.
+  </para>
+
+  <para>
+    Para o Bossa, um usuário é conhecido como recurso e é representado
+    apenas por um nome que o identifica. O Bossa usa esse
+    identificador para mapear o recurso em grupos e testar se um
+    recurso está contido em uma expressão de recurso. O bossa não
+    registra ou autentica usuários nem armazena qualquer informação,
+    como nome ou endereço, sobre os usuários. O Bossa apresenta os
+    ítens de trabalho que um recurso pode executar, mas não verifica
+    se o recurso realmente pode executar um ítem de trabalho. Ficando
+    sob responsabilidade da aplicação a autenticação e autorização de
+    seus usuários, bem como, o mapeamento para recursos do Bossa.
+  </para>
+
+  <para>
+    Associado à cada tarefa ativa (ítem de trabalho) estão os
+    identificadores de caso e de tarefa. O Bossa não armazena outras
+    informações sobre um ítem de trabalho e não sabe como efetivamente
+    <emphasis>executá-lo</emphasis>. Especialmente, não há informação
+    relevante para a execução do ítem de trabalho, nem é o Bossa que
+    executa qualquer lógica de negócio associada ao ítem de trabalho
+    ou faz a persistência de sua execução. A aplicação é responsável
+    por estas atividades, usando as melhores ferramentas disponíveis,
+    escolhendo o que fazer com os dados do ítem de trabalho e, uma vez
+    terminado, notificar o Bossa de sua conclusão.
+  </para>
+
+  <para>
+    O comportamento esperado de uma aplicação que usa o Bossa deveria
+    ser algo como: a aplicação cria uma instância do Bossa e registra
+    os tipos de caso e recursos se necessário. Após essa
+    inicialização, a aplicação recebe e autentica seus usuários como
+    desejado, então pergunta ao Bossa quais são os ítens de trabalho
+    disponíveis para o usuário, a aplicação escolhe entre os possíveis
+    ítens de trabalho (possivelmente perguntando ao usuário) e informa
+    o Bossa que o usuário vai executá-lo. Somente a aplicação sabe
+    como ajudar o usuário na realização do ítem de trabalho e, uma vez
+    concluído (ou cancelado), a aplicação notifica o Bossa do evento,
+    atribuindo valores a variáveis do caso se necessário.
+  </para>
+
+</sect1>
+
+<sect1 id="end">
+  <title>Conclusão</title>
+ 
+  <para>
+    Neste artigo nós explicamos a filosofia por trás do Bossa e demos
+    uma breve descrição de como modelar workflows usando redes de
+    Petri e como integrar a máquina de workflow Bossa em uma
+    aplicação.
+  </para>
+
+  <para>
+    O projeto Bossa ainda é novo e nós ainda não provemos documentação
+    tão aprofundada quanto gostaríamos. No momento, além desse
+    documento, a melhor fonte de informação é o <ulink
+    url="http://www.bigbross.com/bossa/doc/api/bossa-api.html">API
+    HOWTO</ulink>, a completa <ulink
+    url="http://www.bigbross.com/bossa/doc/javadocs">documentação da
+    API do Bossa</ulink> e o próprio código fonte (especialmente os
+    testes e exemplos).
+  </para>
+</sect1>
+
+</article>
