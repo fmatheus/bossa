@@ -44,7 +44,7 @@ class OpenWorkItem extends WFNetCommand {
     /**
      * Creates a new open operation. <p>
      * 
-     * @param workItem the wor item to be opened.
+     * @param workItem the work item to be opened.
      * @param resource the resource opening it.
      */    
     OpenWorkItem(WorkItem workItem, String resource) {
