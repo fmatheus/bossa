@@ -354,6 +354,7 @@ public class ResourceRegistry implements Serializable {
         if (myContext != null) {
             myContext.unregisterInResourceManager();
             myContext.setSuperContext(null);
+            contexts.remove(myContext.getId());
             return true;
         } else {
             return false;

@@ -77,6 +77,7 @@ public class ResourceRegistryTest extends TestCase {
         assertFalse(resourceRegistry.registerSubContext(subContext));
         assertTrue(resourceRegistry.removeSubContext(subContext));
         assertNull(subContext.getSuperContext());
+        assertTrue(resourceRegistry.registerSubContext(subContext));
     }
 
     public void testGetSubContext() {
