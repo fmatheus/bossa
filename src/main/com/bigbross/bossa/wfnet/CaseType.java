@@ -200,7 +200,7 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Closes a open case. <p>
+     * Closes an open case. <p>
      *
      * @param caze the <code>Case</code> to be closed.
      * @return <code>true</code> if the case was open, <code>false</code> otherwise.
