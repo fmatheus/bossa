@@ -74,6 +74,7 @@
   <path id="project.class.path">
     <pathelement location="${build.classes}"/>
     <path refid="lib.class.path"/>
+    <pathelement path="${java.class.path}"/>
   </path>
 
   <path id="tests.class.path">
@@ -127,6 +128,7 @@
     <javadoc packagenames="${domain.package}/*"
              useexternalfile="yes"
              sourcepath="${src.dir}"
+	     classpathref="project.class.path"
 	     link="${javadoc}"
              destdir="${dist.javadocs}"
 	     use="true"
@@ -144,6 +146,7 @@
     <mkdir dir="${dist.javadocs.tests}"/>
     <javadoc packagenames="${domain.package}/*"
              sourcepath="${tests.dir}"
+	     classpathref="tests.class.path"
              link="${javadoc}"
              destdir="${dist.javadocs.tests}"
              use="true"
