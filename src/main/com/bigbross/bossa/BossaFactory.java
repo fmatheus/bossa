@@ -54,6 +54,8 @@ public class BossaFactory {
     
     private String stateDir;
     
+    private boolean activeHistorian;
+    
     /**
      * Creates a new Bossa factory with default configuration values. <p>
      */
@@ -61,6 +63,7 @@ public class BossaFactory {
         transientBossa = false;
         timeSource =  null;
         stateDir = "BossaState";
+        activeHistorian = true;
     }
 
     /**
@@ -127,6 +130,20 @@ public class BossaFactory {
     }
 
     /**
+     * Configures if the created Bossa will log its events in the historian
+     * or not. <p>
+     * 
+     * Default: <code>true</code>. <p>
+     * 
+     * @param activeHistorian <code>true</code> for the historian to log
+     *                        events, <code>false</code> for the historian
+     *                        to ignore events.
+     */
+    public void setActiveHistorian(boolean activeHistorian) {
+        this.activeHistorian = activeHistorian;
+    }
+
+    /**
      * Creates a Bossa engine instance using the current configuration
      * of the Bossa factory. <p>
      * 
@@ -138,7 +155,9 @@ public class BossaFactory {
         Bossa newBossa = new Bossa();
         
         List internalListners = new ArrayList();
-        internalListners.add(new HistoryListener(newBossa.getHistorian()));
+        if (activeHistorian) {
+            internalListners.add(new HistoryListener(newBossa.getHistorian()));
+        }
         newBossa.setNotificationBus(new NotificationBus(newBossa,
                                                         internalListners));
 

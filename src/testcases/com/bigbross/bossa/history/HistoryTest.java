@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.wfnet.WorkItem;
@@ -45,15 +46,16 @@ public class HistoryTest extends TestCase {
 	super(name);
     }
 
-    protected void setUp() throws Exception {
+    protected void setUp() {
+    }
+
+    public void testHistory() throws BossaException {
         Bossa bossa = BossaTestUtil.createCompleteTestBossa();
         frank = bossa.getResourceManager().getResource("frank");
         sally = bossa.getResourceManager().getResource("sally");
         workManager = bossa.getWorkManager();
         historian = bossa.getHistorian();
-    }
 
-    public void testHistory() throws BossaException {
         WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
         wi.open(frank).close();
         wi = (WorkItem) workManager.getWorkItems(sally).get(0);
@@ -63,5 +65,22 @@ public class HistoryTest extends TestCase {
         
         List events = historian.getHistory();
         assertEquals(29, events.size());
+    }
+
+    public void testNoHistory() throws BossaException {
+        BossaFactory factory = new BossaFactory();
+        factory.setTransientBossa(true);
+        factory.setActiveHistorian(false);
+        Bossa bossa = factory.createBossa();
+        BossaTestUtil.setupTestBossa(bossa);
+        frank = bossa.getResourceManager().getResource("frank");
+        workManager = bossa.getWorkManager();
+        historian = bossa.getHistorian();
+
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).close();
+        
+        List events = historian.getHistory();
+        assertEquals(0, events.size());
     }
 }

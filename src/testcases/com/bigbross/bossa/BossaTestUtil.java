@@ -36,12 +36,12 @@ import com.bigbross.bossa.wfnet.Transition;
 
 public class BossaTestUtil {
 
-    public static CaseType createCaseType(String id) throws Exception {
+    public static CaseType createCaseType(String id) throws BossaException {
         return createCaseType(id, new int[] {1,0,0,0,0,0,0,0});
     }
 
     public static CaseType createCaseType(String id, int[] marking)
-        throws Exception {
+        throws BossaException {
     
         CaseType caseType = new CaseType(id);
     
@@ -95,13 +95,13 @@ public class BossaTestUtil {
         return caseType;
     }
 
-    public static Bossa createCompleteTestBossa() throws Exception {
+    public static Bossa createCompleteTestBossa() throws BossaException {
         Bossa bossa = BossaFactory.transientBossa();
         setupTestBossa(bossa);
         return bossa;
     }
 
-    public static void setupTestBossa(Bossa bossa) throws Exception {
+    public static void setupTestBossa(Bossa bossa) throws BossaException {
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         ResourceManager resourceManager = bossa.getResourceManager();
         

@@ -7,6 +7,9 @@ Bossa 0.8.0 "XXXX", 2004-0X-XX
 
 * Created a method to close a case for administrative purposes.
 
+* Added the possibility of creating an engine with the historian
+  disabled in BossaFactory.
+
 * Added a method to read the case attributes.
 
 * Bugfixes: historian case filtering, time source not serializable.
