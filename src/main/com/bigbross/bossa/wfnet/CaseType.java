@@ -69,7 +69,7 @@ public class CaseType implements Serializable {
         this.id = id;
         this.transitions = new HashMap();
         this.places = new HashMap();
-        this.resources = new ResourceRegistry();
+        this.resources = new ResourceRegistry(id);
         this.cases = new HashMap();
         this.caseSequence = 0;
         this.caseTypeManager = null;

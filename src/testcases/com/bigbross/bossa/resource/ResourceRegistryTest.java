@@ -41,7 +41,7 @@ public class ResourceRegistryTest extends TestCase {
 
     protected void setUp() {
 	System.out.println("Setting up a resource registry test.");
-        resourceRegistry = new ResourceRegistry();
+        resourceRegistry = new ResourceRegistry("null");
         r1 = new Resource(null, "r1");
         r2 = new Resource(null, "r2");
     }
@@ -73,15 +73,22 @@ public class ResourceRegistryTest extends TestCase {
     }
     
     public void testAddRemoveSubContext() {
-        ResourceRegistry subContext = new ResourceRegistry();
+        ResourceRegistry subContext = new ResourceRegistry("test");
         assertFalse(resourceRegistry.removeSubContext(subContext));
         assertTrue(resourceRegistry.registerSubContext(subContext));
         assertFalse(resourceRegistry.registerSubContext(subContext));
         assertTrue(resourceRegistry.removeSubContext(subContext));
     }
+
+    public void testGetSubContext() {
+        ResourceRegistry subContext = new ResourceRegistry("test");
+        assertTrue(resourceRegistry.registerSubContext(subContext));
+        assertSame(subContext, resourceRegistry.getSubContext("test"));
+        assertNull(resourceRegistry.getSubContext("invalid"));
+    }
     
     public void testRemoveResourceInSubContext() {
-        ResourceRegistry subContext = new ResourceRegistry();
+        ResourceRegistry subContext = new ResourceRegistry("test");
         assertTrue(resourceRegistry.registerSubContext(subContext));
         assertTrue(resourceRegistry.addResource(r1));
         assertTrue(subContext.addResource(r2));

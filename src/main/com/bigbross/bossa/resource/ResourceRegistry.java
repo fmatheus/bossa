@@ -40,16 +40,30 @@ import java.util.Set;
  */
 public class ResourceRegistry implements Serializable {
 
+    private String id;
+
     private Map resources;
     
-    private Set contexts;
+    private Map contexts;
 
     /**
      * Creates a new empty resource registry. <p>
+     * 
+     * @param id the id of this registry.
      */
-    public ResourceRegistry() {
+    public ResourceRegistry(String id) {
+        this.id = id;
         this.resources = new HashMap();
-        this.contexts = new HashSet();
+        this.contexts = new HashMap();
+    }
+
+    /**
+     * Returns the id of this registry. <p>
+     * 
+     * @return the id of this registry.
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -119,7 +133,7 @@ public class ResourceRegistry implements Serializable {
         while (i.hasNext()) {
             ((Resource) i.next()).removeImpl(resource);
         }
-        i = contexts.iterator();
+        i = contexts.values().iterator();
         while (i.hasNext()) {
             ((ResourceRegistry) i.next()).clearReferences(resource);
         }
@@ -136,7 +150,23 @@ public class ResourceRegistry implements Serializable {
      *         <code>false</code> if the sub context was already present.
      */
     public boolean registerSubContext(ResourceRegistry context) {
-        return contexts.add(context);
+        if (!contexts.containsKey(context.getId())) {
+            contexts.put(context.getId(), context);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns the registered sub context with the given id. <p>
+     * 
+     * @param id the sub context id.
+     * @return the sub context,
+     *         <code>null</code> if the sub context was not found.
+     */
+    ResourceRegistry getSubContext(String id) {
+        return (ResourceRegistry) contexts.get(id);
     }
     
     /**
@@ -148,7 +178,7 @@ public class ResourceRegistry implements Serializable {
      *         <code>false</code> if the sub context was not found.
      */
     public boolean removeSubContext(ResourceRegistry context) {
-        return contexts.remove(context);
+        return (contexts.remove(context.getId()) != null);
     } 
 
     /**

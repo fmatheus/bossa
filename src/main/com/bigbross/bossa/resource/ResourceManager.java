@@ -50,7 +50,7 @@ public class ResourceManager implements Serializable {
      */
     public ResourceManager(Bossa engine) {
         this.engine = engine;
-        this.resources = new ResourceRegistry();
+        this.resources = new ResourceRegistry("root");
     }
 
     /**

@@ -78,7 +78,6 @@ public class Case implements Serializable {
 
 	this.caseType = caseType;
 	this.marking = marking;
-        this.resources = new ResourceRegistry();
         this.activities = new HashMap();
         this.attributes = new HashMap();
         this.activitySequence = 1;
@@ -94,6 +93,7 @@ public class Case implements Serializable {
 	deactivate();
 
         this.id = caseType.nextCaseId();
+        this.resources = new ResourceRegistry(Integer.toString(id));
     }
 
     /**

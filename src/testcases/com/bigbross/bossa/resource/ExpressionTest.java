@@ -43,7 +43,7 @@ public class ExpressionTest extends TestCase {
 
     protected void setUp() {
 	System.out.println("Setting up an expression test.");
-        registry = new ResourceRegistry();
+        registry = new ResourceRegistry("null");
         A = new Resource(null, "A");
         B = new Resource(null, "B");
         C = new Resource(null, "C");
@@ -69,7 +69,7 @@ public class ExpressionTest extends TestCase {
         Expression resource = registry.compile("C");
         assertTrue(resource.contains(C));
 
-        ResourceRegistry context = new ResourceRegistry();
+        ResourceRegistry context = new ResourceRegistry("null");
         Resource C = new Resource(null, "C");
         context.addResource(C);
         C.includeImpl(x);
@@ -85,7 +85,7 @@ public class ExpressionTest extends TestCase {
         Expression resource = registry.compile("$C");
         assertTrue(resource.contains(C));
 
-        ResourceRegistry context = new ResourceRegistry();
+        ResourceRegistry context = new ResourceRegistry("null");
         assertFalse(resource.contains(context, C));
 
         Resource C = new Resource(null, "C");
