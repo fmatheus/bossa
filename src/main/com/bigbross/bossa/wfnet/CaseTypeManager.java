@@ -76,7 +76,8 @@ public class CaseTypeManager implements Serializable {
     /**
      * Registers a new case type in the manager. <p>
      * 
-     * @param the <code>CaseType</code> object containing the case type.
+     * @param caseType the <code>CaseType</code> object containing the
+     *                 case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
@@ -97,7 +98,8 @@ public class CaseTypeManager implements Serializable {
      * execution of this method will not be persistent unless it is called
      * inside an appropriate transaction. <p>
      * 
-     * @param the <code>CaseType</code> object containing the case type.
+     * @param caseType the <code>CaseType</code> object containing the
+     *                 case type.
      * @return <code>true</code> if the case type is registered,
      *         <code>false</code> if there is already a case type
      *         registered with the same id.
@@ -116,8 +118,8 @@ public class CaseTypeManager implements Serializable {
     }
     
     /**
-     * Removes the case type from the manager. This operation will remove also
-     * <emph>all</emph> cases of this case type.
+     * Removes the case type from the manager, if present. This operation will
+     * remove also <emph>all</emph> cases of this case type. <p>
      * 
      * @param id the id of the case type.
      * @exception PersistenceException if an error occours when making the
@@ -129,8 +131,8 @@ public class CaseTypeManager implements Serializable {
     }
 
     /**
-     * Removes the case type from the manager. This operation will remove also
-     * <emph>all</emph> cases of this case type. <p>
+     * Removes the case type from the manager, if present. This operation will
+     * remove also <emph>all</emph> cases of this case type. <p>
      * 
      * This method does not create a transaction in the prevalent system. The
      * execution of this method will not be persistent unless it is called
