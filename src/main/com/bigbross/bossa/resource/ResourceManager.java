@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bigbross.bossa.Bossa;
+
 /**
  * This class manages groups of resources. Resources are only string
  * identifiers and groups are sets of these identifiers. It is possible
@@ -42,16 +44,36 @@ import java.util.Set;
  */
 public class ResourceManager {
 
+    private Bossa engine;
+
     private Map groups;
+
+    /**
+     * Creates a new empty resource manager. <p>
+     * 
+     * @param engine the bossa engine this resorce manager is part.
+     */
+    public ResourceManager(Bossa engine) {
+        this.engine = engine;
+        this.groups = new HashMap();
+    }
 
     /**
      * Creates a new empty resource manager. <p>
      */
     public ResourceManager() {
-        groups = new HashMap();
+        this(null);
+    }
+    
+    /**
+     * Returns the bossa engine this resorce manager is part. <p>
+     * 
+     * @return The bossa engine this resorce manager is part.
+     */
+    Bossa getBossa() {
+        return engine;
     }
 
-    
     /**
      * Creates a new empty group in the manager. A group is a collection
      * of resources. <p>
