@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -64,6 +64,7 @@ public class BossaTestSuite extends TestCase {
         suite.addTest(WorkTestSuite.suite());
         suite.addTest(NotifyTestSuite.suite());
         suite.addTest(HistoryTestSuite.suite());
+        suite.addTest(new TestSuite(SlowFileTests.class));
 	return suite;
     }
 }

@@ -97,6 +97,11 @@ public class BossaTestUtil {
 
     public static Bossa createCompleteTestBossa() throws Exception {
         Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
+        setupTestBossa(bossa);
+        return bossa;
+    }
+
+    public static void setupTestBossa(Bossa bossa) throws Exception {
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         ResourceManager resourceManager = bossa.getResourceManager();
         
@@ -105,7 +110,7 @@ public class BossaTestUtil {
         Resource frank = resourceManager.createResource("frank");
         Resource sally = resourceManager.createResource("sally");
         Resource jerry = resourceManager.createResource("jerry");
-
+        
         List resources = caseTypeManager.getCaseType("test").getResources();
         for (int i = 0; i < 3; i++) {
             Resource resource = (Resource) resources.get(i);
@@ -122,7 +127,5 @@ public class BossaTestUtil {
                 throw new BossaException("This should not happen.");
             }
         }
-        
-        return bossa;
     }
 }
