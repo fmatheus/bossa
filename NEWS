@@ -1,6 +1,6 @@
 
-Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-19
-----------------------------------
+Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-25
+------------------------------------------------
 
 * Automated the release policy (source, binary+javadoc and
 dependencies packages). Made a new release to test it.
