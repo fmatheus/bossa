@@ -248,6 +248,9 @@ public class Case implements Serializable {
      *            may be left inconsistent.
      */
     void setStateImpl(Map state) throws BossaException {
+        if (state.size() == 0) {
+            return;
+        }
         Iterator i = state.keySet().iterator();
         while (i.hasNext()) {
             String placeId = (String) i.next(); 
