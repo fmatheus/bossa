@@ -129,7 +129,7 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testGroup() {
-        Expression resource = registry.compile("A^(B+C)");
+        Expression resource = registry.compile("A ^ (B + C)");
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
         assertFalse(resource.contains(b));
