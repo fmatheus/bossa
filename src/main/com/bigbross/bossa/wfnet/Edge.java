@@ -55,7 +55,7 @@ public class Edge {
 		}
 
 		public String toString() {
-		    return "-" + expression;
+		    return "-" + this.expression;
 		}
 	    };
     }
