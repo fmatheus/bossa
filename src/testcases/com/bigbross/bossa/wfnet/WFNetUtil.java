@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2003 OpenBR Sistemas S/C Ltda.
+ * Copyright (C) 2003,2004 OpenBR Sistemas S/C Ltda.
  *
  * This file is part of Bossa.
  *
@@ -26,6 +26,7 @@ package com.bigbross.bossa.wfnet;
 
 import java.util.Map;
 
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
@@ -38,6 +39,21 @@ public class WFNetUtil {
 
     static Case createCase(int[] marking) throws Exception {
         return BossaTestUtil.createCaseType("test", marking).openCase();
+    }
+
+    static Case createAutoFireCase() throws BossaException {
+        CaseType caseType = new CaseType("auto-fire");
+        Place A = caseType.registerPlace("A", 1);
+        Place B = caseType.registerPlace("B");
+        Place C = caseType.registerPlace("C");
+        Transition a = caseType.registerTransition("a", "boss");
+        Transition b = caseType.registerTransition("b", "boss", 0);
+        a.input(A,  "1");
+        a.output(B, "1");
+        b.input(B, "1");
+        b.output(C, "1");
+        caseType.buildTemplate(null);
+        return caseType.openCase();
     }
 
     static boolean fire(Case caze, String workItemId, Map attributes)

@@ -71,6 +71,22 @@ public class CaseTest extends TestCase {
         assertNull(caze.getWorkItem("invalid id"));
     }
 
+    public void testGetState() throws Exception {
+        Case caze = WFNetUtil.createCase();
+
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        expected.put("B", new Integer(0));
+        expected.put("C", new Integer(0));
+        expected.put("D", new Integer(0));
+        expected.put("E", new Integer(0));
+        expected.put("F", new Integer(0));
+        expected.put("G", new Integer(0));
+        expected.put("H", new Integer(0));
+
+        CaseTest.sameState(expected, caze.getState());
+    }
+
     public void testOpenClose() throws Exception {
         Case caze = WFNetUtil.createCase();
 
@@ -162,18 +178,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testZeroTimeout() throws Exception {
-        CaseType caseType = new CaseType("auto-fire");
-        Place A = caseType.registerPlace("A", 1);
-        Place B = caseType.registerPlace("B");
-        Place C = caseType.registerPlace("C");
-        Transition a = caseType.registerTransition("a", "boss");
-        Transition b = caseType.registerTransition("b", "boss", 0);
-        a.input(A,  "1");
-        a.output(B, "1");
-        b.input(B, "1");
-        b.output(C, "1");
-        caseType.buildTemplate(null);
-        Case caze = caseType.openCase();
+        Case caze = WFNetUtil.createAutoFireCase();
 
         Map expected = new HashMap();
         expected.put("A", new Integer(1));
@@ -188,8 +193,54 @@ public class CaseTest extends TestCase {
         assertTrue(WFNetUtil.fire(caze, "a", null));
         sameState(expected, caze.getState());
 
-        /* Add a test to stress nested auto firing and case closing. */
-        assertEquals(0, caseType.getCases().size());
+        /* Add a test to stress nested auto firing going beyond case closing. */
+        assertEquals(0, caze.getCaseType().getCases().size());
+    }
+
+    public void testSetState() throws Exception {
+        Case caze = WFNetUtil.createCase();
+
+        Map newState = new HashMap();
+        newState.put("A", new Integer(0));
+        newState.put("B", new Integer(0));
+        newState.put("C", new Integer(0));
+        newState.put("D", new Integer(0));
+        newState.put("E", new Integer(1));
+        newState.put("F", new Integer(0));
+        newState.put("G", new Integer(0));
+        newState.put("H", new Integer(0));
+
+        caze.setStateImpl(newState);
+        CaseTest.sameState(newState, caze.getState());
+        
+        assertFalse(caze.getWorkItem("a").isFireable());
+        List workItens = caze.getWorkItems();
+        assertEquals(1, workItens.size());
+        assertEquals("d", ((WorkItem) workItens.get(0)).getId());
+
+        newState = new HashMap();
+        newState.put("A", new Integer(1));
+
+        caze.setStateImpl(newState);
+        assertTrue(caze.getWorkItem("a").isFireable());
+        assertEquals(2, caze.getWorkItems().size());
+    }
+    
+    public void testSetStateZeroTimeout() throws Exception {
+        Case caze = WFNetUtil.createAutoFireCase();
+
+        Map newState = new HashMap();
+        newState.put("A", new Integer(0));
+        newState.put("B", new Integer(1));
+        newState.put("C", new Integer(0));
+        
+        Map expected = new HashMap();
+        expected.put("A", new Integer(0));
+        expected.put("B", new Integer(0));
+        expected.put("C", new Integer(1));
+
+        caze.setStateImpl(newState);
+        sameState(expected, caze.getState());
     }
 
     public void testAutomaticCreation() throws Exception {
@@ -215,8 +266,8 @@ public class CaseTest extends TestCase {
         WorkItem w0 = (WorkItem) workItens.get(0);
         WorkItem w1 = (WorkItem) workItens.get(1);
         assertNotSame(w0, w1);
-        assertNotNull(caze.getWorkItem("a"));
-        assertNotNull(caze.getWorkItem("b"));
+        assertTrue("a".equals(w0.getId()) || "a".equals(w1.getId()));
+        assertTrue("b".equals(w0.getId()) || "b".equals(w1.getId()));
     }
     
     public void testCanPerformWorkItem() throws BossaException {

@@ -24,16 +24,20 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceEvents;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
+import com.bigbross.bossa.wfnet.Case;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.WFNetEvents;
 import com.bigbross.bossa.wfnet.WorkItem;
@@ -271,6 +275,56 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(Integer.toString(wi.getCase().getId() + 1),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
+    public void testSetState() throws BossaException {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).close();
+        Case caze = caseTypeManager.getCaseType("test").getCase(1);
+        Map newState = new HashMap();
+        newState.put("B", new Integer(0));
+        newState.put("E", new Integer(1));
+        caze.setState(newState);
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 5);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_SET_TOKENS, event.getId());
+        String placeId =
+            (String) event.getAttributes().get(WFNetEvents.ATTRIB_PLACE_ID);
+        if ("B".equals(placeId)) {
+            assertEquals("0",
+                event.getAttributes().get(WFNetEvents.ATTRIB_TOKEN_NUMBER_ID));
+        } else if ("E".equals(placeId)) {
+            assertEquals("1",
+                event.getAttributes().get(WFNetEvents.ATTRIB_TOKEN_NUMBER_ID));
+        } else {
+            fail();
+        }
+        assertEquals(Integer.toString(caze.getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(caze.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+
+        event = (Event) events.get(events.size() - 4);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_SET_TOKENS, event.getId());
+        
+        event = (Event) events.get(events.size() - 3);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_WORK_ITEM_INACTIVE, event.getId());
+        
+        event = (Event) events.get(events.size() - 2);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_WORK_ITEM_ACTIVE, event.getId());
+
+        event = (Event) events.get(events.size() - 1);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_SET_STATE, event.getId());
+        assertEquals(Integer.toString(caze.getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(caze.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
     }
     

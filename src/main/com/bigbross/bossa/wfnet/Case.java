@@ -212,6 +212,59 @@ public class Case implements Serializable {
     }
 
     /**
+     * Changes the state of the case, that is, how many tokens are in each
+     * place. This method bypasses the usual transition firing process and
+     * should be used with caution to override the normal sequence of
+     * activities. <p>
+     * 
+     * @param state the token count as a map (<code>String</code>, 
+     *              <code>Integer</code>), indexed by the place id. Only the
+     *              places present in this map have their token count modified,
+     *              the others are unchanged.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
+     */
+    public void setState(Map state) throws BossaException {
+        WFNetTransaction setState = new SetState(this, state);
+        getBossa().execute(setState);
+    }
+
+    /**
+     * Changes the state of the case, that is, how many tokens are in each
+     * place. This method bypasses the usual transition firing process and
+     * should be used with caution to override the normal sequence of
+     * activities. <p>
+     * 
+     * This method will not persist the result of its activation and should
+     * be used only internally as a part of a persistent transaction. <p>
+     * 
+     * @param state the token count as a map (<code>String</code>, 
+     *              <code>Integer</code>), indexed by the place id. Only the
+     *              places present in this map have their token count modified,
+     *              the others are unchanged.
+     * @exception EvaluationException if an expression evaluation error
+     *            occurs. If this exception is thrown the state of this case
+     *            may be left inconsistent.
+     */
+    void setStateImpl(Map state) throws BossaException {
+        Iterator i = state.keySet().iterator();
+        while (i.hasNext()) {
+            String placeId = (String) i.next(); 
+            int newCount = ((Integer) state.get(placeId)).intValue();
+            marking[getCaseType().getPlace(placeId).getIndex()] = newCount;
+            eventQueue.newPlaceEvent(getBossa(), WFNetEvents.ID_SET_TOKENS,
+                                     this, getCaseType().getPlace(placeId),
+                                     newCount);
+        }
+        deactivate();
+        List activated = activate();
+        eventQueue.newCaseEvent(getBossa(), WFNetEvents.ID_SET_STATE, this);
+        eventQueue.notifyAll(getBossa());
+        processTimedFiring(activated);
+    }
+
+    /**
      * Returns the list of currently fireable work items associated
      * with this case. <p>
      *  

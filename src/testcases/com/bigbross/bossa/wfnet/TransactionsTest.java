@@ -30,6 +30,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
@@ -115,6 +116,20 @@ public class TransactionsTest extends TestCase {
 
         Map expected = new HashMap();
         expected.put("A", new Integer(1));
+        CaseTest.sameState(expected, caze.getState());
+    }
+    
+    public void testSetState() throws BossaException {
+        Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
+        Map newState = new HashMap();
+        newState.put("E", new Integer(1));
+        SetState transaction = new SetState(caze, newState);
+        
+        transaction.execute(caseTypeManager);
+        
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        expected.put("E", new Integer(1));
         CaseTest.sameState(expected, caze.getState());
     }
 }

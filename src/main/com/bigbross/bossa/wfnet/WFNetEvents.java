@@ -107,6 +107,20 @@ public class WFNetEvents extends NotificationQueue {
     public static final String ID_REMOVE_TOKENS  = "remove_tokens";
 
     /**
+     * Constant to indicate the event of a specific number of tokens being
+     * put in a place. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_PLACE_ID,
+     * ATTRIB_TOKEN_NUMBER_ID, ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_PLACE_ID
+     * @see WFNetEvents#ATTRIB_TOKEN_NUMBER_ID
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_SET_TOKENS  = "set_tokens";
+
+    /**
      * Constant to indicate the activation of an inactive work item. <p>
      * 
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
@@ -172,6 +186,18 @@ public class WFNetEvents extends NotificationQueue {
      * @see WFNetEvents#ATTRIB_RESOURCE_ID
      */
     public static final String ID_CANCEL_ACTIVITY  = "cancel_activity";
+
+    /**
+     * Constant to indicate the event of a manual state change in a
+     * case. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_CASE_ID and
+     * ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_SET_STATE  = "set_state";
 
     /**
      * Constant to indicate the case type id attribute.
@@ -259,7 +285,8 @@ public class WFNetEvents extends NotificationQueue {
      */
     void newPlaceEvent(Bossa bossa, String notificationId,
                        Case caze, Place place, int amount) {
-        if (bossa != null && amount != 0) {
+        if (bossa != null &&
+            (amount != 0 || notificationId.equals(ID_SET_TOKENS))) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_PLACE_ID, place.getId());
             attrib.put(ATTRIB_TOKEN_NUMBER_ID, Integer.toString(amount));

@@ -1,9 +1,11 @@
 
-Bossa 0.7.0 "50cm Of Snow", 2004-02-09
+Bossa 0.7.0 "50cm Of Snow", 2004-02-12
 --------------------------------------
 
+* Added methods to query and to manually change the case state.
+
 * Added the initial infrastructure to support timed transitions. Zero
-  wait (instantaneus) transitions already work. In the process, transition
+  wait (instantaneous) transitions already work. In the process, transition
   creation was made more robust.
 
 * Improved the notification system. Listeners can always expect a
