@@ -432,7 +432,10 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().getIndex()] -= e.input(this);
+            int tokenNumber = e.input(this);
+            this.marking[e.getPlace().getIndex()] -= tokenNumber;
+            eventQueue.newPlaceEvent(getBossa(), WFNetEvents.ID_REMOVE_TOKENS,
+                                     this, e.getPlace(), tokenNumber);
         }
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
@@ -493,16 +496,18 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().getIndex()] += e.output(this);
+            int tokenNumber = e.output(this);
+            this.marking[e.getPlace().getIndex()] += tokenNumber;
+            eventQueue.newPlaceEvent(getBossa(), WFNetEvents.ID_ADD_TOKENS,
+                                     this, e.getPlace(), tokenNumber);
         }
-
-        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
-                                   activity);
 
         /* An EvaluationException can be inconsistently thrown here. */
 	int actives = activate();
         activities.remove(new Integer(activity.getId()));
 
+        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
+                                    activity);
         eventQueue.notifyAll(getBossa());
 
         if (actives == 0 && activities.size() == 0) {
@@ -537,11 +542,11 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().getIndex()] += e.input(this);
+            int tokenNumber = e.input(this);
+            this.marking[e.getPlace().getIndex()] += tokenNumber;
+            eventQueue.newPlaceEvent(getBossa(), WFNetEvents.ID_ADD_TOKENS,
+                                     this, e.getPlace(), tokenNumber);
         }
-
-        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
-                                   activity);
 
         Resource resource = activity.getResource();
         Resource group =
@@ -552,6 +557,8 @@ public class Case implements Serializable {
 	activate();
         activities.remove(new Integer(activity.getId()));
 
+        eventQueue.newActivityEvent(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
+                                    activity);
         eventQueue.notifyAll(getBossa());
 
 	return true;

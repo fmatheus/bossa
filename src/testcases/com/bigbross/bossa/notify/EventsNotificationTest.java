@@ -141,7 +141,7 @@ public class EventsNotificationTest extends TestCase {
         act.close();
 
         List events = listener.getNotifications();
-        Event event = (Event) events.get(events.size() - 2);
+        Event event = (Event) events.get(events.size() - 1);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(Integer.toString(act.getId()),
@@ -162,7 +162,7 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        Event event = (Event) events.get(events.size() - 2);
+        Event event = (Event) events.get(events.size() - 1);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(Integer.toString(act.getId()),
@@ -177,12 +177,75 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
     }
 
-    public void testLogActivateDeactivate() throws Exception {
+    public void testLogTokenOpenClose() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).close();
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 3);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_ADD_TOKENS, event.getId());
+        assertEquals("B",
+            event.getAttributes().get(WFNetEvents.ATTRIB_PLACE_ID));
+        assertEquals("1",
+            event.getAttributes().get(WFNetEvents.ATTRIB_TOKEN_NUMBER_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+        event = (Event) events.get(events.size() - 6);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_REMOVE_TOKENS, event.getId());
+        assertEquals("A",
+            event.getAttributes().get(WFNetEvents.ATTRIB_PLACE_ID));
+        assertEquals("1",
+            event.getAttributes().get(WFNetEvents.ATTRIB_TOKEN_NUMBER_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
+    public void testLogTokenCancel() throws Exception {
         WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
         wi.open(frank).cancel();
 
         List events = listener.getNotifications();
-        Event event = (Event) events.get(events.size() - 1);
+        Event event = (Event) events.get(events.size() - 3);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_ADD_TOKENS, event.getId());
+        assertEquals("A",
+            event.getAttributes().get(WFNetEvents.ATTRIB_PLACE_ID));
+        assertEquals("1",
+            event.getAttributes().get(WFNetEvents.ATTRIB_TOKEN_NUMBER_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(Integer.toString(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
+    public void testLogZeroTokens() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).close();
+        wi = (WorkItem) workManager.getWorkItems(sally).get(0);
+        wi.open(sally).close();
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 3);
+        assertEquals(WFNetEvents.ID_ADD_TOKENS, event.getId());
+        event = (Event) events.get(events.size() - 4);
+        assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
+    }
+
+    public void testLogActivate() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank).cancel();
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_WORK_ITEM_ACTIVE, event.getId());
         assertEquals(wi.getId(),
@@ -192,7 +255,14 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
-        event = (Event) events.get(events.size() - 4);
+    }
+
+    public void testLogDeactivate() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank);
+
+        List events = listener.getNotifications();
+        Event event = (Event) events.get(events.size() - 2);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_WORK_ITEM_INACTIVE, event.getId());
         assertEquals(wi.getId(),
@@ -203,7 +273,6 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(wi.getCaseType().getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
     }
-
     
     public void testLogCreateRemoveResource() throws Exception {
         Resource joe = resourceManager.createResource("joedoe");

@@ -82,6 +82,31 @@ public class WFNetEvents extends NotificationQueue {
     public static final String ID_CLOSE_CASE  = "close_case";
 
     /**
+     * Constant to indicate the event of tokens being added to a place. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_PLACE_ID,
+     * ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_PLACE_ID
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_ADD_TOKENS  = "add_tokens";
+
+    /**
+     * Constant to indicate the event of tokens being removed from a place. <p>
+     * 
+     * This event contains the following attributes: ATTRIB_PLACE_ID,
+     * ATTRIB_TOKEN_NUMBER_ID, ATTRIB_CASE_ID and ATTRIB_CASE_TYPE_ID <p>
+     * 
+     * @see WFNetEvents#ATTRIB_PLACE_ID
+     * @see WFNetEvents#ATTRIB_TOKEN_NUMBER_ID
+     * @see WFNetEvents#ATTRIB_CASE_ID
+     * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
+     */
+    public static final String ID_REMOVE_TOKENS  = "remove_tokens";
+
+    /**
      * Constant to indicate the activation of an inactive work item. <p>
      * 
      * This event contains the following attributes: ATTRIB_WORK_ITEM_ID,
@@ -159,6 +184,16 @@ public class WFNetEvents extends NotificationQueue {
     public static final String ATTRIB_CASE_ID = "case_id";
 
     /**
+     * Constant to indicate the place id attribute.
+     */
+    public static final String ATTRIB_PLACE_ID = "place_id";
+
+    /**
+     * Constant to indicate the token number id attribute.
+     */
+    public static final String ATTRIB_TOKEN_NUMBER_ID = "token_number_id";
+
+    /**
      * Constant to indicate the work item id attribute.
      */
     public static final String ATTRIB_WORK_ITEM_ID  = "work_item_id";
@@ -206,6 +241,28 @@ public class WFNetEvents extends NotificationQueue {
     void newCaseEvent(Bossa bossa, String notificationId, Case caze) {
         if (bossa != null) {
             Map attrib = new HashMap();
+            attrib.put(ATTRIB_CASE_ID, Integer.toString(caze.getId()));
+            attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
+            addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,
+                               bossa.getTimeSource().getTime()));
+        }
+    }
+
+    /**
+     * Creates a place related event and puts it in the queue. <p>
+     * 
+     * @param bossa the root of the bossa system.
+     * @param notificationId the id of this event.
+     * @param caze the case involved.
+     * @param place the place involved.
+     * @param amount the number of tokens involved.
+     */
+    void newPlaceEvent(Bossa bossa, String notificationId,
+                       Case caze, Place place, int amount) {
+        if (bossa != null && amount != 0) {
+            Map attrib = new HashMap();
+            attrib.put(ATTRIB_PLACE_ID, place.getId());
+            attrib.put(ATTRIB_TOKEN_NUMBER_ID, Integer.toString(amount));
             attrib.put(ATTRIB_CASE_ID, Integer.toString(caze.getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
             addEvent(new Event(notificationId, Event.WFNET_EVENT, attrib,

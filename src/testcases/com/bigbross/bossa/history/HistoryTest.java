@@ -62,6 +62,6 @@ public class HistoryTest extends TestCase {
         wi.open(frank).close();
         
         List events = historian.getHistory();
-        assertEquals(23, events.size());
+        assertEquals(29, events.size());
     }
 }
