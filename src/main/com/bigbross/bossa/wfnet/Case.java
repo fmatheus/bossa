@@ -137,6 +137,15 @@ public class Case implements Serializable {
     }
 
     /**
+     * Returns all local resources of this case. <p>
+     * 
+     * @return a list of all local resources of this case.
+     */
+    public List getResources() {
+        return resources.getResources();
+    }
+
+    /**
      * Returns the list of work items associated with this case. <p>
      *  
      * @return A list with the work items of this case.

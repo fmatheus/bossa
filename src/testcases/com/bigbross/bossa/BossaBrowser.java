@@ -44,29 +44,57 @@ import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
 import com.bigbross.bossa.work.WorkManager;
 
+/**
+ * This class implements a crude command line browser to the
+ * API of the bossa engine. <p>
+ */
 public class BossaBrowser {
 
-    /**
-     * This method implements a crude command line browser to the
-     * API of the bossa engine. <p>
-     */
-    public static void main(String[] args) throws Exception {
-  
-        Bossa bossa = Bossa.createBossa("build/BossaState");
-        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
-        ResourceManager resourceManager = bossa.getResourceManager();
-        WorkManager workManager = bossa.getWorkManager();
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        HashMap cases = new HashMap();
-        List lastWorkItemList = null;
-        List lastActivitiesList = null;
-        List lastResourceList = null;
+    Bossa bossa;
+    CaseTypeManager caseTypeManager;
+    ResourceManager resourceManager;
+    WorkManager workManager;
+    HashMap cases;
+    List lastCaseList;
+    List lastWorkItemList;
+    List lastActivitiesList;
+    List lastResourceList;
+    List lastCaseTypeResourceList;
+
+    public BossaBrowser() throws Exception {
+        bossa = Bossa.createBossa("build/BossaState");
+        caseTypeManager = bossa.getCaseTypeManager();
+        resourceManager = bossa.getResourceManager();
+        workManager = bossa.getWorkManager();
+
+        cases = new HashMap();
+        lastCaseList = null;
+        lastWorkItemList = null;
+        lastActivitiesList = null;
+        lastResourceList = null;
+        lastCaseTypeResourceList = null;
+    }
+
+    public Resource retrieveResource(int listId) {
+        Resource r;
+        if (listId < 100) {
+            r = (Resource) lastResourceList.get(listId);
+        } else {
+            r = (Resource) lastCaseTypeResourceList.get(listId - 100);
+        }
+        return r;
+    }
+
+    public void run() throws Exception {
+
+        BufferedReader in =
+            new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println();
         System.out.println("## WFNet Browser ##");
         System.out.println("Enter command (q to quit, h or help):");
         System.out.print("> ");
- 
+
         String line;
         StringTokenizer tokenizer;
         String operation;
@@ -88,6 +116,8 @@ public class BossaBrowser {
                 System.out.println("c <id>\t\tList cases of a case type.");
                 System.out.println("w <id>\t\tList work itens of a case type.");
                 System.out.println("a <id>\t\tList activities of a case type.");
+                System.out.println("t <id>\t\tList resources of a case type.");
+                System.out.println("y <listId>\t\tList resources of a case.");
                 System.out.println("-------------------------------------");
                 System.out.println("lr\t\t\t\tList all resources.");
                 System.out.println("gr <id>\t\tRegister a resource.");
@@ -116,7 +146,7 @@ public class BossaBrowser {
                 List l = caseTypeManager.getCaseTypes();
                 for (int i = 0; i < l.size(); i++) {
                     System.out.println(" " + ((CaseType) l.get(i)).getId());
-                }    
+                }
             } else if (operation.equals("g")) {
                 String id = tokenizer.nextToken();
                 CaseType caseType = WFNetUtil.createCaseType(id);
@@ -127,26 +157,31 @@ public class BossaBrowser {
                 caseTypeManager.removeCaseType(id);
                 System.out.println("ok.");
             } else if (operation.equals("c")) {
-                System.out.println(" cID\tmarking");
+                System.out.println("\tcID\tmarking");
                 System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
-                List l = caseTypeManager.getCaseType(id).getCases();
-                for (int i = 0; i < l.size(); i++) {
-                    Case caze = (Case) l.get(i);
-                    System.out.println(" " + caze.getId() + "\t" + caze);
-                }    
+                lastCaseList = caseTypeManager.getCaseType(id).getCases();
+                for (int i = 0; i < lastCaseList.size(); i++) {
+                    Case caze = (Case) lastCaseList.get(i);
+                    System.out.println(i + ":\t" + caze.getId() + "\t" + caze);
+                }
             } else if (operation.equals("w")) {
                 System.out.println("\tctID\tcID\twiID");
                 System.out.println("-------------------------------------");
                 String id = tokenizer.nextToken();
-                lastWorkItemList = 
+                lastWorkItemList =
                     caseTypeManager.getCaseType(id).getWorkItems(true);
                 for (int i = 0; i < lastWorkItemList.size(); i++) {
                     WorkItem wi = (WorkItem) lastWorkItemList.get(i);
-                    System.out.println(i + ":\t" + id + "\t\t" +
-                                       wi.getCase().getId() +
-                                       "\t\t" + wi.getId());
-                }    
+                    System.out.println(
+                        i
+                            + ":\t"
+                            + id
+                            + "\t\t"
+                            + wi.getCase().getId()
+                            + "\t\t"
+                            + wi.getId());
+                }
             } else if (operation.equals("a")) {
                 System.out.println("\tctID\tcID\taID\ttransition");
                 System.out.println("-------------------------------------");
@@ -155,10 +190,48 @@ public class BossaBrowser {
                     caseTypeManager.getCaseType(id).getActivities();
                 for (int i = 0; i < lastActivitiesList.size(); i++) {
                     Activity a = (Activity) lastActivitiesList.get(i);
-                    System.out.println(i + ":\t" + id + "\t\t" + 
-                                       a.getCase().getId() + "\t\t" +
-                                       a.getId() + "\t\t" +
-                                       a.getTransition().getId());
+                    System.out.println(
+                        i
+                            + ":\t"
+                            + id
+                            + "\t\t"
+                            + a.getCase().getId()
+                            + "\t\t"
+                            + a.getId()
+                            + "\t\t"
+                            + a.getTransition().getId());
+                }
+            } else if (operation.equals("t")) {
+                System.out.println("\trID\tgroup?");
+                System.out.println("-------------------------------------");
+                String id = tokenizer.nextToken();
+                lastCaseTypeResourceList =
+                    caseTypeManager.getCaseType(id).getResources();
+                for (int i = 0; i < lastCaseTypeResourceList.size(); i++) {
+                    Resource r = (Resource) lastCaseTypeResourceList.get(i);
+                    System.out.println(
+                        i
+                            + 100
+                            + ":\t"
+                            + r.getId()
+                            + "\t"
+                            + (r.isGroup() ? "yes" : "no"));
+                }
+            } else if (operation.equals("y")) {
+                System.out.println("\trID\tgroup?");
+                System.out.println("-------------------------------------");
+                int listId = Integer.parseInt(tokenizer.nextToken());
+                lastCaseTypeResourceList =
+                    ((Case) lastCaseList.get(listId)).getResources();
+                for (int i = 0; i < lastCaseTypeResourceList.size(); i++) {
+                    Resource r = (Resource) lastCaseTypeResourceList.get(i);
+                    System.out.println(
+                        i
+                            + 100
+                            + ":\t"
+                            + r.getId()
+                            + "\t"
+                            + (r.isGroup() ? "yes" : "no"));
                 }
             } else if (operation.equals("lr")) {
                 System.out.println("\trID\tgroup?");
@@ -166,9 +239,13 @@ public class BossaBrowser {
                 lastResourceList = resourceManager.getResources();
                 for (int i = 0; i < lastResourceList.size(); i++) {
                     Resource r = (Resource) lastResourceList.get(i);
-                    System.out.println(i + ":\t" + r.getId() + "\t" +
-                                       (r.isGroup() ? "yes" : "no"));
-                }    
+                    System.out.println(
+                        i
+                            + ":\t"
+                            + r.getId()
+                            + "\t"
+                            + (r.isGroup() ? "yes" : "no"));
+                }
             } else if (operation.equals("gr")) {
                 String id = tokenizer.nextToken();
                 resourceManager.createResource(id);
@@ -180,72 +257,80 @@ public class BossaBrowser {
                 System.out.println("ok.");
             } else if (operation.equals("dr")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
-                Resource r = (Resource) lastResourceList.get(listId);
+                Resource r = retrieveResource(listId);
                 System.out.println("Includes:");
                 Iterator i = r.getIncludes().iterator();
                 while (i.hasNext()) {
-                     System.out.println("  " + ((Resource) i.next()).getId());
+                    System.out.println("  " + ((Resource) i.next()).getId());
                 }
                 System.out.println("Excludes:");
                 i = r.getExcludes().iterator();
                 while (i.hasNext()) {
-                     System.out.println("  " + ((Resource) i.next()).getId());
+                    System.out.println("  " + ((Resource) i.next()).getId());
                 }
             } else if (operation.equals("ir")) {
                 int hostId = Integer.parseInt(tokenizer.nextToken());
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                Resource host = (Resource) lastResourceList.get(hostId);
-                Resource r = (Resource) lastResourceList.get(resId);
+                Resource host = retrieveResource(hostId);
+                Resource r = retrieveResource(resId);
                 System.out.println(host.include(r) ? "ok." : "NOT ok.");
             } else if (operation.equals("er")) {
                 int hostId = Integer.parseInt(tokenizer.nextToken());
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                Resource host = (Resource) lastResourceList.get(hostId);
-                Resource r = (Resource) lastResourceList.get(resId);
+                Resource host = retrieveResource(hostId);
+                Resource r = retrieveResource(resId);
                 System.out.println(host.exclude(r) ? "ok." : "NOT ok.");
             } else if (operation.equals("cr")) {
                 int hostId = Integer.parseInt(tokenizer.nextToken());
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                Resource host = (Resource) lastResourceList.get(hostId);
-                Resource r = (Resource) lastResourceList.get(resId);
+                Resource host = retrieveResource(hostId);
+                Resource r = retrieveResource(resId);
                 host.remove(r);
                 System.out.println("ok.");
             } else if (operation.equals("ct")) {
                 int hostId = Integer.parseInt(tokenizer.nextToken());
                 int resId = Integer.parseInt(tokenizer.nextToken());
-                Resource host = (Resource) lastResourceList.get(hostId);
-                Resource r = (Resource) lastResourceList.get(resId);
-                System.out.println(host.contains(r) ?
-                                   "contains." : "NOT contains.");
+                Resource host = retrieveResource(hostId);
+                Resource r = retrieveResource(resId);
+                System.out.println(
+                    host.contains(r) ? "contains." : "NOT contains.");
             } else if (operation.equals("wr")) {
                 System.out.println("\tctID\tcID\twiID");
                 System.out.println("-------------------------------------");
                 int resId = Integer.parseInt(tokenizer.nextToken());
                 String removeMe =
                     ((Resource) lastResourceList.get(resId)).getId();
-                lastWorkItemList = 
-                    workManager.getWorkItems(removeMe, true);
+                lastWorkItemList = workManager.getWorkItems(removeMe, true);
                 for (int i = 0; i < lastWorkItemList.size(); i++) {
                     WorkItem wi = (WorkItem) lastWorkItemList.get(i);
-                    System.out.println(i + ":\t" + wi.getCaseType().getId() +
-                                       "\t\t" + wi.getCase().getId() +
-                                       "\t\t" + wi.getId());
-                }    
+                    System.out.println(
+                        i
+                            + ":\t"
+                            + wi.getCaseType().getId()
+                            + "\t\t"
+                            + wi.getCase().getId()
+                            + "\t\t"
+                            + wi.getId());
+                }
             } else if (operation.equals("ar")) {
                 System.out.println("\tctID\tcID\taID\ttransition");
                 System.out.println("-------------------------------------");
                 int resId = Integer.parseInt(tokenizer.nextToken());
                 String removeMe =
                     ((Resource) lastResourceList.get(resId)).getId();
-                lastActivitiesList =
-                    workManager.getActivities(removeMe);
+                lastActivitiesList = workManager.getActivities(removeMe);
                 for (int i = 0; i < lastActivitiesList.size(); i++) {
                     Activity a = (Activity) lastActivitiesList.get(i);
-                    System.out.println(i + ":\t" + a.getCaseType().getId() +
-                                       "\t\t" + 
-                                       a.getCase().getId() + "\t\t" +
-                                       a.getId() + "\t\t" +
-                                       a.getTransition().getId());
+                    System.out.println(
+                        i
+                            + ":\t"
+                            + a.getCaseType().getId()
+                            + "\t\t"
+                            + a.getCase().getId()
+                            + "\t\t"
+                            + a.getId()
+                            + "\t\t"
+                            + a.getTransition().getId());
                 }
             } else if (operation.equals("o")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
@@ -258,8 +343,8 @@ public class BossaBrowser {
                 int listId = Integer.parseInt(tokenizer.nextToken());
                 Activity a = (Activity) lastActivitiesList.get(listId);
                 HashMap attributes =
-                    (HashMap) cases.get(a.getCaseType().getId() + 
-                                        a.getCase().getId());
+                    (HashMap) cases.get(
+                        a.getCaseType().getId() + a.getCase().getId());
                 boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("ca")) {
@@ -273,8 +358,8 @@ public class BossaBrowser {
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
                 Resource res = (Resource) lastResourceList.get(resId);
                 HashMap attributes =
-                    (HashMap) cases.get(wi.getCaseType().getId() +
-                                        wi.getCase().getId());
+                    (HashMap) cases.get(
+                        wi.getCaseType().getId() + wi.getCase().getId());
                 Activity a = wi.open(res);
                 boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
@@ -298,8 +383,10 @@ public class BossaBrowser {
                     Iterator it = attributes.entrySet().iterator();
                     while (it.hasNext()) {
                         Map.Entry attribute = (Map.Entry) it.next();
-                        System.out.println(attribute.getKey().toString() + 
-                                           " == " + attribute.getValue());
+                        System.out.println(
+                            attribute.getKey().toString()
+                                + " == "
+                                + attribute.getValue());
                     }
                 }
             } else if (operation.equals("")) {
@@ -308,5 +395,9 @@ public class BossaBrowser {
             }
             System.out.print("> ");
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        new BossaBrowser().run();
     }
 }
