@@ -56,6 +56,9 @@ Minor stuff that would be great if done before 1.0.
   missing tags, missing or empty ids, number format exceptions,
   missing weights, etc.
 
+* Create a method to get the initial work itens explicitly from
+  a CaseType object.
+
 * Use an object to keep the case marking so we can: 1) Simplify
   get/set marking. 2) Simplify state change notification. 3) Atomic
   set all marking, giving consistent evaluation exception in open(),
