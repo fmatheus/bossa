@@ -24,6 +24,8 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 public class WFNetCoverage extends TestCase {
@@ -97,5 +99,9 @@ public class WFNetCoverage extends TestCase {
         assertEquals(1, t4.getOutputEdges().size());
         assertEquals( "1", t4.getOutputEdges().get(0).toString());
         
+        Map attributes = caseType.getCase(0).getAttributes();
+        assertEquals(2, attributes.size());
+        assertEquals(new Integer(0), attributes.get("optional"));
+        assertEquals("yes", attributes.get("testStr"));
     }
 }

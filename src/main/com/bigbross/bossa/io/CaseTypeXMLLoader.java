@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -44,8 +46,6 @@ import com.bigbross.bossa.wfnet.Transition;
  * 
  * The XML representation of a case type is a PNML file, as created
  * by the PNK using the WFNet net type. <p>
- * 
- * FIXME: Document JDOM dependecy. JAXP 1.1.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
@@ -73,8 +73,6 @@ public class CaseTypeXMLLoader {
     
     /**
      * Creates the case type from the PNML file loaded. <p>
-     * 
-     * FIXME: Add behaviour??? At least attributes.
      * 
      * @return the case type created.
      * @exception SetAttributeException if the underlying expression
@@ -135,10 +133,35 @@ public class CaseTypeXMLLoader {
             }
         }
         
-        // Create attributes.
+        Map attributes = parseAttributes(
+            wfnet.getChild("initialAttributes").getChildText("value"));
         
-        //caseType.buildTemplate(new HashMap());
+        caseType.buildTemplate(attributes);
         
         return caseType;
+    }
+
+    /**
+     * Parses the initial attributes from the text present in the PNML
+     * file. <p>
+     * 
+     * @param attributesText the text encoding the initial attributes. 
+     * @return a map with the initial attributes.
+     */
+    private Map parseAttributes(String attributesText) {
+        Map attributes = new HashMap();
+        StringTokenizer t1 = new StringTokenizer(attributesText, ",");
+        while (t1.hasMoreTokens()) {
+            StringTokenizer t2 =
+                new StringTokenizer(t1.nextToken().trim(), "=");
+            String attributeName = t2.nextToken();
+            String attributeValue = t2.nextToken();
+            try {
+                attributes.put(attributeName, Integer.valueOf(attributeValue));
+            } catch (NumberFormatException e) {
+                attributes.put(attributeName, attributeValue);
+            }
+        }
+        return attributes;
     }
 }
