@@ -51,35 +51,52 @@
   <para>
     Starting the Bossa engine is very simple, it is only necessary to
     create an object of class <classname>Bossa</classname> using the
-    static method <methodname>createBossa</methodname>. The Bossa
+    factory class <classname>BossaFactory</classname>. The Bossa
     library is organized in a way that you can access all methods
     starting from the <classname>Bossa</classname> object. You can
-    have more than one instance of this object, each one represents a
+    have more than one instance of this object, each one representing a
     <emphasis>different</emphasis> Bossa engine. <xref
-    linkend="create"/> shows how to create a new Bossa engine.
+    linkend="simple-create"/> shows how to create a new Bossa engine.
   </para>
 
-  <example id="create"><title>Creating a new Bossa engine.</title>
+  <example id="simple-create"><title>Creating a default Bossa engine.</title>
     <programlisting>
-    Bossa bossa = Bossa.createBossa("/var/lib/bossa");
+    Bossa bossa = BossaFactory.defaultBossa();
     </programlisting>
   </example>
 
   <para>
-     The method <methodname>createBossa</methodname> receives as a
-     parameter the name of a directory where Bossa will store its
-     state. Bossa only needs a writable directory to persist its data,
-     check if the application has the appropriate permissions. If the
-     provided directory is empty, Bossa will start a new engine
-     instance, otherwise it will automatically reload the state of the
-     last execution.
+    The static method <methodname>defaultBossa</methodname> will
+    create a Bossa engine with all configuration parameters set to the
+    default. To change a configuration parameter, you will need to
+    create a <classname>BossaFactory</classname>, use its methods to
+    set up the Bossa engine and finally create it using the
+    <methodname>createBossa</methodname> method. <xref
+    linkend="conf-create"/> shows how to change the name of the directory
+    where Bossa will store its state.
+  </para>
+
+  <example id="conf-create"><title>Creating a configured Bossa engine.</title>
+    <programlisting>
+    BossaFactory factory = new BossaFactory();
+    factory.setStateDir("/var/lib/bossa");
+    Bossa bossa = factory.createBossa();
+    </programlisting>
+  </example>
+
+  <para>
+    Bossa only needs a writable directory to persist its data, check
+    if the application has the appropriate permissions. If the
+    provided directory is empty, Bossa will start a new engine
+    instance, otherwise it will automatically reload the state of the
+    last execution.
   </para>
 
   <para>
-     Keep the reference to the just created Bossa engine and pass it
-     to the objects that will need to interact with it. <emphasis>Do
-     not</emphasis> create more the one engine instance pointing to
-     the same state directory.
+    Keep the reference to the just created Bossa engine and pass it to
+    the objects that will need to interact with it. <emphasis>Do
+    not</emphasis> create more the one engine instance pointing to the
+    same state directory.
   </para>
 
 </sect1>
