@@ -22,43 +22,34 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package com.bigbross.bossa;
+package com.bigbross.bossa.work;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
 
-import com.bigbross.bossa.resource.ResourceTestSuite;
-import com.bigbross.bossa.wfnet.WFNetTestSuite;
-import com.bigbross.bossa.work.WorkTestSuite;
+import com.bigbross.bossa.Bossa;
 
 /**
- * Tests using all testcases.
- *
+ * This class manages the generation of work item lists. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
- **/
-public class BossaTestSuite extends TestCase {
+ */
+public class WorkManager implements Serializable {
+
+    private Bossa engine;
 
     /**
-     * Constructor.
-     *
-     * @param name The name.
-     **/
-    public BossaTestSuite(String name) {
-	super(name);
+     * Creates a new empty work manager. <p>
+     * 
+     * @param engine the bossa engine this work manager is part.
+     */
+    public WorkManager(Bossa engine) {
+        this.engine = engine;
     }
 
     /**
-     * Makes the suite of tests.
-     *
-     * @return The suite.
-     **/
-    public static Test suite() {
-	TestSuite suite = new TestSuite("Bossa Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(WFNetTestSuite.suite());
-        suite.addTest(ResourceTestSuite.suite());
-        suite.addTest(WorkTestSuite.suite());
-	return suite;
+     * Creates a new empty work manager. <p>
+     */
+    public WorkManager() {
+        this(null);
     }
 }

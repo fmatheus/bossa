@@ -34,6 +34,7 @@ import org.prevayler.implementation.SnapshotPrevayler;
 
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
+import com.bigbross.bossa.work.WorkManager;
 
 /**
  * This class represents a workflow engine in the Bossa workflow library. 
@@ -76,6 +77,8 @@ public class Bossa extends AbstractPrevalentSystem {
     private CaseTypeManager caseTypeManager;
 
     private ResourceManager resourceManager;
+    
+    private WorkManager workManager;
 
     private transient Prevayler prevayler;
 
@@ -85,6 +88,8 @@ public class Bossa extends AbstractPrevalentSystem {
     Bossa() {
         caseTypeManager = new CaseTypeManager(this);
         resourceManager = new ResourceManager(this);
+        workManager = new WorkManager(this);
+        prevayler = null;
     }
 
     /**
