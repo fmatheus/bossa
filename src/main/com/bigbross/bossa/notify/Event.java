@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Event {
+public class Event implements Comparable {
 
     private String id;
     
@@ -67,11 +67,26 @@ public class Event {
      * @param attributes a <code>Map</code> containing the attributes.
      */
     public Event(String id, int type, Map attributes) {
+        /* FIXME: This is not deterministic. */
+        this(id, type, attributes, new Date()); 
+    }
+
+    /**
+     * Creates an event. This constructor receives the date this event happened
+     * and is temporary until the fixme above can be removed. <p>
+     * 
+     * @param id the id of this event.
+     * @param type the type os this event.
+     * @param attributes a <code>Map</code> containing the attributes.
+     * @param time the time this event happened.
+     */
+    public Event(String id, int type, Map attributes, Date time) {
         this.id = id;
         this.type = type;
         this.attributes = attributes;
-        this.time = new Date(); /* FIXME: This is not deterministic. */
+        this.time = time;
     }
+    
 
     /**
      * Returns the id of this event. <p>
@@ -79,7 +94,7 @@ public class Event {
      * @return the id of this event.
      */
     public String getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -88,16 +103,19 @@ public class Event {
      * @return the type of this event.
      */
     public int getType() {
-        return type;
+        return this.type;
     }
 
     /**
      * Returns the attributes map of this event. <p>
      * 
+     * Notice that it is not possible to change this map. If tried, an
+     * UnsupportedOperationException will be thrown.
+     * 
      * @return the attributes map of this event.
      */
     public Map getAttributes() {
-        return Collections.unmodifiableMap(attributes);
+        return Collections.unmodifiableMap(this.attributes);
     }
 
     /**
@@ -106,6 +124,16 @@ public class Event {
      * @return the time this event happened.
      */
     public Date getTime() {
-        return (Date) time.clone();
+        return (Date) this.time.clone();
+    }
+
+    /**
+     * Note: this class has a natural ordering that is inconsistent with
+     * equals. <p>
+     * 
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
+        return this.time.compareTo(((Event) o).getTime());
     }
 }

@@ -24,20 +24,102 @@
 
 package com.bigbross.bossa.history;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import junit.framework.TestCase;
+
+import com.bigbross.bossa.notify.Event;
 
 public class HistorianTest extends TestCase {
 
     private Historian historian;
+    private Event e0, e1, e2, e3;
+    private static final long t1 = 1069364322000L; 
+    private static final long t2 = 1069365822000L; 
+    private static final long t3 = 1069366362000L; 
+    private static final long t4 = 1069367322000L; 
 
     public HistorianTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
-        historian = null;
+        historian = new Historian();
+        Date aTime = new Date();
+        aTime.setTime(t1);
+        e0 = new Event("teste0", Event.WFNET_EVENT, new HashMap(), aTime);
+        aTime = new Date();
+        aTime.setTime(t2);
+        e1 = new Event("teste1", Event.WFNET_EVENT, new HashMap(), aTime);
+        aTime = new Date();
+        aTime.setTime(t3);
+        e2 = new Event("teste2", Event.RESOURCE_EVENT, new HashMap(), aTime);
+        aTime = new Date();
+        aTime.setTime(t4);
+        e3 = new Event("teste3", Event.WFNET_EVENT, new HashMap(), aTime);
     }
 
-    public void testNothing() {
+    public void testNewEvents() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        List events = historian.getHistory();
+        assertEquals(4, events.size());
+        assertSame(e0, events.get(0));
+        assertSame(e1, events.get(1));
+        assertSame(e2, events.get(2));
+        assertSame(e3, events.get(3));
+    }
+    
+    public void testOutOfOrderEvents() {
+        historian.newEvent(e0);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        historian.newEvent(e1);
+        
+        List events = historian.getHistory();
+        assertEquals(4, events.size());
+        assertSame(e0, events.get(0));
+        assertSame(e1, events.get(1));
+        assertSame(e2, events.get(2));
+        assertSame(e3, events.get(3));
+    }
+    
+    public void testOpenRange() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        Date start = new Date();
+        start.setTime(t3);
+
+        List events = historian.getHistory(start);
+        assertEquals(2, events.size());
+        assertSame(e2, events.get(0));
+        assertSame(e3, events.get(1));
+    }
+    
+    public void testClosedRange() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        Date start = new Date();
+        start.setTime(t2);
+        Date end = new Date();
+        end.setTime(t4);
+
+        List events = historian.getHistory(start, end);
+        assertEquals(2, events.size());
+        assertSame(e1, events.get(0));
+        assertSame(e2, events.get(1));
+        
+        assertEquals(0, historian.getHistory(end, start).size());
     }
 }
