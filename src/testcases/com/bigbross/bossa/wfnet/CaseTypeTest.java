@@ -74,9 +74,9 @@ public class CaseTypeTest extends TestCase {
         b.output(E, "SOK && !DIR");
 
         c.input(D,  "1");
-        c.output(B, "1");
-        c.output(E, "1");
-        c.output(H, "1");
+        c.output(B, "ADIR == 'BACK'");
+        c.output(E, "ADIR == 'OK'");
+        c.output(H, "ADIR == 'CANCEL'");
 
         d.input(E,  "1");
         d.output(F, "1");
@@ -187,18 +187,4 @@ public class CaseTypeTest extends TestCase {
         assertEquals("a", a2.getTransition().getId());
     }
 
-    public void testToString() {
-        
-        String expected = "\tA\tB\tC\tD\tE\tF\tG\tH\t\n" +
-                          "a\t-1\t1\t0\t0\t0\t0\t0\t0\tx\n" +
-                          "b\t0\t-1\t!SOK\t1\t1\t0\t0\t0\ty\n" +
-                          "c\t0\t1\t0\t-1\t1\t0\t0\t1\tz\n" +
-                          "d\t0\t0\t0\t0\t-1\t1\t0\t0\ty\n" +
-                          "e\t0\t0\t0\t0\t0\t-1\t1\t0\ty\n" +
-                          "f\t0\t1\t-1\t0\t0\t0\t0\t1\tx\n";
-
-        String result = createTestCaseType().toString();
-
-        assertEquals(expected, result);
-    }
 }

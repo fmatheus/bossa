@@ -102,16 +102,17 @@ public class CaseTest extends TestCase {
     public void testMachineGun() {
         Case caze = newTestCase();
         HashMap attributes = new HashMap();
-	attributes.put("SOK", new Boolean(false));
+	attributes.put("SOK", new Boolean(true));
+        attributes.put("DIR", new Boolean(true));
+        attributes.put("ADIR", "OK");
 
-        int[] expected = new int[] {0,2,0,0,1,0,1,2};
+        int[] expected = new int[] {0,0,0,0,0,0,1,0};
 
         assertTrue(fire(caze, "a", attributes));
         assertTrue(fire(caze, "b", null));
         assertTrue(fire(caze, "c", null));
         assertTrue(fire(caze, "d", null));
         assertTrue(fire(caze, "e", null));
-        assertTrue(fire(caze, "f", null));
 
         int[] actual = caze.getMarking();
 
@@ -135,59 +136,32 @@ public class CaseTest extends TestCase {
      * This test checks if the list of work itens is correct. <p>
      */
     public void testWorkItensList() {
-
-        Case caze = newTestCase();
-        HashMap attributes = new HashMap();
-        attributes.put("SOK", new Boolean(false));
-        assertTrue(fire(caze, "a", attributes));
-        assertTrue(fire(caze, "b", null));
-
+        Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {1,1,0,0,0,0,0,0});
         List workItens = caze.getWorkItems();
-        
-        assertEquals(3, workItens.size());
-        Transition t0 = ((WorkItem) workItens.get(0)).getTransition();
-        Transition t1 = ((WorkItem) workItens.get(1)).getTransition();
-        Transition t2 = ((WorkItem) workItens.get(2)).getTransition();
-        assertFalse(t0.getId().equals(t1.getId()));
-        assertFalse(t0.getId().equals(t2.getId()));
-        assertFalse(t1.getId().equals(t2.getId()));
-        assertTrue(t0.getId().equals("c") || 
-                   t0.getId().equals("d") ||
-                   t0.getId().equals("f"));
-        assertTrue(t1.getId().equals("c") || 
-                   t1.getId().equals("d") ||
-                   t1.getId().equals("f"));
-        assertTrue(t2.getId().equals("c") || 
-                   t2.getId().equals("d") ||
-                   t2.getId().equals("f"));
+        assertEquals(2, workItens.size());
+
+        WorkItem w0 = (WorkItem) workItens.get(0);
+        WorkItem w1 = (WorkItem) workItens.get(1);
+        assertNotSame(w0, w1);
+        assertNotNull(caze.getWorkItem("a"));
+        assertNotNull(caze.getWorkItem("b"));
     }
 
     public void testActivitiesList() {
+        Case caze = CaseTypeTest.createTestCaseType().newCase(new int[] {2,0,0,0,0,0,0,0});
+        WorkItem wi = caze.getWorkItem("a");
 
-        Case caze = newTestCase();
-        HashMap attributes = new HashMap();
-        attributes.put("SOK", new Boolean(false));
-        assertTrue(fire(caze, "a", attributes));
-        assertTrue(fire(caze, "b", null));
-        List workItens = caze.getWorkItems();
-        WorkItem wi0 = (WorkItem) workItens.get(0);
-        WorkItem wi1 = (WorkItem) workItens.get(1);
-        caze.open(wi0);        
-        caze.open(wi1);
+        caze.open(wi);
+        assertEquals(1, caze.getActivities().size());
 
-        List activities = caze.getActivities();        
+        caze.open(wi);
+        List activities = caze.getActivities();
         assertEquals(2, activities.size());
+
         Activity a0 = (Activity) activities.get(0);
         Activity a1 = (Activity) activities.get(1);
-        assertFalse(a0.getId() == a1.getId());
-        assertTrue(a0.getId() == 3 || a0.getId() == 4);
-        assertTrue(a1.getId() == 3 || a1.getId() == 4);
-        assertFalse(a0.getTransition().getId().equals(
-                                                a1.getTransition().getId()));
-        assertTrue(wi0.getId().equals(a0.getTransition().getId()) ||
-                   wi1.getId().equals(a0.getTransition().getId()));
-        assertTrue(wi0.getId().equals(a1.getTransition().getId()) ||
-                   wi1.getId().equals(a1.getTransition().getId()));
+        assertNotSame(a0, a1);
+        assertSame(a0.getTransition(), a1.getTransition());
     }
 
     public void testEdgeEvaluation() {
