@@ -90,7 +90,7 @@
     between the participants of a collaborative work.
     <emphasis>Document management systems</emphasis> are usually
     called workflow systems, mostly because they provide means of
-    information exchange and usually do so in an ordered
+    information exchange and usually do so in an orderly
     manner. <emphasis>Groupware systems</emphasis> are sometimes
     called workflow systems by largely the same reasons, organized
     information exchange.
@@ -102,7 +102,8 @@
     we believe that handling documents or messages between users is
     not necessarily a concern of workflow systems. Workflow systems
     track activities and helps the right people do the right activity
-    at the right time, without regards to the information exchanged.
+    at the right time, without regards to the information being
+    exchanged.
   </para>
 
   <para>
@@ -147,41 +148,40 @@
   <para>
     The abstract definition of a workflow is called a <emphasis>case
     type</emphasis>. For example, a supplies purchase process that
-    defines how all purchases will be performed is a case type. Case
-    types are composed by <emphasis>tasks</emphasis> connected by
-    <emphasis>routing constructs</emphasis>. For example, an "initial
-    analysis" is a task of the supplies purchase case type. After this
-    task is performed, other tasks will be enabled depending on the
-    outcome of the "initial analysis" task, these tasks are connected
-    using routing constructs.
+    defines how all purchases will be performed in a department is a
+    case type. Case types are composed by <emphasis>tasks</emphasis>
+    connected by <emphasis>routing constructs</emphasis>. For example,
+    an "initial analysis" is a task of the "supplies purchase" case
+    type. After this task is performed, other tasks will be enabled
+    depending on the outcome of the "initial analysis" task, these
+    tasks are connected using routing constructs.
   </para>
 
   <para>
     A case type defines all possible executions or instances of a
     process. A individual instance of a case type is a
     <emphasis>case</emphasis>. For example, the purchase of a box of
-    white board pens is a case of the "supplies purchase" case
-    type. The tasks of the case type have two different names in a
-    case, depending on their state. If the routing constructs and the
-    execution of the case activate a task, it is called a
-    <emphasis>work item</emphasis>. For example, after a new purchase
-    request is made the "initial analysis" task becomes a work item,
-    that is, it can be performed by some user of the system. If an
-    user actually performs a work item, a non-instantaneous action,
-    the task is an <emphasis>activity</emphasis> until it is
-    completed.
+    staples is a case of the "supplies purchase" case type. The tasks
+    of the case type have two different names in a case, depending on
+    their state. If the routing constructs and the execution of the
+    case activate a task, it is called a <emphasis>work
+    item</emphasis>. For example, after a new purchase request is made
+    the "initial analysis" task becomes a work item, that is, it can
+    be performed by some user of the system. If an user actually
+    performs a work item, a non-instantaneous action, the task is an
+    <emphasis>activity</emphasis> until it is completed.
   </para>
 
   <para>
     Petri nets are a tool for modeling and analyzing dynamic
     processes. A Petri net is composed by <emphasis>places</emphasis>
     and <emphasis>transitions</emphasis> and has a standard graphical
-    representation where places are circle and transitions are
+    representation where places are circles and transitions are
     squares. Places and transitions are connected by directed edges,
     forming a directed bipartite graph, that is, following the
     direction of an edge it is only possible to go from a place to a
-    transition and from a transition to a place. <xref
-    linkend="petri"/> shows the graphical representation a simple
+    transition or from a transition to a place. <xref
+    linkend="petri"/> shows the graphical representation of a simple
     Petri net.
   </para>
 
@@ -199,7 +199,7 @@
 
   <para>
     Places and transitions represent the static aspect of a Petri net,
-    the dynamic aspect is represented by the
+    the dynamic aspect is represented by
     <emphasis>tokens</emphasis>. A token is a mark that can only be in
     places and that changes places according to the
     <emphasis>firing</emphasis> of the transitions.  In classical
@@ -216,8 +216,8 @@
     classical and colored Petri nets is well beyond the scope of this
     document. Briefly, in a colored Petri net, each token has a color
     and the firing of a transition consumes and produces a number of
-    tokens as a function of the token color, while classical Petri
-    nets consume and produce exactly one token for each edge. To
+    tokens as a function of the token color, while in classical Petri
+    nets they consume and produce exactly one token for each edge. To
     represent how many tokens a transition consumes and produces we
     use <emphasis>weighted</emphasis> edges, where a weight is an
     integer expression. Then, when a transition fires it consumes a
@@ -258,7 +258,7 @@
     The tasks (transitions) in a case type don't fire at
     random as in classic Petri nets, but they are performed by a
     resource. Task "b" can be performed by the resource "sales - $a",
-    this means that only the users of the "sales" groups minus the
+    this means that only the users of the "sales" group minus the
     users that performed task "a" can perform (fire) this task once it
     is activated. Resources are defined by set expressions (with "-",
     "+" and "^" operators) using user groups and the "$" special
@@ -291,7 +291,7 @@
  
   <para>
     The task "b" represents what is usually called in workflow
-    modeling as an <emphasis>and-split</emphasis>. In Bossa we are not
+    modeling an <emphasis>and-split</emphasis>. In Bossa we are not
     restricted to common workflow routing constructs. Using edge
     weights and case variables we can route the case tokens with great
     power and flexibility.
@@ -327,25 +327,26 @@
     management and task execution. To Bossa users are known as
     resources and are only identified by a string id. Bossa uses this
     id to place the resource in resource groups and to test if a
-    resource is present in an resource expression. Bossa does not
+    resource is present in a resource expression. Bossa does not
     registers users, authenticate users or store any information, such
     as name or address, about the users. Bossa will present the work
-    items a resource can perform, but will not enforce authentication
-    of the resource to allow the effective execution of the work
-    items. It is the responsibility of the application to authenticate
-    its users and map them to Bossa's resources.
+    items a resource can perform, but will not check if the resource
+    really can perform the work item. It is the responsibility of the
+    application to authenticate its users and map them to Bossa's
+    resources.
   </para>
 
   <para>
     Associated with each active task (work item) there will be the
     case id and the task id. Bossa stores no other data about a work
     item and does not know how to actually
-    <emphasis>perform</emphasis> a work item. Specially it will not
+    <emphasis>perform</emphasis> a work item. Specially, it will not
     present information relevant to the work item execution, it will
     not execute the work item's business rules and it will not persist
     its execution. The application is responsible for these
-    activities, choosing what to do using the work item data and,
-    after completion, notifying Bossa the work item is complete.
+    activities. It must choose what to do using the work item data
+    and, after completion, it notifies Bossa the work item is
+    complete.
   </para>
 
   <para>
@@ -356,11 +357,10 @@
     users as it desires, then it may ask Bossa the work items
     available to a user, the application will choose one among the
     possible work items (possibly asking the user) and will inform
-    Bossa the user will work on this work item. Only the application
-    knows how to assist the user in the completion of this work item
-    and, after the work item is completed (or canceled), the
-    application will inform Bossa of the outcome, setting any case
-    variable if necessary.
+    Bossa the user will work on it. Only the application knows how to
+    assist the user in the completion of this work item and, after the
+    work item is completed (or canceled), the application will inform
+    Bossa of the outcome, setting any case variable if necessary.
   </para>
 
 </sect1>
