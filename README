@@ -117,7 +117,7 @@ dist           <-- the JAR files and javadocs will be put here.
  +-doc         <-- the generated docbooks will appear here.
  +-javadocs    <-- the generated javadocs will appear here.
 lib            <-- you may put needed JARs here.
-doc            <-- the source documentation.
+doc            <-- the documentation sources.
 src            <-- the source code.
  | 
  +-main        <-- the source code for the Bossa library is here.
