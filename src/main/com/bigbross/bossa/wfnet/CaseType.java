@@ -25,10 +25,12 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -209,6 +211,22 @@ public class CaseType implements Serializable {
     public Iterator getCases() {
         return Collections.unmodifiableCollection(cases.values()).iterator();
     }
+
+    /**
+     * Returns the list of all work items of the cases of this case type. <p>
+     * 
+     * @return The list of work itens of this case type.
+     */
+    public List getWorkItems() {
+       
+        ArrayList items = new ArrayList();
+        Iterator i = cases.values().iterator();   
+        while (i.hasNext()) {
+            items.addAll(((Case) i.next()).getWorkItems());
+        }
+        return items;
+    }
+    
 
     public String toString() {
 

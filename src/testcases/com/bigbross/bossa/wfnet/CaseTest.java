@@ -24,6 +24,8 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 public class CaseTest extends TestCase {
@@ -135,12 +137,12 @@ public class CaseTest extends TestCase {
         assertTrue(fire(caze, "a"));
         assertTrue(fire(caze, "b"));
 
-        WorkItem[] workItens = caze.getWorkItems();
+        List workItens = caze.getWorkItems();
         
-        assertEquals(3, workItens.length);
-        Transition t0 = workItens[0].getTransition();
-        Transition t1 = workItens[1].getTransition();
-        Transition t2 = workItens[2].getTransition();
+        assertEquals(3, workItens.size());
+        Transition t0 = ((WorkItem) workItens.get(0)).getTransition();
+        Transition t1 = ((WorkItem) workItens.get(1)).getTransition();
+        Transition t2 = ((WorkItem) workItens.get(2)).getTransition();
         assertFalse(t0.getId().equals(t1.getId()));
         assertFalse(t0.getId().equals(t2.getId()));
         assertFalse(t1.getId().equals(t2.getId()));

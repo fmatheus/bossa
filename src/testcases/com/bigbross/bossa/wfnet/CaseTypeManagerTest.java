@@ -27,6 +27,7 @@ package com.bigbross.bossa.wfnet;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import junit.framework.TestCase;
@@ -142,7 +143,24 @@ public class CaseTypeManagerTest extends TestCase {
                 }    
             } else if (operation.equals("w")) {
                 String id = tokenizer.nextToken();
-
+                WorkItem wi = 
+                    (WorkItem) caseTypeManager.getCaseType(id).
+                        getTemplate().getWorkItems().get(0);
+                System.out.println(" * " + id + " " + 
+                                   wi.getCase().getId() + " " +
+                                   wi.getId() + " fireable=" +
+                                   wi.isFireable());
+                Iterator i =
+                    caseTypeManager.getCaseType(id).getWorkItems().iterator();
+                int count = 1;
+                while (i.hasNext()) {
+                    wi = (WorkItem) i.next();
+                    System.out.println(" " + count++ + " " +
+                                       id + " " +  
+                                       wi.getCase().getId() + " " +
+                                       wi.getId() +
+                                       " fireable=" + wi.isFireable());
+                }    
             } else if (operation.equals("a")) {
                 String id = tokenizer.nextToken();
 

@@ -65,7 +65,7 @@ public class CommandsTest extends TestCase {
 
     public void testOpenWorkItem() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
-        WorkItem wi = caze.getWorkItems()[0];
+        WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         OpenWorkItem command = new OpenWorkItem(wi);
 
         Activity act = (Activity) command.execute(caseTypeManager);

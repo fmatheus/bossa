@@ -96,9 +96,9 @@ public class Case implements Serializable {
     /**
      * Returns the list of work items associated with this case. <p>
      *  
-     * @return An array with the work items of this case.
+     * @return A list with the work items of this case.
      */
-    public WorkItem[] getWorkItems() {
+    public List getWorkItems() {
         ArrayList items = new ArrayList(workItems.length);
         
         for (int i = 0; i < workItems.length; i++) {
@@ -107,11 +107,11 @@ public class Case implements Serializable {
             }
         }        
         
-	return (WorkItem[]) items.toArray(new WorkItem[items.size()]);
+	return items;
     }
 
     /**
-     * Return a specific work item, selected by its id. <p>
+     * Returns a specific work item, selected by its id. <p>
      * 
      * FIXME: Maybe we should return null if the work item is not
      * fireable.
@@ -124,6 +124,24 @@ public class Case implements Serializable {
         int index = caseType.getTransition(id).getIndex();
         return workItems[index];
     }
+
+    /**
+     * Returns a list of activities associated with the provided resource.
+     * If the resource id is <code>null</code>, the list contains
+     * all activities of this case. <p>
+     * 
+     * @param resource the resource id.
+     * @return The list of activities associated with the resource. 
+     */
+
+    /**
+     * Return a specific activity, selected by its id. <p>
+     * 
+     * @param id the activity id.
+     * @return the activity, <code>null</code> if there is no activity
+     *         with this id.
+     */
+
 
     int nextWorkItemId() {
 	return ++workSequence;
@@ -214,15 +232,14 @@ public class Case implements Serializable {
 
     public String toString() {
 
-    StringBuffer string = new StringBuffer();
+        StringBuffer string = new StringBuffer();
 
-    string.append("\t");
-    for (int i = 0; i < marking.length; ++i) {
-        string.append(marking[i]);
         string.append("\t");
-    }
+        for (int i = 0; i < marking.length; ++i) {
+            string.append(marking[i]);
+            string.append("\t");
+        }
 
-    return string.toString();
-
+        return string.toString();
     }
 }

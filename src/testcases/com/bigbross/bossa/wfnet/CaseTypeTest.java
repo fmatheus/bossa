@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -152,5 +153,23 @@ public class CaseTypeTest extends TestCase {
         id = ((Case) i.next()).getId();
         assertTrue(id == 1 || id == 2);
         assertFalse(i.hasNext());
+    }
+    
+    public void testGetWorkItems() {
+        CaseType caseType = createTestCaseType();
+        Case c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        Case c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+        assertNotNull(c1);
+        assertNotNull(c2);
+        
+        List wi = caseType.getWorkItems();
+        assertEquals(2, wi.size());
+        WorkItem wi1 = (WorkItem) wi.get(0);
+        WorkItem wi2 = (WorkItem) wi.get(1);
+        assertFalse(wi1.getCase().getId() == wi2.getCase().getId());
+        assertTrue(c1.getId() == wi1.getCase().getId() ||
+                   c1.getId() == wi2.getCase().getId());
+        assertTrue(c2.getId() == wi1.getCase().getId() ||
+                   c2.getId() == wi2.getCase().getId());
     }
 }
