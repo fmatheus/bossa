@@ -33,7 +33,7 @@
 
   <!-- Name of project and version, used to create filenames -->
   <property name="Name"    value="Bossa Workflow Management System"/>
-  <property name="name"    value="bossa-nova"/>
+  <property name="name"    value="bossa"/>
   <property name="version" value="0.1.0"/>
 
   <!-- Set global properties for this build -->
