@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.resource.Expression;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.WorkItem;
@@ -95,11 +96,7 @@ public class WorkManager implements Serializable {
             getBossa().getCaseTypeManager().getWorkItems(getInitial);
         Iterator i = workItems.iterator();
         while (i.hasNext()) {
-            String groupId =
-                ((WorkItem) i.next()).getTransition().getResource();
-            Resource group = 
-                getBossa().getResourceManager().getResource(groupId);
-            if (!group.contains(resource)) {
+            if (!((WorkItem) i.next()).canBePerformedBy(resource)) {
                 i.remove();
             }
         }
@@ -120,9 +117,7 @@ public class WorkManager implements Serializable {
             getBossa().getCaseTypeManager().getActivities();
         Iterator i = activities.iterator();
         while (i.hasNext()) {
-            String respId = ((Activity) i.next()).getResource();
-            Resource responsible = 
-                getBossa().getResourceManager().getResource(respId);
+            Resource responsible = ((Activity) i.next()).getResource();
             if (!responsible.contains(resource)) {
                 i.remove();
             }

@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.bigbross.bossa.resource.Expression;
+
 /**
  * This class represents the definition of a transition.
  *
@@ -42,13 +44,13 @@ public class Transition implements Serializable {
 
     private String id;
 
-    private String resource;
+    private Expression resource;
 
     Transition(CaseType caseType, int index, String id, String resource) {
 	this.caseType = caseType;
 	this.index = index;
 	this.id = id;
-	this.resource = resource;
+	this.resource = caseType.getResourceRegistry().compile(resource);
     }
 
     /**
@@ -65,7 +67,7 @@ public class Transition implements Serializable {
      * 
      * @return the resource of this transition.
      */
-    public String getResource() {
+    public Expression getResource() {
         return resource;
     }
 

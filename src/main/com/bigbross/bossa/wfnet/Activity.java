@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.resource.Resource;
 
 /**
  * This class represents an open (firing) work item. <p>
@@ -40,7 +41,7 @@ public class Activity implements Serializable {
 
     private WorkItem workItem;
     
-    private String resource;
+    private Resource resource;
 
     /**
      * Creates a new activity. <p>
@@ -48,7 +49,7 @@ public class Activity implements Serializable {
      * @param workItem the open work item this activity represents.
      * @param resource the resource that opened the work item.
      */
-    Activity(WorkItem workItem, String resource) {
+    Activity(WorkItem workItem, Resource resource) {
         this.workItem = workItem;
         this.id = getCase().nextActivityId();
         this.resource = resource;
@@ -68,7 +69,7 @@ public class Activity implements Serializable {
      * 
      * @return the resource id.
      */
-    public String getResource() {
+    public Resource getResource() {
         return resource;
     }
 

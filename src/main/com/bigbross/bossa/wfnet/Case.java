@@ -33,10 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceRegistry;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-
-import com.bigbross.bossa.resource.ResourceRegistry;
 
 /**
  * This class represents a specific instance of a case type. It
@@ -94,6 +94,7 @@ public class Case implements Serializable {
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));
+        caseType.getResourceRegistry().registerSubContext(resources);
     }
 
     /**
@@ -319,7 +320,7 @@ public class Case implements Serializable {
      *            occurs. If this exception is thrown the state of this case
      *            may be left inconsistent.
      */
-    Activity open(WorkItem wi, String resource) throws EvaluationException {
+    Activity open(WorkItem wi, Resource resource) throws EvaluationException {
 
 	if (!wi.isFireable()) {
 	    return null;

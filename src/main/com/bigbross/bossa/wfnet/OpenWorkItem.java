@@ -26,6 +26,8 @@ package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
 
+import com.bigbross.bossa.resource.Resource;
+
 /**
  * This class implements the open operation of <code>WorkItem</code>
  * through the prevalence subsystem. <p>
@@ -39,7 +41,7 @@ class OpenWorkItem extends WFNetCommand {
     private String caseTypeId;
     private int caseId;
     private String workItemId;
-    private String resource;
+    private String resourceId;
     
     /**
      * Creates a new open operation. <p>
@@ -47,11 +49,11 @@ class OpenWorkItem extends WFNetCommand {
      * @param workItem the work item to be opened.
      * @param resource the resource opening it.
      */    
-    OpenWorkItem(WorkItem workItem, String resource) {
+    OpenWorkItem(WorkItem workItem, Resource resource) {
         this.workItemId = workItem.getId();
         this.caseId = workItem.getCase().getId();
         this.caseTypeId = workItem.getCaseType().getId();
-        this.resource = resource;
+        this.resourceId = resource.getId();
     }
 
     /**
@@ -64,7 +66,8 @@ class OpenWorkItem extends WFNetCommand {
      */
     protected Serializable execute(CaseTypeManager caseTypeManager)
         throws EvaluationException {
-    
+
+        Resource resource = caseTypeManager.getBossa().getResourceManager().getResource(resourceId);
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         WorkItem workItem = caze.getWorkItem(workItemId);
         

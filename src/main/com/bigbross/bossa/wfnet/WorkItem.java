@@ -27,6 +27,8 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.resource.Expression;
+import com.bigbross.bossa.resource.Resource;
 
 /**
  * This class represents a transition of a specific case instance. <p>
@@ -106,6 +108,10 @@ public class WorkItem implements Serializable {
 	return fireable;
     }
 
+    public boolean canBePerformedBy(Resource resource) {
+        return getTransition().getResource().contains(caze.getResourceRegistry(), resource);
+    }
+
     /**
      * Updates the firing status of this work item. <p>
      * 
@@ -130,7 +136,7 @@ public class WorkItem implements Serializable {
      * @exception PersistenceException if an error occours when making the
      *            execution of this method persistent.
      */
-    public Activity open(String resource) throws BossaException {
+    public Activity open(Resource resource) throws BossaException {
         WFNetCommand openCommand = new OpenWorkItem(this, resource);
         return (Activity) getCaseType().getCaseTypeManager().
             getBossa().executeCommand(openCommand);
