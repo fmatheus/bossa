@@ -46,9 +46,9 @@
     The characteristic that makes Bossa at the same time simple and
     powerful is the clear separation between <emphasis>workflow
     logic</emphasis> and <emphasis>application logic</emphasis>. We
-    believe that, as RDBMSs abstract the data storage and retrieval
-    concerns of an application, the workflow of the business process
-    being automated should also be abstracted.
+    believe that the application's workflow logic should be abstracted
+    in the same way that RDBMSs abstract the application's data
+    storage and retrieval concerns.
   </para>
 
   <para>
@@ -125,9 +125,9 @@
   </para>
 
   <para>
-    Under our definition of workflow, virtually every conceivable
-    collaborative application, and even some non-collaborative one,
-    needs workflow services. Since Bossa provides these services in a
+    Under our definition of workflow, virtually all conceivable
+    collaborative applications, and even some non-collaborative ones,
+    need workflow services. Since Bossa provides these services in a
     lightweight and unobtrusive manner, we open the possibility of
     workflow <emphasis>everywhere</emphasis>.
   </para>
@@ -138,9 +138,100 @@
 <sect1 id="petri-nets">
   <title>Petri Nets and Workflow</title>
 
-  <para>workflow definition</para>
-  <para>petri nets</para>
-  <para>workflow as petri nets.  <xref linkend="purchase"/></para>
+  <para>
+    Before we can talk more about how to model a workflow using Petri
+    nets, we need to briefly explain how a workflow is usually seen by
+    a workflow management system and what a Petri net is.
+  </para>
+
+  <para>
+    The abstract definition of a workflow is called a <emphasis>case
+    type</emphasis>. For example, a supplies purchase process that
+    defines how all purchases will be performed is a case type. Case
+    types are composed by <emphasis>tasks</emphasis> connected by
+    <emphasis>routing constructs</emphasis>. For example, an "initial
+    analysis" is a task of the supplies purchase case type. After this
+    task is performed, other tasks will be enabled depending on the
+    outcome of the "initial analysis" task, these tasks are connected
+    using routing constructs.
+  </para>
+
+  <para>
+    A case type defines all possible executions or instances of a
+    process. A individual instance of a case type is a
+    <emphasis>case</emphasis>. For example, the purchase of a box of
+    white board pens is a case of the "supplies purchase" case
+    type. The tasks of the case type have two different names in a
+    case, depending on their state. If the routing constructs and the
+    execution of the case activate a task, it is called a
+    <emphasis>work item</emphasis>. For example, after a new purchase
+    request is made the "initial analysis" task becomes a work item,
+    that is, it can be performed by some user of the system. If an
+    user actually performs a work item, a non-instantaneous action,
+    the task is an <emphasis>activity</emphasis> until it is
+    completed.
+  </para>
+
+  <para>
+    Petri nets are a tool for modeling and analyzing dynamic
+    processes. A Petri net is composed by <emphasis>places</emphasis>
+    and <emphasis>transitions</emphasis> and has a standard graphical
+    representation where places are circle and transitions are
+    squares. Places and transitions are connected by directed edges,
+    forming a directed bipartite graph, that is, following the
+    direction of an edge it is only possible to go from a place to a
+    transition and from a transition to a place. <xref
+    linkend="petri"/> shows the graphical representation a simple
+    Petri net.
+  </para>
+
+  <figure id="petri">
+    <title>A simple Petri net.</title>
+    <mediaobject>
+     <imageobject>
+      <imagedata align="center" fileref="petri.png"/>
+     </imageobject>
+     <textobject>
+      <phrase>A simple Petri net diagram.</phrase>
+     </textobject>
+    </mediaobject>
+  </figure>
+
+  <para>
+    Places and transitions represent the static aspect of a Petri net,
+    the dynamic aspect is represented by the
+    <emphasis>tokens</emphasis>. A token is a mark that can only be in
+    places and that changes places according to the
+    <emphasis>firing</emphasis> of the transitions.  In classical
+    Petri nets, when a transition fires it consumes exactly one token
+    for each input (places with edges going to the transition) and
+    produces exactly one token for each output (places with edges
+    coming from the transition).
+  </para>
+
+  <para>
+    Classical Petri nets are not enough for modeling the more
+    sophisticated routing constructs a case type demands, so we use
+    <emphasis>colored</emphasis> Petri nets. The discussion of
+    classical and colored Petri nets is well beyond the scope of this
+    document. Briefly, in a colored Petri net, each token has a color
+    and the firing of a transition consumes and produces a number of
+    tokens as a function of the token color, while classical Petri
+    nets consume and produce exactly one token for each edge. To
+    represent how many tokens a transition consumes and produces we
+    use <emphasis>weighted</emphasis> edges, where a weight is an
+    integer expression. Then, when a transition fires it consumes a
+    number of tokens equal to the weight of the edge for each input
+    and produces a number of tokens equal to the weight of the edge
+    for each output.
+  </para>
+
+  <para>
+    A Petri net workflow representation maps places to possible states
+    of the case execution, transitions to tasks and tokens to the
+    current case state. <xref linkend="purchase"/> shows the "supplies
+    purchase" case type as a Petri net. 
+  </para>
 
   <figure id="purchase">
     <title>A purchase department case type.</title>
@@ -154,42 +245,147 @@
     </mediaobject>
   </figure>
 
-  <para>high level petri nets</para>
-  <para>colored</para>
-  <para>weighted edges</para>
-  <para>details: resources</para>
-  <para>An example: a task of the IC process</para>
+  <para>
+    Let's briefly analyze a task of the "supplies purchase" case
+    type. Task "b" is the "initial analysis" task. It has inputs
+    coming from the place "B", the "waiting initial analysis" place,
+    with a constant weight of 1. This means that whenever there is one
+    or more tokens in place "B" the task "b" is a work item and able
+    to fire.
+  </para>
+
+  <para>
+    The tasks (transitions) in a case type don't fire at
+    random as in classic Petri nets, but they are performed by a
+    resource. Task "b" can be performed by the resource "sales - $a",
+    this means that only the users of the "sales" groups minus the
+    users that performed task "a" can perform (fire) this task once it
+    is activated. Resources are defined by set expressions (with "-",
+    "+" and "^" operators) using user groups and the "$" special
+    groups of users that performed a task.
+  </para>
+
+  <para>
+    Task "b" has as outputs the places "C", "D" and "E". Place "C" is
+    the "waiting revision" place and has output weight "!SOK". Place
+    "D" is the "waiting director approval" place and has output weight
+    "SOK &amp;&amp; DIR". Place "E" is the "waiting file approved
+    purchase" place and has output weight "SOK &amp;&amp; !DIR". Here
+    we start exploring the specific way Bossa defines a case
+    type. Each of the output expression is a JavaScript expression
+    that will be evaluated as an integer using case variables set
+    during the case execution. We can use boolean expressions also,
+    they will yield 1 if true and 0 if false.
+  </para>
+
+  <para>
+    In task "b" if the purchase request does not pass the initial
+    analysis the variable SOK will be set to false. If it passes the
+    initial analysis SOK will be true and DIR will be set to true or
+    false if the director approval is necessary or not. So, when the
+    task "b" fires <emphasis>one</emphasis> token will be removed from
+    the place "B" and <emphasis>one</emphasis> token will be placed in
+    either places "C", "D" or "E" depending on the values of the case
+    variables.
+  </para>
+ 
+  <para>
+    The task "b" represents what is usually called in workflow
+    modeling as an <emphasis>and-split</emphasis>. In Bossa we are not
+    restricted to common workflow routing constructs. Using edge
+    weights and case variables we can route the case tokens with great
+    power and flexibility.
+  </para>
+
 </sect1>
 
 <sect1 id="bossa">
   <title>Bossa</title>
 
-  <para>a</para>
-</sect1>
-
-
-
-<sect1 id="overview">
-  <title>Overview</title>
-
-
   <para>
-    We will present a brief description:
-
-    <variablelist>
-
-     <varlistentry>
-      <term>Bossa</term>
-      <listitem>
-        <para>
-	  This module provides... 
-	</para>
-      </listitem>
-     </varlistentry>
-
-    </variablelist>
+    Now that we presented what workflow is and how to model case types
+    using Bossa's Petri net notation, we can talk some more about what
+    Bossa <emphasis>is</emphasis> and how to use it.
   </para>
 
+  <para>
+    Simply stated, Bossa is a workflow engine organized as a library
+    in Java. This means that Bossa is not a stand alone server, but a
+    set of Java classes that can be used to create a private workflow
+    engine <emphasis>embedded</emphasis> in Java applications. Thus,
+    Bossa does not concerns itself with several problems server
+    processes must deal with, such as: connections, sessions,
+    authentication, etc. It relies on the application to handle these
+    problems. The application in turn will probably use some other
+    framework, such as an J2EE application server, to help in
+    providing these services.
+  </para>
+
+  <para>
+    There are two situations where Bossa philosophy will be very
+    different from other workflow servers/frameworks: resource (user)
+    management and task execution. To Bossa users are known as
+    resources and are only identified by a string id. Bossa uses this
+    id to place the resource in resource groups and to test if a
+    resource is present in an resource expression. Bossa does not
+    registers users, authenticate users or store any information, such
+    as name or address, about the users. Bossa will present the work
+    items a resource can perform, but will not enforce authentication
+    of the resource to allow the effective execution of the work
+    items. It is the responsibility of the application to authenticate
+    its users and map them to Bossa's resources.
+  </para>
+
+  <para>
+    Associated with each active task (work item) there will be the
+    case id and the task id. Bossa stores no other data about a work
+    item and does not know how to actually
+    <emphasis>perform</emphasis> a work item. Specially it will not
+    present information relevant to the work item execution, it will
+    not execute the work item's business rules and it will not persist
+    its execution. The application is responsible for these
+    activities, choosing what to do using the work item data and,
+    after completion, notifying Bossa the work item is complete.
+  </para>
+
+  <para>
+    The expected way an application that uses Bossa should work is
+    similar to this: the application will create a Bossa instance, it
+    will register case types and resources if necessary. After this
+    setup work, the application will receive and authenticate its
+    users as it desires, then it may ask Bossa the work items
+    available to a user, the application will choose one among the
+    possible work items (possibly asking the user) and will inform
+    Bossa the user will work on this work item. Only the application
+    knows how to assist the user in the completion of this work item
+    and, after the work item is completed (or canceled), the
+    application will inform Bossa of the outcome, setting any case
+    variable if necessary.
+  </para>
+
+</sect1>
+
+<sect1 id="end">
+  <title>Conclusion</title>
+ 
+  <para>
+    In this white paper we explained the philosophy behind Bossa and
+    gave a very brief description of how to model workflows using
+    Petri nets and how to integrate the Bossa workflow engine into an
+    application.
+  </para>
+
+  <para>
+    The Bossa project is still new and we do not yet provide
+    documentation as comprehensive as we would like. For the time
+    being, besides this document, the best source of information is
+    the <ulink
+    url="http://www.bigbross.com/bossa/doc/api/bossa-api.html">API
+    HOWTO</ulink>, the full <ulink
+    url="http://www.bigbross.com/bossa/doc/javadocs">Bossa API
+    documentation</ulink> and the source code itself (specially the
+    tests and examples).
+  </para>
 </sect1>
 
 </article>
