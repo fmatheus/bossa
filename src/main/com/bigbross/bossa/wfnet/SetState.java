@@ -34,7 +34,6 @@ import com.bigbross.bossa.BossaException;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Case#setState(Map)
- * @see Case#setStateImpl(Map)
  */
 class SetState extends WFNetTransaction {
 

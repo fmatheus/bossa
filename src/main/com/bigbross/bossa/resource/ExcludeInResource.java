@@ -31,7 +31,7 @@ package com.bigbross.bossa.resource;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#exclude(Resource)
- * @see Resource#excludeImpl(Resource)
+ * @see Resource#excludeImpl(Resource, boolean)
  */
 class ExcludeInResource extends ResourceHandlerTransaction {
     

@@ -31,7 +31,7 @@ package com.bigbross.bossa.resource;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#remove(Resource)
- * @see Resource#removeImpl(Resource)
+ * @see Resource#removeImpl(Resource, boolean)
  */
 class RemoveFromResource extends ResourceHandlerTransaction {
     

@@ -31,7 +31,6 @@ package com.bigbross.bossa.wfnet;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Activity#cancel()
- * @see Case#cancel(Activity)
  */
 class CancelActivity extends WFNetTransaction {
 

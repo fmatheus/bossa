@@ -31,7 +31,7 @@ package com.bigbross.bossa.resource;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see ResourceManager#createResource(String)
- * @see ResourceManager#createResourceImpl(String)
+ * @see ResourceManager#createResourceImpl(String, boolean)
  */
 class CreateResource extends ResourceTransaction {
 

@@ -33,7 +33,6 @@ import com.bigbross.bossa.resource.Resource;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see WorkItem#open(Resource)
- * @see Case#open(WorkItem, Resource)
  */
 class OpenWorkItem extends WFNetTransaction {
 

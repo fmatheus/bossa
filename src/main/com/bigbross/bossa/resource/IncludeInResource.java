@@ -31,7 +31,7 @@ package com.bigbross.bossa.resource;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Resource#include(Resource)
- * @see Resource#includeImpl(Resource)
+ * @see Resource#includeImpl(Resource, boolean)
  */
 class IncludeInResource extends ResourceHandlerTransaction {
 

@@ -34,7 +34,6 @@ import com.bigbross.bossa.BossaException;
  * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  * @see Activity#close()
- * @see Case#close(Activity, Map)
  */
 class CloseActivity extends WFNetTransaction {
 
