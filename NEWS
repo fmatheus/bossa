@@ -1,8 +1,11 @@
 
-Bossa 0.X.X "XXXX", 2004-0X-XX
+Bossa 0.8.0 "XXXX", 2004-0X-XX
 --------------------------------------------
 
-* 
+* Made the openCase() method public and added the a option of setting
+  the initial token count.
+
+* Added a method to read the case attributes.
 
 * Bugfixes: historian case filtering, time source not serializable.
 

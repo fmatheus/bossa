@@ -232,19 +232,47 @@ public class CaseType implements Serializable {
     }
 
     /**
-     * Creates a new case using the case type template as initial marking. <p>
+     * Creates a new case using the state of the case type template. <p>
      * 
-     * FIXME: put the public version.
+     * This method bypasses the usual case opening process and should be used
+     * with caution to override the normal way a case is created. <p>
      * 
      * @return the newly created case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
+    public Case openCase() throws BossaException {
+        WFNetTransaction openCase = new OpenCase(this.getId(), null);
+        return (Case) getBossa().execute(openCase);
+    }
 
     /**
-     * Creates a new case using the provided state as initial token count. 
+     * Creates a new case using the provided state as the initial token count. 
      * If the state is <code>null</code>, the state of the case type
      * template is used instead. <p>
+     * 
+     * This method bypasses the usual case opening process and should be used
+     * with caution to override the normal way a case is created. <p>
+     * 
+     * @param state the initial token count as a map (<code>String</code>, 
+     *              <code>Integer</code>), indexed by the place id.
+     *              This state map must have a token count for every place.
+     * @return the newly created case.
+     * @exception SetAttributeException if the underlying expression
+     *            evaluation system has problems setting an attribute.
+     */
+    public Case openCase(Map state) throws BossaException {
+        WFNetTransaction openCase = new OpenCase(this.getId(), state);
+        return (Case) getBossa().execute(openCase);
+    }
+
+    /**
+     * Creates a new case using the provided state as the initial token count. 
+     * If the state is <code>null</code>, the state of the case type
+     * template is used instead. <p>
+     * 
+     * This method will not persist the result of its activation and should
+     * be used only internally as a part of a persistent transaction. <p>
      * 
      * @param state the initial token count as a map (<code>String</code>, 
      *              <code>Integer</code>), indexed by the place id.

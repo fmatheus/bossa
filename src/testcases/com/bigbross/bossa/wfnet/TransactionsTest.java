@@ -119,6 +119,24 @@ public class TransactionsTest extends TestCase {
         CaseTest.sameState(expected, caze.getState());
     }
     
+    public void testOpenCase() throws BossaException {
+        Map state = new HashMap();
+        state.put("A", new Integer(0));
+        state.put("B", new Integer(0));
+        state.put("C", new Integer(1));
+        state.put("D", new Integer(0));
+        state.put("E", new Integer(1));
+        state.put("F", new Integer(0));
+        state.put("G", new Integer(2));
+        state.put("H", new Integer(0));
+        OpenCase transaction = new OpenCase("theTestCaseType", state);
+        
+        Case caze = (Case) transaction.execute(caseTypeManager);
+        assertSame(caze,
+                   caseTypeManager.getCaseType("theTestCaseType").getCase(2));
+        CaseTest.sameState(state, caze.getState());
+    }
+
     public void testSetState() throws BossaException {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         Map newState = new HashMap();
