@@ -28,19 +28,40 @@ import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /**
- * A node of one binary tree representing a compiled resource expression.
+ * A node of one binary tree representing a compiled resource expression. <p>
+ * The set arithmetic operations are:
+ * <ul>
+ * <li> Union: <code>+</code>
+ * <li> Intersection: <code>^</code>
+ * <li> Exclusion: <code>-</code>
+ * </ul>
+ *
+ * The operands are resource names. <br>
+ * Whitespace characters are ignored. <br>
+ * The expression is evaluated from left to right. <br>
+ * Parenthesis may be used to group subexpressions. <p>
+ *
+ * The resource is linked from the <code>ResourceRegistry</code> at the
+ * compilation time, and is created if needed. A <code>$</code> may be used to
+ * delay the resource resolution to evaluation time, using a new
+ * <code>ResourceRegistry</code>. <p>
+ *
+ * A resource expression example is: <code>sales - $request</code> than means
+ * that only the users of the "sales" group minus the users that are in the
+ * "request" group provided in the evaluation moment are in this role.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
+ * @see ResourceRegistry
  */
 public abstract class Expression implements Container, Serializable {
 
-    public final static char OR  = '+';
-    public final static char SUB = '-';
-    public final static char AND = '^';
-    public final static char VAR = '$';
-    public final static char SPC = ' ';
-    public final static char LP  = '(';
-    public final static char RP  = ')';
+    protected final static char OR  = '+';
+    protected final static char SUB = '-';
+    protected final static char AND = '^';
+    protected final static char VAR = '$';
+    protected final static char SPC = ' ';
+    protected final static char LP  = '(';
+    protected final static char RP  = ')';
 
     protected final static String DELIM = "" + OR + SUB + AND + VAR + SPC + LP + RP;
 
