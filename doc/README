@@ -1,0 +1,45 @@
+
+                                ===== 
+                                Bossa
+                                -----
+                        A java workflow engine.
+                        =======================
+
+Docbook Documentation
+=====================
+
+To generate HTML renderings of our docbook documentation, it is
+necessary to setup the style ant task and configure the Bossa build
+script. Unfortunately, because there is no standard way of finding XML
+catalogs and stylesheets portably between different operating systems
+(or even Linux distributions) these instructions are a bit long.
+
+The first step is to activate the style task of the ant build
+system. This usually requires finding an XSL transformer (like Xalan)
+and placing it either in the ant CLASSPATH or in its runtime lib
+directory. For more info see the ant manual (http://ant.apache.org/manual/).
+
+Now, it is necessary to tell the Bossa build where to find the XSL
+stylesheet used to render HTML. If you don't have the stylesheet in
+your system (most Linux distributions do, the problem is finding it),
+download them from here: http://sourceforge.net/projects/docbook/
+Unpack the stylesheet somewhere.
+
+After finding or downloading the stylesheet, create a file named
+"build.properties" in the Bossa directory, containing the following
+line:
+
+	docbook.xsl=<stylesheet-dir>/html/docbook.xsl
+
+If you have the docbook 4.1.2 XML DTDs in your system, you can speed the
+process a bit by adding this line to "build.properties". 
+
+	docbookx.dtd=<docbook-XML-4.1.2-DTD-dir>/docbookx.dtd
+
+Not that this last step is *optional*.
+
+With everything in place, simply run:
+
+	# ant docbook
+
+The HTML documents will created in dist/doc/

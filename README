@@ -50,7 +50,7 @@ Compiling Bossa
 
 Simple instructions:
 
-# ant dist
+# ant
 
 :)
 
@@ -67,14 +67,18 @@ More elaborate instructions:
 
 4) Pick the bossa-x.y.z.jar in the dist directory. Use as prescribed.
 
-5) To generate the javadocs, run:
+5) (Optional) To test Bossa in your setup, run: 
+   # ant test
+
+6) (Optional) To generate the javadocs, run:
    # ant javadoc
    Point your browser to dist/javadocs/index.html
 
-6) To generate the docbooks, run:
+7) (Optional) To generate the docbooks, run:
    # ant docbook
-   Note: you will have to setup the ant optional tasks for this to work.
-   Point your browser to dist/doc/
+   Note: You will have to setup the style ant task for this to
+   work. For instructions doing that see the doc/README file.
+   After the docs are created, point your browser to dist/doc/
 
 
 Dependencies
