@@ -50,7 +50,11 @@ public class CaseTypeManager {
      *         registered with the same id.
      */    
     public boolean registerCaseType(CaseType caseType) {
-        return false;
+        if (caseTypes.containsKey(caseType.getId())) {
+            return false;
+        }
+        caseTypes.put(caseType.getId(), caseType);
+        return true;
     }
     
     /**
@@ -60,6 +64,7 @@ public class CaseTypeManager {
      * @param id The id of the case type.
      */
     public void removeCaseType(String id) {
+        caseTypes.remove(id);
     }
     
     /**
@@ -72,6 +77,6 @@ public class CaseTypeManager {
      * @return The case type if it exists, <code>null</code> otherwise. 
      */
     public CaseType getCaseType(String id) {
-        return null;
+        return (CaseType) caseTypes.get(id);
     }
 }
