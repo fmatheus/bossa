@@ -30,8 +30,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaFactory;
 import com.bigbross.bossa.resource.Resource;
-import com.bigbross.bossa.resource.ResourceUtil;
+import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.wfnet.WFNetEvents;
 
 public class NotificationBusTest extends TestCase {
 
@@ -44,7 +47,7 @@ public class NotificationBusTest extends TestCase {
     protected void setUp() {
         List persistent = new ArrayList();
         persistent.add(new GoodListener("persist", 0, null));
-        bus = new NotificationBus(persistent);
+        bus = new NotificationBus(null, persistent);
     }
 
     public void testRegisterRemoveListener() {
@@ -92,29 +95,30 @@ public class NotificationBusTest extends TestCase {
         assertEquals(0, theGood.runs());
     }
     
-    public void testFilterByResource() {
-        Resource trumps = ResourceUtil.createResource("trumps");
-        Resource jdoe = ResourceUtil.createResource("joedoe");
-        Resource mdoe = ResourceUtil.createResource("marydoe");
-        trumps.includeImpl(jdoe);
-        trumps.includeImpl(mdoe);
+    public void testFilterByResource() throws Exception {
+        Bossa bossa = BossaFactory.transientBossa();
+        NotificationBus bus = bossa.getNotificationBus(); 
+        ResourceManager resourceManager = bossa.getResourceManager();
+        
+        Resource trumps = resourceManager.createResource("trumps");
+        Resource jdoe = resourceManager.createResource("joedoe");
+        Resource mdoe = resourceManager.createResource("marydoe");
+        trumps.include(jdoe);
+        trumps.include(mdoe);
 
         TestListener theGood = new GoodListener("test1", 0, jdoe);
         assertTrue(bus.registerListener(theGood));
-        HashMap attrib;
+        HashMap attrib = new HashMap();
 
-        attrib = new HashMap();
-        attrib.put("resource", trumps);
+        attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, trumps.getId());
         bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
         assertEquals(1, theGood.runs());
 
-        attrib = new HashMap();
-        attrib.put("resource", jdoe);
+        attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, jdoe.getId());
         bus.notifyEvent(new Event("event2", Event.WFNET_EVENT, attrib));
         assertEquals(2, theGood.runs());
 
-        attrib = new HashMap();
-        attrib.put("resource", mdoe);
+        attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, mdoe.getId());
         bus.notifyEvent(new Event("event3", Event.WFNET_EVENT, attrib));
         assertEquals(2, theGood.runs());
     }

@@ -4,6 +4,8 @@ Bossa 0.X.X "XXXX", 2003-XX-XX
 
 * 
 
+* Fixed the resource filtering in the notification bus. Now it works.
+
 
 Bossa 0.4.1 "Fall", 2003-11-14
 ------------------------------

@@ -102,7 +102,7 @@ public class BossaFactory {
      */
     public Bossa createBossa() throws PersistenceException {
         Bossa newBossa = new Bossa();
-        newBossa.setNotificationBus(new NotificationBus());
+        newBossa.setNotificationBus(new NotificationBus(newBossa));
         if (!this.transientBossa && (this.stateDir != null)) {
             try {
                 PrevaylerFactory factory = new PrevaylerFactory();
@@ -112,7 +112,6 @@ public class BossaFactory {
                 Prevayler prevayler = factory.create();
                 newBossa = (Bossa) prevayler.prevalentSystem();
                 newBossa.setPrevayler(prevayler);
-                return newBossa;
             } catch (IOException e) {
                 throw new PersistenceException("I/O error starting prevayler.",
                                                 e);
@@ -120,9 +119,8 @@ public class BossaFactory {
                 throw new PersistenceException("Reflection error in prevayler.",
                                                 e);
             }
-        } else {
-            return newBossa;
         }
+        return newBossa;
     }
     
     /**

@@ -32,7 +32,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.wfnet.WFNetEvents;
 
 
 /**
@@ -53,12 +56,16 @@ public class NotificationBus implements Serializable {
 
     private transient Map transientListeners;
 
+    private Bossa engine;
+
     /**
      * Creates a new notification bus with some persistent listeners. <p>
-     *  
+     * 
+     * @param engine the bossa engine this notification bus is part.
      * @param persistentListeners a list of the persistent listeners.
      */
-    public NotificationBus(List persistentListeners) {
+    public NotificationBus(Bossa engine, List persistentListeners) {
+        this.engine = engine;
         this.persistentListeners = persistentListeners != null ? 
                                    persistentListeners : new ArrayList();
         this.transientListeners = new HashMap();
@@ -66,9 +73,20 @@ public class NotificationBus implements Serializable {
 
     /**
      * Creates a new empty notification bus. <p>
+     * 
+     * @param engine the bossa engine this notification bus is part.
      */
-    public NotificationBus() {
-        this(null);
+    public NotificationBus(Bossa engine) {
+        this(engine, null);
+    }
+
+    /**
+     * Returns the bossa engine this notification bus is part. <p>
+     * 
+     * @return the bossa engine this notification bus is part.
+     */
+    Bossa getBossa() {
+        return engine;
     }
 
     /**
@@ -108,13 +126,16 @@ public class NotificationBus implements Serializable {
      * @see com.bigbross.bossa.notify.Event#Event
      */
     public void notifyEvent(Event event) {
+        ResourceManager resourceManager = getBossa() != null ?
+                                            getBossa().getResourceManager() :
+                                            null;
         Iterator[] iterators = {persistentListeners.iterator(),
                                 transientListeners.values().iterator()};
         for (int i = 0; i < iterators.length; i++) {
             Iterator it = iterators[i];
             while (it.hasNext()) {
                 Listener l = (Listener) it.next();
-                singleListenerNotify(event, l);
+                singleListenerNotify(event, l, resourceManager);
             }
         }
     }
@@ -124,15 +145,21 @@ public class NotificationBus implements Serializable {
      * 
      * @param event the event.
      * @param l the listener.
+     * @param resourceManager the resource manager with respect to will
+     *                        the resource filtering happen.
      */
-    private void singleListenerNotify(Event event, Listener l) {
+    private void singleListenerNotify(Event event, Listener l,
+                                      ResourceManager resourceManager) {
         if (l.interested(event.getType())) {
             if (event.getType() == Event.WFNET_EVENT) {
-                Resource resource =
-                    (Resource) event.getAttributes().get("resource");
+                String resourceId = (String)
+                    event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID);
+                Resource resource = resourceManager != null ?
+                                     resourceManager.getResource(resourceId) :
+                                     null;
                 if (resource != null && l.getResource() != null &&
                     ! resource.contains(l.getResource())) {
-                    return;        
+                    return;
                 }
             }
             try {
