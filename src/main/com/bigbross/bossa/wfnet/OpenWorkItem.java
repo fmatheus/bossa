@@ -24,38 +24,33 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
 
 /**
- * Tests using WFNet package testcases.
- *
+ * This class
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class WFNetTestSuite extends TestCase {
+class OpenWorkItem extends WFNetCommand {
 
-    /**
-     * Constructor.
-     *
-     * @param name the name.
-     */
-    public WFNetTestSuite(String name) {
-	super(name);
+    private String caseTypeId;
+    private int caseId;
+    private String workItemId;
+    
+    OpenWorkItem(WorkItem workItem) {
+        this.workItemId = workItem.getId();
+        this.caseId = workItem.getCase().getId();
+        this.caseTypeId = workItem.getCaseType().getId();
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * @see com.bigbross.bossa.wfnet.command.WFNetCommand#execute(CaseTypeManager)
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("WFNet Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(CaseTypeTest.class));
-        suite.addTest(new TestSuite(CaseTypeManagerTest.class));
-	suite.addTest(new TestSuite(CaseTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
+    protected Serializable execute(CaseTypeManager caseTypeManager) {
+    
+        Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
+        WorkItem workItem = caze.getWorkItem(workItemId);
+        
+        return caze.open(workItem);
     }
 }

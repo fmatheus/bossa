@@ -24,38 +24,32 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
+
+import org.prevayler.Command;
+import org.prevayler.PrevalentSystem;
+
 
 /**
- * Tests using WFNet package testcases.
- *
+ * This class represents all commands applied to the WFNet persistent
+ * objects. <p>
+ * 
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class WFNetTestSuite extends TestCase {
+abstract class WFNetCommand implements Command {
 
     /**
-     * Constructor.
-     *
-     * @param name the name.
+     * Executes a command in a prevalent system. <p>
+     * 
+     * @see org.prevayler.Command#execute(PrevalentSystem)
      */
-    public WFNetTestSuite(String name) {
-	super(name);
+    public Serializable execute(PrevalentSystem system) throws Exception {
+        return execute((CaseTypeManager) system);
     }
 
     /**
-     * Makes the test suite.
-     *
-     * @return the suite.
+     * Executes a command in the object tree rooted at CaseTypeManager. <p>
      */
-    public static Test suite() {
-	TestSuite suite = new TestSuite("WFNet Test Suite");
-        /* All tests should be added here. */
-	suite.addTest(new TestSuite(CaseTypeTest.class));
-        suite.addTest(new TestSuite(CaseTypeManagerTest.class));
-	suite.addTest(new TestSuite(CaseTest.class));
-        suite.addTest(new TestSuite(CommandsTest.class));
-	return suite;
-    }
+    protected abstract Serializable execute(CaseTypeManager caseTypeManager)
+        throws Exception;
 }
