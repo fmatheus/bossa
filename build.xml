@@ -54,15 +54,23 @@
   <property name="bossa.package" value="${domain.package}/bossa"/>
 
   <property name="src.dir" value="src/main"/>
+  <property name="doc.dir" value="doc"/>
   <property name="lib.dir" value="lib"/>
   <property name="dist.dir" value="dist"/>
   <property name="dist.javadocs" value="${dist.dir}/javadocs"/>
   <property name="dist.javadocs.tests" value="${dist.dir}/javadocs.tests"/>
+  <property name="dist.doc" value="${dist.dir}/doc"/>
   <property name="tests.dir" value="src/testcases"/>
 
   <property name="build.dir" value="build"/>
   <property name="build.classes" value="${build.dir}/classes"/>
   <property name="build.tests" value="${build.dir}/testcases"/>
+
+  <property name="docbook.xsl"
+    value="/usr/share/sgml/docbook/xsl-stylesheets/html/docbook.xsl"/>
+  <property name="docbookx.dtd"
+    value="/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd"/>
+
 
   <path id="classpath">
   </path>
@@ -160,6 +168,20 @@
       <group title="Bossa Core" packages="com.bigbross.bossa*"/>
       <bottom><![CDATA[<i>Copyright &#169; 2002 OpenBR Sistemas S/C Ltda.</i>]]></bottom>
     </javadoc>
+  </target>
+
+  <target name="docbook" description="Generates documentation">
+    <mkdir dir="${dist.doc}"/>
+    <copy todir="${dist.doc}">
+      <fileset dir="${doc.dir}" includes="**/*.png, **/*.html"/>
+    </copy>
+    <style basedir="${doc.dir}" destdir="${dist.doc}"
+           style="${docbook.xsl}" includes="**/*.xml">
+      <xmlcatalog>
+        <dtd publicId="-//OASIS//DTD DocBook XML V4.1.2//EN"
+             location="${docbookx.dtd}"/>
+      </xmlcatalog>
+    </style>
   </target>
 
   <target name="clean"
