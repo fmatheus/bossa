@@ -39,11 +39,11 @@ public class CaseTypeTest extends TestCase {
     	System.out.println("Setting up a case type test.");
     }
 
-    static CaseType createTestCaseType() {
+    public static CaseType createTestCaseType() {
         return createTestCaseType("Testing 1,2,3...");
     }
 
-    static CaseType createTestCaseType(String id) {
+    public static CaseType createTestCaseType(String id) {
      
         CaseType caseType = new CaseType(id);
 
