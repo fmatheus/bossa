@@ -96,15 +96,41 @@ Bossa requires the following software to compile:
 Bossa requires the following software to run:
 
 * J2SE 1.2 JRE
+
 * Prevayler 1.03.003
+
 * BSF CVS (2.3.0-rc1+)
+
 * Rhino
 
 
 And Now What?
 =============
 
-Documentation is the javadoc.
+Right now, Bossa is lacking how-to documentation on the use of the
+library. However, the library is simple enough that javadoc
+documentation, tests and examples should suffice.
+
+First of all, to use workflow it is necessary to have a workflow
+definition, a case type. A case type is represented by a high level
+Petri net with weighted edges, and is currently created
+programmatically. For a description of workflow modeling as Petri
+nets, somewhat similar to the one we use, see Section 4 of:
+
+http://tmitwww.tm.tue.nl/staff/wvdaalst/Publications/p53.pdf
+
+We will document our Petri model soon. For now a look at the code of
+CaseTypeTest.createTestCaseType() in the testcases directory.
+
+Once the case type is defined, cases can be created to represent the
+enactment of individual workflows. This involves opening, closing and
+canceling work items and activities, and represents the run time
+behavior of a workflow application. An example of such application is
+the BossaBrowser.main(). Look there for examples of use, but beware,
+the code is not of the same high standard of the library. :)
+
+To understand better the examples, the definitive documentation is the
+javadoc. Generate it, read it, enjoy.
 
 
 Directory Structure
@@ -112,60 +138,15 @@ Directory Structure
 
 This is how the directories are organized.
 
-
-bin            <-- some useful scripts
-build          <-- this is where all .classes go into when you build the
- |                 package 
- +-classes     <-- the compiled classes for the bossa library are here
- +-ROOT        <-- the servlet root tree is here
-conf           <-- configuration files to go into the .war file 
- |
- +-default     <-- files here are used if no files are in the parent directory 
-db             <-- sample Hypersonic database 
-debian         <-- used to build Debian package 
-dist           <-- your .war and .jar files will be put here 
-doc            <-- documentation for bossa 
-examples
+build          <-- this is where all compiled files (.class) go into when
+ |                 you build the package.
+ +-classes     <-- the classes for the Bossa library will appear here.
+ +-testcases   <-- the classes for the tests will appear here.
+dist           <-- the JAR files and javadocs will be put here. 
  | 
- +-admin       <-- command-line interface to database, with batched 
- |                 input examples
- +-conf        <-- example of configuration files
- +-models      <-- workflow models
- +-sql         <-- useful files with SQL commands  
- +-template    <-- templates for generating web interface
-lib            <-- jars that we need
-rpm            <-- used to build RPM package
-src            <-- the source code
-tests          <-- tests to be used with Junit
-webapp         <-- the web interface
- |
- +-html        <-- the HTML templates
- +-images      <-- images used in the web interface
- +-locale      <-- localization files
- +-src         <-- source for the servlets
- | |
- | +-external  <--
- +-web         <-- the index that redirects to the servlet
-
-
-Under src/com/bigbross/ you will find these directories (or java packages):
-
-wave         <-- source for the Wave compiler
- |
- +-lex       <-- scanner (lexer)
- +-symbtab   <-- symbol table
- +-wave      <-- syntax analyzer
-
-bossa        <-- source for the workflow engine
- |
- +-base        <-- base classes, used everywhere
- +-model       <-- classes defining a process model
- +-user        <-- the user manager
- +-task        <-- the task manager
- +-storage     <-- the persistence layer
- +-notifier    <-- the notifier (sends messages to users)
- +-repository  <-- the file repository (for attachments)
- +-message     <-- the internal messenger (messages within the WE only)
- +-visitor     <-- visitors; currently only one to print a model
- +-application <-- the application facade; interfaces use it too
-                   interact with Bossa
+ +-javadocs    <-- the generated javadocs will appear here.
+lib            <-- create this directory and put needed JARs.
+src            <-- the source code.
+ | 
+ +-main        <-- the source code for the Bossa library is here.
+ +-testcases   <-- the source code for the tests is here.

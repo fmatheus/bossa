@@ -2,8 +2,36 @@
 Bossa 0.1, 2003-02-19
 ---------------------
 
-* First release.
+* First release. Hello world! Brace yourself!
 
-* Operational workflow
+* Fully operational workflow engine.
 
+* Workflow defined programmatically using Petri nets as modeling
+  abstraction, using JavaScript expressions as edge weights.
 
+* Register, unregister and list workflow definitions (case types).
+
+* List cases, work item and activities by case type or case.
+
+* Handle all life cycle of a workflow task: activation as work item,
+  opening the work item as activity and finally the closing or
+  cancellation of the activity.
+
+* Resource management, with users and groups organized as access
+  control lists.
+
+* Resource specification in the case type using complex set
+  expressions.
+
+* Local resources by case type, allowing local mapping between case
+  type resources and locally registered resources.
+
+* Local resources by case, allowing more flexible resource
+  specification.
+
+* List work items and activities by resource capability.
+
+* Transparent persistence. Uses only a writable directory, nothing
+  more. 
+
+* High quality, lightweight, commented and tested Java code.
