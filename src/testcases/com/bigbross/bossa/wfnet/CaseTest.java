@@ -25,124 +25,108 @@
 package com.bigbross.bossa.wfnet;
 
 import junit.framework.TestCase;
-import com.bigbross.bossa.wfnet.Place;
-import com.bigbross.bossa.wfnet.Transition;
 
 public class CaseTest extends TestCase {
-
-    private CaseType caseType = new CaseType();
-    private Case caze;
-
-    Place A = caseType.registerPlace("A");
-    Place B = caseType.registerPlace("B");
-    Place C = caseType.registerPlace("C");
-    Place D = caseType.registerPlace("D");
-    Place E = caseType.registerPlace("E");
-    Place F = caseType.registerPlace("F");
-    Place G = caseType.registerPlace("G");
-    Place H = caseType.registerPlace("H");
-    Transition a = caseType.registerTransition("a", "x");
-    Transition b = caseType.registerTransition("b", "y");
-    Transition c = caseType.registerTransition("c", "z");
-    Transition d = caseType.registerTransition("d", "y");
-    Transition e = caseType.registerTransition("e", "y");
-    Transition f = caseType.registerTransition("f", "x");
-
-    {
-	a.input(A, 1);
-	a.output(B, 1);
-
-	b.input(B, 1);
-	b.output(C, 1);
-	b.output(D, 1);
-	b.output(E, 1);
-
-	c.input(D, 1);
-	c.output(B, 1);
-	c.output(E, 1);
-	c.output(H, 1);
-
-	d.input(E, 1);
-	d.output(F, 1);
-
-	e.input(F, 1);
-	e.output(G, 1);
-
-	f.input(C, 1);
-	f.output(B, 1);
-	f.output(H, 1);
-    }
 
     public CaseTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
-	System.out.println("Setting up a case type test.");
-
-	caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
+	System.out.println("Setting up a case test.");
     }
 
-    protected boolean fire(Case caze, Transition t) {
+    Case newTestCase() {
+        return new CaseTypeTest("hohoho").createTestCaseType().
+                newCase(new int[] {1,0,0,0,0,0,0,0});
+    }
+
+    private boolean fire(Case caze, Transition t) {
 	Activity act = caze.getWorkItems()[t.index].open();
 	if (act != null) {
-	    System.out.println(act.toString());
 	    return act.close();
 	}
 	return false;
     }
 
-    public void testToString() {
-	String result;
+    private boolean sameState(int[] s1, int[] s2) {
+        assertEquals(s1.length, s2.length);
+        for (int i = 0; i < s1.length; i++) {
+            assertEquals(s1[i], s2[i]);
+        }
+        return true;
+    } 
 
-	result = caseType.toString();
+    public void testFirstShot() {
+        System.out.println("First Shot:");
 
-	/*
-	 * FIXME: Maybe we should generate a string with the right
-	 * answer and compare against it.
-	 */
-	assertTrue(result != null);
-	System.out.println(result);
+        Case caze = newTestCase();
+
+        int[] expected = new int[] {0,1,0,0,0,0,0,0};
+
+        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
+
+        int[] actual = (int[])caze.marking.clone();
+
+        assertTrue(sameState(expected, actual));
     }
 
-    public void testBurnProof() {
-	System.out.println("Burn Proof:");
-	assertTrue(!fire(caze, b));
-	System.out.println(caze.toString());
+    public void testInvalidShot() {
+	System.out.println("Invalid Shot:");
+
+        Case caze = newTestCase();
+        
+        int[] start = (int[])caze.marking.clone();
+        
+        assertFalse(fire(caze, caze.getCaseType().getTransition("b")));
+
+        int[] end = (int[])caze.marking.clone();
+
+        assertTrue(sameState(start, end));
     }
 
-    public void testFirstShoot() {
-	System.out.println("First Shoot:");
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, a));
-	System.out.println(caze.toString());
+    public void testRollback() {
+        System.out.println("Rollback:");
+
+        Case caze = newTestCase();
+        
+        int[] start = (int[])caze.marking.clone();
+
+        int index = caze.getCaseType().getTransition("a").index;
+        Activity act = caze.getWorkItems()[index].open();
+        assertNotNull(act);
+        assertTrue(act.cancel());
+
+        int[] end = (int[])caze.marking.clone();
+
+        assertTrue(sameState(start, end));
     }
 
     public void testMachineGun() {
 	System.out.println("Machine Gun:");
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, a));
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, b));
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, c));
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, d));
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, e));
-	System.out.println(caze.toString());
-	assertTrue(fire(caze, f));
-	System.out.println(caze.toString());
+
+        Case caze = newTestCase();
+
+        int[] expected = new int[] {0,2,0,0,1,0,1,2};
+
+        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("b")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("c")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("d")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("e")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("f")));
+
+        int[] actual = (int[])caze.marking.clone();
+
+        assertTrue(sameState(expected, actual));
     }
 
-    public void testRollback() {
-	System.out.println("Rollback:");
-	System.out.println(caze.toString());
-	Activity act = caze.getWorkItems()[a.index].open();
-	assertTrue(act != null);
-	System.out.println(caze.toString());
-	assertTrue(act.cancel());
-	System.out.println(caze.toString());
-    }
+    public void testToString() {
 
+        String expected = "\t1\t0\t0\t0\t0\t0\t0\t0\t";
+        
+        String result = newTestCase().toString();
+
+        assertEquals(expected, result);
+    }
 }
