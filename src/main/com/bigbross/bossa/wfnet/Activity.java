@@ -24,16 +24,18 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.Serializable;
+
 /**
  * This class represents a open (firing) work item.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class Activity {
+public class Activity implements Serializable {
 
-    int id;
+    private int id;
 
-    WorkItem workItem;
+    private WorkItem workItem;
 
     Activity(WorkItem workItem) {
 	this.workItem = workItem;
@@ -69,7 +71,5 @@ public class Activity {
 	string.append(workItem.getTransition().toString());
 
 	return string.toString();
-
     }
-
 }
