@@ -69,8 +69,6 @@ public class Edge implements Serializable {
     static Edge newInput(String expression) {
 	return new Edge(expression) {
 
-		protected final int INACTIVE = Integer.MAX_VALUE;
-
 		int weight(Case caze) throws EvaluationException {
 		    return - eval(caze);
 		}

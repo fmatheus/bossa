@@ -236,11 +236,28 @@ public class CaseTest extends TestCase {
         }
 
 	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
-	Edge e2 = Edge.newOutput("AVL * SOK && DIR");
+	Edge e2 = Edge.newInput("AVL * SOK && DIR");
 
         try {
 	   assertEquals(3, e1.eval(caze));
 	   assertEquals(0, e2.eval(caze));
+        } catch (EvaluationException e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+    }
+
+    public void testEdgeOrientation() {
+        Case caze = newTestCase();
+
+        Edge output = Edge.newOutput("1");
+        Edge input = Edge.newInput("2");
+
+        try {
+           assertEquals(1, output.output(caze));
+           assertEquals(2, input.input(caze));
+           assertEquals(0, output.input(caze));
+           assertEquals(0, input.output(caze));
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
