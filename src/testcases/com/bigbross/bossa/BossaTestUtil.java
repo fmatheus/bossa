@@ -98,7 +98,7 @@ public class BossaTestUtil {
     }
 
     public static Bossa createCompleteTestBossa() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa();
+        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
         CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
         ResourceManager resourceManager = bossa.getResourceManager();
         

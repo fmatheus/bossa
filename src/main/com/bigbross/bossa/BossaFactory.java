@@ -176,16 +176,19 @@ public class BossaFactory {
     }
 
     /**
-     * Creates a transient Bossa engine instance with the other default
-     * configuration values. <p>
+     * Creates a transient Bossa engine instance using the provided time
+     * source and keeping all other default configuration values. <p>
      * 
+     * @param timeSource the time source of the transient bossa.
      * @return the newly created bossa engine.
      * @exception PersistenceException if an error occours starting the
      *            persistence mechanism.
      */
-    public static Bossa transientBossa() throws PersistenceException {
+    public static Bossa transientBossa(TimeSource timeSource)
+        throws PersistenceException {
         BossaFactory factory = new BossaFactory();
         factory.setTransientBossa(true);
+        factory.setTimeSource(timeSource);
         return factory.createBossa();
     }
 }

@@ -172,7 +172,8 @@ public abstract class WFNetEvents {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_CASE_TYPE_ID, caseType.getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
+                                    bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }
@@ -189,7 +190,8 @@ public abstract class WFNetEvents {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_CASE_ID, new Integer(caze.getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, caze.getCaseType().getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
+                                    bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }
@@ -210,7 +212,8 @@ public abstract class WFNetEvents {
             attrib.put(ATTRIB_CASE_ID, new Integer(wi.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, wi.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
+                                    bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }
@@ -232,7 +235,8 @@ public abstract class WFNetEvents {
             attrib.put(ATTRIB_CASE_TYPE_ID, act.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, act.getResource().getId());
             attrib.put(ATTRIB_NEW_CASE_ATTRIBUTES, caseAttributes);
-            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib);
+            Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
+                                    bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }

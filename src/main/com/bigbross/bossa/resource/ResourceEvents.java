@@ -120,7 +120,8 @@ public abstract class ResourceEvents {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
             Event event =
-                new Event(notificationId, Event.RESOURCE_EVENT, attrib);
+                new Event(notificationId, Event.RESOURCE_EVENT, attrib,
+                          bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }
@@ -140,7 +141,8 @@ public abstract class ResourceEvents {
             attrib.put(ATTRIB_RESOURCE_ID, resource.getId());
             attrib.put(ATTRIB_HOST_RESOURCE_ID, host.getId());
             Event event =
-                new Event(notificationId, Event.RESOURCE_EVENT, attrib);
+                new Event(notificationId, Event.RESOURCE_EVENT, attrib,
+                          bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);
         }
     }

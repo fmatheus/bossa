@@ -25,6 +25,7 @@
 package com.bigbross.bossa.notify;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
+import com.bigbross.bossa.RealTimeSource;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.WFNetEvents;
@@ -66,7 +68,7 @@ public class NotificationBusTest extends TestCase {
 
         try {
             bus.notifyEvent(new Event("event1", Event.WFNET_EVENT,
-                                      new HashMap()));
+                                      new HashMap(), new Date()));
         } catch (Exception e) {
             fail("This exception should not propagate here.");
         }
@@ -78,7 +80,8 @@ public class NotificationBusTest extends TestCase {
     public void testImutableEvent() {
         BadListener theBad = new BadListener("The Bad", 0, null);
         assertTrue(bus.registerListener(theBad));
-        Event event = new Event("event1", Event.WFNET_EVENT, new HashMap());
+        Event event = new Event("event1", Event.WFNET_EVENT,
+                                new HashMap(), new Date());
         
         bus.notifyEvent(event);
         assertEquals(1, theBad.runs());
@@ -91,12 +94,13 @@ public class NotificationBusTest extends TestCase {
             new GoodListener("test1", Event.RESOURCE_EVENT, null); 
         assertTrue(bus.registerListener(theGood));
 
-        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, new HashMap()));
+        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT,
+                                  new HashMap(), new Date()));
         assertEquals(0, theGood.runs());
     }
     
     public void testFilterByResource() throws Exception {
-        Bossa bossa = BossaFactory.transientBossa();
+        Bossa bossa = BossaFactory.transientBossa(new RealTimeSource());
         NotificationBus bus = bossa.getNotificationBus(); 
         ResourceManager resourceManager = bossa.getResourceManager();
         
@@ -111,15 +115,18 @@ public class NotificationBusTest extends TestCase {
         HashMap attrib = new HashMap();
 
         attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, trumps.getId());
-        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
+        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT,
+                                  attrib, new Date()));
         assertEquals(1, theGood.runs());
 
         attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, jdoe.getId());
-        bus.notifyEvent(new Event("event2", Event.WFNET_EVENT, attrib));
+        bus.notifyEvent(new Event("event2", Event.WFNET_EVENT,
+                                  attrib, new Date()));
         assertEquals(2, theGood.runs());
 
         attrib.put(WFNetEvents.ATTRIB_RESOURCE_ID, mdoe.getId());
-        bus.notifyEvent(new Event("event3", Event.WFNET_EVENT, attrib));
+        bus.notifyEvent(new Event("event3", Event.WFNET_EVENT,
+                                  attrib, new Date()));
         assertEquals(2, theGood.runs());
     }
 }

@@ -55,39 +55,27 @@ public class Event implements Comparable, Serializable {
     public static final int RESOURCE_EVENT = 2;
     
     /**
-     * Creates an event. The meaning of the id and of the attributes map are
+     * Creates an event. For a list of the possible event types, see the
+     * constants defined in this class. <p>
+     * 
+     * The meaning of the id and of the attributes map are
      * defined by the generator of the event. The only exception is that a
-     * work item or activity related event <i>should</i> contain an attribute
-     * named "resource", indicating the resource this event affects. <p>
-     * 
-     * For the possible event types, see the constants defined in this
-     * class. <p>
-     * 
-     * @param id the id of this event.
-     * @param type the type os this event.
-     * @param attributes a <code>Map</code> containing the attributes.
-     */
-    public Event(String id, int type, Map attributes) {
-        /* FIXME: This is not deterministic. */
-        this(id, type, attributes, new Date()); 
-    }
-
-    /**
-     * Creates an event. This constructor receives the date this event happened
-     * and is temporary until the fixme above can be removed. <p>
+     * event with type <code>WFNET_EVENT</code> <i>should</i> contain an
+     * attribute named <code>WFNetEvents.ATTRIB_RESOURCE_ID</code>,
+     * indicating the resource this event affects. <p>
      * 
      * @param id the id of this event.
      * @param type the type os this event.
      * @param attributes a <code>Map</code> containing the attributes.
      * @param time the time this event happened.
+     * @see com.bigbross.bossa.wfnet.WFNetEvents#ATTRIB_RESOURCE_ID
      */
     public Event(String id, int type, Map attributes, Date time) {
         this.id = id;
         this.type = type;
         this.attributes = attributes;
-        this.time = time;
+        this.time = (Date) time.clone();
     }
-    
 
     /**
      * Returns the id of this event. <p>
