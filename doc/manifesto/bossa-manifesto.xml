@@ -9,25 +9,149 @@
     <abstract> 
       <title>Abstract</title>
       <para>
-        In this white paper we...
+        In this white paper we describe the philosophy behind Bossa,
+        the powerful, lightweight and free (as in freedom) workflow
+        engine written in Java. We briefly explain what we call
+        workflow, how to represent workflows using Petri nets and how
+        an application is designed to use Bossa's workflow services.
       </para>
     </abstract>
   </articleinfo>
 
 <sect1 id="intro">
   <title>Introduction</title>
+  
+  <para>
+    Bossa is a workflow engine written in Java. The engine is very
+    fast and lightweight, without sacrificing functionality. Its main
+    strengths are the very expressive Petri net based notation it uses
+    to define workflows and the powerful resource selection
+    mechanisms it provides. Also, it is free software licensed under
+    the GNU GPL.
+  </para>
 
   <para>
-    Bossa is a workflow engine written in Java...
-    <xref linkend="intro"/>
+    Bossa does not requires a RDBMS and is very simple to use and to
+    integrate with java applications. Actually, it was
+    <emphasis>designed</emphasis> to be embedded. Therefore, Bossa is
+    organized as a library to be used by server side applications
+    (especially web oriented ones) that need workflow services.
+  </para>
+
+  <para>
+    The characteristic that makes Bossa at the same time simple and
+    powerful is the clear separation between <emphasis>workflow
+    logic</emphasis> and <emphasis>application logic</emphasis>. We
+    believe that, as RDBMSs abstract the data storage and retrieval
+    concerns of an application, the workflow of the business process
+    being automated should also be abstracted.
+  </para>
+
+  <para>
+    In this white paper we describe the philosophy behind Bossa. We
+    start explaining what we call workflow in <xref
+    linkend="workflow"/>. Then, we show how to represent workflows
+    using Petri nets in <xref linkend="petri-nets"/>. Finally, we
+    describe how an application is designed to use Bossa's workflow
+    services in <xref linkend="bossa"/>.
   </para>
 
 </sect1>
+
+
+<sect1 id="workflow">
+  <title>Workflow</title>
+
+  <para>
+    Within any organization, people will interact with each other to
+    get their jobs done. Each one of them may have his or her personal
+    list of tasks to be performed. George has to find potential
+    customers and file entries for them in a database. Then, Gwen will
+    get in touch with the customer. Later, Paul will write a project
+    to the customer, and Alice will review it. We can see here that
+    their work is flowing. Each person does his job and passes
+    something to others so they can do their part.
+  </para>
+
+  <para>
+    <emphasis>Workflow</emphasis> is the name of the total or partial
+    automation of a process, that is, a set of rules that govern the
+    sequence of activities to get a bigger and collaborative work
+    done, involving several participants.
+  </para>
+
+  <para>
+    Usually the term "workflow" is used with more broad meanings. The
+    more common alternate meanings relate to the information exchange
+    between the participants of a collaborative work.
+    <emphasis>Document management systems</emphasis> are usually
+    called workflow systems, mostly because they provide means of
+    information exchange and usually do so in an ordered
+    manner. <emphasis>Groupware systems</emphasis> are sometimes
+    called workflow systems by largely the same reasons, organized
+    information exchange.
+  </para>
+
+  <para>
+    We are not claiming that document management and groupware systems
+    are not <emphasis>capable</emphasis> of performing workflow, but
+    we believe that handling documents or messages between users is
+    not necessarily a concern of workflow systems. Workflow systems
+    track activities and helps the right people do the right activity
+    at the right time, without regards to the information exchanged.
+  </para>
+
+  <para>
+    Of course, information exchange <emphasis>is</emphasis> necessary
+    for every collaborative application, but we see it as another
+    concern, as workflow itself is. Applications should leave their
+    data storage needs to a DBMS, their presentation needs to a servlet
+    container, their workflow needs to a workflow management system
+    and their information exchange needs to a document management
+    system. 
+  </para>
+
+  <para>
+    Bossa aims to provide workflow services in the simplest way
+    possible, without sacrificing any power. Therefore, Bossa is
+    totally oblivious of the type of data that it is being processed,
+    manipulated or exchanged by the application. Bossa only concerns
+    itself with the sequence of activities and with the right people
+    to perform them.
+  </para>
+
+  <para>
+    Under our definition of workflow, virtually every conceivable
+    collaborative application, and even some non-collaborative one,
+    needs workflow services. Since Bossa provides these services in a
+    lightweight and unobtrusive manner, we open the possibility of
+    workflow <emphasis>everywhere</emphasis>.
+  </para>
+
+</sect1>
+
+
+<sect1 id="petri-nets">
+  <title>Petri Nets and Workflow</title>
+
+  <para>a</para>
+</sect1>
+
+<sect1 id="bossa">
+  <title>Bossa</title>
+
+  <para>a</para>
+</sect1>
+
+
 
 <sect1 id="overview">
   <title>Overview</title>
 
   <para>
+    Workflow and application separation.
+
+
     The workflow engine in <xref linkend="fig"/>.
   </para>
 
@@ -66,4 +190,3 @@
 </sect1>
 
 </article>
-
