@@ -41,6 +41,14 @@ public class CaseTest extends TestCase {
 	    newCase(new int[] {1,0,0,0,0,0,0,0});
     }
 
+    static boolean sameState(int[] s1, int[] s2) {
+        assertEquals(s1.length, s2.length);
+        for (int i = 0; i < s1.length; i++) {
+            assertEquals(s1[i], s2[i]);
+        }
+        return true;
+    } 
+
     private boolean fire(Case caze, String workItemId) {
 	Activity act = caze.open(caze.getWorkItem(workItemId));
 	if (act != null) {
@@ -48,14 +56,6 @@ public class CaseTest extends TestCase {
 	}
 	return false;
     }
-
-    private boolean sameState(int[] s1, int[] s2) {
-        assertEquals(s1.length, s2.length);
-        for (int i = 0; i < s1.length; i++) {
-            assertEquals(s1[i], s2[i]);
-        }
-        return true;
-    } 
 
     public void testFirstShot() {
         Case caze = newTestCase();
@@ -66,7 +66,7 @@ public class CaseTest extends TestCase {
 
         int[] actual = caze.getMarking();
 
-        assertTrue(sameState(expected, actual));
+        assertTrue(CaseTest.sameState(expected, actual));
     }
 
     public void testInvalidShot() {
@@ -78,7 +78,7 @@ public class CaseTest extends TestCase {
 
         int[] end = caze.getMarking();
 
-        assertTrue(sameState(start, end));
+        assertTrue(CaseTest.sameState(start, end));
     }
 
     public void testRollback() {
@@ -92,7 +92,7 @@ public class CaseTest extends TestCase {
 
         int[] end = caze.getMarking();
 
-        assertTrue(sameState(start, end));
+        assertTrue(CaseTest.sameState(start, end));
     }
 
     public void testMachineGun() {
@@ -109,7 +109,7 @@ public class CaseTest extends TestCase {
 
         int[] actual = caze.getMarking();
 
-        assertTrue(sameState(expected, actual));
+        assertTrue(CaseTest.sameState(expected, actual));
     }
 
     public void testAutomaticCreation() {
