@@ -52,6 +52,7 @@ public class MemoryListener extends TestListener {
      *      com.bigbross.bossa.notify.Event)
      */
     public void notifyEvent(Event event) {
+        super.notifyEvent(event);
         notifications.add(event);
     }
 }

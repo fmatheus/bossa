@@ -33,8 +33,11 @@ import com.bigbross.bossa.resource.Resource;
  */
 public class BadListener extends TestListener {
 
+    private long wrongTime;
+
     public BadListener(String id, int type, Resource resource) {
         super(id, type, resource);
+        wrongTime = -123456789;
     }
 
     /**
@@ -42,7 +45,15 @@ public class BadListener extends TestListener {
      *      com.bigbross.bossa.notify.Event)
      */
     public void notifyEvent(Event event) {
-        event.getAttributes().put("bad", "run");
+        super.notifyEvent(event);
+        /* This should not affect the event. */
+        try { event.getAttributes().put("bad", "run"); } catch (Exception e) {}
+        event.getTime().setTime(wrongTime);
+        /* This should not disturb the bus. */
         throw new RuntimeException("Muahahaha!");
+    }
+    
+    public long wrongTime() {
+        return wrongTime;
     }
 }

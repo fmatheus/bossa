@@ -42,12 +42,6 @@ public class GoodListener extends TestListener {
      *      com.bigbross.bossa.notify.Event)
      */
     public void notifyEvent(Event event) {
-        String status = (String) event.getAttributes().get("status");
-        if (status != null) {
-            status = status + " ok";
-        } else {
-            status = "ok";
-        }
-        event.getAttributes().put("status", status);
+        super.notifyEvent(event);
     }
 }

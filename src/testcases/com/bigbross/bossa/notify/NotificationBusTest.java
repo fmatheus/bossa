@@ -56,26 +56,40 @@ public class NotificationBusTest extends TestCase {
     }
 
     public void testNotify() {
-        assertTrue(bus.registerListener(new GoodListener("The Good", 0, null)));
-        assertTrue(bus.registerListener(new BadListener("The Bad", 0, null)));
-        HashMap theUgly = new HashMap();
-        
+        TestListener theGood = new GoodListener("The Good", 0, null);
+        TestListener theBad = new BadListener("The Bad", 0, null);
+        assertTrue(bus.registerListener(theGood));
+        assertTrue(bus.registerListener(theBad));
+
         try {
-            bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, theUgly));
+            bus.notifyEvent(new Event("event1", Event.WFNET_EVENT,
+                                      new HashMap()));
         } catch (Exception e) {
             fail("This exception should not propagate here.");
         }
-        assertEquals("ok ok", theUgly.get("status"));
-        assertEquals("run", theUgly.get("bad"));
+        assertEquals(1, theGood.runs());
+        assertEquals(1, theBad.runs());
     }
     
-    public void testFilterByType() {
-        assertTrue(bus.registerListener(
-                   new GoodListener("test1", Event.RESOURCE_EVENT, null)));
-        HashMap attrib = new HashMap();
 
-        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
-        assertEquals("ok", attrib.get("status"));
+    public void testImutableEvent() {
+        BadListener theBad = new BadListener("The Bad", 0, null);
+        assertTrue(bus.registerListener(theBad));
+        Event event = new Event("event1", Event.WFNET_EVENT, new HashMap());
+        
+        bus.notifyEvent(event);
+        assertEquals(1, theBad.runs());
+        assertNull(event.getAttributes().get("bad"));
+        assertTrue(theBad.wrongTime() != event.getTime().getTime());
+    }
+
+    public void testFilterByType() {
+        TestListener theGood =
+            new GoodListener("test1", Event.RESOURCE_EVENT, null); 
+        assertTrue(bus.registerListener(theGood));
+
+        bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, new HashMap()));
+        assertEquals(0, theGood.runs());
     }
     
     public void testFilterByResource() {
@@ -84,31 +98,24 @@ public class NotificationBusTest extends TestCase {
         Resource mdoe = ResourceUtil.createResource("marydoe");
         trumps.includeImpl(jdoe);
         trumps.includeImpl(mdoe);
-        HashMap attrib;
 
-        assertTrue(bus.registerListener(new GoodListener("test1", 0, jdoe)));
+        TestListener theGood = new GoodListener("test1", 0, jdoe);
+        assertTrue(bus.registerListener(theGood));
+        HashMap attrib;
 
         attrib = new HashMap();
         attrib.put("resource", trumps);
         bus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
-        assertEquals("ok ok", attrib.get("status"));
+        assertEquals(1, theGood.runs());
 
         attrib = new HashMap();
         attrib.put("resource", jdoe);
         bus.notifyEvent(new Event("event2", Event.WFNET_EVENT, attrib));
-        assertEquals("ok ok", attrib.get("status"));
+        assertEquals(2, theGood.runs());
 
         attrib = new HashMap();
         attrib.put("resource", mdoe);
         bus.notifyEvent(new Event("event3", Event.WFNET_EVENT, attrib));
-        assertEquals("ok", attrib.get("status"));
-    }
-    
-    public void testNotifyEmpty() {
-        NotificationBus emptyBus = new NotificationBus();
-        HashMap attrib = new HashMap();
-
-        emptyBus.notifyEvent(new Event("event1", Event.WFNET_EVENT, attrib));
-        assertNull(attrib.get("status"));
+        assertEquals(2, theGood.runs());
     }
 }

@@ -24,6 +24,7 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class Event {
      * @return the attributes map of this event.
      */
     public Map getAttributes() {
-        return attributes;
+        return Collections.unmodifiableMap(attributes);
     }
 
     /**
@@ -105,6 +106,6 @@ public class Event {
      * @return the time this event happened.
      */
     public Date getTime() {
-        return time;
+        return (Date) time.clone();
     }
 }

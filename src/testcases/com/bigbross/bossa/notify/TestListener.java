@@ -36,11 +36,13 @@ public abstract class TestListener implements Listener {
     private String id;
     private int type;
     private Resource resource;
+    private int runs;
 
     public TestListener(String id, int type, Resource resource) {
         this.id = id;
         this.type = type;
         this.resource = resource;
+        this.runs = 0;
     }
 
     /**
@@ -66,5 +68,17 @@ public abstract class TestListener implements Listener {
      */
     public Resource getResource() {
         return resource;
+    }
+
+    public int runs() {
+        return this.runs;
+    }
+    
+    /**
+     * @see com.bigbross.bossa.notify.Listener#notifyEvent(
+     *      com.bigbross.bossa.notify.Event)
+     */
+    public void notifyEvent(Event event) {
+        runs++;
     }
 }
