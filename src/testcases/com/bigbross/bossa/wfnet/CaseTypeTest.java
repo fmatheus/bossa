@@ -48,7 +48,29 @@ public class CaseTypeTest extends TestCase {
         assertNotNull(caseType);
     }
 
-    public void testWeights() throws Exception {
+    public void testPlace() throws Exception {
+        CaseType caseType = BossaTestUtil.createCaseType("test");
+        Place A = caseType.getPlace("A");
+        Place B = caseType.getPlace("B");
+
+        assertEquals(1, A.getInitialMarking());
+        assertEquals(0, B.getInitialMarking());
+    }
+
+    public void testTransition() throws BossaException {
+        CaseType caseType = new CaseType("transitions");
+        caseType.registerTransition("a", "joedoe");
+        caseType.registerTransition("b", "");
+        caseType.registerTransition("c", null);
+        caseType.buildTemplate(null);
+        
+        assertEquals("joedoe",
+                     caseType.getTransition("a").getResource().toString());
+        assertNull(caseType.getTransition("b").getResource());
+        assertNull(caseType.getTransition("c").getResource());
+    }
+
+    public void testEdge() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Transition a = caseType.getTransition("a");
         Transition b = caseType.getTransition("b");

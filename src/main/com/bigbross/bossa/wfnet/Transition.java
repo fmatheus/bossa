@@ -59,7 +59,9 @@ public class Transition implements Serializable {
     Transition(CaseType caseType, String id, String resource) {
 	this.caseType = caseType;
 	this.id = id;
-	this.resource = caseType.getResourceRegistry().compile(resource);
+	this.resource = resource == null ?
+                            null :
+                            caseType.getResourceRegistry().compile(resource);
         this.inputs = new ArrayList();
         this.outputs = new ArrayList();
     }
