@@ -322,4 +322,17 @@ public class Historian implements Serializable {
         }
         history.add(last + 1, event);
     }
+    
+    /**
+     * Removes from history all events that took place before the provided
+     * date, excluding it from removal. <p>
+     * 
+     * @param end the limit date for event removal.
+     */
+    public void purgeHistory(Date end) {
+        int last = findPlaceInHistory(end);
+        for (int i = 0; i < last; i++) {
+            history.remove(0);
+        }
+    }
 }

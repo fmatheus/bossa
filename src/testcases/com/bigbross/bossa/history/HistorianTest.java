@@ -180,4 +180,30 @@ public class HistorianTest extends TestCase {
         
         assertEquals(0, historian.getCaseTypeHistory("bar").size());
     }
+    
+    public void testPurgeHistory() {
+        historian.newEvent(e0);
+        historian.newEvent(e1);
+        historian.newEvent(e2);
+        historian.newEvent(e3);
+        
+        Date end = new Date();
+        end.setTime(t3);
+
+        historian.purgeHistory(end);
+        List events = historian.getHistory();
+        assertEquals(2, events.size());
+        assertSame(e2, events.get(0));
+        assertSame(e3, events.get(1));
+        
+        end.setTime(0);
+        historian.purgeHistory(end);
+        events = historian.getHistory();
+        assertEquals(2, events.size());
+
+        end = new Date();
+        historian.purgeHistory(end);
+        events = historian.getHistory();
+        assertEquals(0, events.size());
+    }
 }
