@@ -66,14 +66,43 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testReference() {
-        Container resource = registry.compile("C");
+        Expression resource = registry.compile("C");
         assertTrue(resource.contains(C));
+
+        ResourceRegistry context = new ResourceRegistry();
+        Resource C = new Resource(null, "C");
+        context.addResource(C);
+        C.includeImpl(x);
+
         assertTrue(resource.contains(c));
+        assertTrue(resource.contains(context, c));
+
         assertFalse(resource.contains(x));
+        assertFalse(resource.contains(context, x));
+    }
+
+    public void testLazyReference() {
+        Expression resource = registry.compile("$C");
+        assertTrue(resource.contains(C));
+
+        ResourceRegistry context = new ResourceRegistry();
+        assertFalse(resource.contains(context, C));
+
+        Resource C = new Resource(null, "C");
+        C.includeImpl(x);
+
+        context.addResource(C);
+        assertTrue(resource.contains(context, C));
+
+        assertTrue(resource.contains(c));
+        assertFalse(resource.contains(context, c));
+
+        assertFalse(resource.contains(x));
+        assertTrue(resource.contains(context, x));
     }
 
     public void testUnion() {
-        Container resource = registry.compile("A+B");
+        Expression resource = registry.compile("A+B");
         assertTrue(resource.contains(a));
         assertTrue(resource.contains(b));
         assertTrue(resource.contains(x));
@@ -81,21 +110,21 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testIntersection() {
-        Container resource = registry.compile("A^B");
+        Expression resource = registry.compile("A^B");
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
         assertFalse(resource.contains(b));
     }
 
     public void testSubtraction() {
-        Container resource = registry.compile("A-B");
+        Expression resource = registry.compile("A-B");
         assertTrue(resource.contains(a));
         assertFalse(resource.contains(b));
         assertFalse(resource.contains(x));
     }
 
     public void testExpression() {
-        Container resource = registry.compile("A^B+C");
+        Expression resource = registry.compile("A^B+C");
         assertTrue(resource.contains(c));
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
@@ -103,7 +132,7 @@ public class ExpressionTest extends TestCase {
     }
 
     public void testGroup() {
-        Container resource = registry.compile("A^(B+C)");
+        Expression resource = registry.compile("A^(B+C)");
         assertTrue(resource.contains(x));
         assertFalse(resource.contains(a));
         assertFalse(resource.contains(b));

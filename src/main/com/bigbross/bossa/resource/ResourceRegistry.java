@@ -158,10 +158,10 @@ public class ResourceRegistry implements Serializable {
      * the expression.
      *
      * @param expression the resource expression to be compiled.
-     * @return a <code>Container</code> representing the compiled resource
+     * @return a <code>Expression</code> representing the compiled resource
      *         expression.
      */
-    public Container compile(String expression) {
+    public Expression compile(String expression) {
         return Expression.compile(this, expression);
     }
 }

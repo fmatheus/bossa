@@ -37,18 +37,11 @@ public abstract class Expression implements Container, Serializable {
     public final static char OR  = '+';
     public final static char SUB = '-';
     public final static char AND = '^';
+    public final static char VAR = '$';
     public final static char LP  = '(';
     public final static char RP  = ')';
 
-    protected final static String DELIM = "" + OR + SUB + AND + LP + RP;
-
-    protected Container left;
-    protected Container right;
-
-    protected Expression(Container left, Container right) {
-        this.left = left;
-        this.right = right;
-    }
+    protected final static String DELIM = "" + OR + SUB + AND + VAR + LP + RP;
 
     /**
      * Compiles a resource expression. <p>
@@ -56,10 +49,10 @@ public abstract class Expression implements Container, Serializable {
      * @param registry a <code>ResourceRegistry</code> to link the resources
      *        in the expression.
      * @param expression the resource expression to be compiled.
-     * @return a <code>Container</code> representing the compiled resource
+     * @return a <code>Expression</code> representing the compiled resource
      *         expression.
      */
-    public static Container compile(ResourceRegistry registry, String expression) {
+    public static Expression compile(ResourceRegistry registry, String expression) {
         StringTokenizer expr = new StringTokenizer(expression, DELIM, true);
         return compile(registry, expr, compile(registry, expr, null));
     }
@@ -70,11 +63,11 @@ public abstract class Expression implements Container, Serializable {
      * @param registry a <code>ResourceRegistry</code> to link the resources
      *        in the expression.
      * @param expression the remaining resource expression to be compiled.
-     * @param node a <code>Container</code> value of the left node.
-     * @return a <code>Container</code> node of the compiled resource
+     * @param node a <code>Expression</code> value of the left node.
+     * @return a <code>Expression</code> node of the compiled resource
      *         expression.
      */
-    protected static Container compile(ResourceRegistry registry, StringTokenizer expression, Container node) {
+    protected static Expression compile(ResourceRegistry registry, StringTokenizer expression, Expression node) {
         if (!expression.hasMoreTokens()) {
             return node;
         }
@@ -84,10 +77,10 @@ public abstract class Expression implements Container, Serializable {
         switch (tok.charAt(0)) {
 
         case OR: // Union node
-            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
+            return compile(registry, expression, new Node(node, compile(registry, expression, node)) {
 
-                    public boolean contains(Resource resource) {
-                        return left.contains(resource) || right.contains(resource);
+                    public boolean contains(ResourceRegistry registry, Resource resource) {
+                        return left.contains(registry, resource) || right.contains(registry, resource);
                     }
 
                     public String toString() {
@@ -96,10 +89,10 @@ public abstract class Expression implements Container, Serializable {
                 });
 
         case AND: // Intersection node
-            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
+            return compile(registry, expression, new Node(node, compile(registry, expression, node)) {
 
-                    public boolean contains(Resource resource) {
-                        return left.contains(resource) && right.contains(resource);
+                    public boolean contains(ResourceRegistry registry, Resource resource) {
+                        return left.contains(registry, resource) && right.contains(registry, resource);
                     }
 
                     public String toString() {
@@ -108,10 +101,10 @@ public abstract class Expression implements Container, Serializable {
                 });
 
         case SUB: // Subtraction node
-            return compile(registry, expression, new Expression(node, compile(registry, expression, node)) {
+            return compile(registry, expression, new Node(node, compile(registry, expression, node)) {
 
-                    public boolean contains(Resource resource) {
-                        return !right.contains(resource) && left.contains(resource);
+                    public boolean contains(ResourceRegistry registry, Resource resource) {
+                        return !right.contains(registry, resource) && left.contains(registry, resource);
                     }
 
                     public String toString() {
@@ -125,8 +118,11 @@ public abstract class Expression implements Container, Serializable {
         case RP: // Parenthesis end
             return node;
 
+        case VAR: // Resource weak reference
+            return compile(registry, expression, new LazyReference(registry, expression.nextToken().trim()));
+
         default: // Resource reference
-            return registry.getResource(tok.trim());
+            return new Reference(registry.getResource(tok.trim()));
 
         }
 
@@ -138,7 +134,30 @@ public abstract class Expression implements Container, Serializable {
      * @param resource the resource to be looked for.
      * @return <code>true</code> if the resource is found, <code>false</code> otherwise.
      */
-    public abstract boolean contains(Resource resource);
+    public boolean contains(Resource resource) {
+        return contains(null, resource);
+    }
+
+    /**
+     * Determines if a resource is contained in this. <p>
+     *
+     * @param registry a <code>ResourceRegistry</code> to resolve lazy referenced resource.
+     * @param resource the resource to be looked for.
+     * @return <code>true</code> if the resource is found, <code>false</code> otherwise.
+     */
+    public abstract boolean contains(ResourceRegistry registry, Resource resource);
+
+}
+
+abstract class Node extends Expression {
+
+    protected Expression left;
+    protected Expression right;
+
+    protected Node(Expression left, Expression right) {
+        this.left = left;
+        this.right = right;
+    }
 
     /**
      * Returns a string with the resource expression. <p>
@@ -148,7 +167,7 @@ public abstract class Expression implements Container, Serializable {
     protected String toString(char op) {
         StringBuffer sb = new StringBuffer();
 
-        if (left instanceof Expression) {
+        if (left instanceof Node) {
             sb.append("(").append(left).append(")");
         } else {
             sb.append(left);
@@ -156,13 +175,52 @@ public abstract class Expression implements Container, Serializable {
 
         sb.append(op);
 
-        if (right instanceof Expression) {
+        if (right instanceof Node) {
             sb.append("(").append(right).append(")");
         } else {
             sb.append(right);
         }
 
         return sb.toString();
+    }
+
+}
+
+class Reference extends Expression {
+
+    Resource group;
+
+    Reference(Resource group) {
+        this.group = group;
+    }
+
+    public boolean contains(ResourceRegistry registry, Resource resource) {
+        return group != null && group.contains(resource);
+    }
+
+    public String toString() {
+        return String.valueOf(group);
+    }
+
+}
+
+class LazyReference extends Expression {
+
+    ResourceRegistry registry;
+    String resourceId;
+
+    LazyReference(ResourceRegistry registry, String resourceId) {
+        this.registry = registry;
+        this.resourceId = resourceId;
+    }
+
+    public boolean contains(ResourceRegistry context, Resource resource) {
+        Resource group = (context == null) ? registry.getResource(resourceId) : context.getResource(resourceId);
+        return group != null && group.contains(resource);
+    }
+
+    public String toString() {
+        return VAR + resourceId;
     }
 
 }
