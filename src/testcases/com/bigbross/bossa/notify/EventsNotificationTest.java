@@ -24,7 +24,6 @@
 
 package com.bigbross.bossa.notify;
 
-import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -142,8 +141,7 @@ public class EventsNotificationTest extends TestCase {
     public void testLogCloseActivity() throws Exception {
         WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
         Activity act = wi.open(frank);
-        HashMap newAttrib = new HashMap();
-        act.close(newAttrib);
+        act.close();
 
         List events = listener.getNotifications();
         assertEquals(5, events.size());
@@ -160,8 +158,6 @@ public class EventsNotificationTest extends TestCase {
             event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
         assertEquals(frank.getId(),
             event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
-        assertEquals(newAttrib,
-            event.getAttributes().get(WFNetEvents.ATTRIB_NEW_CASE_ATTRIBUTES));
     }
 
     public void testLogCancelActivity() throws Exception {

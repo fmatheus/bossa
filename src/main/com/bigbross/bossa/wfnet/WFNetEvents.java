@@ -97,15 +97,14 @@ public abstract class WFNetEvents {
      * Constant to indicate the event of closing an activity. <p>
      * 
      * This event contains the following attributes: ATTRIB_ACTIVITY_ID,
-     * ATTRIB_ACTIVITY_WI_ID, ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID,
-     * ATTRIB_RESOURCE_ID and ATTRIB_NEW_CASE_ATTRIBUTES <p>
+     * ATTRIB_ACTIVITY_WI_ID, ATTRIB_CASE_ID, ATTRIB_CASE_TYPE_ID and
+     * ATTRIB_RESOURCE_ID <p>
      * 
      * @see WFNetEvents#ATTRIB_ACTIVITY_ID
      * @see WFNetEvents#ATTRIB_ACTIVITY_WI_ID
      * @see WFNetEvents#ATTRIB_CASE_ID
      * @see WFNetEvents#ATTRIB_CASE_TYPE_ID
      * @see WFNetEvents#ATTRIB_RESOURCE_ID
-     * @see WFNetEvents#ATTRIB_NEW_CASE_ATTRIBUTES
      */
     public static final String ID_CLOSE_ACTIVITY  = "close_activity";
 
@@ -153,11 +152,6 @@ public abstract class WFNetEvents {
      * Constant to indicate the resource id attribute.
      */
     public static final String ATTRIB_RESOURCE_ID = "resource_id";
-
-    /**
-     * Constant to indicate the new case attributes attribute.
-     */
-    public static final String ATTRIB_NEW_CASE_ATTRIBUTES = "new_case_attrib";
 
 
     /**
@@ -226,7 +220,7 @@ public abstract class WFNetEvents {
      * @param act the activity involved.
      */
     static void notifyActivity(Bossa bossa, String notificationId,
-                               Activity act, Map caseAttributes) {
+                               Activity act) {
         if (bossa != null) {
             Map attrib = new HashMap();
             attrib.put(ATTRIB_ACTIVITY_ID, Integer.toString(act.getId()));
@@ -234,7 +228,6 @@ public abstract class WFNetEvents {
             attrib.put(ATTRIB_CASE_ID, Integer.toString(act.getCase().getId()));
             attrib.put(ATTRIB_CASE_TYPE_ID, act.getCaseType().getId());
             attrib.put(ATTRIB_RESOURCE_ID, act.getResource().getId());
-            attrib.put(ATTRIB_NEW_CASE_ATTRIBUTES, caseAttributes);
             Event event = new Event(notificationId, Event.WFNET_EVENT, attrib,
                                     bossa.getTimeSource().getTime());
             bossa.getNotificationBus().notifyEvent(event);

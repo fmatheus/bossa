@@ -483,7 +483,7 @@ public class Case implements Serializable {
         activities.remove(new Integer(activity.getId()));
 
         WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
-                                   activity, newAttributes);
+                                   activity);
 
         if (actives == 0 && activities.size() == 0) {
             caseType.closeCase(this);
@@ -529,7 +529,7 @@ public class Case implements Serializable {
         activities.remove(new Integer(activity.getId()));
 
         WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
-                                   activity, null);
+                                   activity);
 
 	return true;
     }
