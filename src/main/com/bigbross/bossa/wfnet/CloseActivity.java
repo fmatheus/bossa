@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * This class implements the close operation of <code>Activity</code>
@@ -39,11 +40,13 @@ class CloseActivity extends WFNetCommand {
     private String caseTypeId;
     private int caseId;
     private int activityId;
+    private Map attributes;
     
-    CloseActivity(Activity activity) {
+    CloseActivity(Activity activity, Map attributes) {
         this.activityId = activity.getId();
         this.caseId = activity.getCase().getId();
         this.caseTypeId = activity.getCaseType().getId();
+        this.attributes = attributes;
     }
 
     /**
@@ -54,7 +57,7 @@ class CloseActivity extends WFNetCommand {
         Case caze = caseTypeManager.getCaseType(caseTypeId).getCase(caseId);
         Activity activity = caze.getActivity(activityId);
         
-        boolean result = caze.close(activity);
+        boolean result = caze.close(activity, attributes);
         
         return new Boolean(result); /* FIXME: Ridiculous, isn't? */ 
     }

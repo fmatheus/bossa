@@ -235,6 +235,17 @@ public class Case implements Serializable {
 	return true;
     }
 
+    /**
+     * Opens a work item. A open work item is represented by
+     * an activity and is locked to the resource who opened it. The actual
+     * completion of the work item in handled by the created activity. <p>
+     * 
+     * This method will not persist the result of its activation and should
+     * be used only internally as a part of a persistent transaction. <p>
+     * 
+     * @param wi the work item to be opened.
+     * @return The activity created the opening of this work item.
+     */
     Activity open(WorkItem wi) {
 
 	if (!wi.isFireable()) {
@@ -257,11 +268,37 @@ public class Case implements Serializable {
 	return activity;
     }
 
-    boolean close(Activity activity) {
+    /**
+     * Closes and finishes an activity. Call this method when the
+     * activity is successfuly completed. <p>
+     * 
+     * An attribute mapping can be passed when this method is called.
+     * The attributes provided will overwrite current set attributes and
+     * the value of these attributes will be used when evaluating edge
+     * expressions. If you do not want to set any new attribute, use
+     * <code>null</code> as the attribute mapping. <p>
+     * 
+     * This method will not persist the result of its activation and should
+     * be used only internally as a part of a persistent transaction. <p>
+     * 
+     * @param activity the activity to be closed.
+     * @param newAttributes the attributes mapping.
+     * @return <code>true</code> is the activity is succesfuly opened,
+     *         <code>false</code> otherwise.
+     */
+    boolean close(Activity activity, Map newAttributes) {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {
 	    return false;
 	}
+
+        if (newAttributes != null) {
+            Iterator it = newAttributes.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry attribute = (Map.Entry) it.next();
+                declare((String) attribute.getKey(), attribute.getValue());
+            }
+        }
 
 	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
@@ -273,6 +310,18 @@ public class Case implements Serializable {
 	return true;
     }
 
+    /**
+     * Cancel an activity. Call this method if the activity could not
+     * be completed. The related work item will return to the list of
+     * available work items and can be opened again. <p>
+     * 
+     * This method will not persist the result of its activation and should
+     * be used only internally as a part of a persistent transaction. <p>
+     * 
+     * @param activity the activity to be canceled.
+     * @return <code>true</code> is the activity is succesfuly canceled,
+     *         <code>false</code> otherwise.
+     */
     boolean cancel(Activity activity) {
 
 	if (!activities.containsKey(new Integer(activity.getId()))) {

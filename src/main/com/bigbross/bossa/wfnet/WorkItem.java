@@ -80,6 +80,13 @@ public class WorkItem implements Serializable {
 	return fireable;
     }
 
+    /**
+     * Opens this work item. A open work item is represented by
+     * an activity and is locked to the resource who opened it. The actual
+     * completion of the work item in handled by the created activity. <p>
+     * 
+     * @return The activity created the opening of this work item.
+     */
     public Activity open() {
         WFNetCommand openCommand = new OpenWorkItem(this);
         try {

@@ -81,7 +81,7 @@ public class CommandsTest extends TestCase {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         Activity activity = caze.open(wi);
-        CloseActivity command = new CloseActivity(activity);
+        CloseActivity command = new CloseActivity(activity, null);
         
         assertEquals(1, caze.getActivities().size());
         command.execute(caseTypeManager);        

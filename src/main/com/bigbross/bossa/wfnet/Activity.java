@@ -25,6 +25,7 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -89,14 +90,36 @@ public class Activity implements Serializable {
     /**
      * Closes and finishes this activity. Call this method when the
      * activity is successfuly completed. <p>
+     * 
+     * @return <code>true</code> is the activity is succesfuly opened,
+     *         <code>false</code> otherwise.
      */
     public boolean close() {
-        return dispatchCommand(new CloseActivity(this));
+        return dispatchCommand(new CloseActivity(this, null));
+    }
+
+    /**
+     * Closes and finishes an activity. Call this method when the
+     * activity is successfuly completed. An attribute mapping shuld be
+     * passed when this method is called. The attributes provided will
+     * overwrite current set attributes and the value of these attributes
+     * will be used when evaluating edge expressions. <p>
+     * 
+     * @param attributes the attributes mapping.
+     * @return <code>true</code> is the activity is succesfuly opened,
+     *         <code>false</code> otherwise.
+     */
+    public boolean close(Map attributes) {
+        return dispatchCommand(new CloseActivity(this, attributes));
     }
 
     /**
      * Cancel this activity. Call this method if the activity could not
-     * be completed. The related work item will return to the list. <p>
+     * be completed. The related work item will return to the list of
+     * available work items and can be opened again. <p>
+     * 
+     * @return <code>true</code> is the activity is succesfuly canceled,
+     *         <code>false</code> otherwise.
      */
     public boolean cancel() {
         return dispatchCommand(new CancelActivity(this));

@@ -24,7 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -51,10 +53,10 @@ public class CaseTest extends TestCase {
         return true;
     } 
 
-    private boolean fire(Case caze, String workItemId) {
+    private boolean fire(Case caze, String workItemId, Map attributes) {
 	Activity act = caze.open(caze.getWorkItem(workItemId));
 	if (act != null) {
-	    return caze.close(act);
+	    return caze.close(act, attributes);
 	}
 	return false;
     }
@@ -64,7 +66,7 @@ public class CaseTest extends TestCase {
 
         int[] expected = new int[] {0,1,0,0,0,0,0,0};
 
-        assertTrue(fire(caze, "a"));
+        assertTrue(fire(caze, "a", null));
 
         int[] actual = caze.getMarking();
 
@@ -76,7 +78,7 @@ public class CaseTest extends TestCase {
         
         int[] start = caze.getMarking();
         
-        assertFalse(fire(caze, "b"));
+        assertFalse(fire(caze, "b", null));
 
         int[] end = caze.getMarking();
 
@@ -99,16 +101,17 @@ public class CaseTest extends TestCase {
 
     public void testMachineGun() {
         Case caze = newTestCase();
-	caze.declare("SOK", new Boolean(false));
+        HashMap attributes = new HashMap();
+	attributes.put("SOK", new Boolean(false));
 
         int[] expected = new int[] {0,2,0,0,1,0,1,2};
 
-        assertTrue(fire(caze, "a"));
-        assertTrue(fire(caze, "b"));
-        assertTrue(fire(caze, "c"));
-        assertTrue(fire(caze, "d"));
-        assertTrue(fire(caze, "e"));
-        assertTrue(fire(caze, "f"));
+        assertTrue(fire(caze, "a", attributes));
+        assertTrue(fire(caze, "b", null));
+        assertTrue(fire(caze, "c", null));
+        assertTrue(fire(caze, "d", null));
+        assertTrue(fire(caze, "e", null));
+        assertTrue(fire(caze, "f", null));
 
         int[] actual = caze.getMarking();
 
@@ -134,9 +137,10 @@ public class CaseTest extends TestCase {
     public void testWorkItensList() {
 
         Case caze = newTestCase();
-	caze.declare("SOK", new Boolean(false));
-        assertTrue(fire(caze, "a"));
-        assertTrue(fire(caze, "b"));
+        HashMap attributes = new HashMap();
+        attributes.put("SOK", new Boolean(false));
+        assertTrue(fire(caze, "a", attributes));
+        assertTrue(fire(caze, "b", null));
 
         List workItens = caze.getWorkItems();
         
@@ -161,9 +165,10 @@ public class CaseTest extends TestCase {
     public void testActivitiesList() {
 
         Case caze = newTestCase();
-	caze.declare("SOK", new Boolean(false));
-        assertTrue(fire(caze, "a"));
-        assertTrue(fire(caze, "b"));
+        HashMap attributes = new HashMap();
+        attributes.put("SOK", new Boolean(false));
+        assertTrue(fire(caze, "a", attributes));
+        assertTrue(fire(caze, "b", null));
         List workItens = caze.getWorkItems();
         WorkItem wi0 = (WorkItem) workItens.get(0);
         WorkItem wi1 = (WorkItem) workItens.get(1);
