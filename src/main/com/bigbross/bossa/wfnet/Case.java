@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +58,7 @@ public class Case implements Serializable {
 
     private ResourceRegistry resources;
 
-    private WorkItem[] workItems;
+    private Map workItems;
 
     private Map activities;
 
@@ -93,11 +94,12 @@ public class Case implements Serializable {
         /* An SetAttributeException can be thrown here. */
         declare(attributes);
 
-	Transition[] ts = caseType.getTransitions();
-	workItems = new WorkItem[ts.length];
-	for (int i = 0; i < workItems.length; ++i) {
-	    workItems[i] = new WorkItem(this, ts[i]);
-	}
+        Collection ts = caseType.getAllTransitions();
+        workItems = new HashMap(ts.size());
+        for (Iterator i = ts.iterator(); i.hasNext(); ) {
+            Transition t = (Transition) i.next();
+            workItems.put(t.getId(), new WorkItem(this, t));
+        }
 
         /* An EvaluationException can be thrown here. */
 	deactivate();
@@ -109,7 +111,7 @@ public class Case implements Serializable {
     /**
      * Creates a new case, using the provided template. <p>
      * 
-     * @param template the <code>Case</code> to be used as template.
+     * @param template the case to be used as template.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
@@ -125,12 +127,13 @@ public class Case implements Serializable {
         /* An SetAttributeException can be thrown here. */
         declare(template.attributes);
 
-	workItems = new WorkItem[template.workItems.length];
-	for (int i = 0; i < workItems.length; ++i) {
-            WorkItem wi = template.workItems[i];
-	    workItems[i] = new WorkItem(this, wi.getTransition(),
-                                        wi.isFireable());
-	}
+        Collection templateWI = template.workItems.values();
+        workItems = new HashMap(templateWI.size());
+        for (Iterator i = templateWI.iterator(); i.hasNext(); ) {
+            WorkItem wi = (WorkItem) i.next();
+            workItems.put(wi.getId(), new WorkItem(this,  wi.getTransition(),
+                                                   wi.isFireable()));
+        }
 
         this.id = caseType.nextCaseId();
         this.resources = new ResourceRegistry(Integer.toString(id));
@@ -206,11 +209,12 @@ public class Case implements Serializable {
      * @return A list with the fireable work items of this case.
      */
     public List getWorkItems() {
-        ArrayList items = new ArrayList(workItems.length);
+        ArrayList items = new ArrayList(workItems.size());
 
-        for (int i = 0; i < workItems.length; i++) {
-            if (workItems[i].isFireable()) {
-                items.add(workItems[i]);
+        for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
+            WorkItem wi = (WorkItem) i.next();
+            if (wi.isFireable()) {
+                items.add(wi);
             }
         }        
 
@@ -225,12 +229,7 @@ public class Case implements Serializable {
      *         with this id.
      */
     WorkItem getWorkItem(String id) {
-        Transition t = caseType.getTransition(id);
-        if (t != null) {
-            return workItems[t.getIndex()];
-        } else {
-            return null;
-        }
+        return (WorkItem) workItems.get(id);
     }
 
     /**
@@ -343,12 +342,13 @@ public class Case implements Serializable {
      *            occurs.
      */
     private int activate() throws EvaluationException {
-        int actives = workItems.length;
-	for (int i = 0; i < workItems.length; ++i) {
-	    if (!workItems[i].isFireable()) {
-		actives -= workItems[i].update() ? 0 : 1;
-	    }
-	}
+        int actives = workItems.size();
+        for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
+            WorkItem wi = (WorkItem) i.next();
+            if (!wi.isFireable()) {
+                actives -= wi.update() ? 0 : 1;
+            }
+        }
         return actives;
     }
 
@@ -359,11 +359,12 @@ public class Case implements Serializable {
      *            occurs.
      */
     private void deactivate() throws EvaluationException {
-	for (int i = 0; i < workItems.length; ++i) {
-	    if (workItems[i].isFireable()) {
-		workItems[i].update();
-	    }
-	}
+        for (Iterator i = workItems.values().iterator(); i.hasNext(); ) {
+            WorkItem wi = (WorkItem) i.next();
+            if (wi.isFireable()) {
+                wi.update();
+            }
+        }
     }
 
     /**
