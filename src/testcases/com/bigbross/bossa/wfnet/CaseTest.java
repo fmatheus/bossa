@@ -25,7 +25,9 @@
 package com.bigbross.bossa.wfnet;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -46,12 +48,18 @@ public class CaseTest extends TestCase {
         jdoe = ResourceUtil.createResource("jdoe");
     }
 
-    static boolean sameState(int[] s1, int[] s2) {
-        assertEquals(s1.length, s2.length);
-        for (int i = 0; i < s1.length; i++) {
-            assertEquals(s1[i], s2[i]);
+    static void sameState(Map expected, Map actual) {
+        int matches = 0;
+        for (Iterator i = actual.keySet().iterator(); i.hasNext(); ) {
+            String key = (String) i.next();
+            if (expected.get(key) != null) {
+                assertEquals(expected.get(key), actual.get(key));
+                matches++; 
+            } else {
+                assertEquals(new Integer(0), actual.get(key)); 
+            }
         }
-        return true;
+        assertEquals(matches, expected.size());
     } 
 
     public void testGetWorkItem() throws Exception {
@@ -66,59 +74,52 @@ public class CaseTest extends TestCase {
     public void testOpenClose() throws Exception {
         Case caze = WFNetUtil.createCase();
 
-        int[] expected = {0,1,0,0,0,0,0,0};
+        Map expected = new HashMap();
+        expected.put("B", new Integer(1));
 
         assertTrue(WFNetUtil.fire(caze, "a", null));
 
-        int[] actual = caze.getMarking();
-
-        assertTrue(CaseTest.sameState(expected, actual));
+        CaseTest.sameState(expected, caze.getState());
     }
 
     public void testInvalidOpen() throws Exception {
         Case caze = WFNetUtil.createCase();
         
-        int[] start = caze.getMarking();
+        Map start = caze.getState();
         
         assertFalse(WFNetUtil.fire(caze, "b", null));
 
-        int[] end = caze.getMarking();
-
-        assertTrue(CaseTest.sameState(start, end));
+        CaseTest.sameState(start, caze.getState());
     }
 
     public void testOpenCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
         
-        int[] start = caze.getMarking();
+        Map start = caze.getState();
 
         Activity act = caze.open(caze.getWorkItem("a"), jdoe);
         assertNotNull(act);
         assertTrue(caze.cancel(act));
 
-        int[] end = caze.getMarking();
-
-        assertTrue(CaseTest.sameState(start, end));
+        CaseTest.sameState(start, caze.getState());
     }
     
     public void testInvalidCloseCancel() throws Exception {
         Case caze = WFNetUtil.createCase();
         
-        int[] expected = {0,1,0,0,0,0,0,0};
+        Map expected = new HashMap();
+        expected.put("B", new Integer(1));
         Activity act = caze.open(caze.getWorkItem("a"), jdoe);
         assertNotNull(act);
         assertTrue(caze.close(act, null));
         
-        int[] actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        CaseTest.sameState(expected, caze.getState());
         
         assertFalse(caze.close(act, null));
-        actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        CaseTest.sameState(expected, caze.getState());
         
         assertFalse(caze.cancel(act));
-        actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        CaseTest.sameState(expected, caze.getState());
     }
 
     public void testMachineGun() throws Exception {
@@ -128,7 +129,8 @@ public class CaseTest extends TestCase {
         attributes.put("DIR", new Boolean(true));
         attributes.put("ADIR", "OK");
 
-        int[] expected = {0,0,0,0,0,0,1,0};
+        Map expected = new HashMap();
+        expected.put("G", new Integer(1));
 
         assertTrue(WFNetUtil.fire(caze, "a", attributes));
         assertTrue(WFNetUtil.fire(caze, "b", null));
@@ -136,9 +138,7 @@ public class CaseTest extends TestCase {
         assertTrue(WFNetUtil.fire(caze, "d", null));
         assertTrue(WFNetUtil.fire(caze, "e", null));
 
-        int[] actual = caze.getMarking();
-
-        assertTrue(sameState(expected, actual));
+        sameState(expected, caze.getState());
     }
 
     public void testSelfLoop() throws Exception {
@@ -152,8 +152,13 @@ public class CaseTest extends TestCase {
         caseType.buildTemplate(null);
         Case caze = caseType.openCase();
         
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        expected.put("B", new Integer(1));
+
         assertTrue(WFNetUtil.fire(caze, "a", null));
-        assertTrue(sameState(new int[] {1,1}, caze.getMarking()));
+
+        sameState(expected, caze.getState());
     }
 
     public void testZeroTimeout() throws Exception {
@@ -170,9 +175,19 @@ public class CaseTest extends TestCase {
         caseType.buildTemplate(null);
         Case caze = caseType.openCase();
 
-        assertTrue(sameState(new int[] {1,0,0}, caze.getMarking()));
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        expected.put("B", new Integer(0));
+        expected.put("C", new Integer(0));
+        sameState(expected, caze.getState());
+
+        expected = new HashMap();
+        expected.put("A", new Integer(0));
+        expected.put("B", new Integer(0));
+        expected.put("C", new Integer(1));
         assertTrue(WFNetUtil.fire(caze, "a", null));
-        assertTrue(sameState(new int[] {0,0,1}, caze.getMarking()));
+        sameState(expected, caze.getState());
+
         /* Add a test to stress nested auto firing and case closing. */
         assertEquals(0, caseType.getCases().size());
     }

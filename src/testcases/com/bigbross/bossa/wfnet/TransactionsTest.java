@@ -24,6 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
@@ -80,9 +83,9 @@ public class TransactionsTest extends TestCase {
         assertNotNull(act);
         assertEquals(wi.getId(), act.getWorkItemId());
 
-        int[] expected = new int[] {0,0,0,0,0,0,0,0};
-        int[] actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        Map expected = new HashMap();
+        expected.put("A", new Integer(0));
+        CaseTest.sameState(expected, caze.getState());
     }
 
     public void testCloseActivity() throws Exception {
@@ -95,9 +98,9 @@ public class TransactionsTest extends TestCase {
         transaction.execute(caseTypeManager);
         assertEquals(0, caze.getActivities().size());
 
-        int[] expected = new int[] {0,1,0,0,0,0,0,0};
-        int[] actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        Map expected = new HashMap();
+        expected.put("B", new Integer(1));
+        CaseTest.sameState(expected, caze.getState());
     }
 
     public void testCancelActivity() throws Exception {
@@ -110,8 +113,8 @@ public class TransactionsTest extends TestCase {
         transaction.execute(caseTypeManager);
         assertEquals(0, caze.getActivities().size());
 
-        int[] expected = new int[] {1,0,0,0,0,0,0,0};
-        int[] actual = caze.getMarking();
-        assertTrue(CaseTest.sameState(expected, actual));
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        CaseTest.sameState(expected, caze.getState());
     }
 }

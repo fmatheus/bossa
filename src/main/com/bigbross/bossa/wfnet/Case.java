@@ -175,16 +175,6 @@ public class Case implements Serializable {
     }
 
     /**
-     * Returns a copy of the internal state of the case, that is, how many
-     * tokens are in each place. <p>
-     * 
-     * @return the marking.
-     */
-    int[] getMarking() {
-        return (int[]) marking.clone();
-    }
-
-    /**
      * Returns the resource registry with the local resources of this
      * case. <p>
      * 
@@ -202,6 +192,23 @@ public class Case implements Serializable {
      */
     public List getResources() {
         return resources.getResources();
+    }
+
+    /**
+     * Returns the state of the case, that is, how many tokens are in each
+     * place. <p>
+     * 
+     * @return the token count as a map (<code>String</code>, 
+     *         <code>Integer</code>), indexed by the place id.
+     */
+    public Map getState() {
+        HashMap state = new HashMap(marking.length);
+        Iterator i = getCaseType().getPlaces().iterator();
+        while (i.hasNext()) {
+            Place p = (Place) i.next();
+            state.put(p.getId(), new Integer(marking[p.getIndex()]));
+        }
+        return state;
     }
 
     /**

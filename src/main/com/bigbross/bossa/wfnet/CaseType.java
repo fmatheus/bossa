@@ -123,6 +123,15 @@ public class CaseType implements Serializable {
     }
 
     /**
+     * Returns all places of this case type. <p>
+     * 
+     * @return a collection of all places of this case type.
+     */
+    Collection getPlaces() {
+        return Collections.unmodifiableCollection(places.values());
+    }
+
+    /**
      * Creates a transition with the specified id, resource expression and
      * timeout in this case type. <p>
      * 

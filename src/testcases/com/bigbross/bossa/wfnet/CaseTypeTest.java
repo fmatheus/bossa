@@ -24,7 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -97,8 +99,9 @@ public class CaseTypeTest extends TestCase {
         Case template = ((WorkItem) workItems.get(0)).getCase();
         assertNotNull(template);
         assertEquals(0, template.getId());
-        assertTrue(CaseTest.sameState(new int[] {1,0,0,0,0,0,0,0},
-                                      template.getMarking()));
+        Map expected = new HashMap();
+        expected.put("A", new Integer(1));
+        CaseTest.sameState(expected, template.getState());
         assertEquals(1, template.getWorkItems().size());
         assertEquals("a", 
                      ((WorkItem) template.getWorkItems().get(0)).getId());
