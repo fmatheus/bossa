@@ -38,6 +38,11 @@ public class CaseTypeManagerTest extends TestCase {
 	super(name);
     }
 
+    public static void prepareWorkTest(CaseTypeManager caseTypeManager) {
+        caseTypeManager.registerCaseTypeImpl(
+            CaseTypeTest.createTestCaseType("theCaseType"));
+    }
+
     protected void setUp() {
     	System.out.println("Setting up a case type manager test.");
         caseTypeManager = new CaseTypeManager();

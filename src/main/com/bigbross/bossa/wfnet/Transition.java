@@ -61,6 +61,15 @@ public class Transition implements Serializable {
     }
 
     /**
+     * Returns the resource of this transition. <p>
+     * 
+     * @return the resource of this transition.
+     */
+    public String getResource() {
+        return resource;
+    }
+
+    /**
      * Returns the index of this transition. The index indicates the line
      * that represents this transition in the transition map. <p>
      * 

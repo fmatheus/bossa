@@ -56,12 +56,12 @@ public class CaseTypeTest extends TestCase {
         Place G = caseType.registerPlace("G");
         Place H = caseType.registerPlace("H");
 
-        Transition a = caseType.registerTransition("a", "x");
-        Transition b = caseType.registerTransition("b", "y");
-        Transition c = caseType.registerTransition("c", "z");
-        Transition d = caseType.registerTransition("d", "y");
-        Transition e = caseType.registerTransition("e", "y");
-        Transition f = caseType.registerTransition("f", "x");
+        Transition a = caseType.registerTransition("a", "requesters");
+        Transition b = caseType.registerTransition("b", "sales");
+        Transition c = caseType.registerTransition("c", "direstors");
+        Transition d = caseType.registerTransition("d", "sales");
+        Transition e = caseType.registerTransition("e", "sales");
+        Transition f = caseType.registerTransition("f", "requesters");
 
 	caseType.buildMap();
 

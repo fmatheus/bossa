@@ -61,4 +61,8 @@ public class BossaTestSuite extends TestCase {
         suite.addTest(WorkTestSuite.suite());
 	return suite;
     }
+    
+    public static Bossa createTestBossa() {
+        return new Bossa();
+    }
 }

@@ -24,6 +24,15 @@
 
 package com.bigbross.bossa.work;
 
+import com.bigbross.bossa.Bossa;
+import com.bigbross.bossa.BossaTestSuite;
+import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.resource.ResourceManagerTest;
+import com.bigbross.bossa.wfnet.CaseType;
+import com.bigbross.bossa.wfnet.CaseTypeManager;
+import com.bigbross.bossa.wfnet.CaseTypeManagerTest;
+import com.bigbross.bossa.wfnet.CaseTypeTest;
+
 import junit.framework.TestCase;
 
 public class WorkManagerTest extends TestCase {
@@ -36,7 +45,14 @@ public class WorkManagerTest extends TestCase {
 	System.out.println("Setting up a work manager test.");
     }
 
-    public void testVoid() {
-        new WorkManager();
+    public void testWorkItemList() {
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        WorkManager workManager = bossa.getWorkManager();
+        CaseTypeManager caseTypeManager = bossa.getCaseTypeManager();
+        ResourceManager resourceManager = bossa.getResourceManager();
+        CaseTypeManagerTest.prepareWorkTest(caseTypeManager);
+        ResourceManagerTest.prepareWorkTest(resourceManager);
+        assertEquals(0, workManager.getWorkItems("joe").size());
+        assertEquals(1, workManager.getWorkItems("joe", true).size());
     }
 }

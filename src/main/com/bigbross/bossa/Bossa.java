@@ -150,4 +150,13 @@ public class Bossa extends AbstractPrevalentSystem {
     public ResourceManager getResourceManager() {
         return resourceManager;
     }
+
+    /**
+     * Returns the work manager of this engine. <p>
+     * 
+     * @return The work manager of this engine.
+     */
+    public WorkManager getWorkManager() {
+        return workManager;
+    }
 }
