@@ -35,6 +35,7 @@
   <property name="Name"    value="Bossa Workflow Management System"/>
   <property name="name"    value="bossa"/>
   <property name="version" value="0.2.1"/>
+  <property name="fullname" value="${name}-${version}" />
 
   <!-- Set global properties for this build -->
   <property name="debug" value="true"/>
@@ -91,6 +92,7 @@
     <echo message="${Name} - ${version} (${subversion})"/>
     <available property="junit.present" classname="junit.framework.TestCase"/>
     <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}"/>
   </target>
 
   <target name="build" depends="init"
@@ -105,9 +107,8 @@
     </javac>
   </target>
 
-  <target name="dist" depends="build"
+  <target name="jar" depends="build"
 	  description="Creates distribution .jar files">
-    <mkdir dir="${dist.dir}"/>
     <jar jarfile="${dist.dir}/${name}-${version}.jar" basedir="${build.classes}"/>
   </target>
 
@@ -211,6 +212,49 @@
     <echo message="file.encoding=${file.encoding}"/>
     <echo message="user.home = ${user.home}"/>
     <echo message="user.language=${user.language}"/>
+  </target>
+
+  <target name="source" depends="distclean"
+          description="Builds source tar.gz and zip files">
+    <mkdir dir="${dist.dir}/${fullname}"/>
+    <copy todir="${dist.dir}/${fullname}" preservelastmodified="yes">
+      <fileset dir="${basedir}" excludes="${dist.dir}/, ${lib.dir}/*.jar"/>
+    </copy>
+    <tar tarfile="${dist.dir}/${fullname}-src.tar.gz"
+         basedir="${dist.dir}"
+         compression="gzip"
+	 includes="${fullname}/"/>
+    <zip zipfile="${dist.dir}/${fullname}-src.zip"
+         basedir="${dist.dir}"
+	 includes="${fullname}/"/>
+    <delete dir="${dist.dir}/${fullname}"/>
+  </target>
+
+  <target name="dist" depends="jar, javadoc"
+	  description="Creates distribution .jar files">
+    <copy todir="${build.dir}/${fullname}" preservelastmodified="yes">
+      <fileset dir="${dist.dir}" excludes="*.tar.gz, *.zip"/>
+    </copy>
+    <tar tarfile="${dist.dir}/${fullname}.tar.gz"
+         basedir="${build.dir}"
+         compression="gzip"
+	 includes="${fullname}/"/>
+    <zip zipfile="${dist.dir}/${fullname}.zip"
+         basedir="${build.dir}"
+	 includes="${fullname}/"/>
+    <delete dir="${dist.dir}/${fullname}"/>
+  </target>
+
+  <target name="release" depends="source, dist"
+	  description="Creates distribution .jar files">
+    <tar tarfile="${dist.dir}/${fullname}-dep.tar.gz"
+         basedir="${basedir}"
+         compression="gzip"
+	 includes="${lib.dir}/"/>
+    <zip zipfile="${dist.dir}/${fullname}-dep.zip"
+         basedir="${basedir}"
+	 includes="${lib.dir}/"/>
+    <delete dir="${dist.dir}/${fullname}"/>
   </target>
 
 </project>
