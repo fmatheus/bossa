@@ -90,9 +90,11 @@ public class CaseType implements Serializable {
      *
      * @param id the place id.
      * @return the created place.
+     * 
+     * FIXME: Go on!
      */
     public Place registerPlace(String id) {
-	Place place = new Place(places.size(), id);
+	Place place = new Place(places.size(), id, -1);
 	places.put(id, place);
 	return place;
     }

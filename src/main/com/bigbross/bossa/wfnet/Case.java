@@ -380,7 +380,7 @@ public class Case implements Serializable {
     boolean isFireable(Transition t) throws EvaluationException {
         for (Iterator i = t.getInputEdges().iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
-            if (marking[e.getPlace().index] < e.input(this)) {
+            if (marking[e.getPlace().getIndex()] < e.input(this)) {
                 return false;
             }
         }
@@ -420,7 +420,7 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().index] -= e.input(this);
+            this.marking[e.getPlace().getIndex()] -= e.input(this);
         }
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
@@ -480,7 +480,7 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().index] += e.output(this);
+            this.marking[e.getPlace().getIndex()] += e.output(this);
         }
         /* An EvaluationException can be inconsistently thrown here. */
 	int actives = activate();
@@ -521,7 +521,7 @@ public class Case implements Serializable {
         for (Iterator i = edges.iterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
             /* An EvaluationException can be inconsistently thrown here. */
-            this.marking[e.getPlace().index] += e.input(this);
+            this.marking[e.getPlace().getIndex()] += e.input(this);
         }
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();

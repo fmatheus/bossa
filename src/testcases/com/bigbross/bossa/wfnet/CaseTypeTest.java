@@ -70,6 +70,8 @@ public class CaseTypeTest extends TestCase {
         Case template = ((WorkItem) workItems.get(0)).getCase();
         assertNotNull(template);
         assertEquals(0, template.getId());
+        assertTrue(CaseTest.sameState(new int[] {1,0,0,0,0,0,0,0},
+                                      template.getMarking()));
         assertEquals(1, template.getWorkItems().size());
         assertEquals("a", 
                      ((WorkItem) template.getWorkItems().get(0)).getId());

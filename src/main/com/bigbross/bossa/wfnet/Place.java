@@ -27,19 +27,56 @@ package com.bigbross.bossa.wfnet;
 import java.io.Serializable;
 
 /**
- * This class represents a place.
+ * This class represents a place. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Place implements Serializable {
 
-    int index;
+    private int index;
 
-    String id;
+    private String id;
+    
+    private int initialMarking;
 
-    Place(int index, String id) {
+    /**
+     * Creates a new place. <p>
+     * 
+     * @param index the index of this place in the marking array.
+     * @param id the id of this place.
+     * @param initialMarking the initial marking, the number of tokens in
+     *                       this place when a new case starts.
+     */
+    Place(int index, String id, int initialMarking) {
 	this.index = index;
 	this.id = id;
+        this.initialMarking = initialMarking;
+    }
+    
+    /**
+     * Returns the index of this place. <p>
+     * 
+     * @return the index of this place.
+     */
+    public int getIndex() {
+        return index;
     }
 
+    /**
+     * Returns the id of this place. <p>
+     * 
+     * @return the id of this place.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Returns the initial marking of this place. <p>
+     * 
+     * @return the initial marking of this place.
+     */
+    public int getInitialMarking() {
+        return initialMarking;
+    }
 }
