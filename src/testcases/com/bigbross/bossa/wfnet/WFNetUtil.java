@@ -46,11 +46,11 @@ public class WFNetUtil {
         Place H = caseType.registerPlace("H");
 
         Transition a = caseType.registerTransition("a", "requesters");
-        Transition b = caseType.registerTransition("b", "sales");
+        Transition b = caseType.registerTransition("b", "sales-$a");
         Transition c = caseType.registerTransition("c", "directors");
         Transition d = caseType.registerTransition("d", "sales");
         Transition e = caseType.registerTransition("e", "sales");
-        Transition f = caseType.registerTransition("f", "requesters");
+        Transition f = caseType.registerTransition("f", "$a");
 
 	caseType.buildMap();
 
@@ -99,9 +99,13 @@ public class WFNetUtil {
                                Resource resource) throws Exception {
         Activity act = caze.open(caze.getWorkItem(workItemId), resource);
         if (act != null) {
-            return caze.close(act, attributes);
+            return act.getCase().close(act, attributes);
         }
 	return false;
+    }
+
+    public static boolean fire(WorkItem workItem, Map attributes, Resource resource) throws Exception {
+	return fire(workItem.getCase(), workItem.getId(), attributes, resource);
     }
 
     public static void prepareWorkTest(CaseTypeManager caseTypeManager)

@@ -351,6 +351,13 @@ public class Case implements Serializable {
         }
         /* An EvaluationException can be inconsistently thrown here. */
         deactivate();
+
+        Resource group = getResourceRegistry().getResource(wi.getTransition().getId());
+        if (group == null) {
+            group = getResourceRegistry().createResourceImpl(wi.getTransition().getId());
+        }
+        group.includeImpl(resource);
+
         Activity activity = new Activity(wi, resource);
         activities.put(new Integer(activity.getId()), activity);
 
@@ -442,6 +449,11 @@ public class Case implements Serializable {
 	}
         /* An EvaluationException can be inconsistently thrown here. */
 	activate();
+
+        Resource resource = activity.getResource();
+        Resource group = getResourceRegistry().getResource(activity.getTransition().getId());
+        group.excludeImpl(resource);
+
         activities.remove(new Integer(activity.getId()));
 
 	return true;

@@ -24,6 +24,8 @@
 
 package com.bigbross.bossa.work;
 
+import java.util.HashMap;
+
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.Resource;
@@ -31,17 +33,17 @@ import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.resource.ResourceUtil;
 import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.CaseTypeTest;
-
+import com.bigbross.bossa.wfnet.WFNetUtil;
+import com.bigbross.bossa.wfnet.WorkItem;
 import junit.framework.TestCase;
 
 public class WorkManagerTest extends TestCase {
 
+    private Resource joe, pan;
     private WorkManager workManager;
     private CaseTypeManager caseTypeManager;
     private ResourceManager resourceManager;
-    private Resource joe;
 
     public WorkManagerTest(String name) {
 	super(name);
@@ -56,13 +58,28 @@ public class WorkManagerTest extends TestCase {
         WFNetUtil.prepareWorkTest(caseTypeManager);
         ResourceUtil.prepareWorkTest(resourceManager);
         joe = resourceManager.getResource("joe");
+        pan = resourceManager.getResource("pan");
     }
 
     public void testWorkItemList() {
         assertEquals(0, workManager.getWorkItems(joe).size());
         assertEquals(1, workManager.getWorkItems(joe, true).size());
     }
-    
+
+    public void testMetaResource() throws Exception {
+        WorkItem work = (WorkItem) workManager.getWorkItems(joe, true).get(0);
+        assertTrue(WFNetUtil.fire(work, null, joe));
+        assertEquals(0, workManager.getWorkItems(joe).size());
+
+        work = (WorkItem) workManager.getWorkItems(pan).get(0);
+        HashMap attributes = new HashMap();
+        attributes.put("SOK", new Boolean(false));
+        attributes.put("DIR", new Boolean(false));
+        assertTrue(WFNetUtil.fire(work, attributes, pan));
+        assertEquals(1, workManager.getWorkItems(joe).size());
+        assertEquals(0, workManager.getWorkItems(pan).size());
+    }
+
     public void testActivitiesList() throws Exception {
         WFNetUtil.createActWorkTest(caseTypeManager);
         assertEquals(1, workManager.getActivities(joe).size());
