@@ -245,6 +245,13 @@ public class CaseTest extends TestCase {
             e.printStackTrace();
             fail(e.toString());
         }
+        
+        e1 = Edge.newInput("AVL * XXX && DIR");
+        try {
+            e1.eval(caze);
+            fail("Undetected undeclared attribute.");
+        } catch (EvaluationException e) {
+        }
     }
 
     public void testEdgeOrientation() {
