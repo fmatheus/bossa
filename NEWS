@@ -1,8 +1,10 @@
 
-Bossa 0.?.? "???", 2003-??-??
------------------------------
+Bossa 0.3.1 "Easter Egg", 2003-04-29
+------------------------------------
 
-* 
+* Fixed a stupid bug (#89) that rendered our proposed API useless.
+
+* Added the last bit of API documentation.
 
 
 Bossa 0.3.0 "Document It and They Will Come", 2003-03-14
