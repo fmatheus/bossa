@@ -27,22 +27,44 @@ package com.bigbross.bossa.notify;
 import com.bigbross.bossa.resource.Resource;
 
 /**
- * This class implements a broken listener. <p>
+ * This class implements an abstract test listener. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class BadListener extends TestListener {
+public abstract class TestListener implements Listener {
 
-    public BadListener(String id, int type, Resource resource) {
-        super(id, type, resource);
+    private String id;
+    private int type;
+    private Resource resource;
+
+    public TestListener(String id, int type, Resource resource) {
+        this.id = id;
+        this.type = type;
+        this.resource = resource;
     }
 
     /**
-     * @see com.bigbross.bossa.notify.Listener#notifyEvent(
-     *      com.bigbross.bossa.notify.Event)
+     * @see com.bigbross.bossa.notify.Listener#getId()
      */
-    public void notifyEvent(Event event) {
-        event.getAttributes().put("bad", "run");
-        throw new RuntimeException("Muahahaha!");
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @see com.bigbross.bossa.notify.Listener#interested(int)
+     */
+    public boolean interested(int type) {
+        if (this.type == 0) {
+            return true;
+        } else {
+            return this.type == type;
+        } 
+    }
+
+    /**
+     * @see com.bigbross.bossa.notify.Listener#getResource()
+     */
+    public Resource getResource() {
+        return resource;
     }
 }

@@ -1,12 +1,13 @@
 
-Bossa 0.?.? "????", 2003-??-??
-------------------------------
+Bossa 0.4.0 "Maple Leaf", 2003-??-??
+------------------------------------
 
 * Updated internally to the Prevayler 2.0 API.
 
 * Some documentation and javadoc fixes.
 
-* Added internal notification of events through a notification bus.
+* Added internal notification of events through a notification bus,
+  with filtering based on event type and resource affected.
 
 * 
 
@@ -35,7 +36,7 @@ Bossa 0.2.1 "A New Hope, Repackaged", 2003-02-25
 ------------------------------------------------
 
 * Automated the release policy (source, binary+javadoc and
-dependencies packages). Made a new release to test it.
+  dependencies packages). Made a new release to test it.
 
 
 Bossa 0.2.0 "A New Hope", 2003-02-19

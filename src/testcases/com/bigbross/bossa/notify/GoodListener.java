@@ -24,51 +24,30 @@
 
 package com.bigbross.bossa.notify;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.bigbross.bossa.resource.Resource;
 
 /**
- * This class implements a working listener. <p>
+ * This class implements a listener that works. <p>
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
-public class GoodListener implements Listener {
+public class GoodListener extends TestListener {
 
-    private String id;
-    private Resource resource;
-
-    public GoodListener(String id, Resource resource) {
-        this.id = id;
-        this.resource = resource;
-    }
-
-    /**
-     * @see com.bigbross.bossa.notify.Listener#getId()
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * @see com.bigbross.bossa.notify.Listener#getResource()
-     */
-    public Resource getResource() {
-        return resource;
+    public GoodListener(String id, int type, Resource resource) {
+        super(id, type, resource);
     }
 
     /**
      * @see com.bigbross.bossa.notify.Listener#notifyEvent(
-     *      java.lang.String, java.util.Date, java.util.Map)
+     *      com.bigbross.bossa.notify.Event)
      */
-    public void notifyEvent(String id, Date time, Map attributes) {
-        String status = (String) attributes.get("status");
+    public void notifyEvent(Event event) {
+        String status = (String) event.getAttributes().get("status");
         if (status != null) {
             status = status + " ok";
         } else {
             status = "ok";
         }
-        attributes.put("status", status);
+        event.getAttributes().put("status", status);
     }
 }

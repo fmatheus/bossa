@@ -24,9 +24,6 @@
 
 package com.bigbross.bossa.notify;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.bigbross.bossa.resource.Resource;
 
 /**
@@ -36,7 +33,7 @@ import com.bigbross.bossa.resource.Resource;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public interface Listener {
-    
+        
     /**
      * Returns the id of this listener. This id must be unique with respect
      * to the desired notification bus. <p>
@@ -46,20 +43,33 @@ public interface Listener {
     String getId();
     
     /**
-     * Returns the resource used to filter the events passed to this
-     * listener. If the resource is <code>null</code>, all events will be
-     * passed to this listener. <p>
+     * Indicates if this listener is interested in an event type. The
+     * notification bus will only notify this listener of the event types it
+     * is interested. <p>
      * 
-     * @return the resource used as filter.
+     * @param type the type of the event.
+     * @return <code>true</code> if this listener is interested in the event,
+     *         <code>false</code> otherwise.
+     */
+    boolean interested(int type);
+    
+    /**
+     * Returns the resource used to further filter the work item or activity
+     * related events passed to this listener. The notification bus will only
+     * notify this listener of events associated with resources that contain
+     * the resource returned by this method. If the resource returned is
+     * <code>null</code>, no resource filtering will happen. <p>
+     * 
+     * @return the resource to be used as filter.
      */
     Resource getResource();
     
     /**
-     * Notifies this listener of an event. <p>
+     * Notifies this listener of an event. See the event class for the
+     * information provided to the listener. <p>
      * 
-     * @param id the id of the event.
-     * @param time the time the notification bus noticed the event.
-     * @param attributes the attributes of this event.
+     * @param event the event.
+     * @see com.bigbross.bossa.notify.Event
      */
-    void notifyEvent(String id, Date time, Map attributes);
+    void notifyEvent(Event event);
 }

@@ -25,11 +25,12 @@
 package com.bigbross.bossa.notify;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.bigbross.bossa.resource.Resource;
 
 
 /**
@@ -95,25 +96,47 @@ public class NotificationBus {
     }
 
     /**
-     * Informs all registered listeners the occurrence of an event. An event
-     * has an id and some attributes that are dependent on the event type. <p>
+     * Informs the occurrence of an event to all registered listeners. <p>
      * 
-     * @param id the id of the event.
-     * @param attributes a <code>Map</code> containing the attributes.
+     * An event has an id and some attributes that are dependent on the event
+     * type. See the constructor of the <code>Event</code> class for more
+     * information. <p>
+     * 
+     * @param event the event.
+     * @see com.bigbross.bossa.notify.Event#Event
      */
-    public void notifyEvent(String id, Map attributes) {
-        Date now = new Date();
+    public void notifyEvent(Event event) {
         Iterator[] iterators = {persistentListeners.iterator(),
                                 transientListeners.values().iterator()};
         for (int i = 0; i < iterators.length; i++) {
             Iterator it = iterators[i];
             while (it.hasNext()) {
                 Listener l = (Listener) it.next();
-                try {
-                    l.notifyEvent(id, now, attributes);
-                } catch (Exception e) {
-                    // We ignore listeners exceptions.
+                singleListenerNotify(event, l);
+            }
+        }
+    }
+
+    /**
+     * Informs the occurrence of an event to a single listener. <p>
+     * 
+     * @param event the event.
+     * @param l the listener.
+     */
+    private void singleListenerNotify(Event event, Listener l) {
+        if (l.interested(event.getType())) {
+            if (event.getType() == Event.WFNET_EVENT) {
+                Resource resource =
+                    (Resource) event.getAttributes().get("resource");
+                if (resource != null && l.getResource() != null &&
+                    ! resource.contains(l.getResource())) {
+                    return;        
                 }
+            }
+            try {
+                l.notifyEvent(event);
+            } catch (Exception e) {
+                /* We ignore listeners exceptions. */
             }
         }
     }
