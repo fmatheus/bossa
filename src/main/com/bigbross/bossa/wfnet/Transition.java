@@ -78,7 +78,7 @@ public class Transition implements Serializable {
      * 
      * @return the resource of this transition.
      */
-    public Expression getResource() {
+    Expression getResource() {
         return resource;
     }
 
