@@ -89,7 +89,7 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(3, events.size());
+        assertEquals(4, events.size());
         Event event = (Event) events.get(0);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_CASE, event.getId());
@@ -110,8 +110,8 @@ public class EventsNotificationTest extends TestCase {
         
 
         List events = listener.getNotifications();
-        assertEquals(11, events.size());
-        Event event = (Event) events.get(10);
+        assertEquals(14, events.size());
+        Event event = (Event) events.get(13);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_CASE, event.getId());
         assertEquals(new Integer(wi.getCase().getId()),
@@ -125,8 +125,8 @@ public class EventsNotificationTest extends TestCase {
         wi.open(frank);
 
         List events = listener.getNotifications();
-        assertEquals(3, events.size());
-        Event event = (Event) events.get(2);
+        assertEquals(4, events.size());
+        Event event = (Event) events.get(3);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
         assertEquals(wi.getId(),
@@ -147,8 +147,8 @@ public class EventsNotificationTest extends TestCase {
         act.close(newAttrib);
 
         List events = listener.getNotifications();
-        assertEquals(4, events.size());
-        Event event = (Event) events.get(3);
+        assertEquals(5, events.size());
+        Event event = (Event) events.get(4);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
@@ -171,8 +171,8 @@ public class EventsNotificationTest extends TestCase {
         act.cancel();
 
         List events = listener.getNotifications();
-        assertEquals(4, events.size());
-        Event event = (Event) events.get(3);
+        assertEquals(6, events.size());
+        Event event = (Event) events.get(5);
         assertEquals(Event.WFNET_EVENT, event.getType());
         assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
         assertEquals(new Integer(act.getId()),
@@ -198,5 +198,53 @@ public class EventsNotificationTest extends TestCase {
         assertEquals(ResourceEvents.ID_CREATE_RESOURCE, event.getId());
         assertEquals(joe.getId(),
             event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
+        event = (Event) events.get(1);
+        assertEquals(Event.RESOURCE_EVENT, event.getType());
+        assertEquals(ResourceEvents.ID_REMOVE_RESOURCE, event.getId());
+        assertEquals(joe.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
+    }
+    
+    public void testLogIncludeInResource() throws Exception {
+        frank.include(sally);
+        
+        List events = listener.getNotifications();
+        assertEquals(1, events.size());
+        Event event = (Event) events.get(0);
+        assertEquals(Event.RESOURCE_EVENT, event.getType());
+        assertEquals(ResourceEvents.ID_INCLUDE_IN_RESOURCE, event.getId());
+        assertEquals(sally.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_HOST_RESOURCE_ID));
+    }
+
+    public void testLogExcludeInResource() throws Exception {
+        frank.exclude(sally);
+        
+        List events = listener.getNotifications();
+        assertEquals(1, events.size());
+        Event event = (Event) events.get(0);
+        assertEquals(Event.RESOURCE_EVENT, event.getType());
+        assertEquals(ResourceEvents.ID_EXCLUDE_IN_RESOURCE, event.getId());
+        assertEquals(sally.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_HOST_RESOURCE_ID));
+    }
+
+    public void testLogRemoveFromResource() throws Exception {
+        frank.include(sally);
+        frank.remove(sally);
+        
+        List events = listener.getNotifications();
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(1);
+        assertEquals(Event.RESOURCE_EVENT, event.getType());
+        assertEquals(ResourceEvents.ID_REMOVE_FROM_RESOURCE, event.getId());
+        assertEquals(sally.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_RESOURCE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(ResourceEvents.ATTRIB_HOST_RESOURCE_ID));
     }
 }

@@ -1,15 +1,19 @@
 
-Bossa 0.4.0 "Maple Leaf", 2003-??-??
+Bossa 0.4.0 "Maple Leaf", 2003-11-??
 ------------------------------------
 
 * Updated internally to the Prevayler 2.0 API.
 
-* Some documentation and javadoc fixes.
-
 * Added internal notification of events through a notification bus,
-  with filtering based on event type and resource affected.
+  with filtering based on event type and affected resource.
+  
+* Added the main bossa events to the notification bus.
 
-* 
+* Added the option of a transient Bossa to be embedded in prevalent systems.
+
+* Added a Bossa factory to help configure your Bossa instance.
+
+* Documentation and javadoc fixes.
 
 
 Bossa 0.3.1 "Easter Egg", 2003-04-29

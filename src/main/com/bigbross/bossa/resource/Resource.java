@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
 
 /**
@@ -69,6 +70,21 @@ public class Resource implements Container, Serializable {
     ResourceRegistry getResourceRegistry() {
         return resourceRegistry;
     }
+
+    /**
+     * Returns the bossa engine this resource is part, if any. <p>
+     * 
+     * @return the bossa engine this resource is part,
+     *         <code>null</code> if not part of a bossa engine.
+     */
+    Bossa getBossa() {
+        if (getResourceRegistry() != null) {
+            return getResourceRegistry().getBossa();
+        } else {
+            return null;
+        }
+    }
+
 
     /**
      * Returns the resource identifier. <p>
@@ -121,8 +137,8 @@ public class Resource implements Container, Serializable {
     public boolean include(Resource resource) throws BossaException {
         ResourceTransaction includeTransaction = 
             new IncludeInResource(this, resource);
-        return ((Boolean) getResourceRegistry().getBossa().
-            execute(includeTransaction)).booleanValue();
+        return
+            ((Boolean) getBossa().execute(includeTransaction)).booleanValue();
     }
 
     /**
@@ -143,6 +159,9 @@ public class Resource implements Container, Serializable {
         }
         excludes.remove(resource);
         includes.add(resource);
+        ResourceEvents.notifyTwoResources(getBossa(),
+                                          ResourceEvents.ID_INCLUDE_IN_RESOURCE,
+                                          resource, this);
         return true;
     }
 
@@ -159,8 +178,8 @@ public class Resource implements Container, Serializable {
     public boolean exclude(Resource resource) throws BossaException {
         ResourceTransaction excludeTransaction =
             new ExcludeInResource(this, resource);
-        return ((Boolean) getResourceRegistry().getBossa().
-            execute(excludeTransaction)).booleanValue();
+        return 
+            ((Boolean) getBossa().execute(excludeTransaction)).booleanValue();
     }
 
     /**
@@ -181,6 +200,9 @@ public class Resource implements Container, Serializable {
         }
         includes.remove(resource);
         excludes.add(resource);
+        ResourceEvents.notifyTwoResources(getBossa(),
+                                          ResourceEvents.ID_EXCLUDE_IN_RESOURCE,
+                                          resource, this);
         return true;
     }
 
@@ -195,7 +217,7 @@ public class Resource implements Container, Serializable {
     public void remove(Resource resource) throws BossaException {
         ResourceTransaction removeTransaction =
             new RemoveFromResource(this, resource);
-        getResourceRegistry().getBossa().execute(removeTransaction);
+        getBossa().execute(removeTransaction);
     }
 
     /**
@@ -209,8 +231,13 @@ public class Resource implements Container, Serializable {
      * @param resource the resource to be removed.
      */
     public void removeImpl(Resource resource) {
-        includes.remove(resource);
-        excludes.remove(resource);
+        boolean inc = includes.remove(resource);
+        boolean exc = excludes.remove(resource);
+        if (inc || exc) {
+            ResourceEvents.notifyTwoResources(getBossa(),
+                                       ResourceEvents.ID_REMOVE_FROM_RESOURCE,
+                                       resource, this);
+        }
     }
 
     /**
