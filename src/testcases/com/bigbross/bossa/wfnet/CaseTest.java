@@ -99,6 +99,7 @@ public class CaseTest extends TestCase {
 
     public void testMachineGun() {
         Case caze = newTestCase();
+	caze.declare("SOK", new Boolean(false));
 
         int[] expected = new int[] {0,2,0,0,1,0,1,2};
 
@@ -133,6 +134,7 @@ public class CaseTest extends TestCase {
     public void testWorkItensList() {
 
         Case caze = newTestCase();
+	caze.declare("SOK", new Boolean(false));
         assertTrue(fire(caze, "a"));
         assertTrue(fire(caze, "b"));
 
@@ -159,6 +161,7 @@ public class CaseTest extends TestCase {
     public void testActivitiesList() {
 
         Case caze = newTestCase();
+	caze.declare("SOK", new Boolean(false));
         assertTrue(fire(caze, "a"));
         assertTrue(fire(caze, "b"));
         List workItens = caze.getWorkItems();
@@ -180,6 +183,20 @@ public class CaseTest extends TestCase {
                    wi1.getId().equals(a0.getTransition().getId()));
         assertTrue(wi0.getId().equals(a1.getTransition().getId()) ||
                    wi1.getId().equals(a1.getTransition().getId()));
+    }
+
+    public void testEdgeEvaluation() {
+	CaseTypeManager.getInstance();
+        Case caze = newTestCase();
+	caze.declare("SOK", new Boolean(true));
+	caze.declare("DIR", new Boolean(false));
+	caze.declare("AVL", new Integer(3));
+
+	Edge e1 = Edge.newOutput("AVL * SOK || DIR");
+	Edge e2 = Edge.newOutput("AVL * SOK && DIR;[\"a\", \"b\"]");
+
+	assertEquals(3, e1.eval(caze));
+	assertEquals(0, e2.eval(caze));
     }
 
     public void testToString() {

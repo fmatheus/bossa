@@ -94,7 +94,7 @@ public class Transition implements Serializable {
 	string.append(this.id);
 	string.append("\t");
 	for (int j = 0; j < p.length; ++j) {
-	    string.append(getEdge(p[j]).weight());
+	    string.append(getEdge(p[j]));
 	    string.append("\t");
 	}
 	string.append(this.resource);

@@ -24,12 +24,17 @@
 
 package com.bigbross.bossa.wfnet;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
+import org.apache.log4j.Logger;
 
 /**
  * This class represents a specific instance of a case type. It
@@ -38,6 +43,14 @@ import java.util.Map;
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Case implements Serializable {
+
+    /**
+     * The logger object used by this class. <p>
+     *
+     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
+     *      target=_top>Log4J HomePage</a>
+     */
+    private static Logger logger = Logger.getLogger(Case.class.getName());
 
     private int id;
 
@@ -51,13 +64,19 @@ public class Case implements Serializable {
 
     private int activitySequence;
 
+    private Map attributes;
+
+    private transient BSFManager bsf;
+
     Case(CaseType caseType, int[] marking) {
 
 	this.id = caseType.nextCaseId();
 	this.caseType = caseType;
 	this.marking = marking;
         this.activities = new HashMap();
+        this.attributes = new HashMap();
         this.activitySequence = 1;
+	this.bsf = new BSFManager();
 
 	Transition[] ts = caseType.getTransitions();
 	workItems = new WorkItem[ts.length];
@@ -158,6 +177,39 @@ public class Case implements Serializable {
 	return id == 0;
     }
 
+    /**
+     * Declares an attribute to be used at expression evaluation.
+     *
+     * @param id the attribute identifier.
+     * @param value an <code>Object</code> with the attribute value.
+     */
+    void declare(String id, Object value) {
+	try {
+	    attributes.put(id, value);
+	    bsf.declareBean(id, value, value.getClass());
+	} catch (BSFException e) {
+	    logger.warn(e.getMessage());
+	}
+    }
+
+    /**
+     * Evaluates an integer expression using the local attributes of this
+     * case. <p>
+     * 
+     * @return the expression result.
+     * @exception BSFException if an error occurs.
+     */
+    int eval(String expression) throws BSFException {
+	Object result = bsf.eval("javascript", "WFNet", 0, 0, expression);
+	if (result instanceof Number) {
+	    return ((Number) result).intValue();
+	}
+	if (result instanceof Boolean) {
+	    return ((Boolean) result).booleanValue() ? 1 : 0;
+	}
+	throw new BSFException("'" + result + "' is not a number.");
+    }
+
     private void activate() {
 	for (int i = 0; i < workItems.length; ++i) {
 	    if (!workItems[i].isFireable()) {
@@ -176,7 +228,7 @@ public class Case implements Serializable {
 
     boolean isFireable(Transition t) {
 	for(int i = 0; i < marking.length; ++i) {
-	    if (marking[i] < caseType.getEdge(t.getIndex(), i).input()) {
+	    if (marking[i] < caseType.getEdge(t.getIndex(), i).input(this)) {
 		return false;
 	    }
 	}
@@ -198,7 +250,7 @@ public class Case implements Serializable {
 	activities.put(new Integer(activity.getId()), activity);
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] -= edges[i].input();
+	    this.marking[i] -= edges[i].input(this);
 	}
 	deactivate();
 
@@ -214,7 +266,7 @@ public class Case implements Serializable {
 	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] += edges[i].output();
+	    this.marking[i] += edges[i].output(this);
 	}
 	activate();
 
@@ -230,7 +282,7 @@ public class Case implements Serializable {
 	activities.remove(new Integer(activity.getId()));
 	Edge[] edges = activity.getTransition().getEdges();
 	for(int i = 0; i < marking.length; ++i) {
-	    this.marking[i] += edges[i].input();
+	    this.marking[i] += edges[i].input(this);
 	}
 	activate();
 
@@ -249,4 +301,18 @@ public class Case implements Serializable {
 
         return string.toString();
     }
+
+    private void readObject(java.io.ObjectInputStream in)
+	throws IOException, ClassNotFoundException {
+	in.defaultReadObject();
+	bsf = new BSFManager();
+	Iterator it = attributes.entrySet().iterator();
+	while (it.hasNext()) {
+	    Map.Entry attr = (Map.Entry) it.next();
+	    try {
+		bsf.declareBean((String) attr.getKey(), attr.getValue(), attr.getValue().getClass());
+	    } catch (org.apache.bsf.BSFException e) {}
+	}
+    }
+
 }

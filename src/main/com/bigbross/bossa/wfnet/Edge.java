@@ -25,17 +25,31 @@
 package com.bigbross.bossa.wfnet;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.apache.bsf.BSFException;
+import org.apache.log4j.Logger;
 
 /**
- * This class represents one edge of one transition.
- * It may be a input or output edge, mapping the precondition or postcondition of one transition.
+ * This class represents one edge of one transition.  It may be a input or
+ * output edge, mapping the precondition or postcondition of one transition.
  *
  * @author <a href="http://www.bigbross.com">BigBross Team</a>
  */
 public class Edge implements Serializable {
-    
+
+    /**
+     * The logger object used by this class. <p>
+     *
+     * @see <a href="http://jakarta.apache.org/log4j/docs/index.html"
+     *      target=_top>Log4J HomePage</a>
+     */
+    private static Logger logger = Logger.getLogger(Edge.class.getName());
+
+    /**
+     * Inactive edge.
+     */
+    protected final int INACTIVE = 0;
+
     /**
      * The condition expression of this edge.
      */
@@ -64,12 +78,14 @@ public class Edge implements Serializable {
     static Edge newInput(String expression) {
 	return new Edge(expression) {
 
-		int weight() {
-		    return -eval();
+		protected final int INACTIVE = Integer.MAX_VALUE;
+
+		int weight(Case caze) {
+		    return - eval(caze);
 		}
 
-		int input() {
-		    return eval();
+		int input(Case caze) {
+		    return eval(caze);
 		}
 
 		public String toString() {
@@ -87,12 +103,12 @@ public class Edge implements Serializable {
     static Edge newOutput(String expression) {
 	return new Edge(expression) {
 
-		int weight() {
-		    return eval();
+		int weight(Case caze) {
+		    return eval(caze);
 		}
 
-		int output() {
-		    return eval();
+		int output(Case caze) {
+		    return eval(caze);
 		}
 	    };
     }
@@ -102,35 +118,42 @@ public class Edge implements Serializable {
      *
      * @return a negative, zero, or a positive integer as this edge is an precondition, no-condition, or an postcondition.
      */
-    int weight() {
-	return 0;
+    int weight(Case caze) {
+	return INACTIVE;
     }
 
     /**
      * Returns the weight of an precondition edge. <p>
      *
-     * @return a positive integer as this edge is an precondition, zero otherwise.
+     * @return a positive integer as this edge is an precondition, <code>INACTIVE</code> otherwise.
      */
-    int input() {
-	return 0;
+    int input(Case caze) {
+	return INACTIVE;
     }
 
     /**
      * Returns the weight of an postcondition edge. <p>
      *
-     * @return a positive integer as this edge is an postcondition, zero otherwise.
+     * @return a positive integer as this edge is an postcondition, <code>INACTIVE</code> otherwise.
      */
-    int output() {
-	return 0;
+    int output(Case caze) {
+	return INACTIVE;
     }
 
     /**
-     * Evaluates the expression. <p>
-     *
-     * @return the expression result.
+     * Evaluates an integer expression using the case attributes. <p>
+     * 
+     * @param caze a <code>Case</code> with the attributes.
+     * @return a positive integer, <code>INACTIVE</code> otherwise.
      */
-    protected int eval() {
-	return Integer.parseInt(expression);
+    int eval(Case caze) {
+	try {
+	    int result = caze.eval(expression);
+	    return (result < 0) ? INACTIVE : result;
+	} catch (BSFException e) {
+	    logger.warn(e.getMessage());
+	}
+	return INACTIVE;
     }
 
     /**

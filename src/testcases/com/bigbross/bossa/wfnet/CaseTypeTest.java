@@ -69,7 +69,7 @@ public class CaseTypeTest extends TestCase {
         a.output(B, "1");
 
         b.input(B,  "1");
-        b.output(C, "1");
+        b.output(C, "!SOK");
         b.output(D, "1");
         b.output(E, "1");
 
@@ -96,7 +96,6 @@ public class CaseTypeTest extends TestCase {
     public void testCreation() {
         CaseType caseType = createTestCaseType();
         assertNotNull(caseType);
-        
     }
 
     public void testWeights() {
@@ -110,13 +109,13 @@ public class CaseTypeTest extends TestCase {
         Place D = caseType.getPlace("D");
         Place E = caseType.getPlace("E");
 
-        assertEquals(-1, a.getEdge(A).weight());
-        assertEquals( 1, a.getEdge(B).weight());
+        assertEquals("-1", a.getEdge(A).toString());
+	assertEquals( "1", a.getEdge(B).toString());
 
-        assertEquals(-1, b.getEdge(B).weight());
-        assertEquals( 1, b.getEdge(C).weight());
-        assertEquals( 1, b.getEdge(D).weight());
-        assertEquals( 1, b.getEdge(E).weight());
+        assertEquals("-1", b.getEdge(B).toString());
+	assertEquals("!SOK", b.getEdge(C).toString());
+        assertEquals( "1", b.getEdge(D).toString());
+        assertEquals( "1", b.getEdge(E).toString());
     }
 
     public void testTemplate() {
@@ -192,7 +191,7 @@ public class CaseTypeTest extends TestCase {
         
         String expected = "\tA\tB\tC\tD\tE\tF\tG\tH\t\n" +
                           "a\t-1\t1\t0\t0\t0\t0\t0\t0\tx\n" +
-                          "b\t0\t-1\t1\t1\t1\t0\t0\t0\ty\n" +
+                          "b\t0\t-1\t!SOK\t1\t1\t0\t0\t0\ty\n" +
                           "c\t0\t1\t0\t-1\t1\t0\t0\t1\tz\n" +
                           "d\t0\t0\t0\t0\t-1\t1\t0\t0\ty\n" +
                           "e\t0\t0\t0\t0\t0\t-1\t1\t0\ty\n" +
