@@ -42,7 +42,7 @@ public class CaseTest extends TestCase {
     }
 
     private boolean fire(Case caze, Transition t) {
-	Activity act = caze.getWorkItems()[t.index].open();
+	Activity act = caze.workItems[t.index].open();
 	if (act != null) {
 	    return act.close();
 	}
@@ -93,7 +93,7 @@ public class CaseTest extends TestCase {
         int[] start = (int[])caze.marking.clone();
 
         int index = caze.getCaseType().getTransition("a").index;
-        Activity act = caze.getWorkItems()[index].open();
+        Activity act = caze.workItems[index].open();
         assertNotNull(act);
         assertTrue(act.cancel());
 
@@ -119,6 +119,30 @@ public class CaseTest extends TestCase {
         int[] actual = (int[])caze.marking.clone();
 
         assertTrue(sameState(expected, actual));
+    }
+
+    /**
+     * This test checks if the list of work itens if correct. <p>
+     */
+    public void testWorkItensList() {
+
+        Case caze = newTestCase();
+
+        assertTrue(fire(caze, caze.getCaseType().getTransition("a")));
+        assertTrue(fire(caze, caze.getCaseType().getTransition("b")));
+
+        WorkItem[] workItens = caze.getWorkItems();
+        
+        assertEquals(3, workItens.length);
+        Transition t0 = workItens[0].getTransition();
+        Transition t1 = workItens[1].getTransition();
+        Transition t2 = workItens[2].getTransition();
+        assertFalse(t0.id.equals(t1.id));
+        assertFalse(t0.id.equals(t2.id));
+        assertFalse(t1.id.equals(t2.id));
+        assertTrue(t0.id.equals("c") || t0.id.equals("d") || t0.id.equals("f"));
+        assertTrue(t1.id.equals("c") || t1.id.equals("d") || t1.id.equals("f"));
+        assertTrue(t2.id.equals("c") || t2.id.equals("d") || t2.id.equals("f"));
     }
 
     public void testToString() {

@@ -67,8 +67,21 @@ public class Case {
 	return caseType;
     }
 
+    /**
+     * Returns the list of work items associated with this case. <p>
+     *  
+     * @return An array with the work items of this case.
+     */
     public WorkItem[] getWorkItems() {
-	return workItems;
+        ArrayList items = new ArrayList(workItems.length);
+        
+        for (int i = 0; i < workItems.length; i++) {
+            if (workItems[i].isFireable()) {
+                items.add(workItems[i]);
+            }
+        }        
+        
+	return (WorkItem[]) items.toArray(new WorkItem[items.size()]);
     }
 
     public String toString() {
