@@ -30,6 +30,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
 
@@ -129,7 +130,7 @@ public class CaseTest extends TestCase {
     }
 
     public void testAutomaticCreation() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         WorkItem wi = (WorkItem) caseType.getWorkItems(true).get(0);
         Case template = wi.getCase();
 

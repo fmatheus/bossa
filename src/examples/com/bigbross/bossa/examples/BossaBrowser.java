@@ -34,13 +34,13 @@ import java.util.StringTokenizer;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.Case;
 import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
 import com.bigbross.bossa.work.WorkManager;
 
@@ -152,7 +152,7 @@ public class BossaBrowser {
                 }
             } else if (operation.equals("g")) {
                 String id = tokenizer.nextToken();
-                CaseType caseType = WFNetUtil.createCaseType(id);
+                CaseType caseType = BossaTestUtil.createCaseType(id);
                 caseTypeManager.registerCaseType(caseType);
                 System.out.println("ok.");
             } else if (operation.equals("r")) {

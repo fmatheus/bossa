@@ -37,7 +37,6 @@ import com.bigbross.bossa.resource.ResourceManager;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
 import com.bigbross.bossa.wfnet.WFNetEvents;
-import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
 import com.bigbross.bossa.work.WorkManager;
 
@@ -67,7 +66,7 @@ public class EventsNotificationTest extends TestCase {
 
     public void testLogRegisterRemoveCaseType() throws Exception {
         String caseTypeId = "created";
-        caseTypeManager.registerCaseType(WFNetUtil.createCaseType(caseTypeId));
+        caseTypeManager.registerCaseType(BossaTestUtil.createCaseType(caseTypeId));
         caseTypeManager.removeCaseType(caseTypeId);
 
         List events = listener.getNotifications();

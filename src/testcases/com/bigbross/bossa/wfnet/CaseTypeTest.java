@@ -28,6 +28,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceUtil;
 
@@ -41,12 +42,12 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testCreation() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         assertNotNull(caseType);
     }
 
     public void testWeights() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         Transition a = caseType.getTransition("a");
         Transition b = caseType.getTransition("b");
         Place A = caseType.getPlace("A");
@@ -65,7 +66,7 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testTemplate() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
 
         List workItems = caseType.getWorkItems(true);
         assertEquals(1, workItems.size());
@@ -96,14 +97,14 @@ public class CaseTypeTest extends TestCase {
     }
     
     public void testGetCase() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         Case caze = null;
         caze = caseType.openCase();
         assertSame(caze, caseType.getCase(caze.getId()));
     }        
 
     public void testGetAllCases() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         caseType.openCase();
         caseType.openCase();
         
@@ -116,7 +117,7 @@ public class CaseTypeTest extends TestCase {
     }
     
     public void testGetWorkItems() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         Case c1 = null;
         Case c2 = null;
         c1 = caseType.openCase();
@@ -134,7 +135,7 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testGetActivities() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("test");
+        CaseType caseType = BossaTestUtil.createCaseType("test");
         Resource jdoe = ResourceUtil.createResource("jdoe");
         Case c1 = null;
         Case c2 = null;

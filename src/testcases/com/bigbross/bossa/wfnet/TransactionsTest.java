@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaFactory;
+import com.bigbross.bossa.BossaTestUtil;
 import com.bigbross.bossa.resource.Resource;
 
 public class TransactionsTest extends TestCase {
@@ -51,13 +52,13 @@ public class TransactionsTest extends TestCase {
         jdoe = bossa.getResourceManager().createResource("jdoe");
 
         caseTypeManager.registerCaseTypeImpl(
-            WFNetUtil.createCaseType("theTestCaseType"));
+            BossaTestUtil.createCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
         caseType.openCase();
     }
 
     public void testRegisterCaseType() throws Exception {
-        CaseType caseType = WFNetUtil.createCaseType("anotherTestCaseType");
+        CaseType caseType = BossaTestUtil.createCaseType("anotherTestCaseType");
         RegisterCaseType transaction = new RegisterCaseType(caseType);
         
         transaction.execute(caseTypeManager, now);
