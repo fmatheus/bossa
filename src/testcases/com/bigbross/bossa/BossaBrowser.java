@@ -35,11 +35,12 @@ import java.util.StringTokenizer;
 
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.resource.ResourceUtil;
 import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.Case;
 import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.CaseTypeTest;
+import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.WorkItem;
 import com.bigbross.bossa.work.WorkManager;
 
@@ -103,7 +104,7 @@ public class BossaBrowser {
                 System.out.println("o <listId> <resListId> Open a work item.");
                 System.out.println("cl <listId>\tClose an activity.");
                 System.out.println("ca <listId>\tCancel an activity.");
-                System.out.println("f <listId>\t\tFire a work item.");
+                System.out.println("f <listId> <resListId>\t\tFire a work item.");
                 System.out.println("vs <caseType> <case> <id> <int>\tDeclare a case attribute.");
                 System.out.println("vl <caseType> <case>\tList case attributes.");
             } else if (operation.equals("s")) {
@@ -118,7 +119,7 @@ public class BossaBrowser {
                 }    
             } else if (operation.equals("g")) {
                 String id = tokenizer.nextToken();
-                CaseType caseType = CaseTypeTest.createTestCaseType(id);
+                CaseType caseType = WFNetUtil.createCaseType(id);
                 caseTypeManager.registerCaseType(caseType);
                 System.out.println("ok.");
             } else if (operation.equals("r")) {
@@ -251,7 +252,7 @@ public class BossaBrowser {
                 int resId = Integer.parseInt(tokenizer.nextToken());
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
                 Resource res = (Resource) lastResourceList.get(resId);
-                Activity a = wi.open(res.getId());
+                Activity a = wi.open(res);
                 System.out.println("ok. Activity: " + a.getId());
             } else if (operation.equals("cl")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
@@ -268,11 +269,13 @@ public class BossaBrowser {
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("f")) {
                 int listId = Integer.parseInt(tokenizer.nextToken());
+                int resId = Integer.parseInt(tokenizer.nextToken());
                 WorkItem wi = (WorkItem) lastWorkItemList.get(listId);
+                Resource res = (Resource) lastResourceList.get(resId);
                 HashMap attributes =
                     (HashMap) cases.get(wi.getCaseType().getId() +
                                         wi.getCase().getId());
-                Activity a = wi.open("jdoe");
+                Activity a = wi.open(res);
                 boolean result = a.close(attributes);
                 System.out.println("ok. Success=" + result);
             } else if (operation.equals("vs")) {

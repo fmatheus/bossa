@@ -27,10 +27,10 @@ package com.bigbross.bossa.work;
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestSuite;
 import com.bigbross.bossa.resource.ResourceManager;
-import com.bigbross.bossa.resource.ResourceManagerTest;
+import com.bigbross.bossa.resource.ResourceUtil;
 import com.bigbross.bossa.wfnet.CaseType;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
-import com.bigbross.bossa.wfnet.CaseTypeManagerTest;
+import com.bigbross.bossa.wfnet.WFNetUtil;
 import com.bigbross.bossa.wfnet.CaseTypeTest;
 
 import junit.framework.TestCase;
@@ -51,8 +51,8 @@ public class WorkManagerTest extends TestCase {
         workManager = bossa.getWorkManager();
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();
-        CaseTypeManagerTest.prepareWorkTest(caseTypeManager);
-        ResourceManagerTest.prepareWorkTest(resourceManager);
+        WFNetUtil.prepareWorkTest(caseTypeManager);
+        ResourceUtil.prepareWorkTest(resourceManager);
     }
 
     public void testWorkItemList() {
@@ -61,7 +61,7 @@ public class WorkManagerTest extends TestCase {
     }
     
     public void testActivitiesList() {
-        CaseTypeManagerTest.createActWorkTest(caseTypeManager);
+        WFNetUtil.createActWorkTest(caseTypeManager);
         assertEquals(1, workManager.getActivities("joe").size());
     }
 }

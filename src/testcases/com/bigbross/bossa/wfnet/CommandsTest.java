@@ -24,24 +24,33 @@
 
 package com.bigbross.bossa.wfnet;
 
-import junit.framework.TestCase;
-
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
+import com.bigbross.bossa.BossaTestSuite;
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceUtil;
+import junit.framework.TestCase;
 
 public class CommandsTest extends TestCase {
 
     private CaseTypeManager caseTypeManager;
+
+    private Resource jdoe;
 
     public CommandsTest(String name) {
 	super(name);
     }
 
     protected void setUp() {
-	System.out.println("Setting up a command test.");
+	System.out.println("Setting up a wfnet command test.");
     
-        caseTypeManager = new CaseTypeManager();
+        Bossa bossa = BossaTestSuite.createTestBossa();
+        caseTypeManager = bossa.getCaseTypeManager();
+
+        jdoe = ResourceUtil.createResource(bossa.getResourceManager(), "jdoe");
+
         caseTypeManager.registerCaseTypeImpl(
-            CaseTypeTest.createTestCaseType("theTestCaseType"));
+            WFNetUtil.createCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
         try {
             caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
@@ -52,7 +61,7 @@ public class CommandsTest extends TestCase {
     }
 
     public void testRegisterCaseType() {
-        CaseType caseType = CaseTypeTest.createTestCaseType("anotherTestCaseType");
+        CaseType caseType = WFNetUtil.createCaseType("anotherTestCaseType");
         RegisterCaseType command = new RegisterCaseType(caseType);
         
         command.execute(caseTypeManager);
@@ -73,7 +82,7 @@ public class CommandsTest extends TestCase {
     public void testOpenWorkItem() {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
-        OpenWorkItem command = new OpenWorkItem(wi, "jdoe");
+        OpenWorkItem command = new OpenWorkItem(wi, jdoe);
 
         try {
             Activity act = (Activity) command.execute(caseTypeManager);
@@ -93,7 +102,7 @@ public class CommandsTest extends TestCase {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         try {
-            Activity activity = caze.open(wi, "jdoe");
+            Activity activity = caze.open(wi, jdoe);
             CloseActivity command = new CloseActivity(activity, null);
         
             assertEquals(1, caze.getActivities().size());
@@ -113,7 +122,7 @@ public class CommandsTest extends TestCase {
         Case caze = caseTypeManager.getCaseType("theTestCaseType").getCase(1);
         WorkItem wi = (WorkItem) caze.getWorkItems().get(0);
         try {
-            Activity activity = caze.open(wi, "jdoe");
+            Activity activity = caze.open(wi, jdoe);
             CancelActivity command = new CancelActivity(activity);
         
             assertEquals(1, caze.getActivities().size());

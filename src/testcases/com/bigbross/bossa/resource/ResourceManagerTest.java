@@ -38,17 +38,6 @@ public class ResourceManagerTest extends TestCase {
 	super(name);
     }
 
-    public static void prepareWorkTest(ResourceManager resourceManager) {
-        Resource sol = resourceManager.createResourceImpl("requesters");
-        Resource com = resourceManager.createResourceImpl("sales");
-        Resource dir = resourceManager.createResourceImpl("directors");
-        Resource joe = resourceManager.createResourceImpl("joe");
-        Resource mar = resourceManager.createResourceImpl("mary");
-        Resource pan = resourceManager.createResourceImpl("pan");
-        sol.includeImpl(joe); sol.includeImpl(mar); sol.includeImpl(pan);
-        com.includeImpl(joe); sol.includeImpl(pan);
-        dir.includeImpl(mar);
-    }
 
     protected void setUp() {
 	System.out.println("Setting up a resource manager test.");

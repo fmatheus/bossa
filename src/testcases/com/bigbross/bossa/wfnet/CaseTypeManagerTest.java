@@ -27,30 +27,18 @@ package com.bigbross.bossa.wfnet;
 import java.util.List;
 
 import com.bigbross.bossa.BossaException;
-
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceUtil;
 import junit.framework.TestCase;
 
 public class CaseTypeManagerTest extends TestCase {
+
+    static final Resource joe = ResourceUtil.createResource("joe");
 
     CaseTypeManager caseTypeManager;
 
     public CaseTypeManagerTest(String name) {
 	super(name);
-    }
-
-    public static void prepareWorkTest(CaseTypeManager caseTypeManager) {
-        caseTypeManager.registerCaseTypeImpl(
-            CaseTypeTest.createTestCaseType("theCaseType"));
-    }
-
-    public static void createActWorkTest(CaseTypeManager caseTypeManager) {
-        WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
-        try {
-            wi.getCase().open(wi, "joe");
-        } catch (EvaluationException e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
     }
 
     protected void setUp() {
@@ -60,21 +48,21 @@ public class CaseTypeManagerTest extends TestCase {
 
     public void testRegisterCaseType() {
         assertTrue(caseTypeManager.registerCaseTypeImpl(
-                        CaseTypeTest.createTestCaseType("test1")));
+                        WFNetUtil.createCaseType("test1")));
         assertFalse(caseTypeManager.registerCaseTypeImpl(
-                        CaseTypeTest.createTestCaseType("test1")));
+                        WFNetUtil.createCaseType("test1")));
     }
     
     public void testQueryCaseType() {
-        CaseType expected = CaseTypeTest.createTestCaseType("test1");
+        CaseType expected = WFNetUtil.createCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         assertSame(expected, caseTypeManager.getCaseType("test1"));
     }
 
     public void testQueryAllCaseTypes() {
-        CaseType ct1 = CaseTypeTest.createTestCaseType("test1");
-        CaseType ct2 = CaseTypeTest.createTestCaseType("test2");
+        CaseType ct1 = WFNetUtil.createCaseType("test1");
+        CaseType ct2 = WFNetUtil.createCaseType("test2");
 
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
@@ -88,7 +76,7 @@ public class CaseTypeManagerTest extends TestCase {
     }
     
     public void testRemoveCaseType() {
-        CaseType expected = CaseTypeTest.createTestCaseType("test1");
+        CaseType expected = WFNetUtil.createCaseType("test1");
         
         assertTrue(caseTypeManager.registerCaseTypeImpl(expected));
         caseTypeManager.removeCaseTypeImpl("test1");
@@ -96,8 +84,8 @@ public class CaseTypeManagerTest extends TestCase {
     }
     
     public void testGetWorkItems() {
-        CaseType ct1 = CaseTypeTest.createTestCaseType("test1");
-        CaseType ct2 = CaseTypeTest.createTestCaseType("test2");
+        CaseType ct1 = WFNetUtil.createCaseType("test1");
+        CaseType ct2 = WFNetUtil.createCaseType("test2");
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
         
@@ -106,13 +94,13 @@ public class CaseTypeManagerTest extends TestCase {
     }
 
     public void testGetActivities() {
-        CaseType ct1 = CaseTypeTest.createTestCaseType("test1");
-        CaseType ct2 = CaseTypeTest.createTestCaseType("test2");
+        CaseType ct1 = WFNetUtil.createCaseType("test1");
+        CaseType ct2 = WFNetUtil.createCaseType("test2");
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct1));
         assertTrue(caseTypeManager.registerCaseTypeImpl(ct2));
         WorkItem wi = (WorkItem) caseTypeManager.getWorkItems(true).get(0);
         try {
-            wi.getCase().open(wi, "joe");
+            wi.getCase().open(wi, joe);
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());

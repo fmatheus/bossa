@@ -27,6 +27,8 @@ package com.bigbross.bossa.wfnet;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceUtil;
 import junit.framework.TestCase;
 
 public class CaseTypeTest extends TestCase {
@@ -39,73 +41,14 @@ public class CaseTypeTest extends TestCase {
     	System.out.println("Setting up a case type test.");
     }
 
-    public static CaseType createTestCaseType() {
-        return createTestCaseType("Testing 1,2,3...");
-    }
-
-    public static CaseType createTestCaseType(String id) {
-     
-        CaseType caseType = new CaseType(id);
-
-        Place A = caseType.registerPlace("A");
-        Place B = caseType.registerPlace("B");
-        Place C = caseType.registerPlace("C");
-        Place D = caseType.registerPlace("D");
-        Place E = caseType.registerPlace("E");
-        Place F = caseType.registerPlace("F");
-        Place G = caseType.registerPlace("G");
-        Place H = caseType.registerPlace("H");
-
-        Transition a = caseType.registerTransition("a", "requesters");
-        Transition b = caseType.registerTransition("b", "sales");
-        Transition c = caseType.registerTransition("c", "direstors");
-        Transition d = caseType.registerTransition("d", "sales");
-        Transition e = caseType.registerTransition("e", "sales");
-        Transition f = caseType.registerTransition("f", "requesters");
-
-	caseType.buildMap();
-
-        a.input(A,  "1");
-        a.output(B, "1");
-
-        b.input(B,  "1");
-        b.output(C, "!SOK");
-        b.output(D, "SOK && DIR");
-        b.output(E, "SOK && !DIR");
-
-        c.input(D,  "1");
-        c.output(B, "ADIR == 'BACK'");
-        c.output(E, "ADIR == 'OK'");
-        c.output(H, "ADIR == 'CANCEL'");
-
-        d.input(E,  "1");
-        d.output(F, "1");
-
-        e.input(F,  "1");
-        e.output(G, "1");
-
-        f.input(C,  "1");
-        f.output(B, "1");
-        f.output(H, "1");
-
-        try {        
-            caseType.buildTemplate(new int[] {1,0,0,0,0,0,0,0});
-        } catch (EvaluationException exception) {
-            exception.printStackTrace();
-            fail(exception.toString());
-        }
-
-        return caseType;
-    }
-
     public void testCreation() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         assertNotNull(caseType);
     }
 
     public void testWeights() {
 
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         Transition a = caseType.getTransition("a");
         Transition b = caseType.getTransition("b");
         Place A = caseType.getPlace("A");
@@ -124,7 +67,7 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testTemplate() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         Case template = caseType.getTemplate();
         assertNotNull(template);
         assertEquals(0, template.getId());
@@ -136,7 +79,7 @@ public class CaseTypeTest extends TestCase {
     public void testNewCase() {
         Case caze = null;
         try {
-            caze = createTestCaseType().newCase(new int[] {1,0,0,0,0,0,0,0});
+            caze = WFNetUtil.createCaseType("test").newCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -145,7 +88,7 @@ public class CaseTypeTest extends TestCase {
     }
     
     public void testGetCase() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         Case caze = null;
         try {
             caze = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
@@ -157,7 +100,7 @@ public class CaseTypeTest extends TestCase {
     }        
 
     public void testGetAllCases() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         try {
             caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
             caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
@@ -175,7 +118,7 @@ public class CaseTypeTest extends TestCase {
     }
     
     public void testGetWorkItems() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
         Case c1 = null;
         Case c2 = null;
         try {
@@ -198,14 +141,15 @@ public class CaseTypeTest extends TestCase {
     }
 
     public void testGetActivities() {
-        CaseType caseType = createTestCaseType();
+        CaseType caseType = WFNetUtil.createCaseType("test");
+        Resource jdoe = ResourceUtil.createResource("jdoe");
         Case c1 = null;
         Case c2 = null;
         try {
             c1 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
             c2 = caseType.newCase(new int[] {1,0,0,0,0,0,0,0});
-            c1.open(c1.getWorkItem("a"), "jdoe");
-            c2.open(c2.getWorkItem("a"), "jdoe");
+            c1.open(c1.getWorkItem("a"), jdoe);
+            c2.open(c2.getWorkItem("a"), jdoe);
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());

@@ -131,7 +131,7 @@ nets, somewhat similar to the one we use, see Section 4 of:
 http://tmitwww.tm.tue.nl/staff/wvdaalst/Publications/p53.pdf
 
 We will document our Petri model soon. For now a look at the code of
-CaseTypeTest.createTestCaseType() in the testcases directory.
+WFNetUtil.createCaseType() in the testcases directory.
 
 Once the case type is defined, cases can be created to represent the
 enactment of individual workflows. This involves opening, closing and

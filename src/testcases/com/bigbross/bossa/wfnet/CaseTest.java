@@ -29,10 +29,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.bigbross.bossa.BossaException;
-
+import com.bigbross.bossa.resource.Resource;
+import com.bigbross.bossa.resource.ResourceUtil;
 import junit.framework.TestCase;
 
 public class CaseTest extends TestCase {
+
+    static final Resource jdoe = ResourceUtil.createResource("jdoe");
 
     public CaseTest(String name) {
 	super(name);
@@ -44,7 +47,7 @@ public class CaseTest extends TestCase {
 
     Case newTestCase() {
         try {
-            return CaseTypeTest.createTestCaseType().
+            return WFNetUtil.createCaseType("test").
 	       newCase(new int[] {1,0,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
@@ -63,7 +66,7 @@ public class CaseTest extends TestCase {
 
     private boolean fire(Case caze, String workItemId, Map attributes) {
         try {
-            Activity act = caze.open(caze.getWorkItem(workItemId), "jdoe");
+            Activity act = caze.open(caze.getWorkItem(workItemId), jdoe);
             if (act != null) {
                 return caze.close(act, attributes);
             }
@@ -113,7 +116,7 @@ public class CaseTest extends TestCase {
         int[] start = caze.getMarking();
 
         try {
-            Activity act = caze.open(caze.getWorkItem("a"), "jdoe");
+            Activity act = caze.open(caze.getWorkItem("a"), jdoe);
             assertNotNull(act);
             assertTrue(caze.cancel(act));
         } catch (EvaluationException e) {
@@ -147,16 +150,16 @@ public class CaseTest extends TestCase {
     }
 
     public void testAutomaticCreation() {
-	Case template = CaseTypeTest.createTestCaseType().getTemplate();
+	Case template = WFNetUtil.createCaseType("test").getTemplate();
 
         try {
-            Activity a1 = template.open(template.getWorkItem("a"), "jdoe");
+            Activity a1 = template.open(template.getWorkItem("a"), jdoe);
 	    Case caze = a1.getCase();
             assertEquals(1, caze.getId());
 
             assertTrue(caze.cancel(a1));
 
-            Activity a2 = caze.open(caze.getWorkItem("a"), "jdoe");
+            Activity a2 = caze.open(caze.getWorkItem("a"), jdoe);
             assertEquals(1, a2.getCase().getId());
         } catch (EvaluationException e) {
             e.printStackTrace();
@@ -167,7 +170,7 @@ public class CaseTest extends TestCase {
     public void testWorkItensList() {
         Case caze = null;
         try {
-            caze = CaseTypeTest.createTestCaseType().
+            caze = WFNetUtil.createCaseType("test").
                 newCase(new int[] {1,1,0,0,0,0,0,0});
         } catch (EvaluationException e) {
             e.printStackTrace();
@@ -187,7 +190,7 @@ public class CaseTest extends TestCase {
         Case caze = newTestCase();
         WorkItem wi = caze.getWorkItem("a");
         try {
-            caze.open(wi, "jdoe");
+            caze.open(wi, jdoe);
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -202,14 +205,14 @@ public class CaseTest extends TestCase {
     public void testActivitiesList() {
         Case caze = null;
         try {
-            caze = CaseTypeTest.createTestCaseType().
+            caze = WFNetUtil.createCaseType("test").
                 newCase(new int[] {2,0,0,0,0,0,0,0});
             WorkItem wi = caze.getWorkItem("a");
 
-            caze.open(wi, "jdoe");
+            caze.open(wi, jdoe);
             assertEquals(1, caze.getActivities().size());
 
-            caze.open(wi, "jdoe");
+            caze.open(wi, jdoe);
             List activities = caze.getActivities();
             assertEquals(2, activities.size());
 
@@ -217,7 +220,7 @@ public class CaseTest extends TestCase {
             Activity a1 = (Activity) activities.get(1);
             assertNotSame(a0, a1);
             assertSame(a0.getTransition(), a1.getTransition());
-            assertEquals("jdoe", a0.getResource());
+            assertEquals(jdoe, a0.getResource());
         } catch (EvaluationException e) {
             e.printStackTrace();
             fail(e.toString());
