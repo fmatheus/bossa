@@ -128,4 +128,10 @@ public class CaseTypeTest extends TestCase {
     public void testNewCase() {
         assertNotNull(createTestCaseType().newCase());
     }
+    
+    public void testGetCase() {
+        CaseType caseType = createTestCaseType();
+        Case caze = caseType.newCase();
+        assertSame(caze, caseType.getCase(caze.id));
+    }        
 }

@@ -24,11 +24,9 @@
 
 package com.bigbross.bossa.wfnet;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,27 +45,27 @@ public class CaseType {
 
     private Edge[][] edges;
 
-    private List cases;
+    private Map cases;
 
     private int caseSequence;
 
     /**
      * Creates a new case type, without any places or transitions. <p>
      * 
-     * @param id The id of the new case type.
+     * @param id the id of the new case type.
      */
     public CaseType(String id) {
         this.id = id;
         this.transitions = new HashMap();
         this.places = new HashMap();
-        this.cases = new ArrayList();
+        this.cases = new HashMap();
         this.caseSequence = 0;
     }
 
     /**
      * Returns the id of this case type. <p>
      * 
-     * @return The id of this case type.
+     * @return the id of this case type.
      */
     public String getId() {
         return id;
@@ -141,6 +139,47 @@ public class CaseType {
 	setEdge(t.index, p.index, edge);
     }
 
+    /**
+     * Returns the next case id for this case type. The case id is a
+     * positive integer. <p>
+     * 
+     * @return the next case id.
+     */
+    int nextCaseId() {
+        return ++caseSequence;
+    }
+
+    /**
+     * Creates a new case with no tokens. <p>
+     * 
+     * @return the newly created case.
+     */
+    Case newCase() {
+        return newCase(new int[places.size()]);
+    }
+
+    /**
+     * Creates a new case with the provided tokens. <p>
+     * 
+     * @return the newly created case.
+     */
+    Case newCase(int[] marking) {
+        Case caze = new Case(this, marking);
+        cases.put(new Integer(caze.id), caze);
+        return caze;
+    }
+    
+    /**
+     * Returns a case by its id. <p>
+     * 
+     * @param id the case id.
+     * @return the case with the provided id, <code>null</code> if
+     *         this case does not exists.
+     */
+    public Case getCase(int id) {
+        return (Case) cases.get(new Integer(id));
+    }
+
     private void sync() {
 	if (edges == null) {
 	    Edge edge = new Edge();
@@ -171,17 +210,4 @@ public class CaseType {
 
 	return string.toString();
     }
-
-    int nextCaseId() {
-	return ++caseSequence;
-    }
-
-    public Case newCase() {
-	return new Case(this, new int[places.size()]);
-    }
-
-    public Case newCase(int[] marking) {
-	return new Case(this, marking);
-    }
-
 }
