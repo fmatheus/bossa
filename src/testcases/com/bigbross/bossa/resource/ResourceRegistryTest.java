@@ -48,6 +48,11 @@ public class ResourceRegistryTest extends TestCase {
         Resource r = resourceRegistry.createResourceImpl("r1");
         assertSame(r, resourceRegistry.getResource("r1"));
     }
+    
+    public void testNullResourceId() {
+        assertNull(resourceRegistry.createResourceImpl(null));
+        assertNull(resourceRegistry.getResource(null));
+    }
 
     public void testRemoveResource() {
         Resource r = resourceRegistry.createResourceImpl("r1");

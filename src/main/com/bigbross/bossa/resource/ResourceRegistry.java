@@ -234,7 +234,7 @@ public class ResourceRegistry implements Serializable {
      *         <code>null</code> if there is already a resource with this id.
      */    
     public Resource createResourceImpl(String id) {
-        if (!resources.containsKey(id)) {
+        if ((id != null) && !resources.containsKey(id)) {
             Resource resource = new Resource(this, id);
             resources.put(id, resource);
             ResourceEvents.notifySingleResource(
