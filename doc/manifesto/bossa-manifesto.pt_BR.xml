@@ -240,7 +240,7 @@
     <title>Tipo de caso de um departamento de compras.</title>
     <mediaobject>
      <imageobject>
-      <imagedata align="center" fileref="purchase.png"/>
+      <imagedata align="center" fileref="purchase.pt_BR.png"/>
      </imageobject>
      <textobject>
       <phrase>Diagrama em rede de Petri da compra de suprimentos.</phrase>
