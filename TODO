@@ -52,6 +52,10 @@ Refactorings
 
 Minor stuff that would be great if done before 1.0.
 
+* Add some error checking to the case type XML import. Check for
+  missing tags, missing or empty ids, number format exceptions,
+  missing weights, etc.
+
 * Use an object to keep the case marking so we can: 1) Simplify
   get/set marking. 2) Simplify state change notification. 3) Atomic
   set all marking, giving consistent evaluation exception in open(),

@@ -5,879 +5,656 @@
     <place id="p1">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-11" y="2" />
         </graphics>
-        <value></value>
+        <value>start</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-12" y="-41" />
         </graphics>
-        <value>p1</value>
+        <value>Start</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-4" y="-19" />
         </graphics>
-        <value></value>
+        <value>1</value>
       </initialMarking>
       <graphics>
-        
-        <position page="1" x="38" y="62" />
-      
+        <position page="1" x="38" y="63" />
       </graphics>
     </place>
     <place id="p2">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-30" y="5" />
         </graphics>
-        <value></value>
+        <value>newRequest</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-34" y="-44" />
         </graphics>
-        <value>p2</value>
+        <value>New Request</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-4" y="-18" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
-        <position page="1" x="238" y="62" />
-      
+        <position page="1" x="239" y="63" />
       </graphics>
     </place>
     <place id="p3">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="12" y="-4" />
         </graphics>
-        <value></value>
+        <value>needsMoreInformation</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="14" y="-20" />
         </graphics>
-        <value>p3</value>
+        <value>Needs More Information</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-3" y="-18" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
         <position page="1" x="337" y="163" />
-      
       </graphics>
     </place>
     <place id="p4">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-36" y="1" />
         </graphics>
-        <value></value>
+        <value>needsApproval</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-39" y="-45" />
         </graphics>
-        <value>p4</value>
+        <value>Needs Approval</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-3" y="-18" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
         <position page="1" x="438" y="64" />
-      
       </graphics>
     </place>
     <place id="p5">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-25" y="4" />
         </graphics>
-        <value></value>
+        <value>approved</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-25" y="-43" />
         </graphics>
-        <value>p5</value>
+        <value>Approved</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-4" y="-17" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
         <position page="1" x="636" y="63" />
-      
       </graphics>
     </place>
     <place id="p6">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="8" y="1" />
         </graphics>
-        <value></value>
+        <value>arrived</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="8" y="-38" />
         </graphics>
-        <value>p6</value>
+        <value>Arrived</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-4" y="-18" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
-        <position page="1" x="738" y="163" />
-      
+        <position page="1" x="738" y="164" />
       </graphics>
     </place>
     <place id="p7">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-27" y="1" />
         </graphics>
-        <value></value>
+        <value>completed</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-33" y="-41" />
         </graphics>
-        <value>p7</value>
+        <value>Completed</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-3" y="-17" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
         <position page="1" x="637" y="263" />
-      
       </graphics>
     </place>
     <place id="p8">
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-23" y="4" />
         </graphics>
-        <value></value>
+        <value>rejected</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-55" y="-42" />
         </graphics>
-        <value>p8</value>
+        <value>Rejected</value>
       </name>
       <initialMarking>
         <graphics>
-          
-          <offset page="1" x="20" y="23" />
-        
+          <offset page="1" x="-3" y="-18" />
         </graphics>
-        <value></value>
+        <value>0</value>
       </initialMarking>
       <graphics>
-        
-        <position page="1" x="537" y="262" />
-      
+        <position page="1" x="537" y="261" />
       </graphics>
     </place>
     <transition id="t1">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-11" y="5" />
         </graphics>
-        <value></value>
+        <value>staff</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="-17" y="23" />
         </graphics>
-        <value></value>
+        <value>request</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-37" y="-43" />
         </graphics>
-        <value>t1</value>
+        <value>Make Request</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
         <position page="1" x="138" y="63" />
-      
       </graphics>
     </transition>
     <transition id="t2">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-35" y="2" />
         </graphics>
-        <value></value>
+        <value>sales-$request</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="-5" y="19" />
         </graphics>
-        <value></value>
+        <value>analysis</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-34" y="-44" />
         </graphics>
-        <value>t2</value>
+        <value>Initial Analysis</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
         <position page="1" x="336" y="63" />
-      
       </graphics>
     </transition>
     <transition id="t3">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-22" y="3" />
         </graphics>
-        <value></value>
+        <value>directors</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="-20" y="20" />
         </graphics>
-        <value></value>
+        <value>approve</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-23" y="-44" />
         </graphics>
-        <value>t3</value>
+        <value>Approve</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
         <position page="1" x="537" y="63" />
-      
       </graphics>
     </transition>
     <transition id="t4">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="7" y="2" />
         </graphics>
-        <value></value>
+        <value>sales</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="5" y="20" />
         </graphics>
-        <value></value>
+        <value>delivery</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-40" y="-43" />
         </graphics>
-        <value>t4</value>
+        <value>Register Delivery</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
         <position page="1" x="737" y="63" />
-      
       </graphics>
     </transition>
     <transition id="t5">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-11" y="5" />
         </graphics>
-        <value></value>
+        <value>sales</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="-19" y="23" />
         </graphics>
-        <value></value>
+        <value>payment</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="7" y="-39" />
         </graphics>
-        <value>t5</value>
+        <value>Make Payment</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
         <position page="1" x="738" y="263" />
-      
       </graphics>
     </transition>
     <transition id="t6">
       <resource>
         <graphics>
-          
-          <offset page="1" x="20" y="46" />
-        
+          <offset page="1" x="-27" y="3" />
         </graphics>
-        <value></value>
+        <value>$request</value>
       </resource>
       <id>
         <graphics>
-          
-          <offset page="1" x="20" y="69" />
-        
+          <offset page="1" x="-42" y="22" />
         </graphics>
-        <value></value>
+        <value>moreInformation</value>
       </id>
       <name>
         <graphics>
-          
-          <offset page="1" x="20" y="0" />
-        
+          <offset page="1" x="-30" y="-44" />
         </graphics>
-        <value>t6</value>
+        <value>More Information</value>
       </name>
       <timeout>
         <graphics>
-          
           <offset page="1" x="20" y="23" />
-        
         </graphics>
         <value></value>
       </timeout>
       <graphics>
-        
-        <position page="1" x="338" y="264" />
-      
+        <position page="1" x="337" y="263" />
       </graphics>
     </transition>
     <arc id="a1" source="p1" target="t1">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-5" y="-31" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="87" y="62" />
-      
       </graphics>
     </arc>
     <arc id="a2" source="t1" target="p2">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-5" y="-31" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="188" y="62" />
-      
       </graphics>
     </arc>
     <arc id="a3" source="p2" target="t2">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-5" y="-31" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="287" y="62" />
-      
       </graphics>
     </arc>
     <arc id="a4" source="t2" target="p3">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
-          <offset page="1" x="-32" y="-24" />
-        
+          <offset page="1" x="-32" y="-12" />
         </graphics>
         <value>!SOK</value>
       </weight>
       <graphics>
-        
         <position page="1" x="336" y="113" />
-      
       </graphics>
     </arc>
     <arc id="a5" source="p3" target="t6">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="6" y="-24" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="337" y="213" />
-      
       </graphics>
     </arc>
     <arc id="a6" source="t6" target="p2">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
-          <offset page="1" x="-18" y="-26" />
-        
+          <offset page="1" x="-24" y="-18" />
         </graphics>
-        <value>1</value>
+        <value>OK</value>
       </weight>
       <graphics>
-        
         <position page="1" x="288" y="163" />
-      
       </graphics>
     </arc>
     <arc id="a7" source="t6" target="p8">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
-          <offset page="1" x="-6" y="-31" />
-        
+          <offset page="1" x="-17" y="-32" />
         </graphics>
-        <value>1</value>
+        <value>!OK</value>
       </weight>
       <graphics>
-        
         <position page="1" x="442" y="264" />
-      
       </graphics>
     </arc>
     <arc id="a8" source="t2" target="p4">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-33" y="-30" />
-        
         </graphics>
         <value>SOK &amp;&amp; DIR</value>
       </weight>
       <graphics>
-        
         <position page="1" x="388" y="63" />
-      
       </graphics>
     </arc>
     <arc id="a9" source="p4" target="t3">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-6" y="-31" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="487" y="63" />
-      
       </graphics>
     </arc>
     <arc id="a10" source="t3" target="p5">
       <name>
         <graphics>
-          
           <offset page="1" x="-34" y="-30" />
-        
         </graphics>
-        <value>ADIR=="ok"</value>
+        <value></value>
       </name>
       <weight>
         <graphics>
-          
-          <offset page="1" x="10" y="23" />
-        
+          <offset page="1" x="-30" y="-29" />
         </graphics>
-        <value></value>
+        <value>ADIR=='ok'</value>
       </weight>
       <graphics>
-        
-        <position page="1" x="586" y="63" />
-      
+        <position page="1" x="584" y="62" />
       </graphics>
     </arc>
     <arc id="a11" source="t2" target="p5">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-52" y="-67" />
-        
         </graphics>
         <value>SOK &amp;&amp; !DIR</value>
       </weight>
       <graphics>
-        
         <position page="1" x="488" y="189" />
-      
       </graphics>
     </arc>
     <arc id="a12" source="t3" target="p2">
       <name>
         <graphics>
-          
           <offset page="1" x="-39" y="22" />
-        
         </graphics>
-        <value>ADIR=="back"</value>
+        <value></value>
       </name>
       <weight>
         <graphics>
-          
-          <offset page="1" x="10" y="23" />
-        
+          <offset page="1" x="-41" y="20" />
         </graphics>
-        <value></value>
+        <value>ADIR=='back'</value>
       </weight>
       <graphics>
-        
         <position page="1" x="386" y="-47" />
-      
       </graphics>
     </arc>
     <arc id="a13" source="p5" target="t4">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-8" y="-31" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="683" y="64" />
-      
       </graphics>
     </arc>
     <arc id="a14" source="t3" target="p8">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="9" y="-13" />
-        
         </graphics>
-        <value>ADIR=="cancel"</value>
+        <value>ADIR=='cancel'</value>
       </weight>
       <graphics>
-        
         <position page="1" x="537" y="162" />
-      
       </graphics>
     </arc>
     <arc id="a15" source="t4" target="p6">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-16" y="-16" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="737" y="113" />
-      
       </graphics>
     </arc>
     <arc id="a16" source="p6" target="t5">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-15" y="-17" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="738" y="213" />
-      
       </graphics>
     </arc>
     <arc id="a17" source="t5" target="p7">
       <name>
         <graphics>
-          
           <offset page="1" x="10" y="0" />
-        
         </graphics>
         <value></value>
       </name>
       <weight>
         <graphics>
-          
           <offset page="1" x="-7" y="-32" />
-        
         </graphics>
         <value>1</value>
       </weight>
       <graphics>
-        
         <position page="1" x="687" y="263" />
-      
       </graphics>
     </arc>
     <id>
-      <value>purchase_20040301</value>
+      <value>purchase_20040408</value>
     </id>
+    <initialAttributes>
+      <value>SOK=0, DIR=0, OK=0, ADIR=cancel</value>
+    </initialAttributes>
     <name>
       <value>Purchase Workflow</value>
     </name>
