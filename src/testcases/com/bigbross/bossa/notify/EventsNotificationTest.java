@@ -24,21 +24,28 @@
 
 package com.bigbross.bossa.notify;
 
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.TestCase;
 
 import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaTestUtil;
+import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceManager;
+import com.bigbross.bossa.wfnet.Activity;
 import com.bigbross.bossa.wfnet.CaseTypeManager;
+import com.bigbross.bossa.wfnet.WFNetEvents;
 import com.bigbross.bossa.wfnet.WFNetUtil;
+import com.bigbross.bossa.wfnet.WorkItem;
+import com.bigbross.bossa.work.WorkManager;
 
 public class EventsNotificationTest extends TestCase {
 
     private CaseTypeManager caseTypeManager;
     private ResourceManager resourceManager;
-    private NotificationBus bus;
+    private WorkManager workManager;
+    private Resource frank;
     private MemoryListener listener;
     
     public EventsNotificationTest(String name) {
@@ -49,25 +56,96 @@ public class EventsNotificationTest extends TestCase {
         Bossa bossa = BossaTestUtil.createCompleteTestBossa();
         caseTypeManager = bossa.getCaseTypeManager();
         resourceManager = bossa.getResourceManager();
-        bus = bossa.getNotificationBus();
+        frank = resourceManager.getResource("frank");
+        workManager = bossa.getWorkManager();
         
         listener = new MemoryListener("test", 0, null);
-        bus.registerListener(listener);
+        bossa.getNotificationBus().registerListener(listener);
     }
 
-    public void testRegisterRemoveCaseType() throws Exception {
+    public void testLogRegisterRemoveCaseType() throws Exception {
         String caseTypeId = "created";
         caseTypeManager.registerCaseType(WFNetUtil.createCaseType(caseTypeId));
         caseTypeManager.removeCaseType(caseTypeId);
+
         List events = listener.getNotifications();
         assertEquals(2, events.size());
         Event event = (Event) events.get(0);
         assertEquals(Event.WFNET_EVENT, event.getType());
-        assertEquals("register_case_type", event.getId());
-        assertEquals(caseTypeId, event.getAttributes().get("case_type_id"));
+        assertEquals(WFNetEvents.ID_REGISTER_CASE_TYPE, event.getId());
+        assertEquals(caseTypeId,
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
         event = (Event) events.get(1);
         assertEquals(Event.WFNET_EVENT, event.getType());
-        assertEquals("remove_case_type", event.getId());
-        assertEquals(caseTypeId, event.getAttributes().get("case_type_id"));
+        assertEquals(WFNetEvents.ID_REMOVE_CASE_TYPE, event.getId());
+        assertEquals(caseTypeId,
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+    }
+
+    public void testLogOpenWorkItem() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        wi.open(frank);
+
+        List events = listener.getNotifications();
+        assertEquals(1, events.size());
+        Event event = (Event) events.get(0);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_OPEN_WORK_ITEM, event.getId());
+        assertEquals(wi.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_WORK_ITEM_ID));
+        /* Starting work item will create a new case, so we have "+ 1". */
+        assertEquals(new Integer(wi.getCase().getId() + 1),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(wi.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
+    }
+
+    public void testLogCloseActivity() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        Activity act = wi.open(frank);
+        HashMap newAttrib = new HashMap();
+        act.close(newAttrib);
+
+        List events = listener.getNotifications();
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(1);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_CLOSE_ACTIVITY, event.getId());
+        assertEquals(new Integer(act.getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
+        assertEquals(act.getTransition().getId(), /* FIXME */
+            event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
+        assertEquals(new Integer(act.getCase().getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(act.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
+        assertEquals(newAttrib,
+            event.getAttributes().get(WFNetEvents.ATTRIB_NEW_CASE_ATTRIBUTES));
+    }
+
+    public void testLogCancelActivity() throws Exception {
+        WorkItem wi = (WorkItem) workManager.getWorkItems(frank, true).get(0);
+        Activity act = wi.open(frank);
+        act.cancel();
+
+        List events = listener.getNotifications();
+        assertEquals(2, events.size());
+        Event event = (Event) events.get(1);
+        assertEquals(Event.WFNET_EVENT, event.getType());
+        assertEquals(WFNetEvents.ID_CANCEL_ACTIVITY, event.getId());
+        assertEquals(new Integer(act.getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_ID));
+        assertEquals(act.getTransition().getId(), /* FIXME */
+            event.getAttributes().get(WFNetEvents.ATTRIB_ACTIVITY_WI_ID));
+        assertEquals(new Integer(act.getCase().getId()),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_ID));
+        assertEquals(act.getCaseType().getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_CASE_TYPE_ID));
+        assertEquals(frank.getId(),
+            event.getAttributes().get(WFNetEvents.ATTRIB_RESOURCE_ID));
     }
 }

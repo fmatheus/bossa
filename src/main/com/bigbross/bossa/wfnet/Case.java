@@ -33,11 +33,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
+
+import com.bigbross.bossa.Bossa;
 import com.bigbross.bossa.BossaException;
 import com.bigbross.bossa.resource.Resource;
 import com.bigbross.bossa.resource.ResourceRegistry;
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
 
 /**
  * This class represents a specific instance of a case type. It
@@ -68,7 +70,7 @@ public class Case implements Serializable {
     /**
      * Creates a new case, using the provided marking. An initial scan of
      * the provided marking is performed, and appropriate work items are
-     * created.
+     * created. <p>
      * 
      * @param caseType the case type of this case.
      * @param marking the initial marking (tokens).
@@ -78,7 +80,8 @@ public class Case implements Serializable {
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    Case(CaseType caseType, int[] marking, Map attributes) throws BossaException {
+    Case(CaseType caseType, int[] marking, Map attributes)
+        throws BossaException {
 
 	this.caseType = caseType;
 	this.marking = marking;
@@ -105,7 +108,7 @@ public class Case implements Serializable {
     }
 
     /**
-     * Creates a new case, using the provided template.
+     * Creates a new case, using the provided template. <p>
      * 
      * @param template the <code>Case</code> to be used as template.
      * @exception SetAttributeException if the underlying expression
@@ -126,7 +129,8 @@ public class Case implements Serializable {
 	workItems = new WorkItem[template.workItems.length];
 	for (int i = 0; i < workItems.length; ++i) {
             WorkItem wi = template.workItems[i];
-	    workItems[i] = new WorkItem(this, wi.getTransition(), wi.isFireable());
+	    workItems[i] = new WorkItem(this, wi.getTransition(),
+                                        wi.isFireable());
 	}
 
         this.id = caseType.nextCaseId();
@@ -135,7 +139,7 @@ public class Case implements Serializable {
     }
 
     /**
-     * Returns the id of this case.
+     * Returns the id of this case. <p>
      * 
      * @return the id of this case.
      */
@@ -144,17 +148,32 @@ public class Case implements Serializable {
     }
 
     /**
-     * Returns the case type of this case.
+     * Returns the case type of this case. <p>
      * 
      * @return the case type of this case.
      */
     public CaseType getCaseType() {
-	return caseType;
+	return this.caseType;
+    }
+
+    /**
+     * Returns the bossa engine this case is part, if any. <p>
+     * 
+     * @return the bossa engine this case is part, <code>null</code> if not
+     *         part of a bossa engine.
+     */
+    Bossa getBossa() {
+        if (getCaseType() != null && 
+            getCaseType().getCaseTypeManager() != null) {
+            return getCaseType().getCaseTypeManager().getBossa();
+        } else {
+            return null;
+        }
     }
 
     /**
      * Returns a copy of the internal state of the case, that is, how many
-     * tokens are in each place.
+     * tokens are in each place. <p>
      * 
      * @return the marking.
      */
@@ -203,7 +222,7 @@ public class Case implements Serializable {
      * Returns a specific work item, selected by its id. <p>
      * 
      * FIXME: Maybe we should return null also if the work item is not
-     * fireable.
+     * fireable. <p>
      * 
      * @param id the work item id.
      * @return the work item, <code>null</code> if there is no work item
@@ -243,7 +262,7 @@ public class Case implements Serializable {
     /**
      * Returns the next activity id for this case. <p>
      * 
-     * @return The next activity id.
+     * @return the next activity id.
      */ 
     int nextActivityId() {
 	return activitySequence++;
@@ -260,7 +279,7 @@ public class Case implements Serializable {
     }
 
     /**
-     * Declares an attribute to be used at expression evaluation.
+     * Declares an attribute to be used at expression evaluation. <p>
      *
      * @param id the attribute identifier.
      * @param value an <code>Object</code> with the attribute value.
@@ -278,7 +297,7 @@ public class Case implements Serializable {
     }
 
     /**
-     * Declares all the attributes to be used at expression evaluation.
+     * Declares all the attributes to be used at expression evaluation. <p>
      *
      * @param attributes a <code>Map</code> of attributes to be declared.
      * @exception SetAttributeException if the underlying expression
@@ -411,12 +430,15 @@ public class Case implements Serializable {
             getResourceRegistry().getResource(wi.getTransition().getId());
         if (group == null) {
             group = getResourceRegistry().createResourceImpl(
-                                                wi.getTransition().getId());
+                        wi.getTransition().getId());
         }
         group.includeImpl(resource);
 
         Activity activity = new Activity(wi, resource);
         activities.put(new Integer(activity.getId()), activity);
+
+        WFNetEvents.notifyWorkItem(getBossa(), WFNetEvents.ID_OPEN_WORK_ITEM,
+                                   wi, resource);
 
 	return activity;
     }
@@ -465,6 +487,9 @@ public class Case implements Serializable {
 	int actives = activate();
         activities.remove(new Integer(activity.getId()));
 
+        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CLOSE_ACTIVITY,
+                                   activity, newAttributes);
+
         if (actives == 0 && activities.size() == 0) {
             caseType.closeCase(this);
         }
@@ -502,10 +527,14 @@ public class Case implements Serializable {
 	activate();
 
         Resource resource = activity.getResource();
-        Resource group = getResourceRegistry().getResource(activity.getTransition().getId());
+        Resource group = getResourceRegistry().getResource(
+                            activity.getTransition().getId());
         group.removeImpl(resource);
 
         activities.remove(new Integer(activity.getId()));
+
+        WFNetEvents.notifyActivity(getBossa(), WFNetEvents.ID_CANCEL_ACTIVITY,
+                                   activity, null);
 
 	return true;
     }
