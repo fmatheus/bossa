@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -71,23 +72,33 @@ public class Case implements Serializable {
     private WFNetEvents eventQueue;
 
     /**
-     * Creates a new case, using the provided marking. An initial scan of
-     * the provided marking is performed, and appropriate work items are
-     * created. <p>
+     * Creates a new case, using the provided token count and attributes.
+     * Appropriate work items are activated according to the provided
+     * data. <p>
      * 
      * @param caseType the case type of this case.
-     * @param marking the initial marking (tokens).
+     * @param state the initial token count as a map (<code>String</code>, 
+     *              <code>Integer</code>), indexed by the place id.
+     *              This state map must have a token count for every place.
      * @param attributes the initial attributes.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      * @exception EvaluationException if an expression evaluation error
      *            occurs.
      */
-    Case(CaseType caseType, int[] marking, Map attributes)
+    Case(CaseType caseType, Map state, Map attributes)
         throws BossaException {
 
 	this.caseType = caseType;
-	this.marking = marking;
+
+	this.marking = new int[state.size()];
+        Iterator i = state.keySet().iterator();
+        while (i.hasNext()) {
+            String placeId = (String) i.next(); 
+            int newCount = ((Integer) state.get(placeId)).intValue();
+            marking[getCaseType().getPlace(placeId).getIndex()] = newCount;
+        }
+
         this.activities = new HashMap();
         this.activitySequence = 1;
         this.eventQueue = new WFNetEvents();
@@ -99,42 +110,10 @@ public class Case implements Serializable {
 
         Collection ts = caseType.getTransitions();
         workItems = new HashMap(ts.size());
-        for (Iterator i = ts.iterator(); i.hasNext(); ) {
+        for (i = ts.iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();
             /* An EvaluationException can be thrown here. */
             workItems.put(t.getId(), new WorkItem(this, t, isFireable(t)));
-        }
-
-        this.id = caseType.nextCaseId();
-        this.resources = new ResourceRegistry(Integer.toString(id));
-    }
-
-    /**
-     * Creates a new case, using the provided template. <p>
-     * 
-     * @param template the case to be used as template.
-     * @exception SetAttributeException if the underlying expression
-     *            evaluation system has problems setting an attribute.
-     */
-    Case(Case template) throws BossaException {
-
-	this.caseType = template.caseType;
-	this.marking = (int[]) template.marking.clone();
-        this.activities = new HashMap();
-        this.activitySequence = template.activitySequence;
-        this.eventQueue = new WFNetEvents();
-
-        this.attributes = new HashMap();
-	this.bsf = new BSFManager();
-        /* An SetAttributeException can be thrown here. */
-        declare(template.attributes);
-
-        Collection templateWI = template.workItems.values();
-        workItems = new HashMap(templateWI.size());
-        for (Iterator i = templateWI.iterator(); i.hasNext(); ) {
-            WorkItem wi = (WorkItem) i.next();
-            workItems.put(wi.getId(), new WorkItem(this,  wi.getTransition(),
-                                                   wi.isFireable()));
         }
 
         this.id = caseType.nextCaseId();
@@ -265,6 +244,15 @@ public class Case implements Serializable {
         eventQueue.newCaseEvent(getBossa(), WFNetEvents.ID_SET_STATE, this);
         eventQueue.notifyAll(getBossa());
         processTimedFiring(activated);
+    }
+
+    /**
+     * Returns the current attributes of this case. <p>
+     * 
+     * @return the attributes as an unmodifiable map.
+     */
+    public Map getAttributes() {
+        return Collections.unmodifiableMap(attributes);
     }
 
     /**
@@ -486,7 +474,7 @@ public class Case implements Serializable {
 
 	if (isTemplate()) {
             /* An EvaluationException can be consistently thrown here. */
-            Case caze = caseType.openCase();
+            Case caze = caseType.openCaseImpl(null);
 	    return caze.open(caze.getWorkItem(wi.getId()), resource);
 	}
 

@@ -234,12 +234,28 @@ public class CaseType implements Serializable {
     /**
      * Creates a new case using the case type template as initial marking. <p>
      * 
+     * FIXME: put the public version.
+     * 
      * @return the newly created case.
      * @exception SetAttributeException if the underlying expression
      *            evaluation system has problems setting an attribute.
      */
-    Case openCase() throws BossaException {
-        Case caze = new Case(template);
+
+    /**
+     * Creates a new case using the provided state as initial marking. 
+     * If the state is <code>null</code>, the state of the case type
+     * template is used instead. <p>
+     * 
+     * FIXME
+     * 
+     * @param state the state of the created case.
+     * @return the newly created case.
+     * @exception SetAttributeException if the underlying expression
+     *            evaluation system has problems setting an attribute.
+     */
+    Case openCaseImpl(Map state) throws BossaException {
+        Case caze =
+            new Case(this, template.getState(), template.getAttributes());
         cases.put(new Integer(caze.getId()), caze);
         resources.registerSubContext(caze.getResourceRegistry());
         WFNetEvents queue = new WFNetEvents();
@@ -284,12 +300,12 @@ public class CaseType implements Serializable {
             return;
         }
         
-        int[] marking = new int[places.size()];
+        Map state = new HashMap(places.size());
         for (Iterator i = places.values().iterator(); i.hasNext(); ) {
             Place p = (Place) i.next();
-            marking[p.getIndex()] = p.getInitialMarking();
+            state.put(p.getId(), new Integer(p.getInitialMarking()));
         }
-        template = new Case(this, marking, attributes);
+        template = new Case(this, state, attributes);
 
         for (Iterator i = getTransitions().iterator(); i.hasNext(); ) {
             Transition t = (Transition) i.next();

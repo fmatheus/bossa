@@ -53,7 +53,7 @@ public class TransactionsTest extends TestCase {
         caseTypeManager.registerCaseTypeImpl(
             BossaTestUtil.createCaseType("theTestCaseType"));
         CaseType caseType = caseTypeManager.getCaseType("theTestCaseType");
-        caseType.openCase();
+        caseType.openCaseImpl(null);
     }
 
     public void testRegisterCaseType() throws Exception {

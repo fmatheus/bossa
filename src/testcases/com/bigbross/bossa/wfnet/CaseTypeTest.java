@@ -143,14 +143,14 @@ public class CaseTypeTest extends TestCase {
     public void testGetCase() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Case caze = null;
-        caze = caseType.openCase();
+        caze = caseType.openCaseImpl(null);
         assertSame(caze, caseType.getCase(caze.getId()));
     }        
 
     public void testGetAllCases() throws Exception {
         CaseType caseType = BossaTestUtil.createCaseType("test");
-        caseType.openCase();
-        caseType.openCase();
+        caseType.openCaseImpl(null);
+        caseType.openCaseImpl(null);
         
         List l = caseType.getCases();
         assertEquals(2, l.size());
@@ -164,8 +164,8 @@ public class CaseTypeTest extends TestCase {
         CaseType caseType = BossaTestUtil.createCaseType("test");
         Case c1 = null;
         Case c2 = null;
-        c1 = caseType.openCase();
-        c2 = caseType.openCase();
+        c1 = caseType.openCaseImpl(null);
+        c2 = caseType.openCaseImpl(null);
         
         List wi = caseType.getWorkItems();
         assertEquals(2, wi.size());
@@ -183,8 +183,8 @@ public class CaseTypeTest extends TestCase {
         Resource jdoe = ResourceUtil.createResource("jdoe");
         Case c1 = null;
         Case c2 = null;
-        c1 = caseType.openCase();
-        c2 = caseType.openCase();
+        c1 = caseType.openCaseImpl(null);
+        c2 = caseType.openCaseImpl(null);
         c1.open(c1.getWorkItem("a"), jdoe);
         c2.open(c2.getWorkItem("a"), jdoe);
 

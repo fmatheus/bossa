@@ -138,6 +138,49 @@ public class CaseTest extends TestCase {
         CaseTest.sameState(expected, caze.getState());
     }
 
+    public void testAttributes() throws Exception {
+        Case caze = WFNetUtil.createCase();
+        Map attributes = caze.getAttributes();
+        
+        assertEquals(4, attributes.size());
+        assertEquals(new Boolean(false), attributes.get("SOK"));
+        assertEquals(new Boolean(false), attributes.get("DIR"));
+        assertEquals("", attributes.get("ADIR"));
+        assertEquals(new Boolean(false), attributes.get("OK"));
+    }
+    
+    public void testEdgeEvaluation() throws Exception {
+        Case caze = WFNetUtil.createCase();
+        caze.declare("SOK", new Boolean(true));
+        caze.declare("DIR", new Boolean(false));
+        caze.declare("AVL", new Integer(3));
+
+        Edge e1 = Edge.newOutput(null, "AVL * SOK || DIR");
+        Edge e2 = Edge.newInput(null, "AVL * SOK && DIR");
+
+        assertEquals(3, e1.eval(caze));
+        assertEquals(0, e2.eval(caze));
+        
+        e1 = Edge.newInput(null, "AVL * XXX && DIR");
+        try {
+            e1.eval(caze);
+            fail("Undetected undeclared attribute.");
+        } catch (EvaluationException e) {
+        }
+    }
+
+    public void testEdgeOrientation() throws Exception {
+        Case caze = WFNetUtil.createCase();
+
+        Edge output = Edge.newOutput(null, "1");
+        Edge input = Edge.newInput(null, "2");
+
+        assertEquals(1, output.output(caze));
+        assertEquals(2, input.input(caze));
+        assertEquals(0, output.input(caze));
+        assertEquals(0, input.output(caze));
+    }
+
     public void testMachineGun() throws Exception {
         Case caze = WFNetUtil.createCase();
         HashMap attributes = new HashMap();
@@ -166,7 +209,7 @@ public class CaseTest extends TestCase {
         a.output(B, "1");
         a.output(A, "1");
         caseType.buildTemplate(null);
-        Case caze = caseType.openCase();
+        Case caze = caseType.openCaseImpl(null);
         
         Map expected = new HashMap();
         expected.put("A", new Integer(1));
@@ -285,7 +328,7 @@ public class CaseTest extends TestCase {
         assertEquals("bosses", bosses.getId());
         bosses.includeImpl(jdoe, false);
         
-        Case caze = caseType.openCase();
+        Case caze = caseType.openCaseImpl(null);
         assertTrue(caze.getWorkItem("a").canBePerformedBy(jdoe));
         assertFalse(caze.getWorkItem("a").canBePerformedBy(mary));
         assertTrue(caze.getWorkItem("b").canBePerformedBy(jdoe));
@@ -319,37 +362,5 @@ public class CaseTest extends TestCase {
         assertNotSame(a0, a1);
         assertSame(a0.getTransition(), a1.getTransition());
         assertEquals(jdoe, a0.getResource());
-    }
-
-    public void testEdgeEvaluation() throws Exception {
-        Case caze = WFNetUtil.createCase();
-        caze.declare("SOK", new Boolean(true));
-	caze.declare("DIR", new Boolean(false));
-	caze.declare("AVL", new Integer(3));
-
-	Edge e1 = Edge.newOutput(null, "AVL * SOK || DIR");
-	Edge e2 = Edge.newInput(null, "AVL * SOK && DIR");
-
-        assertEquals(3, e1.eval(caze));
-	assertEquals(0, e2.eval(caze));
-        
-        e1 = Edge.newInput(null, "AVL * XXX && DIR");
-        try {
-            e1.eval(caze);
-            fail("Undetected undeclared attribute.");
-        } catch (EvaluationException e) {
-        }
-    }
-
-    public void testEdgeOrientation() throws Exception {
-        Case caze = WFNetUtil.createCase();
-
-        Edge output = Edge.newOutput(null, "1");
-        Edge input = Edge.newInput(null, "2");
-
-        assertEquals(1, output.output(caze));
-        assertEquals(2, input.input(caze));
-        assertEquals(0, output.input(caze));
-        assertEquals(0, input.output(caze));
     }
 }

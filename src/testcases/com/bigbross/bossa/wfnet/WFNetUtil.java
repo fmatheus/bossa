@@ -34,11 +34,11 @@ import com.bigbross.bossa.resource.ResourceUtil;
 public class WFNetUtil {
 
     static Case createCase() throws Exception {
-        return BossaTestUtil.createCaseType("test").openCase();
+        return BossaTestUtil.createCaseType("test").openCaseImpl(null);
     }
 
     static Case createCase(int[] marking) throws Exception {
-        return BossaTestUtil.createCaseType("test", marking).openCase();
+        return BossaTestUtil.createCaseType("test", marking).openCaseImpl(null);
     }
 
     static Case createAutoFireCase() throws BossaException {
@@ -53,7 +53,7 @@ public class WFNetUtil {
         b.input(B, "1");
         b.output(C, "1");
         caseType.buildTemplate(null);
-        return caseType.openCase();
+        return caseType.openCaseImpl(null);
     }
 
     static boolean fire(Case caze, String workItemId, Map attributes)
