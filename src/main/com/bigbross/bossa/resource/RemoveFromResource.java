@@ -34,7 +34,7 @@ import java.util.Date;
  * @see com.bigbross.bossa.resource.Resource#remove(Resource)
  * @see com.bigbross.bossa.resource.Resource#removeImpl(Resource)
  */
-class RemoveFromResource extends ResourceHandlerCommand {
+class RemoveFromResource extends ResourceHandlerTransaction {
     
     /**
      * Creates a new remove operation. <p>
@@ -49,7 +49,7 @@ class RemoveFromResource extends ResourceHandlerCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     * @see com.bigbross.bossa.resource.ResourceHandlerTransaction#execute(
      *      Resource, Resource, Date)
      */
     protected Object execute(Resource host, Resource resource, Date time) {

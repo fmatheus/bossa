@@ -34,7 +34,7 @@ import java.util.Date;
  * @see com.bigbross.bossa.resource.Resource#exclude(Resource)
  * @see com.bigbross.bossa.resource.Resource#excludeImpl(Resource)
  */
-class ExcludeInResource extends ResourceHandlerCommand {
+class ExcludeInResource extends ResourceHandlerTransaction {
     
     /**
      * Creates a new exclude operation. <p>
@@ -49,7 +49,7 @@ class ExcludeInResource extends ResourceHandlerCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     * @see com.bigbross.bossa.resource.ResourceHandlerTransaction#execute(
      *      Resource, Resource, Date)
      */
     protected Object execute(Resource host, Resource resource, Date time) {

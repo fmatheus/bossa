@@ -34,7 +34,7 @@ import java.util.Date;
  * @see com.bigbross.bossa.resource.Resource#include(Resource)
  * @see com.bigbross.bossa.resource.Resource#includeImpl(Resource)
  */
-class IncludeInResource extends ResourceHandlerCommand {
+class IncludeInResource extends ResourceHandlerTransaction {
 
     /**
      * Creates a new include operation. <p>
@@ -49,7 +49,7 @@ class IncludeInResource extends ResourceHandlerCommand {
     /**
      * Executes the operation. <p>
      * 
-     * @see com.bigbross.bossa.resource.ResourceHandlerCommand#execute(
+     * @see com.bigbross.bossa.resource.ResourceHandlerTransaction#execute(
      *      Resource, Resource, Date)
      */
     protected Object execute(Resource host, Resource resource, Date time) {
