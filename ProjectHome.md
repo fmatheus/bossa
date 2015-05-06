@@ -1,0 +1,1 @@
+Bossa is a workflow engine written in Java. The engine is very fast and lightweight, uses a very expressive Petri net notation to define workflows, does not requires a RDBMS and is very simple to use and to integrate with java applications.
